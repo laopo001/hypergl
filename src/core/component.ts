@@ -5,18 +5,23 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, July 11th 2018, 9:04:51 pm
+ * Last Modified: Wednesday, July 11th 2018, 9:19:37 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
  */
-let ComponentIdCount = 0
 
+
+import { IMath } from '../math/math';
+
+
+let ComponentIdCount = 0
 export class Component {
     id = ComponentIdCount++;
+    uuid = IMath.generateUUID();
     name = '';
     tag = '';
-    parent: Component;
+    parent?: Component;
     childrne: Component[];
     enable = true;
 }
