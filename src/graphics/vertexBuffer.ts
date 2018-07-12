@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, July 12th 2018, 8:58:12 pm
+ * Last Modified: Friday, July 13th 2018, 1:18:47 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -21,12 +21,15 @@ export class VertexBuffer {
     bufferId: WebGLBuffer;
     storage: ArrayBuffer;
     numBytes: number;
-    constructor(private device: GraphicsDevice, private format: VertexFormat, private numVertices: number, private usage: number = HGL.BUFFER_STATIC, private initialData?: number[]) {
+    constructor(private device: GraphicsDevice, private format: VertexFormat, private numVertices: number, private usage: number = HGL.BUFFER_STATIC, private initialData?: ArrayBuffer) {
         this.numBytes = format.size * numVertices;
         const gl = device.gl;
         if (initialData) {
-
+            this.setData(initialData);
+        } else {
+            this.storage = new ArrayBuffer(this.numBytes);
         }
+        this.device.buffers.push(this);
     }
     setData(data: ArrayBuffer) {
         const gl = this.device.gl;
@@ -49,7 +52,7 @@ export class VertexBuffer {
                 break;
             case HGL.BUFFER_GPUDYNAMIC:
                 if (this.device.webgl2) {
-                    glUsage = gl.DYNAMIC_COPY;
+                    // glUsage = gl.DYNAMIC_COPY;
                 } else {
                     glUsage = gl.STATIC_DRAW;
                 }
