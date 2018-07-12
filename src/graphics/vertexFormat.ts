@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, July 13th 2018, 1:20:14 am
+ * Last Modified: Friday, July 13th 2018, 1:26:46 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -42,29 +42,37 @@ export class VertexFormat {
     hasUv1 = false;
     hasColor = false;
     elements: VertexAttribData[] = [];
-    constructor(private device: GraphicsDevice, description: VertexType[]) {
-        for (let i = 0, len = description.length; i < len; i++) {
-            var elementDesc = description[i];
+    constructor(private device: GraphicsDevice, vartexTypes: VertexType[]) {
+
+        for (let i = 0; i < vartexTypes.length; i++) {
+            const desc = vartexTypes[i];
             let element: VertexAttribData = {
-                semantic: elementDesc.semantic,
+                semantic: desc.semantic,
                 offset: 0,
                 stride: 0,
                 stream: -1,
-                dataType: elementDesc.dataType,
-                length: elementDesc.length,
-                normalize: (elementDesc.normalize === undefined) ? false : elementDesc.normalize,
-                size: elementDesc.length * _typeSize[elementDesc.dataType]
+                dataType: desc.dataType,
+                length: desc.length,
+                normalize: (desc.normalize === undefined) ? false : desc.normalize,
+                size: desc.length * _typeSize[desc.dataType]
             };
             this.elements.push(element);
             // This buffer will be accessed by a Float32Array and so must be 4 byte aligned
             this.size += Math.ceil(element.size / 4) * 4;
-            if (elementDesc.semantic === HGL.SEMANTIC.TEXCOORD0) {
+            if (desc.semantic === HGL.SEMANTIC.TEXCOORD0) {
                 this.hasUv0 = true;
-            } else if (elementDesc.semantic === HGL.SEMANTIC.TEXCOORD1) {
+            } else if (desc.semantic === HGL.SEMANTIC.TEXCOORD1) {
                 this.hasUv1 = true;
-            } else if (elementDesc.semantic === HGL.SEMANTIC.COLOR) {
+            } else if (desc.semantic === HGL.SEMANTIC.COLOR) {
                 this.hasColor = true;
             }
+        }
+        let offset = 0;
+        for (let i = 0; i < this.elements.length; i++) {
+            const element = this.elements[i];
+            element.offset = offset;
+            element.stride = this.size;
+            offset += element.size;
         }
     }
 }
