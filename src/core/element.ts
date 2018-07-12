@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, July 11th 2018, 9:19:37 pm
+ * Last Modified: Thursday, July 12th 2018, 3:33:43 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -15,13 +15,14 @@
 import { IMath } from '../math/math';
 
 
+
 let ComponentIdCount = 0
-export class Component {
+export class IElement {
     id = ComponentIdCount++;
     uuid = IMath.generateUUID();
     name = '';
     tag = '';
-    parent?: Component;
-    childrne: Component[];
+    parent?: IElement;
+    childrne: IElement[];
     enable = true;
 }

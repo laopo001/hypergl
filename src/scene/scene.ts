@@ -5,14 +5,14 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, July 11th 2018, 9:11:08 pm
+ * Last Modified: Thursday, July 12th 2018, 3:34:28 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
  */
 
-import { Component } from '../core/component';
-export class Scene extends Component {
+import { IElement } from '../core/element';
+export class Scene extends IElement {
     fog;
     add() {
 
