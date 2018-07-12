@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, July 11th 2018, 8:55:43 pm
+ * Last Modified: Thursday, July 12th 2018, 8:24:06 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -13,5 +13,12 @@
 
 
 namespace HGL {
-    const version = '0.0.1';
+    export const version = '0.0.1';
+
+    export const BUFFER_STATIC = 1;
+    export const BUFFER_DYNAMIC = 2;
+    export const BUFFER_STREAM = 3;
+    export const BUFFER_GPUDYNAMIC = 4;
+
+
 }
