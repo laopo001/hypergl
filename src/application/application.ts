@@ -5,14 +5,17 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, July 12th 2018, 7:52:28 pm
+ * Last Modified: Thursday, July 12th 2018, 7:55:49 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
  */
 
 
+import { Scene } from '../scene/scene';
+
 export class Application {
+    sceneInstances: Scene[];
     constructor(canvas: HTMLCanvasElement, option: any) {
 
     }
