@@ -11,7 +11,7 @@
  * Copyright (c) 2018 jiguang
  */
 
-import { GraphicsDevice } from "./device";
+import { GraphicsDevice } from './device';
 import * as HGL from '../hgl';
 
 export interface VertexType {

@@ -5,15 +5,14 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, July 13th 2018, 6:55:14 pm
+ * Last Modified: Friday, July 13th 2018, 7:39:50 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
  */
 
 
-
-export const generateUUID = (function () {
+export const generateUUID = (function _() {
 
     // http://www.broofa.com/Tools/Math.uuid.htm
 
@@ -22,7 +21,7 @@ export const generateUUID = (function () {
     let rnd = 0;
     let r;
 
-    return function () {
+    return function generateUUID() {
 
         for (let i = 0; i < 36; i++) {
 
@@ -37,6 +36,7 @@ export const generateUUID = (function () {
             } else {
 
                 if (rnd <= 0x02) rnd = 0x2000000 + (Math.random() * 0x1000000) | 0;
+                // tslint:disable-next-line:number-literal-format
                 r = rnd & 0xf;
                 rnd = rnd >> 4;
                 uuid[i] = chars[(i === 19) ? (r & 0x3) | 0x8 : r];
