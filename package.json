@@ -31,6 +31,7 @@
     "gulp-replace": "^0.6.1",
     "jest": "^22.4.3",
     "minimist": "^1.2.0",
+    "pre-commit": "^1.2.2",
     "raw-loader": "^0.5.1",
     "thread-loader": "^1.1.5",
     "ts-loader": "^4.2.0",
@@ -41,10 +42,10 @@
   },
   "scripts": {
     "start": "webpack --colors --watch",
-    "lint": "node node_modules/tslint/bin/tslint"
+    "lint": "node node_modules/tslint/bin/tslint -c tslint.json 'src/**/*.ts'"
   },
   "pre-commit": [
-    "lint-staged"
+    "lint"
   ],
   "engines": {
     "node": ">= 0.6.12"

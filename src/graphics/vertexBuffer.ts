@@ -34,12 +34,12 @@ export class VertexBuffer {
     setData(data: ArrayBuffer) {
         const gl = this.device.gl;
         if (data.byteLength !== this.numBytes) {
-            console.error("VertexBuffer: wrong initial data size: expected " + this.numBytes + ", got " + data.byteLength);
+            console.error('VertexBuffer: wrong initial data size: expected ' + this.numBytes + ', got ' + data.byteLength);
             return;
         }
         this.storage = data;
         this.bufferId = gl.createBuffer();
-        var glUsage;
+        let glUsage;
         switch (this.usage) {
             case HGL.BUFFER_STATIC:
                 glUsage = gl.STATIC_DRAW;

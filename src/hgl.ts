@@ -5,13 +5,11 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, July 13th 2018, 6:50:02 pm
+ * Last Modified: Friday, July 13th 2018, 7:48:20 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
  */
-
-
 
 export const version = '0.0.1';
 
