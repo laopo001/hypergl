@@ -40,8 +40,12 @@
     "webpack-cli": "^2.1.3"
   },
   "scripts": {
-    "start": "webpack --colors --watch"
+    "start": "webpack --colors --watch",
+    "lint": "node node_modules/tslint/bin/tslint"
   },
+  "pre-commit": [
+    "lint-staged"
+  ],
   "engines": {
     "node": ">= 0.6.12"
   },
