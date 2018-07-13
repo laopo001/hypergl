@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, July 13th 2018, 1:18:47 am
+ * Last Modified: Friday, July 13th 2018, 6:56:17 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -14,7 +14,7 @@
 
 import { GraphicsDevice } from './device';
 import { VertexFormat } from './vertexFormat';
-
+import * as HGL from '../hgl';
 
 
 export class VertexBuffer {

@@ -5,47 +5,47 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, July 11th 2018, 9:18:35 pm
+ * Last Modified: Friday, July 13th 2018, 6:55:14 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
  */
 
 
-export namespace IMath {
-    export const generateUUID = function () {
 
-        // http://www.broofa.com/Tools/Math.uuid.htm
+export const generateUUID = (function () {
 
-        var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
-        var uuid = new Array(36);
-        var rnd = 0, r;
+    // http://www.broofa.com/Tools/Math.uuid.htm
 
-        return function () {
+    let chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+    let uuid = new Array(36);
+    let rnd = 0;
+    let r;
 
-            for (var i = 0; i < 36; i++) {
+    return function () {
 
-                if (i == 8 || i == 13 || i == 18 || i == 23) {
+        for (let i = 0; i < 36; i++) {
 
-                    uuid[i] = '-';
+            if (i === 8 || i === 13 || i === 18 || i === 23) {
 
-                } else if (i == 14) {
+                uuid[i] = '-';
 
-                    uuid[i] = '4';
+            } else if (i === 14) {
 
-                } else {
+                uuid[i] = '4';
 
-                    if (rnd <= 0x02) rnd = 0x2000000 + (Math.random() * 0x1000000) | 0;
-                    r = rnd & 0xf;
-                    rnd = rnd >> 4;
-                    uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+            } else {
 
-                }
+                if (rnd <= 0x02) rnd = 0x2000000 + (Math.random() * 0x1000000) | 0;
+                r = rnd & 0xf;
+                rnd = rnd >> 4;
+                uuid[i] = chars[(i === 19) ? (r & 0x3) | 0x8 : r];
+
             }
+        }
 
-            return uuid.join('');	//返回36位的uuid通用唯一识别码 (Universally Unique Identifier).
+        return uuid.join('');	//返回36位的uuid通用唯一识别码 (Universally Unique Identifier).
 
-        };
+    };
 
-    }();
-}
+})();
