@@ -81,31 +81,30 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/index.ts");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./demo/index.ts");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./src/index.ts":
-/*!**********************!*\
-  !*** ./src/index.ts ***!
-  \**********************/
+/***/ "./demo/index.ts":
+/*!***********************!*\
+  !*** ./demo/index.ts ***!
+  \***********************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
 /**
- * File: c:\Users\35327\Githubs\ts-template\src\index.ts
- * Project: c:\Users\35327\Githubs\ts-template
- * Created Date: Friday, June 29th 2018, 12:01:19 am
+ * File: c:\Users\35327\Documents\Githubs\hypergl\demo\index.ts
+ * Project: c:\Users\35327\Documents\Githubs\hypergl
+ * Created Date: Friday, July 13th 2018, 8:44:13 pm
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, June 29th 2018, 12:01:28 am
- * Modified By: liaodh
+ * Last Modified: Friday, July 13th 2018, 8:44:13 pm
+ * Modified By:
  * -----
  * Copyright (c) 2018 jiguang
  */
-console.log(123);
 
 
 /***/ })
