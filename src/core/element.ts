@@ -5,21 +5,21 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, July 12th 2018, 3:33:43 pm
+ * Last Modified: Friday, July 13th 2018, 6:55:36 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
  */
 
 
-import { IMath } from '../math/math';
+import { generateUUID } from '../math/math';
 
 
 
 let ComponentIdCount = 0
 export class IElement {
     id = ComponentIdCount++;
-    uuid = IMath.generateUUID();
+    uuid = generateUUID();
     name = '';
     tag = '';
     parent?: IElement;
