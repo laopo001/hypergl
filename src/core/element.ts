@@ -16,7 +16,7 @@ import { generateUUID } from '../math/math';
 
 
 
-let ComponentIdCount = 0
+let ComponentIdCount = 0;
 export class IElement {
     id = ComponentIdCount++;
     uuid = generateUUID();
