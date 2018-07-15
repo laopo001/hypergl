@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, July 15th 2018, 4:08:17 pm
+ * Last Modified: Sunday, July 15th 2018, 7:03:24 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -23,6 +23,9 @@ export const shaderHelper = {
 
     versionCode(device) {
         return device.webgl2 ? '#version 300 es\n' : '';
+    },
+    dummyFragmentCode() {
+        return 'void main(void) {gl_FragColor = vec4(0.0);}';
     },
     begin() {
         return 'void main(void)\n{\n';

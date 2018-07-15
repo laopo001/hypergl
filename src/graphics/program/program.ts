@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, July 15th 2018, 4:08:21 pm
+ * Last Modified: Sunday, July 15th 2018, 5:22:44 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -16,6 +16,9 @@ import { GraphicsDevice } from '../device';
 
 export class Program {
     program;
+    attributes = [];
+    uniforms = [];
+    samplers = [];
     constructor(private device: GraphicsDevice) {
         const { gl } = device;
         this.program = gl.createProgram();
@@ -25,7 +28,15 @@ export class Program {
         const { gl } = this.device;
         const { program } = this;
         const vertexShader = this.loadShader(gl, gl.VERTEX_SHADER, vshaderSource);
+        if (!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)) {
+            console.log(gl.getShaderInfoLog(vertexShader));
+            return false;
+        }
         const fragmentShader = this.loadShader(gl, gl.FRAGMENT_SHADER, fshaderSource);
+        if (!gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS)) {
+            console.log(gl.getShaderInfoLog(fragmentShader));
+            return false;
+        }
         gl.attachShader(program, vertexShader);
         gl.attachShader(program, fragmentShader);
         gl.linkProgram(program);
@@ -37,15 +48,10 @@ export class Program {
         gl.useProgram(program);
         return true;
     }
-    loadShader(gl: WebGLRenderingContext, type: number, source: string) {
+    private loadShader(gl: WebGLRenderingContext, type: number, source: string) {
         const shader = gl.createShader(type);
         gl.shaderSource(shader, source);
         gl.compileShader(shader);
-        const compiled = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
-        if (!compiled) {
-            console.log(gl.getShaderInfoLog(shader));
-            return false;
-        }
         return shader;
     }
 }
