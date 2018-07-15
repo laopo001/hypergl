@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, July 12th 2018, 9:01:46 pm
+ * Last Modified: Sunday, July 15th 2018, 11:59:00 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -16,4 +16,7 @@ export class GraphicsDevice {
     gl: WebGLRenderingContext;
     webgl2: boolean = false;
     buffers = [];
+    constructor(private canvas: HTMLCanvasElement) {
+        this.gl = canvas.getContext('webgl');
+    }
 }
