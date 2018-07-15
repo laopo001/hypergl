@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, July 13th 2018, 6:56:32 pm
+ * Last Modified: Sunday, July 15th 2018, 11:45:24 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -36,7 +36,20 @@ _typeSize[HGL.DataType.UINT16] = 2;
 _typeSize[HGL.DataType.INT32] = 4;
 _typeSize[HGL.DataType.UINT32] = 4;
 _typeSize[HGL.DataType.FLOAT32] = 4;
-
+/**
+* @example
+* // Specify 3-component positions (x, y, z)
+* var vertexFormat = new pc.VertexFormat(graphicsDevice, [
+* { semantic: pc.SEMANTIC_POSITION, components: 3, type: pc.TYPE_FLOAT32 },
+* ]);
+* @example
+* // Specify 2-component positions (x, y), a texture coordinate (u, v) and a vertex color (r, g, b, a)
+* var vertexFormat = new pc.VertexFormat(graphicsDevice, [
+* { semantic: pc.SEMANTIC_POSITION, components: 2, type: pc.TYPE_FLOAT32 },
+* { semantic: pc.SEMANTIC_TEXCOORD0, components: 2, type: pc.TYPE_FLOAT32 },
+* { semantic: pc.SEMANTIC_COLOR, components: 4, type: pc.TYPE_UINT8, normalize: true }
+* ]);
+*/
 export class VertexFormat {
     size: number;
     hasUv0 = false;
