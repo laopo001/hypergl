@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, July 15th 2018, 11:59:48 am
+ * Last Modified: Sunday, July 15th 2018, 3:49:02 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -17,8 +17,15 @@ import { GraphicsDevice } from '../graphics/device';
 
 export class Application {
     sceneInstances: Scene[];
+    activeIndex = 0;
     device: GraphicsDevice;
     constructor(canvas: HTMLCanvasElement, option?: any) {
         this.device = new GraphicsDevice(canvas);
+    }
+    start() {
+        let scene = this.sceneInstances[this.activeIndex];
+    }
+    add(scene: Scene) {
+        this.sceneInstances.push(scene);
     }
 }
