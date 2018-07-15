@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, July 15th 2018, 3:30:13 pm
+ * Last Modified: Sunday, July 15th 2018, 3:36:53 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -26,19 +26,21 @@ export const event = {
     },
     off(name: string, callback: any) {
         if (event.hasEvent(name)) {
-            let index = _callbacks[name].findIndex(x => x === callback);
-            _callbacks[name].splice(index, 1)
+            const index = _callbacks[name].findIndex(x => x === callback);
+            _callbacks[name].splice(index, 1);
         }
         return event;
     },
     fire(name: string, ...args) {
         if (event.hasEvent(name)) {
-            let waitMoves = [];
+            const waitMoves = [];
             _callbacks[name].forEach((x, index) => {
                 x.apply(window, args);
+                // tslint:disable-next-line:no-unused-expression
                 (x as any).once && waitMoves.push(index);
             });
             let t;
+            // tslint:disable-next-line:no-conditional-assignment
             while (t = waitMoves.pop()) {
                 _callbacks[name].splice(t, 1);
             }
