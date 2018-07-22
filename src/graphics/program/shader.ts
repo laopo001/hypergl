@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, July 16th 2018, 12:30:49 am
+ * Last Modified: Sunday, July 22nd 2018, 8:18:24 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -160,7 +160,7 @@ export class Shader {
                 console.error('Vertex shader attribute "' + info.name + '" is not mapped to a semantic in shader definition.');
             }
 
-            this.attributes.push(new pc.ShaderInput(this.device, this.definition.attributes[info.name], _typeToPc[info.type], location));
+            this.attributes.push(new ShaderInput(this.device, this.definition.attributes[info.name], _typeToPc[info.type], location));
         }
 
         // Query the program for each shader state (GLSL 'uniform')
