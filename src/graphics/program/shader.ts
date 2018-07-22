@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, July 22nd 2018, 8:18:24 pm
+ * Last Modified: Monday, July 23rd 2018, 12:32:06 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -14,6 +14,7 @@
 
 import { GraphicsDevice } from '../device';
 import { SHADERTAG_MATERIAL } from '../../hgl';
+import { ShaderInput } from './shader-input';
 
 function addLineNumbers(src) {
     let chunks = src.split('\n');
