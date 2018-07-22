@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, July 15th 2018, 1:40:22 pm
+ * Last Modified: Saturday, July 21st 2018, 9:05:03 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -30,7 +30,7 @@ const format = new VertexFormat(device, [{
     length: 3,
     dataType: HGL.DataType.FLOAT32,
     normalize: true
-}])
+}]);
 
 const vertices = new Float32Array([
     0, 0.5, -0.4, 0.4, 1, 0.4,
