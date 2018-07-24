@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, July 15th 2018, 11:27:08 pm
+ * Last Modified: Wednesday, July 25th 2018, 12:24:42 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -46,4 +46,40 @@ export enum SEMANTIC {
     TEXCOORD7 = 'TEXCOORD7'
 }
 
+export enum UNIFORMTYPE {
+    BOOL,
+    INT,
+    FLOAT,
+    FLOAT_VEC2,
+    FLOAT_VEC3,
+    FLOAT_VEC4,
+    INT_VEC2,
+    INT_VEC3,
+    INT_VEC4,
+    BOOL_VEC2,
+    BOOL_VEC3,
+    BOOL_VEC4,
+    FLOAT_MAT2,
+    FLOAT_MAT3,
+    FLOAT_MAT4,
+    SAMPLER_2D,
+    SAMPLER_CUBE,
+}
 
+// _typeToPc[gl.BOOL] = pc.UNIFORMTYPE_BOOL;
+// _typeToPc[gl.INT] = pc.UNIFORMTYPE_INT;
+// _typeToPc[gl.FLOAT] = pc.UNIFORMTYPE_FLOAT;
+// _typeToPc[gl.FLOAT_VEC2] = pc.UNIFORMTYPE_VEC2;
+// _typeToPc[gl.FLOAT_VEC3] = pc.UNIFORMTYPE_VEC3;
+// _typeToPc[gl.FLOAT_VEC4] = pc.UNIFORMTYPE_VEC4;
+// _typeToPc[gl.INT_VEC2] = pc.UNIFORMTYPE_IVEC2;
+// _typeToPc[gl.INT_VEC3] = pc.UNIFORMTYPE_IVEC3;
+// _typeToPc[gl.INT_VEC4] = pc.UNIFORMTYPE_IVEC4;
+// _typeToPc[gl.BOOL_VEC2] = pc.UNIFORMTYPE_BVEC2;
+// _typeToPc[gl.BOOL_VEC3] = pc.UNIFORMTYPE_BVEC3;
+// _typeToPc[gl.BOOL_VEC4] = pc.UNIFORMTYPE_BVEC4;
+// _typeToPc[gl.FLOAT_MAT2] = pc.UNIFORMTYPE_MAT2;
+// _typeToPc[gl.FLOAT_MAT3] = pc.UNIFORMTYPE_MAT3;
+// _typeToPc[gl.FLOAT_MAT4] = pc.UNIFORMTYPE_MAT4;
+// _typeToPc[gl.SAMPLER_2D] = pc.UNIFORMTYPE_TEXTURE2D;
+// _typeToPc[gl.SAMPLER_CUBE] = pc.UNIFORMTYPE_TEXTURECUBE;
