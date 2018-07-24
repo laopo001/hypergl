@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, July 25th 2018, 12:24:42 am
+ * Last Modified: Wednesday, July 25th 2018, 12:37:22 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -64,6 +64,10 @@ export enum UNIFORMTYPE {
     FLOAT_MAT4,
     SAMPLER_2D,
     SAMPLER_CUBE,
+    FLOATARRAY,
+    TEXTURE2D_SHADOW,
+    TEXTURECUBE_SHADOW,
+    TEXTURE3D
 }
 
 // _typeToPc[gl.BOOL] = pc.UNIFORMTYPE_BOOL;

@@ -5,18 +5,21 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, July 15th 2018, 10:49:26 pm
+ * Last Modified: Wednesday, July 25th 2018, 12:53:12 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
  */
 
+
+import { ScopeSpace } from './program/scope-space';
 type precision = 'highp' | 'mediump' | 'lowp';
 type version = 'webgl' | 'webgl2';
 export class GraphicsDevice {
     gl: WebGLRenderingContext;
     webgl2: boolean = false;
     buffers = [];
+    scope: ScopeSpace;
     precision: precision = 'mediump';
     _shaderStats = {
         vsCompiled: 0,
@@ -27,5 +30,6 @@ export class GraphicsDevice {
     };
     constructor(private canvas: HTMLCanvasElement) {
         this.gl = canvas.getContext('webgl');
+        this.scope = new ScopeSpace('Device');
     }
 }
