@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, July 21st 2018, 9:05:03 pm
+ * Last Modified: Tuesday, July 24th 2018, 11:00:29 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -13,6 +13,7 @@
 
 
 import * as HGL from '../src/index';
+// tslint:disable-next-line:no-duplicate-imports
 import { VertexBuffer, VertexFormat, Application } from '../src/index';
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
