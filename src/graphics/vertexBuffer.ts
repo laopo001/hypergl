@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, July 13th 2018, 6:56:17 pm
+ * Last Modified: Thursday, July 26th 2018, 12:40:00 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -59,4 +59,5 @@ export class VertexBuffer {
                 break;
         }
     }
+
 }

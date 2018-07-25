@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, July 15th 2018, 5:22:44 pm
+ * Last Modified: Wednesday, July 25th 2018, 10:22:18 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -15,7 +15,7 @@
 import { GraphicsDevice } from '../device';
 
 export class Program {
-    program;
+    program: WebGLProgram;
     attributes = [];
     uniforms = [];
     samplers = [];

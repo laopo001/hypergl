@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, July 15th 2018, 7:05:16 pm
+ * Last Modified: Thursday, July 26th 2018, 12:03:56 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -14,7 +14,18 @@
 // module shaderChunks
 import * as  HGl from '../../hgl';
 import { Shader } from './shader';
-import { shaderHelper } from './shader-help';
+import { programlib } from './shader-help';
+import * as base from './shaders/base.vert';
+import * as fogLinearPS from './shaders/fogLinear.frag';
+import * as fogExpPS from './shaders/fogExp.frag';
+import * as fogExp2PS from './shaders/fogExp2.frag';
+import * as fogNonePS from './shaders/fogNone.frag';
+import * as transformDeclVS from './shaders/transformDecl.vert';
+import * as transformSkinnedVS from './shaders/transformSkinned.vert';
+import * as transformVS from './shaders/transform.vert';
+import * as alphaTestPS from './shaders/alphaTest.frag';
+import * as packDepthPS from './shaders/packDepth.frag';
+
 
 const attrib2Semantic = {
     vertex_position: HGl.SEMANTIC.POSITION,
@@ -32,7 +43,18 @@ const attrib2Semantic = {
     vertex_boneIndices: HGl.SEMANTIC.BLENDINDICES,
     vertex_boneWeights: HGl.SEMANTIC.BLENDWEIGHT
 };
-const shaderChunks = {};
+export const shaderChunks = {
+    base,
+    fogLinearPS,
+    fogExpPS,
+    fogExp2PS,
+    fogNonePS,
+    transformDeclVS,
+    transformSkinnedVS,
+    transformVS,
+    alphaTestPS,
+    packDepthPS
+};
 
 export function collectAttribs(vsCode) {
     let attribs = {};
@@ -61,12 +83,12 @@ export function collectAttribs(vsCode) {
 
 export function createShader(device, vsName, psName, useTransformFeedback) {
     let vsCode = shaderChunks[vsName];
-    let psCode = shaderHelper.precisionCode(device) + '\n' + shaderChunks[psName];
+    let psCode = programlib.precisionCode(device) + '\n' + shaderChunks[psName];
     let attribs = collectAttribs(vsCode);
 
     if (device.webgl2) {
-        vsCode = shaderHelper.versionCode(device) + this.gles3VS + vsCode;
-        psCode = shaderHelper.versionCode(device) + this.gles3PS + psCode;
+        vsCode = programlib.versionCode(device) + this.gles3VS + vsCode;
+        psCode = programlib.versionCode(device) + this.gles3PS + psCode;
     }
 
     return new Shader(device, {
@@ -83,14 +105,14 @@ export function createShaderFromCode(device, vsCode, psCode, uName, useTransform
     if (cached !== undefined) return cached;
 
     // tslint:disable-next-line:no-parameter-reassignment
-    psCode = shaderHelper.precisionCode(device) + '\n' + (psCode || shaderHelper.dummyFragmentCode());
+    psCode = programlib.precisionCode(device) + '\n' + (psCode || programlib.dummyFragmentCode());
     let attribs = collectAttribs(vsCode);
 
     if (device.webgl2) {
         // tslint:disable-next-line:no-parameter-reassignment
-        vsCode = shaderHelper.versionCode(device) + this.gles3VS + vsCode;
+        vsCode = programlib.versionCode(device) + this.gles3VS + vsCode;
         // tslint:disable-next-line:no-parameter-reassignment
-        psCode = shaderHelper.versionCode(device) + this.gles3PS + psCode;
+        psCode = programlib.versionCode(device) + this.gles3PS + psCode;
     }
 
     shaderCache[uName] = new Shader(device, {
