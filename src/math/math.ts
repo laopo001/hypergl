@@ -5,13 +5,14 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, July 13th 2018, 7:39:50 pm
+ * Last Modified: Friday, July 27th 2018, 1:11:25 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
  */
 
 
+/* tslint:disable */
 export const generateUUID = (function _() {
 
     // http://www.broofa.com/Tools/Math.uuid.htm
@@ -49,3 +50,36 @@ export const generateUUID = (function _() {
     };
 
 })();
+
+
+
+export function  intToBytes24(i) {
+    let r, g, b;
+
+    r = (i >> 16) & 0xff;
+    g = (i >> 8) & 0xff;
+    b = (i) & 0xff;
+
+    return [r, g, b];
+}
+
+export function intToBytes32(i) {
+    let r, g, b, a;
+
+    r = (i >> 24) & 0xff;
+    g = (i >> 16) & 0xff;
+    b = (i >> 8) & 0xff;
+    a = (i) & 0xff;
+
+    return [r, g, b, a];
+}
+
+
+export function  bytesToInt24(r, g, b) {
+    if (r.length) {
+        b = r[2];
+        g = r[1];
+        r = r[0];
+    }
+    return ((r << 16) | (g << 8) | b);
+}

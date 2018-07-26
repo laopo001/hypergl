@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, July 26th 2018, 12:21:29 am
+ * Last Modified: Friday, July 27th 2018, 12:06:59 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -13,6 +13,8 @@
 
 
 import { ScopeSpace } from './program/scope-space';
+import { ProgramLibrary } from './program/program-library';
+import { generators } from './program/shader-help';
 type precision = 'highp' | 'mediump' | 'lowp';
 type version = 'webgl' | 'webgl2';
 export class GraphicsDevice {
@@ -46,9 +48,15 @@ export class GraphicsDevice {
     extCompressedTextureETC1: any;
     extCompressedTexturePVRTC: any;
     extCompressedTextureS3TC: any;
+    programLib: ProgramLibrary;
     constructor(private canvas: HTMLCanvasElement) {
         this.gl = canvas.getContext('webgl');
         this.scope = new ScopeSpace('Device');
+        this.programLib = new ProgramLibrary(this);
+        // tslint:disable-next-line:forin
+        for (const generator in generators) {
+            this.programLib.register(generator, generators[generator]);
+        }
     }
     initializeExtensions() {
         const gl = this.gl;

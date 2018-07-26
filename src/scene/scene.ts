@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, July 13th 2018, 7:40:39 pm
+ * Last Modified: Friday, July 27th 2018, 12:58:28 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -13,8 +13,10 @@
 
 import { IElement } from '../core/element';
 export class Scene extends IElement {
+    static defaultMaterial: any = 'defaultMaterial';
     fog;
     add() {
         console.log();
     }
+
 }

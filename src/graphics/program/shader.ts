@@ -5,7 +5,11 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
+<<<<<<< HEAD
+ * Last Modified: Friday, July 27th 2018, 1:18:19 am
+=======
  * Last Modified: Wednesday, July 25th 2018, 12:24:42 am
+>>>>>>> a59a1a480c976e9f2165e74cf2fca136d87fc14f
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang

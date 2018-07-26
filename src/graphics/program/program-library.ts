@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, July 26th 2018, 12:40:43 am
+ * Last Modified: Friday, July 27th 2018, 12:05:58 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -14,6 +14,9 @@
 import { Shader } from './shader';
 import { ShaderGenerate } from './basic';
 import { GraphicsDevice } from '../device';
+import { generators } from './shader-help';
+
+
 export class ProgramLibrary {
     _cache = {};
     _generators: {
@@ -25,24 +28,24 @@ export class ProgramLibrary {
         this._device = device;
     }
 
-    register(name, generator: ShaderGenerate) {
+    register(name: string, generator: ShaderGenerate) {
         if (!this.isRegistered(name)) {
             this._generators[name] = generator;
         }
     }
 
-    unregister(name) {
+    unregister(name: string) {
         if (this.isRegistered(name)) {
             delete this._generators[name];
         }
     }
 
-    isRegistered(name) {
+    isRegistered(name: string) {
         const generator = this._generators[name];
         return (generator !== undefined);
     }
 
-    getProgram(name: string, options) {
+    getProgram(name: string, options): Shader {
         const generator = this._generators[name];
         if (generator === undefined) {
             console.error(`No program library functions registered for: ${name}`);
@@ -70,7 +73,7 @@ export class ProgramLibrary {
         this._isClearingCache = false;
     }
 
-    removeFromCache(shader) {
+    removeFromCache(shader: Shader) {
         if (this._isClearingCache) return; // don't delete by one when clearing whole cache
         const cache = this._cache;
         for (const key in cache) {
