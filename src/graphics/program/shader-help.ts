@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, July 26th 2018, 12:13:08 am
+ * Last Modified: Friday, July 27th 2018, 12:05:47 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -13,6 +13,7 @@
 
 import { shaderChunks } from './chunks';
 import { GraphicsDevice } from '../device';
+import { basic } from './basic';
 export const programlib = {
     fogCode(value) {
         if (value === 'linear') {
@@ -51,8 +52,12 @@ export const programlib = {
     begin() {
         return 'void main(void)\n{\n';
     },
-
     end() {
         return '}\n';
     }
 };
+
+export const generators = {
+    basic
+};
+
