@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, July 27th 2018, 12:58:58 am
+ * Last Modified: Friday, July 27th 2018, 1:06:10 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -14,7 +14,7 @@
 let id = 0;
 import { BLENDMODE, BLENDEQUATION, CULLFACE, BLEND } from '../hgl';
 import { Scene } from '../scene/scene';
-class Material {
+export class Material {
     id: number;
     name = 'Untitled';
     _shader = null;
@@ -260,7 +260,7 @@ class Material {
         }
     }
 
-    updateShader(device, scene, objDefs) {
+    updateShader(device, scene, objDefs, ...args) {
         // For vanilla materials, the shader can only be set by the user
     }
 
