@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, July 26th 2018, 12:09:28 am
+ * Last Modified: Friday, July 27th 2018, 12:54:45 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -94,3 +94,47 @@ export enum SHADER {
     // 17: PCF5 SPOT
     PICK = 18,
 }
+
+export enum BLENDMODE {
+    ZERO = 0,
+    ONE = 1,
+    SRC_COLOR = 2,
+    ONE_MINUS_SRC_COLOR = 3,
+    DST_COLOR = 4,
+    ONE_MINUS_DST_COLOR = 5,
+    SRC_ALPHA = 6,
+    SRC_ALPHA_SATURATE = 7,
+    ONE_MINUS_SRC_ALPHA = 8,
+    DST_ALPHA = 9,
+    ONE_MINUS_DST_ALPHA = 10
+}
+
+export enum BLENDEQUATION {
+    ADD = 0,
+    SUBTRACT = 1,
+    REVERSE_SUBTRACT = 2,
+    MIN = 3,
+    MAX = 4
+}
+
+export enum CULLFACE {
+    NONE = 0,
+    BACK = 1,
+    FRONT = 2,
+    FRONTANDBACK = 3
+}
+
+export enum BLEND {
+    SUBTRACTIVE = 0,
+    ADDITIVE = 1,
+    NORMAL = 2,
+    NONE = 3,
+    PREMULTIPLIED = 4,
+    MULTIPLICATIVE = 5,
+    ADDITIVEALPHA = 6,
+    MULTIPLICATIVE2X = 7,
+    SCREEN = 8,
+    MIN = 9,
+    MAX = 10
+}
+
