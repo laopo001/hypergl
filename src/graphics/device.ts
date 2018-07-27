@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, July 27th 2018, 12:06:59 am
+ * Last Modified: Saturday, July 28th 2018, 12:55:52 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -21,6 +21,10 @@ export class GraphicsDevice {
     gl: WebGLRenderingContext;
     webgl2: boolean = false;
     buffers = [];
+    vertexBuffers = [];
+    vbOffsets = [];
+    attributesInvalidated = true;
+    enabledAttributes = {};
     scope: ScopeSpace;
     precision: precision = 'mediump';
     _shaderStats = {
@@ -29,6 +33,16 @@ export class GraphicsDevice {
         linked: 0,
         materialShaders: 0,
         compileTime: 0
+    };
+    _vram = {
+        // #ifdef PROFILER
+        texShadow: 0,
+        texAsset: 0,
+        texLightmap: 0,
+        // #endif
+        tex: 0,
+        vb: 0,
+        ib: 0
     };
     boneLimit = 128;
     supportsBoneTextures: any;
@@ -49,6 +63,7 @@ export class GraphicsDevice {
     extCompressedTexturePVRTC: any;
     extCompressedTextureS3TC: any;
     programLib: ProgramLibrary;
+    boundBuffer: any;
     constructor(private canvas: HTMLCanvasElement) {
         this.gl = canvas.getContext('webgl');
         this.scope = new ScopeSpace('Device');

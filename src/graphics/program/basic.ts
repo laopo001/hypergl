@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, July 26th 2018, 12:37:14 am
+ * Last Modified: Saturday, July 28th 2018, 12:30:50 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -17,9 +17,13 @@ import { shaderChunks } from './chunks';
 import { SEMANTIC, SHADER } from '../../hgl';
 import { GraphicsDevice } from '../device';
 
-export interface ShaderGenerate{
+export interface ShaderGenerate {
     generateKey?(device: GraphicsDevice, options);
-    createShaderDefinition?(device: GraphicsDevice, options) 
+    createShaderDefinition?(device: GraphicsDevice, options): {
+        attributes,
+        vshader,
+        fshader
+    }
 }
 
 export const basic = {

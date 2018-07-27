@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, July 27th 2018, 12:54:45 am
+ * Last Modified: Saturday, July 28th 2018, 12:53:11 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -13,10 +13,12 @@
 
 export const version = '0.0.1';
 
-export const BUFFER_STATIC = 1;
-export const BUFFER_DYNAMIC = 2;
-export const BUFFER_STREAM = 3;
-export const BUFFER_GPUDYNAMIC = 4;
+export enum BUFFER {
+    STATIC = 1,
+    DYNAMIC = 2,
+    STREAM = 3,
+    GPUDYNAMIC = 4
+}
 
 export const SHADERTAG_MATERIAL = 1;
 export enum DataType {

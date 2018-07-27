@@ -103,7 +103,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, July 28th 2018, 12:04:19 am
+ * Last Modified: Saturday, July 28th 2018, 12:54:01 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -136,9 +136,11 @@ var vertices = new Float32Array([
     -0.5, -0.5, 0, 0.4, 0.4, 1,
     0.5, -0.5, 0, 1, 0.4, 0.4
 ]);
-var buffer = new _src_index__WEBPACK_IMPORTED_MODULE_0__["VertexBuffer"](device, format, 9, _src_index__WEBPACK_IMPORTED_MODULE_0__["BUFFER_STATIC"], vertices.buffer);
-var a = new _src_index__WEBPACK_IMPORTED_MODULE_0__["BasicMaterial"]();
-console.log(a);
+var buffer = new _src_index__WEBPACK_IMPORTED_MODULE_0__["VertexBuffer"](device, format, 9, _src_index__WEBPACK_IMPORTED_MODULE_0__["BUFFER"].STATIC, vertices.buffer);
+var m = new _src_index__WEBPACK_IMPORTED_MODULE_0__["BasicMaterial"]();
+console.log(m);
+var s = device.programLib.getProgram('basic', m);
+console.log(s);
 
 
 /***/ }),
@@ -382,7 +384,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, July 27th 2018, 12:06:59 am
+ * Last Modified: Saturday, July 28th 2018, 12:55:52 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -395,6 +397,10 @@ var GraphicsDevice = /** @class */ (function () {
         this.canvas = canvas;
         this.webgl2 = false;
         this.buffers = [];
+        this.vertexBuffers = [];
+        this.vbOffsets = [];
+        this.attributesInvalidated = true;
+        this.enabledAttributes = {};
         this.precision = 'mediump';
         this._shaderStats = {
             vsCompiled: 0,
@@ -402,6 +408,16 @@ var GraphicsDevice = /** @class */ (function () {
             linked: 0,
             materialShaders: 0,
             compileTime: 0
+        };
+        this._vram = {
+            // #ifdef PROFILER
+            texShadow: 0,
+            texAsset: 0,
+            texLightmap: 0,
+            // #endif
+            tex: 0,
+            vb: 0,
+            ib: 0
         };
         this.boneLimit = 128;
         this.gl = canvas.getContext('webgl');
@@ -487,7 +503,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, July 26th 2018, 12:37:14 am
+ * Last Modified: Saturday, July 28th 2018, 12:30:50 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -1499,7 +1515,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, July 26th 2018, 12:40:00 am
+ * Last Modified: Saturday, July 28th 2018, 12:54:14 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -1507,7 +1523,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var VertexBuffer = /** @class */ (function () {
     function VertexBuffer(device, format, numVertices, usage, initialData) {
-        if (usage === void 0) { usage = _hgl__WEBPACK_IMPORTED_MODULE_0__["BUFFER_STATIC"]; }
+        if (usage === void 0) { usage = _hgl__WEBPACK_IMPORTED_MODULE_0__["BUFFER"].STATIC; }
         this.device = device;
         this.format = format;
         this.numVertices = numVertices;
@@ -1523,26 +1539,59 @@ var VertexBuffer = /** @class */ (function () {
         }
         this.device.buffers.push(this);
     }
-    VertexBuffer.prototype.setData = function (data) {
-        var gl = this.device.gl;
-        if (data.byteLength !== this.numBytes) {
-            console.error('VertexBuffer: wrong initial data size: expected ' + this.numBytes + ', got ' + data.byteLength);
-            return;
+    VertexBuffer.prototype.destroy = function () {
+        var device = this.device;
+        var idx = device.buffers.indexOf(this);
+        if (idx !== -1) {
+            device.buffers.splice(idx, 1);
         }
-        this.storage = data;
-        this.bufferId = gl.createBuffer();
+        if (this.bufferId) {
+            var gl = device.gl;
+            gl.deleteBuffer(this.bufferId);
+            device._vram.vb -= this.storage.byteLength;
+            this.bufferId = null;
+            // If this buffer was bound, must clean up attribute-buffer bindings to prevent GL errors
+            device.boundBuffer = null;
+            device.vertexBuffers.length = 0;
+            device.vbOffsets.length = 0;
+            device.attributesInvalidated = true;
+            // tslint:disable-next-line:forin
+            for (var loc in device.enabledAttributes) {
+                gl.disableVertexAttribArray(parseInt(loc, 10));
+            }
+            device.enabledAttributes = {};
+        }
+    };
+    VertexBuffer.prototype.getFormat = function () {
+        return this.format;
+    };
+    VertexBuffer.prototype.getUsage = function () {
+        return this.usage;
+    };
+    VertexBuffer.prototype.getNumVertices = function () {
+        return this.numVertices;
+    };
+    VertexBuffer.prototype.lock = function () {
+        return this.storage;
+    };
+    VertexBuffer.prototype.unlock = function () {
+        // Upload the new vertex data
+        var gl = this.device.gl;
+        if (!this.bufferId) {
+            this.bufferId = gl.createBuffer();
+        }
         var glUsage;
         switch (this.usage) {
-            case _hgl__WEBPACK_IMPORTED_MODULE_0__["BUFFER_STATIC"]:
+            case _hgl__WEBPACK_IMPORTED_MODULE_0__["BUFFER"].STATIC:
                 glUsage = gl.STATIC_DRAW;
                 break;
-            case _hgl__WEBPACK_IMPORTED_MODULE_0__["BUFFER_DYNAMIC"]:
+            case _hgl__WEBPACK_IMPORTED_MODULE_0__["BUFFER"].DYNAMIC:
                 glUsage = gl.DYNAMIC_DRAW;
                 break;
-            case _hgl__WEBPACK_IMPORTED_MODULE_0__["BUFFER_STREAM"]:
+            case _hgl__WEBPACK_IMPORTED_MODULE_0__["BUFFER"].STREAM:
                 glUsage = gl.STREAM_DRAW;
                 break;
-            case _hgl__WEBPACK_IMPORTED_MODULE_0__["BUFFER_GPUDYNAMIC"]:
+            case _hgl__WEBPACK_IMPORTED_MODULE_0__["BUFFER"].GPUDYNAMIC:
                 if (this.device.webgl2) {
                     // glUsage = gl.DYNAMIC_COPY;
                 }
@@ -1551,6 +1600,17 @@ var VertexBuffer = /** @class */ (function () {
                 }
                 break;
         }
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.bufferId);
+        gl.bufferData(gl.ARRAY_BUFFER, this.storage, glUsage);
+    };
+    VertexBuffer.prototype.setData = function (data) {
+        if (data.byteLength !== this.numBytes) {
+            console.error("VertexBuffer: wrong initial data size: expected " + this.numBytes + ", got " + data.byteLength);
+            return false;
+        }
+        this.storage = data;
+        this.unlock();
+        return true;
     };
     return VertexBuffer;
 }());
@@ -1657,16 +1717,13 @@ var VertexFormat = /** @class */ (function () {
 /*!********************!*\
   !*** ./src/hgl.ts ***!
   \********************/
-/*! exports provided: version, BUFFER_STATIC, BUFFER_DYNAMIC, BUFFER_STREAM, BUFFER_GPUDYNAMIC, SHADERTAG_MATERIAL, DataType, SEMANTIC, UNIFORMTYPE, SHADER, BLENDMODE, BLENDEQUATION, CULLFACE, BLEND */
+/*! exports provided: version, BUFFER, SHADERTAG_MATERIAL, DataType, SEMANTIC, UNIFORMTYPE, SHADER, BLENDMODE, BLENDEQUATION, CULLFACE, BLEND */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "version", function() { return version; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BUFFER_STATIC", function() { return BUFFER_STATIC; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BUFFER_DYNAMIC", function() { return BUFFER_DYNAMIC; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BUFFER_STREAM", function() { return BUFFER_STREAM; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BUFFER_GPUDYNAMIC", function() { return BUFFER_GPUDYNAMIC; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BUFFER", function() { return BUFFER; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SHADERTAG_MATERIAL", function() { return SHADERTAG_MATERIAL; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataType", function() { return DataType; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SEMANTIC", function() { return SEMANTIC; });
@@ -1683,16 +1740,19 @@ __webpack_require__.r(__webpack_exports__);
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, July 27th 2018, 12:54:45 am
+ * Last Modified: Saturday, July 28th 2018, 12:53:11 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
  */
 var version = '0.0.1';
-var BUFFER_STATIC = 1;
-var BUFFER_DYNAMIC = 2;
-var BUFFER_STREAM = 3;
-var BUFFER_GPUDYNAMIC = 4;
+var BUFFER;
+(function (BUFFER) {
+    BUFFER[BUFFER["STATIC"] = 1] = "STATIC";
+    BUFFER[BUFFER["DYNAMIC"] = 2] = "DYNAMIC";
+    BUFFER[BUFFER["STREAM"] = 3] = "STREAM";
+    BUFFER[BUFFER["GPUDYNAMIC"] = 4] = "GPUDYNAMIC";
+})(BUFFER || (BUFFER = {}));
 var SHADERTAG_MATERIAL = 1;
 var DataType;
 (function (DataType) {
@@ -1826,13 +1886,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _hgl__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./hgl */ "./src/hgl.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "version", function() { return _hgl__WEBPACK_IMPORTED_MODULE_0__["version"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BUFFER_STATIC", function() { return _hgl__WEBPACK_IMPORTED_MODULE_0__["BUFFER_STATIC"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BUFFER_DYNAMIC", function() { return _hgl__WEBPACK_IMPORTED_MODULE_0__["BUFFER_DYNAMIC"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BUFFER_STREAM", function() { return _hgl__WEBPACK_IMPORTED_MODULE_0__["BUFFER_STREAM"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BUFFER_GPUDYNAMIC", function() { return _hgl__WEBPACK_IMPORTED_MODULE_0__["BUFFER_GPUDYNAMIC"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BUFFER", function() { return _hgl__WEBPACK_IMPORTED_MODULE_0__["BUFFER"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SHADERTAG_MATERIAL", function() { return _hgl__WEBPACK_IMPORTED_MODULE_0__["SHADERTAG_MATERIAL"]; });
 

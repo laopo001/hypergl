@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, July 28th 2018, 12:04:19 am
+ * Last Modified: Saturday, July 28th 2018, 12:54:01 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -47,7 +47,10 @@ const vertices = new Float32Array([
     0.5, -0.5, 0, 1, 0.4, 0.4
 ]);
 
-const buffer = new VertexBuffer(device, format, 9, HGL.BUFFER_STATIC, vertices.buffer);
+const buffer = new VertexBuffer(device, format, 9, HGL.BUFFER.STATIC, vertices.buffer);
 
-let a = new BasicMaterial();
-console.log(a);
+let m = new BasicMaterial();
+console.log(m);
+
+let s = device.programLib.getProgram('basic', m);
+console.log(s);
