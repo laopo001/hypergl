@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, July 26th 2018, 12:03:56 am
+ * Last Modified: Friday, July 27th 2018, 11:51:59 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -21,8 +21,8 @@ import * as fogExpPS from './shaders/fogExp.frag';
 import * as fogExp2PS from './shaders/fogExp2.frag';
 import * as fogNonePS from './shaders/fogNone.frag';
 import * as transformDeclVS from './shaders/transformDecl.vert';
-import * as transformSkinnedVS from './shaders/transformSkinned.vert';
 import * as transformVS from './shaders/transform.vert';
+// import * as transformVS from './shaders/transform.vert';
 import * as alphaTestPS from './shaders/alphaTest.frag';
 import * as packDepthPS from './shaders/packDepth.frag';
 
@@ -43,6 +43,9 @@ const attrib2Semantic = {
     vertex_boneIndices: HGl.SEMANTIC.BLENDINDICES,
     vertex_boneWeights: HGl.SEMANTIC.BLENDWEIGHT
 };
+
+
+const transformSkinnedVS = `#define SKIN\n${transformVS}`;
 export const shaderChunks = {
     base,
     fogLinearPS,
@@ -50,8 +53,8 @@ export const shaderChunks = {
     fogExp2PS,
     fogNonePS,
     transformDeclVS,
-    transformSkinnedVS,
     transformVS,
+    transformSkinnedVS,
     alphaTestPS,
     packDepthPS
 };

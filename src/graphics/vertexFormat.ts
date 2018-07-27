@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, July 15th 2018, 11:45:24 am
+ * Last Modified: Saturday, July 28th 2018, 12:01:25 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -51,7 +51,7 @@ _typeSize[HGL.DataType.FLOAT32] = 4;
 * ]);
 */
 export class VertexFormat {
-    size: number;
+    size: number = 0;
     hasUv0 = false;
     hasUv1 = false;
     hasColor = false;

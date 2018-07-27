@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, July 15th 2018, 11:53:39 am
+ * Last Modified: Saturday, July 28th 2018, 12:03:34 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -16,3 +16,4 @@ export * from './hgl';
 export * from './graphics/vertexBuffer';
 export * from './graphics/vertexFormat';
 export * from './application/application';
+export * from './materials/basic-material';
