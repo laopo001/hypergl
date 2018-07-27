@@ -6,9 +6,9 @@
  * @summary: short description for the file
  * -----
 <<<<<<< HEAD
- * Last Modified: Saturday, July 28th 2018, 2:03:38 am
+ * Last Modified: Saturday, July 28th 2018, 2:30:12 am
 =======
- * Last Modified: Saturday, July 28th 2018, 2:03:38 am
+ * Last Modified: Saturday, July 28th 2018, 2:30:12 am
 >>>>>>> a59a1a480c976e9f2165e74cf2fca136d87fc14f
  * Modified By: liaodh
  * -----
@@ -204,6 +204,20 @@ export class Shader {
             // #endif
 
             return retValue;
+        }
+    }
+    destroy() {
+        const device = this.device;
+        const idx = device.shaders.indexOf(this);
+        if (idx !== -1) {
+            device.shaders.splice(idx, 1);
+        }
+
+        if (this.program) {
+            const gl = device.gl;
+            gl.deleteProgram(this.program);
+            this.program = null;
+            this.device.removeShaderFromCache(this);
         }
     }
 }

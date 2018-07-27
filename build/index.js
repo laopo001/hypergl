@@ -384,7 +384,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, July 28th 2018, 1:56:24 am
+ * Last Modified: Saturday, July 28th 2018, 2:29:14 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -486,6 +486,9 @@ var GraphicsDevice = /** @class */ (function () {
             this.attributesInvalidated = true;
         }
         return true;
+    };
+    GraphicsDevice.prototype.removeShaderFromCache = function (shader) {
+        this.programLib.removeFromCache(shader);
     };
     return GraphicsDevice;
 }());
@@ -852,7 +855,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, July 27th 2018, 12:05:58 am
+ * Last Modified: Saturday, July 28th 2018, 2:22:42 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -1177,9 +1180,9 @@ __webpack_require__.r(__webpack_exports__);
  * @summary: short description for the file
  * -----
 <<<<<<< HEAD
- * Last Modified: Saturday, July 28th 2018, 2:03:38 am
+ * Last Modified: Saturday, July 28th 2018, 2:30:12 am
 =======
- * Last Modified: Saturday, July 28th 2018, 2:03:38 am
+ * Last Modified: Saturday, July 28th 2018, 2:30:12 am
 >>>>>>> a59a1a480c976e9f2165e74cf2fca136d87fc14f
  * Modified By: liaodh
  * -----
@@ -1327,6 +1330,19 @@ var Shader = /** @class */ (function () {
             this.device._shaderStats.compileTime += endTime - startTime;
             // #endif
             return retValue;
+        }
+    };
+    Shader.prototype.destroy = function () {
+        var device = this.device;
+        var idx = device.shaders.indexOf(this);
+        if (idx !== -1) {
+            device.shaders.splice(idx, 1);
+        }
+        if (this.program) {
+            var gl = device.gl;
+            gl.deleteProgram(this.program);
+            this.program = null;
+            this.device.removeShaderFromCache(this);
         }
     };
     return Shader;

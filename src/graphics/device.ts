@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, July 28th 2018, 1:56:24 am
+ * Last Modified: Saturday, July 28th 2018, 2:29:14 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -19,6 +19,7 @@ import { Shader } from './program/shader';
 type precision = 'highp' | 'mediump' | 'lowp';
 type version = 'webgl' | 'webgl2';
 export class GraphicsDevice {
+
     gl: WebGLRenderingContext;
     webgl2: boolean = false;
     shaders: Shader[] = [];
@@ -144,6 +145,9 @@ export class GraphicsDevice {
             this.attributesInvalidated = true;
         }
         return true;
+    }
+    removeShaderFromCache(shader) {
+        this.programLib.removeFromCache(shader);
     }
 }
 
