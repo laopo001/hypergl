@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, July 28th 2018, 12:55:52 am
+ * Last Modified: Saturday, July 28th 2018, 1:56:24 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -15,11 +15,14 @@
 import { ScopeSpace } from './program/scope-space';
 import { ProgramLibrary } from './program/program-library';
 import { generators } from './program/shader-help';
+import { Shader } from './program/shader';
 type precision = 'highp' | 'mediump' | 'lowp';
 type version = 'webgl' | 'webgl2';
 export class GraphicsDevice {
     gl: WebGLRenderingContext;
     webgl2: boolean = false;
+    shaders: Shader[] = [];
+    shader: Shader;
     buffers = [];
     vertexBuffers = [];
     vbOffsets = [];
@@ -64,6 +67,7 @@ export class GraphicsDevice {
     extCompressedTextureS3TC: any;
     programLib: ProgramLibrary;
     boundBuffer: any;
+    _shaderSwitchesPerFrame = 0;
     constructor(private canvas: HTMLCanvasElement) {
         this.gl = canvas.getContext('webgl');
         this.scope = new ScopeSpace('Device');
@@ -122,6 +126,24 @@ export class GraphicsDevice {
     }
     getBoneLimit() {
         return this.boneLimit;
+    }
+    setShader(shader: Shader) {
+        if (shader !== this.shader) {
+            this.shader = shader;
+
+            if (!shader.ready) {
+                if (!shader.link()) {
+                    return false;
+                }
+            }
+
+            // Set the active shader
+            this._shaderSwitchesPerFrame++;
+            this.gl.useProgram(shader.program);
+
+            this.attributesInvalidated = true;
+        }
+        return true;
     }
 }
 

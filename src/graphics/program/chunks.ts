@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, July 27th 2018, 11:51:59 pm
+ * Last Modified: Saturday, July 28th 2018, 1:44:10 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -15,6 +15,7 @@
 import * as  HGl from '../../hgl';
 import { Shader } from './shader';
 import { programlib } from './shader-help';
+import { GraphicsDevice } from '../device';
 import * as base from './shaders/base.vert';
 import * as fogLinearPS from './shaders/fogLinear.frag';
 import * as fogExpPS from './shaders/fogExp.frag';
@@ -25,6 +26,9 @@ import * as transformVS from './shaders/transform.vert';
 // import * as transformVS from './shaders/transform.vert';
 import * as alphaTestPS from './shaders/alphaTest.frag';
 import * as packDepthPS from './shaders/packDepth.frag';
+import * as gles3VS from './shaders/gles3.vert';
+import * as gles3PS from './shaders/gles3.frag';
+
 
 
 const attrib2Semantic = {
@@ -56,10 +60,12 @@ export const shaderChunks = {
     transformVS,
     transformSkinnedVS,
     alphaTestPS,
-    packDepthPS
+    packDepthPS,
+    gles3VS,
+    gles3PS
 };
 
-export function collectAttribs(vsCode) {
+export function collectAttribs(vsCode: string) {
     let attribs = {};
     let attrs = 0;
 
@@ -84,14 +90,14 @@ export function collectAttribs(vsCode) {
 }
 
 
-export function createShader(device, vsName, psName, useTransformFeedback) {
+export function createShader(device: GraphicsDevice, vsName, psName, useTransformFeedback) {
     let vsCode = shaderChunks[vsName];
     let psCode = programlib.precisionCode(device) + '\n' + shaderChunks[psName];
     let attribs = collectAttribs(vsCode);
 
     if (device.webgl2) {
-        vsCode = programlib.versionCode(device) + this.gles3VS + vsCode;
-        psCode = programlib.versionCode(device) + this.gles3PS + psCode;
+        vsCode = programlib.versionCode(device) + shaderChunks.gles3VS + vsCode;
+        psCode = programlib.versionCode(device) + shaderChunks.gles3PS + psCode;
     }
 
     return new Shader(device, {
@@ -102,7 +108,7 @@ export function createShader(device, vsName, psName, useTransformFeedback) {
     });
 }
 
-export function createShaderFromCode(device, vsCode, psCode, uName, useTransformFeedback) {
+export function createShaderFromCode(device: GraphicsDevice, vsCode, psCode, uName, useTransformFeedback) {
     let shaderCache = device.programLib._cache;
     let cached = shaderCache[uName];
     if (cached !== undefined) return cached;
@@ -113,9 +119,9 @@ export function createShaderFromCode(device, vsCode, psCode, uName, useTransform
 
     if (device.webgl2) {
         // tslint:disable-next-line:no-parameter-reassignment
-        vsCode = programlib.versionCode(device) + this.gles3VS + vsCode;
+        vsCode = programlib.versionCode(device) + shaderChunks.gles3VS + vsCode;
         // tslint:disable-next-line:no-parameter-reassignment
-        psCode = programlib.versionCode(device) + this.gles3PS + psCode;
+        psCode = programlib.versionCode(device) + shaderChunks.gles3PS + psCode;
     }
 
     shaderCache[uName] = new Shader(device, {

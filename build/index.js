@@ -384,7 +384,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, July 28th 2018, 12:55:52 am
+ * Last Modified: Saturday, July 28th 2018, 1:56:24 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -396,6 +396,7 @@ var GraphicsDevice = /** @class */ (function () {
     function GraphicsDevice(canvas) {
         this.canvas = canvas;
         this.webgl2 = false;
+        this.shaders = [];
         this.buffers = [];
         this.vertexBuffers = [];
         this.vbOffsets = [];
@@ -420,6 +421,7 @@ var GraphicsDevice = /** @class */ (function () {
             ib: 0
         };
         this.boneLimit = 128;
+        this._shaderSwitchesPerFrame = 0;
         this.gl = canvas.getContext('webgl');
         this.scope = new _program_scope_space__WEBPACK_IMPORTED_MODULE_0__["ScopeSpace"]('Device');
         this.programLib = new _program_program_library__WEBPACK_IMPORTED_MODULE_1__["ProgramLibrary"](this);
@@ -469,6 +471,21 @@ var GraphicsDevice = /** @class */ (function () {
     };
     GraphicsDevice.prototype.getBoneLimit = function () {
         return this.boneLimit;
+    };
+    GraphicsDevice.prototype.setShader = function (shader) {
+        if (shader !== this.shader) {
+            this.shader = shader;
+            if (!shader.ready) {
+                if (!shader.link()) {
+                    return false;
+                }
+            }
+            // Set the active shader
+            this._shaderSwitchesPerFrame++;
+            this.gl.useProgram(shader.program);
+            this.attributesInvalidated = true;
+        }
+        return true;
     };
     return GraphicsDevice;
 }());
@@ -691,6 +708,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shaders_alphaTest_frag__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_shaders_alphaTest_frag__WEBPACK_IMPORTED_MODULE_10__);
 /* harmony import */ var _shaders_packDepth_frag__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./shaders/packDepth.frag */ "./src/graphics/program/shaders/packDepth.frag");
 /* harmony import */ var _shaders_packDepth_frag__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_shaders_packDepth_frag__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var _shaders_gles3_vert__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./shaders/gles3.vert */ "./src/graphics/program/shaders/gles3.vert");
+/* harmony import */ var _shaders_gles3_vert__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_shaders_gles3_vert__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var _shaders_gles3_frag__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./shaders/gles3.frag */ "./src/graphics/program/shaders/gles3.frag");
+/* harmony import */ var _shaders_gles3_frag__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(_shaders_gles3_frag__WEBPACK_IMPORTED_MODULE_13__);
 /**
  * File: c:\Users\35327\Githubs\hypergl\src\graphics\program\shaders\chunks.ts
  * Project: c:\Users\35327\Githubs\hypergl
@@ -698,7 +719,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, July 27th 2018, 11:51:59 pm
+ * Last Modified: Saturday, July 28th 2018, 1:44:10 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -715,6 +736,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 // import * as transformVS from './shaders/transform.vert';
+
+
 
 
 var attrib2Semantic = {
@@ -744,7 +767,9 @@ var shaderChunks = {
     transformVS: _shaders_transform_vert__WEBPACK_IMPORTED_MODULE_9__,
     transformSkinnedVS: transformSkinnedVS,
     alphaTestPS: _shaders_alphaTest_frag__WEBPACK_IMPORTED_MODULE_10__,
-    packDepthPS: _shaders_packDepth_frag__WEBPACK_IMPORTED_MODULE_11__
+    packDepthPS: _shaders_packDepth_frag__WEBPACK_IMPORTED_MODULE_11__,
+    gles3VS: _shaders_gles3_vert__WEBPACK_IMPORTED_MODULE_12__,
+    gles3PS: _shaders_gles3_frag__WEBPACK_IMPORTED_MODULE_13__
 };
 function collectAttribs(vsCode) {
     var attribs = {};
@@ -773,8 +798,8 @@ function createShader(device, vsName, psName, useTransformFeedback) {
     var psCode = _shader_help__WEBPACK_IMPORTED_MODULE_2__["programlib"].precisionCode(device) + '\n' + shaderChunks[psName];
     var attribs = collectAttribs(vsCode);
     if (device.webgl2) {
-        vsCode = _shader_help__WEBPACK_IMPORTED_MODULE_2__["programlib"].versionCode(device) + this.gles3VS + vsCode;
-        psCode = _shader_help__WEBPACK_IMPORTED_MODULE_2__["programlib"].versionCode(device) + this.gles3PS + psCode;
+        vsCode = _shader_help__WEBPACK_IMPORTED_MODULE_2__["programlib"].versionCode(device) + shaderChunks.gles3VS + vsCode;
+        psCode = _shader_help__WEBPACK_IMPORTED_MODULE_2__["programlib"].versionCode(device) + shaderChunks.gles3PS + psCode;
     }
     return new _shader__WEBPACK_IMPORTED_MODULE_1__["Shader"](device, {
         attributes: attribs,
@@ -793,9 +818,9 @@ function createShaderFromCode(device, vsCode, psCode, uName, useTransformFeedbac
     var attribs = collectAttribs(vsCode);
     if (device.webgl2) {
         // tslint:disable-next-line:no-parameter-reassignment
-        vsCode = _shader_help__WEBPACK_IMPORTED_MODULE_2__["programlib"].versionCode(device) + this.gles3VS + vsCode;
+        vsCode = _shader_help__WEBPACK_IMPORTED_MODULE_2__["programlib"].versionCode(device) + shaderChunks.gles3VS + vsCode;
         // tslint:disable-next-line:no-parameter-reassignment
-        psCode = _shader_help__WEBPACK_IMPORTED_MODULE_2__["programlib"].versionCode(device) + this.gles3PS + psCode;
+        psCode = _shader_help__WEBPACK_IMPORTED_MODULE_2__["programlib"].versionCode(device) + shaderChunks.gles3PS + psCode;
     }
     shaderCache[uName] = new _shader__WEBPACK_IMPORTED_MODULE_1__["Shader"](device, {
         attributes: attribs,
@@ -1152,9 +1177,9 @@ __webpack_require__.r(__webpack_exports__);
  * @summary: short description for the file
  * -----
 <<<<<<< HEAD
- * Last Modified: Friday, July 27th 2018, 1:18:19 am
+ * Last Modified: Saturday, July 28th 2018, 2:03:38 am
 =======
- * Last Modified: Wednesday, July 25th 2018, 12:24:42 am
+ * Last Modified: Saturday, July 28th 2018, 2:03:38 am
 >>>>>>> a59a1a480c976e9f2165e74cf2fca136d87fc14f
  * Modified By: liaodh
  * -----
@@ -1186,8 +1211,16 @@ var Shader = /** @class */ (function () {
     function Shader(device, definition) {
         this.device = device;
         this.definition = definition;
+        this._refCount = 0;
+        this.device = device;
+        this.definition = definition;
+        // Used for shader variants (see pc.Material)
+        // this._refCount = 0;
+        this.compile();
+        this.device.shaders.push(this);
     }
     Shader.prototype.compile = function () {
+        this.ready = false;
         var gl = this.device.gl;
         var startTime = new Date().getTime();
         this.vshader = createShader(gl, gl.VERTEX_SHADER, this.definition.vshader);
@@ -1288,7 +1321,7 @@ var Shader = /** @class */ (function () {
             //         this.uniforms.push(new pc.ShaderInput(this.device, info.name, _typeToPc[info.type], location));
             //     }
             // }
-            // this.ready = true;
+            this.ready = true;
             // #ifdef PROFILER
             var endTime = new Date().getTime();
             this.device._shaderStats.compileTime += endTime - startTime;
@@ -1366,6 +1399,28 @@ module.exports = "uniform vec3 fog_color;\r\nuniform float fog_start;\r\nuniform
 /***/ (function(module, exports) {
 
 module.exports = "vec3 addFog(vec3 color) {\r\n    return color;\r\n}\r\n\r\n\r\n"
+
+/***/ }),
+
+/***/ "./src/graphics/program/shaders/gles3.frag":
+/*!*************************************************!*\
+  !*** ./src/graphics/program/shaders/gles3.frag ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "#define varying in\r\nout highp vec4 pc_fragColor;\r\n#define gl_FragColor pc_fragColor\r\n#define texture2D texture\r\n#define textureCube texture\r\n#define texture2DProj textureProj\r\n#define texture2DLodEXT textureLod\r\n#define texture2DProjLodEXT textureProjLod\r\n#define textureCubeLodEXT textureLod\r\n#define texture2DGradEXT textureGrad\r\n#define texture2DProjGradEXT textureProjGrad\r\n#define textureCubeGradEXT textureGrad\r\n#define GL2\r\n"
+
+/***/ }),
+
+/***/ "./src/graphics/program/shaders/gles3.vert":
+/*!*************************************************!*\
+  !*** ./src/graphics/program/shaders/gles3.vert ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "#define attribute in\r\n#define varying out\r\n#define texture2D texture\r\n#define GL2\r\n#define VERTEXSHADER\r\n"
 
 /***/ }),
 
