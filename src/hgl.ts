@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, July 28th 2018, 6:29:15 pm
+ * Last Modified: Saturday, July 28th 2018, 8:34:00 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -145,5 +145,42 @@ export enum CURVE {
     SMOOTHSTEP = 1,
     CATMULL = 2,
     CARDINAL = 3
+}
+
+export enum MASK {
+    DYNAMIC = 1,
+    BAKED = 2,
+    LIGHTMAP = 4
+}
+
+export enum SHADERDEF {
+    NOSHADOW = 1,
+    SKIN = 2,
+    UV0 = 4,
+    UV1 = 8,
+    VCOLOR = 16,
+    INSTANCING = 32,
+    LM = 64,
+    DIRLM = 128,
+    SCREENSPACE = 256
+}
+
+export enum LAYER {
+    HUD = 0,
+    GIZMO = 1,
+    FX = 2,
+    WORLD = 15
+}
+
+export enum RENDERSTYLE {
+    SOLID = 0,
+    WIREFRAME = 1,
+    POINTS = 2
+}
+
+
+export enum SORTKEY {
+    FORWARD = 0,
+    DEPTH = 1,
 }
 

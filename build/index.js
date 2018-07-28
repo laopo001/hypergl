@@ -1788,7 +1788,7 @@ var VertexFormat = /** @class */ (function () {
 /*!********************!*\
   !*** ./src/hgl.ts ***!
   \********************/
-/*! exports provided: version, BUFFER, SHADERTAG_MATERIAL, DataType, SEMANTIC, UNIFORMTYPE, SHADER, BLENDMODE, BLENDEQUATION, CULLFACE, BLEND, CURVE */
+/*! exports provided: version, BUFFER, SHADERTAG_MATERIAL, DataType, SEMANTIC, UNIFORMTYPE, SHADER, BLENDMODE, BLENDEQUATION, CULLFACE, BLEND, CURVE, MASK, SHADERDEF, LAYER, RENDERSTYLE, SORTKEY */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1805,6 +1805,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CULLFACE", function() { return CULLFACE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BLEND", function() { return BLEND; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CURVE", function() { return CURVE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MASK", function() { return MASK; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SHADERDEF", function() { return SHADERDEF; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LAYER", function() { return LAYER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RENDERSTYLE", function() { return RENDERSTYLE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SORTKEY", function() { return SORTKEY; });
 /**
  * File: c:\Users\35327\Documents\Githubs\hypergl\src\scene\hgl.ts
  * Project: c:\Users\35327\Documents\Githubs\hypergl
@@ -1812,7 +1817,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, July 28th 2018, 6:29:15 pm
+ * Last Modified: Saturday, July 28th 2018, 8:34:00 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -1949,6 +1954,42 @@ var CURVE;
     CURVE[CURVE["CATMULL"] = 2] = "CATMULL";
     CURVE[CURVE["CARDINAL"] = 3] = "CARDINAL";
 })(CURVE || (CURVE = {}));
+var MASK;
+(function (MASK) {
+    MASK[MASK["DYNAMIC"] = 1] = "DYNAMIC";
+    MASK[MASK["BAKED"] = 2] = "BAKED";
+    MASK[MASK["LIGHTMAP"] = 4] = "LIGHTMAP";
+})(MASK || (MASK = {}));
+var SHADERDEF;
+(function (SHADERDEF) {
+    SHADERDEF[SHADERDEF["NOSHADOW"] = 1] = "NOSHADOW";
+    SHADERDEF[SHADERDEF["SKIN"] = 2] = "SKIN";
+    SHADERDEF[SHADERDEF["UV0"] = 4] = "UV0";
+    SHADERDEF[SHADERDEF["UV1"] = 8] = "UV1";
+    SHADERDEF[SHADERDEF["VCOLOR"] = 16] = "VCOLOR";
+    SHADERDEF[SHADERDEF["INSTANCING"] = 32] = "INSTANCING";
+    SHADERDEF[SHADERDEF["LM"] = 64] = "LM";
+    SHADERDEF[SHADERDEF["DIRLM"] = 128] = "DIRLM";
+    SHADERDEF[SHADERDEF["SCREENSPACE"] = 256] = "SCREENSPACE";
+})(SHADERDEF || (SHADERDEF = {}));
+var LAYER;
+(function (LAYER) {
+    LAYER[LAYER["HUD"] = 0] = "HUD";
+    LAYER[LAYER["GIZMO"] = 1] = "GIZMO";
+    LAYER[LAYER["FX"] = 2] = "FX";
+    LAYER[LAYER["WORLD"] = 15] = "WORLD";
+})(LAYER || (LAYER = {}));
+var RENDERSTYLE;
+(function (RENDERSTYLE) {
+    RENDERSTYLE[RENDERSTYLE["SOLID"] = 0] = "SOLID";
+    RENDERSTYLE[RENDERSTYLE["WIREFRAME"] = 1] = "WIREFRAME";
+    RENDERSTYLE[RENDERSTYLE["POINTS"] = 2] = "POINTS";
+})(RENDERSTYLE || (RENDERSTYLE = {}));
+var SORTKEY;
+(function (SORTKEY) {
+    SORTKEY[SORTKEY["FORWARD"] = 0] = "FORWARD";
+    SORTKEY[SORTKEY["DEPTH"] = 1] = "DEPTH";
+})(SORTKEY || (SORTKEY = {}));
 
 
 /***/ }),
@@ -1986,6 +2027,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BLEND", function() { return _hgl__WEBPACK_IMPORTED_MODULE_0__["BLEND"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CURVE", function() { return _hgl__WEBPACK_IMPORTED_MODULE_0__["CURVE"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MASK", function() { return _hgl__WEBPACK_IMPORTED_MODULE_0__["MASK"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SHADERDEF", function() { return _hgl__WEBPACK_IMPORTED_MODULE_0__["SHADERDEF"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LAYER", function() { return _hgl__WEBPACK_IMPORTED_MODULE_0__["LAYER"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RENDERSTYLE", function() { return _hgl__WEBPACK_IMPORTED_MODULE_0__["RENDERSTYLE"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SORTKEY", function() { return _hgl__WEBPACK_IMPORTED_MODULE_0__["SORTKEY"]; });
 
 /* harmony import */ var _graphics_vertexBuffer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphics/vertexBuffer */ "./src/graphics/vertexBuffer.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "VertexBuffer", function() { return _graphics_vertexBuffer__WEBPACK_IMPORTED_MODULE_1__["VertexBuffer"]; });
