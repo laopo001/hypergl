@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, July 28th 2018, 2:29:14 am
+ * Last Modified: Saturday, July 28th 2018, 6:01:15 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -16,6 +16,7 @@ import { ScopeSpace } from './program/scope-space';
 import { ProgramLibrary } from './program/program-library';
 import { generators } from './program/shader-help';
 import { Shader } from './program/shader';
+import { VertexBuffer } from './vertexBuffer';
 type precision = 'highp' | 'mediump' | 'lowp';
 type version = 'webgl' | 'webgl2';
 export class GraphicsDevice {
@@ -24,7 +25,7 @@ export class GraphicsDevice {
     webgl2: boolean = false;
     shaders: Shader[] = [];
     shader: Shader;
-    buffers = [];
+    buffers: VertexBuffer[] = [];
     vertexBuffers = [];
     vbOffsets = [];
     attributesInvalidated = true;

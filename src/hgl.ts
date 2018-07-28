@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, July 28th 2018, 12:53:11 am
+ * Last Modified: Saturday, July 28th 2018, 6:29:15 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -138,5 +138,12 @@ export enum BLEND {
     SCREEN = 8,
     MIN = 9,
     MAX = 10
+}
+
+export enum CURVE {
+    LINEAR = 0,
+    SMOOTHSTEP = 1,
+    CATMULL = 2,
+    CARDINAL = 3
 }
 

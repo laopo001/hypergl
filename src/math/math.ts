@@ -1,17 +1,3 @@
-/**
- * File: c:\Users\35327\Documents\Githubs\hypergl\src\math\math.ts
- * Project: c:\Users\35327\Documents\Githubs\hypergl
- * Created Date: Wednesday, July 11th 2018, 9:13:35 pm
- * @author: liaodh
- * @summary: short description for the file
- * -----
- * Last Modified: Friday, July 27th 2018, 1:11:25 am
- * Modified By: liaodh
- * -----
- * Copyright (c) 2018 jiguang
- */
-
-
 /* tslint:disable */
 export const generateUUID = (function _() {
 
@@ -53,7 +39,7 @@ export const generateUUID = (function _() {
 
 
 
-export function  intToBytes24(i) {
+export function intToBytes24(i) {
     let r, g, b;
 
     r = (i >> 16) & 0xff;
@@ -75,11 +61,94 @@ export function intToBytes32(i) {
 }
 
 
-export function  bytesToInt24(r, g, b) {
+export function bytesToInt24(r, g, b) {
     if (r.length) {
         b = r[2];
         g = r[1];
         r = r[0];
     }
     return ((r << 16) | (g << 8) | b);
+}
+
+export function bytesToInt32(r, g, b, a) {
+    if (r.length) {
+        a = r[3];
+        b = r[2];
+        g = r[1];
+        r = r[0];
+    }
+    // Why ((r << 24)>>>32)?
+    // << operator uses signed 32 bit numbers, so 128<<24 is negative.
+    // >>> used unsigned so >>>32 converts back to an unsigned.
+    // See http://stackoverflow.com/questions/1908492/unsigned-integer-in-javascript
+    return ((r << 24) | (g << 16) | (b << 8) | a) >>> 32;
+}
+
+export const DEG_TO_RAD = Math.PI / 180;
+export const RAD_TO_DEG = 180 / Math.PI;
+export const INV_LOG2 = 1 / Math.log(2);
+
+export function clamp(value, min, max) {
+    if (value >= max) return max;
+    if (value <= min) return min;
+    return value;
+}
+
+export function lerp(a, b, alpha) {
+    return a + (b - a) * clamp(alpha, 0, 1);
+}
+
+export function lerpAngle(a, b, alpha) {
+    if (b - a > 180) {
+        b -= 360;
+    }
+    if (b - a < -180) {
+        b += 360;
+    }
+    return lerp(a, b, clamp(alpha, 0, 1));
+}
+
+export function powerOfTwo(x) {
+    return ((x !== 0) && !(x & (x - 1)));
+}
+
+export function nextPowerOfTwo(val) {
+    val--;
+    val = (val >> 1) | val;
+    val = (val >> 2) | val;
+    val = (val >> 4) | val;
+    val = (val >> 8) | val;
+    val = (val >> 16) | val;
+    val++;
+    return val;
+}
+
+export function random(min, max) {
+    const diff = max - min;
+    return Math.random() * diff + min;
+}
+
+export function smoothstep(min, max, x) {
+    if (x <= min) return 0;
+    if (x >= max) return 1;
+
+    x = (x - min) / (max - min);
+
+    return x * x * (3 - 2 * x);
+}
+
+export function smootherstep(min, max, x) {
+    if (x <= min) return 0;
+    if (x >= max) return 1;
+
+    x = (x - min) / (max - min);
+
+    return x * x * x * (x * (x * 6 - 15) + 10);
+}
+
+export const intToBytes = intToBytes32;
+export const bytesToInt = bytesToInt32;
+
+if (!Math.log2) {
+    Math.log2 = x => Math.log(x) * INV_LOG2;
 }

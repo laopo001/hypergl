@@ -384,7 +384,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, July 28th 2018, 2:29:14 am
+ * Last Modified: Saturday, July 28th 2018, 6:01:15 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -1788,7 +1788,7 @@ var VertexFormat = /** @class */ (function () {
 /*!********************!*\
   !*** ./src/hgl.ts ***!
   \********************/
-/*! exports provided: version, BUFFER, SHADERTAG_MATERIAL, DataType, SEMANTIC, UNIFORMTYPE, SHADER, BLENDMODE, BLENDEQUATION, CULLFACE, BLEND */
+/*! exports provided: version, BUFFER, SHADERTAG_MATERIAL, DataType, SEMANTIC, UNIFORMTYPE, SHADER, BLENDMODE, BLENDEQUATION, CULLFACE, BLEND, CURVE */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1804,6 +1804,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BLENDEQUATION", function() { return BLENDEQUATION; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CULLFACE", function() { return CULLFACE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BLEND", function() { return BLEND; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CURVE", function() { return CURVE; });
 /**
  * File: c:\Users\35327\Documents\Githubs\hypergl\src\scene\hgl.ts
  * Project: c:\Users\35327\Documents\Githubs\hypergl
@@ -1811,7 +1812,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, July 28th 2018, 12:53:11 am
+ * Last Modified: Saturday, July 28th 2018, 6:29:15 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -1941,6 +1942,13 @@ var BLEND;
     BLEND[BLEND["MIN"] = 9] = "MIN";
     BLEND[BLEND["MAX"] = 10] = "MAX";
 })(BLEND || (BLEND = {}));
+var CURVE;
+(function (CURVE) {
+    CURVE[CURVE["LINEAR"] = 0] = "LINEAR";
+    CURVE[CURVE["SMOOTHSTEP"] = 1] = "SMOOTHSTEP";
+    CURVE[CURVE["CATMULL"] = 2] = "CATMULL";
+    CURVE[CURVE["CARDINAL"] = 3] = "CARDINAL";
+})(CURVE || (CURVE = {}));
 
 
 /***/ }),
@@ -1949,7 +1957,7 @@ var BLEND;
 /*!**********************!*\
   !*** ./src/index.ts ***!
   \**********************/
-/*! exports provided: version, BUFFER_STATIC, BUFFER_DYNAMIC, BUFFER_STREAM, BUFFER_GPUDYNAMIC, SHADERTAG_MATERIAL, DataType, SEMANTIC, UNIFORMTYPE, SHADER, BLENDMODE, BLENDEQUATION, CULLFACE, BLEND, VertexBuffer, VertexFormat, Application, BasicMaterial */
+/*! exports provided: version, BUFFER, SHADERTAG_MATERIAL, DataType, SEMANTIC, UNIFORMTYPE, SHADER, BLENDMODE, BLENDEQUATION, CULLFACE, BLEND, CURVE, VertexBuffer, VertexFormat, Application, BasicMaterial */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1976,6 +1984,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CULLFACE", function() { return _hgl__WEBPACK_IMPORTED_MODULE_0__["CULLFACE"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BLEND", function() { return _hgl__WEBPACK_IMPORTED_MODULE_0__["BLEND"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CURVE", function() { return _hgl__WEBPACK_IMPORTED_MODULE_0__["CURVE"]; });
 
 /* harmony import */ var _graphics_vertexBuffer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphics/vertexBuffer */ "./src/graphics/vertexBuffer.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "VertexBuffer", function() { return _graphics_vertexBuffer__WEBPACK_IMPORTED_MODULE_1__["VertexBuffer"]; });
@@ -2510,7 +2520,7 @@ var Material = /** @class */ (function () {
 /*!**************************!*\
   !*** ./src/math/math.ts ***!
   \**************************/
-/*! exports provided: generateUUID, intToBytes24, intToBytes32, bytesToInt24 */
+/*! exports provided: generateUUID, intToBytes24, intToBytes32, bytesToInt24, bytesToInt32, DEG_TO_RAD, RAD_TO_DEG, INV_LOG2, clamp, lerp, lerpAngle, powerOfTwo, nextPowerOfTwo, random, smoothstep, smootherstep, intToBytes, bytesToInt */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2519,18 +2529,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "intToBytes24", function() { return intToBytes24; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "intToBytes32", function() { return intToBytes32; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bytesToInt24", function() { return bytesToInt24; });
-/**
- * File: c:\Users\35327\Documents\Githubs\hypergl\src\math\math.ts
- * Project: c:\Users\35327\Documents\Githubs\hypergl
- * Created Date: Wednesday, July 11th 2018, 9:13:35 pm
- * @author: liaodh
- * @summary: short description for the file
- * -----
- * Last Modified: Friday, July 27th 2018, 1:11:25 am
- * Modified By: liaodh
- * -----
- * Copyright (c) 2018 jiguang
- */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bytesToInt32", function() { return bytesToInt32; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DEG_TO_RAD", function() { return DEG_TO_RAD; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RAD_TO_DEG", function() { return RAD_TO_DEG; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "INV_LOG2", function() { return INV_LOG2; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "clamp", function() { return clamp; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "lerp", function() { return lerp; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "lerpAngle", function() { return lerpAngle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "powerOfTwo", function() { return powerOfTwo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "nextPowerOfTwo", function() { return nextPowerOfTwo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "random", function() { return random; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "smoothstep", function() { return smoothstep; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "smootherstep", function() { return smootherstep; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "intToBytes", function() { return intToBytes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bytesToInt", function() { return bytesToInt; });
 /* tslint:disable */
 var generateUUID = (function _() {
     // http://www.broofa.com/Tools/Math.uuid.htm
@@ -2580,6 +2592,79 @@ function bytesToInt24(r, g, b) {
         r = r[0];
     }
     return ((r << 16) | (g << 8) | b);
+}
+function bytesToInt32(r, g, b, a) {
+    if (r.length) {
+        a = r[3];
+        b = r[2];
+        g = r[1];
+        r = r[0];
+    }
+    // Why ((r << 24)>>>32)?
+    // << operator uses signed 32 bit numbers, so 128<<24 is negative.
+    // >>> used unsigned so >>>32 converts back to an unsigned.
+    // See http://stackoverflow.com/questions/1908492/unsigned-integer-in-javascript
+    return ((r << 24) | (g << 16) | (b << 8) | a) >>> 32;
+}
+var DEG_TO_RAD = Math.PI / 180;
+var RAD_TO_DEG = 180 / Math.PI;
+var INV_LOG2 = 1 / Math.log(2);
+function clamp(value, min, max) {
+    if (value >= max)
+        return max;
+    if (value <= min)
+        return min;
+    return value;
+}
+function lerp(a, b, alpha) {
+    return a + (b - a) * clamp(alpha, 0, 1);
+}
+function lerpAngle(a, b, alpha) {
+    if (b - a > 180) {
+        b -= 360;
+    }
+    if (b - a < -180) {
+        b += 360;
+    }
+    return lerp(a, b, clamp(alpha, 0, 1));
+}
+function powerOfTwo(x) {
+    return ((x !== 0) && !(x & (x - 1)));
+}
+function nextPowerOfTwo(val) {
+    val--;
+    val = (val >> 1) | val;
+    val = (val >> 2) | val;
+    val = (val >> 4) | val;
+    val = (val >> 8) | val;
+    val = (val >> 16) | val;
+    val++;
+    return val;
+}
+function random(min, max) {
+    var diff = max - min;
+    return Math.random() * diff + min;
+}
+function smoothstep(min, max, x) {
+    if (x <= min)
+        return 0;
+    if (x >= max)
+        return 1;
+    x = (x - min) / (max - min);
+    return x * x * (3 - 2 * x);
+}
+function smootherstep(min, max, x) {
+    if (x <= min)
+        return 0;
+    if (x >= max)
+        return 1;
+    x = (x - min) / (max - min);
+    return x * x * x * (x * (x * 6 - 15) + 10);
+}
+var intToBytes = intToBytes32;
+var bytesToInt = bytesToInt32;
+if (!Math.log2) {
+    Math.log2 = function (x) { return Math.log(x) * INV_LOG2; };
 }
 
 
