@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, July 28th 2018, 12:01:25 am
+ * Last Modified: Sunday, July 29th 2018, 8:10:25 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -18,7 +18,7 @@ export interface VertexType {
     semantic: HGL.SEMANTIC,
     length: 1 | 2 | 3 | 4;
     dataType: HGL.DataType;
-    normalize: boolean;
+    normalize?: boolean;
 }
 
 export interface VertexAttribData extends VertexType {

@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, July 28th 2018, 12:54:14 am
+ * Last Modified: Sunday, July 29th 2018, 8:38:32 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -21,7 +21,7 @@ export class VertexBuffer {
     bufferId: WebGLBuffer;
     storage: ArrayBuffer;
     numBytes: number;
-    constructor(private device: GraphicsDevice, private format: VertexFormat, private numVertices: number, private usage: number = HGL.BUFFER.STATIC, private initialData?: ArrayBuffer) {
+    constructor(public device: GraphicsDevice, public format: VertexFormat, public numVertices: number, private usage: number = HGL.BUFFER.STATIC, private initialData?: ArrayBuffer) {
         this.numBytes = format.size * numVertices;
         const gl = device.gl;
         if (initialData) {

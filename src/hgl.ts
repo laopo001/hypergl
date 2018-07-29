@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, July 29th 2018, 4:12:32 pm
+ * Last Modified: Sunday, July 29th 2018, 8:03:22 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -182,3 +182,20 @@ export enum SORTKEY {
     FORWARD = 0,
     DEPTH = 1,
 }
+
+export enum PRIMITIVE {
+    POINTS = 0,
+    LINES = 1,
+    LINELOOP = 2,
+    LINESTRIP = 3,
+    TRIANGLES = 4,
+    TRISTRIP = 5,
+    TRIFAN = 6,
+}
+
+export enum INDEXFORMAT {
+    UINT8 = 0,
+    UINT16 = 1,
+    UINT32 = 2
+}
+

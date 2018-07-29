@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, July 29th 2018, 2:45:19 am
+ * Last Modified: Sunday, July 29th 2018, 8:52:48 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -16,20 +16,25 @@ import { BLEND, MASK, SHADERDEF, LAYER, RENDERSTYLE, SORTKEY, SHADER, BUFFER, SE
 import { BoundingBox } from '../shape/bounding-box';
 import { Material } from '../materials/material';
 import { Vec3 } from '../math/vec3';
+import { GraphNode } from '../scene/graph-node';
+import { IndexBuffer } from '../graphics/indexBuffer';
+import { VertexBuffer } from '../graphics/vertexBuffer';
 let id = 0;
 const _tmpAabb = new BoundingBox();
 
 
-class Mesh {
+export class Mesh {
     _refCount = 0;
     id;
-    vertexBuffer = null;
-    indexBuffer = [null];
+    vertexBuffer: VertexBuffer = null;
+    indexBuffer: IndexBuffer[] = [null];
     primitive = [{
         type: 0,
         base: 0,
-        count: 0
+        count: 0,
+        indexed: undefined
     }];
+    boneUsed: boolean[];
     skin = null;
     morph = null;
     _aabb = new BoundingBox();
@@ -44,11 +49,11 @@ class Mesh {
         this.boneAabb = null;
     }
 
-    get aabb() {
+    get aabb(): BoundingBox {
         return this.morph ? this.morph.aabb : this._aabb;
     }
 
-    set aabb(aabb) {
+    set aabb(aabb: BoundingBox) {
         if (this.morph) {
             this._aabb = this.morph._baseAabb = aabb;
             this.morph._calculateAabb();
@@ -59,7 +64,7 @@ class Mesh {
 }
 
 
-class MeshInstance extends Material {
+export class MeshInstance extends Material {
     _key = [0, 0];
     _shader = [null, null, null];
 
@@ -67,8 +72,8 @@ class MeshInstance extends Material {
     _staticLightList = null;
     _staticSource = null;
 
-    node;           // The node that defines the transform of the mesh instance
-    _mesh;
+    node: GraphNode;           // The node that defines the transform of the mesh instance
+    _mesh: Mesh;
     _shaderDefs;
     _material;
     _lightHash = 0;
@@ -96,11 +101,12 @@ class MeshInstance extends Material {
     stencilFront = null;
     stencilBack = null;
     _aabb
-    constructor(node, mesh, material) {
+    constructor(node: GraphNode, mesh: Mesh, material: Material) {
         super();
         mesh._refCount++;
         this.material = material;   // The material with which to render this instance
-
+        this.node = node;
+        this._mesh = mesh;
         this._shaderDefs = MASK.DYNAMIC << 16; // 2 byte toggles, 2 bytes light mask; Default value is no toggles and mask = pc.MASK_DYNAMIC
         this._shaderDefs |= mesh.vertexBuffer.format.hasUv0 ? SHADERDEF.UV0 : 0;
         this._shaderDefs |= mesh.vertexBuffer.format.hasUv1 ? SHADERDEF.UV1 : 0;
@@ -145,11 +151,11 @@ class MeshInstance extends Material {
                 let offsetP, offsetI, offsetW;
                 let j, k, l;
                 for (i = 0; i < elems.length; i++) {
-                    if (elems[i].name === SEMANTIC.POSITION) {
+                    if (elems[i].semantic === SEMANTIC.POSITION) {
                         offsetP = elems[i].offset;
-                    } else if (elems[i].name === SEMANTIC.BLENDINDICES) {
+                    } else if (elems[i].semantic === SEMANTIC.BLENDINDICES) {
                         offsetI = elems[i].offset;
-                    } else if (elems[i].name === SEMANTIC.BLENDWEIGHT) {
+                    } else if (elems[i].semantic === SEMANTIC.BLENDWEIGHT) {
                         offsetW = elems[i].offset;
                     }
                 }

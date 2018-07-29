@@ -1586,7 +1586,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, July 28th 2018, 12:54:14 am
+ * Last Modified: Sunday, July 29th 2018, 8:38:32 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -1708,7 +1708,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, July 28th 2018, 12:01:25 am
+ * Last Modified: Sunday, July 29th 2018, 8:10:25 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -1788,7 +1788,7 @@ var VertexFormat = /** @class */ (function () {
 /*!********************!*\
   !*** ./src/hgl.ts ***!
   \********************/
-/*! exports provided: version, BUFFER, SHADERTAG_MATERIAL, DataType, SEMANTIC, UNIFORMTYPE, SHADER, BLENDMODE, BLENDEQUATION, CULLFACE, BLEND, CURVE, MASK, SHADERDEF, LAYER, RENDERSTYLE, SORTKEY */
+/*! exports provided: version, BUFFER, SHADERTAG_MATERIAL, DataType, SEMANTIC, UNIFORMTYPE, SHADER, BLENDMODE, BLENDEQUATION, CULLFACE, BLEND, CURVE, MASK, SHADERDEF, LAYER, RENDERSTYLE, SORTKEY, PRIMITIVE, INDEXFORMAT */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1810,6 +1810,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LAYER", function() { return LAYER; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RENDERSTYLE", function() { return RENDERSTYLE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SORTKEY", function() { return SORTKEY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PRIMITIVE", function() { return PRIMITIVE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "INDEXFORMAT", function() { return INDEXFORMAT; });
 /**
  * File: c:\Users\35327\Documents\Githubs\hypergl\src\scene\hgl.ts
  * Project: c:\Users\35327\Documents\Githubs\hypergl
@@ -1817,7 +1819,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, July 29th 2018, 4:12:32 pm
+ * Last Modified: Sunday, July 29th 2018, 8:03:22 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -1990,6 +1992,22 @@ var SORTKEY;
     SORTKEY[SORTKEY["FORWARD"] = 0] = "FORWARD";
     SORTKEY[SORTKEY["DEPTH"] = 1] = "DEPTH";
 })(SORTKEY || (SORTKEY = {}));
+var PRIMITIVE;
+(function (PRIMITIVE) {
+    PRIMITIVE[PRIMITIVE["POINTS"] = 0] = "POINTS";
+    PRIMITIVE[PRIMITIVE["LINES"] = 1] = "LINES";
+    PRIMITIVE[PRIMITIVE["LINELOOP"] = 2] = "LINELOOP";
+    PRIMITIVE[PRIMITIVE["LINESTRIP"] = 3] = "LINESTRIP";
+    PRIMITIVE[PRIMITIVE["TRIANGLES"] = 4] = "TRIANGLES";
+    PRIMITIVE[PRIMITIVE["TRISTRIP"] = 5] = "TRISTRIP";
+    PRIMITIVE[PRIMITIVE["TRIFAN"] = 6] = "TRIFAN";
+})(PRIMITIVE || (PRIMITIVE = {}));
+var INDEXFORMAT;
+(function (INDEXFORMAT) {
+    INDEXFORMAT[INDEXFORMAT["UINT8"] = 0] = "UINT8";
+    INDEXFORMAT[INDEXFORMAT["UINT16"] = 1] = "UINT16";
+    INDEXFORMAT[INDEXFORMAT["UINT32"] = 2] = "UINT32";
+})(INDEXFORMAT || (INDEXFORMAT = {}));
 
 
 /***/ }),
@@ -2037,6 +2055,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RENDERSTYLE", function() { return _hgl__WEBPACK_IMPORTED_MODULE_0__["RENDERSTYLE"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SORTKEY", function() { return _hgl__WEBPACK_IMPORTED_MODULE_0__["SORTKEY"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PRIMITIVE", function() { return _hgl__WEBPACK_IMPORTED_MODULE_0__["PRIMITIVE"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "INDEXFORMAT", function() { return _hgl__WEBPACK_IMPORTED_MODULE_0__["INDEXFORMAT"]; });
 
 /* harmony import */ var _graphics_vertexBuffer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphics/vertexBuffer */ "./src/graphics/vertexBuffer.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "VertexBuffer", function() { return _graphics_vertexBuffer__WEBPACK_IMPORTED_MODULE_1__["VertexBuffer"]; });

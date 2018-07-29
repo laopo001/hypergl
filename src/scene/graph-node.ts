@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, July 29th 2018, 6:17:07 pm
+ * Last Modified: Sunday, July 29th 2018, 6:19:46 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -18,6 +18,7 @@ import { Quat } from '../math/quat';
 import { Tags } from '../core/tag';
 import { Mat3 } from '../math/mat3';
 import { extend } from '../utils';
+
 const scaleCompensatePosTransform = new Mat4();
 const scaleCompensatePos = new Vec3();
 const scaleCompensateRot = new Quat();
@@ -25,7 +26,7 @@ const scaleCompensateRot2 = new Quat();
 const scaleCompensateScale = new Vec3();
 const scaleCompensateScaleForParent = new Vec3();
 
-class GraphNode {
+export class GraphNode {
     tags = new Tags(this);
     _labels = {};
     // Local-space properties of transform (only first 3 are settable by the user)
