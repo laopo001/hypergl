@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, July 28th 2018, 8:34:00 pm
+ * Last Modified: Sunday, July 29th 2018, 4:12:32 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -178,9 +178,7 @@ export enum RENDERSTYLE {
     POINTS = 2
 }
 
-
 export enum SORTKEY {
     FORWARD = 0,
     DEPTH = 1,
 }
-

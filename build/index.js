@@ -1817,7 +1817,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, July 28th 2018, 8:34:00 pm
+ * Last Modified: Sunday, July 29th 2018, 4:12:32 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -1998,7 +1998,7 @@ var SORTKEY;
 /*!**********************!*\
   !*** ./src/index.ts ***!
   \**********************/
-/*! exports provided: version, BUFFER, SHADERTAG_MATERIAL, DataType, SEMANTIC, UNIFORMTYPE, SHADER, BLENDMODE, BLENDEQUATION, CULLFACE, BLEND, CURVE, VertexBuffer, VertexFormat, Application, BasicMaterial */
+/*! exports provided: version, BUFFER, SHADERTAG_MATERIAL, DataType, SEMANTIC, UNIFORMTYPE, SHADER, BLENDMODE, BLENDEQUATION, CULLFACE, BLEND, CURVE, MASK, SHADERDEF, LAYER, RENDERSTYLE, SORTKEY, VertexBuffer, VertexFormat, Application, BasicMaterial */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2732,6 +2732,7 @@ if (!Math.log2) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Scene", function() { return Scene; });
 /* harmony import */ var _core_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/element */ "./src/core/element.ts");
+/* harmony import */ var _materials_basic_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../materials/basic-material */ "./src/materials/basic-material.ts");
 /**
  * File: c:\Users\35327\Documents\Githubs\hypergl\src\scene\Scene.ts
  * Project: c:\Users\35327\Documents\Githubs\hypergl
@@ -2739,7 +2740,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, July 27th 2018, 12:58:28 am
+ * Last Modified: Sunday, July 29th 2018, 4:31:19 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -2755,6 +2756,7 @@ var __extends = (undefined && undefined.__extends) || (function () {
     };
 })();
 
+
 var Scene = /** @class */ (function (_super) {
     __extends(Scene, _super);
     function Scene() {
@@ -2763,7 +2765,7 @@ var Scene = /** @class */ (function (_super) {
     Scene.prototype.add = function () {
         console.log();
     };
-    Scene.defaultMaterial = 'defaultMaterial';
+    Scene.defaultMaterial = new _materials_basic_material__WEBPACK_IMPORTED_MODULE_1__["BasicMaterial"]();
     return Scene;
 }(_core_element__WEBPACK_IMPORTED_MODULE_0__["IElement"]));
 

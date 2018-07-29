@@ -382,7 +382,8 @@
     // 更加方便
     "no-parameter-properties": false,
     // 禁止使用 JSDoc，因为 TypeScirpt 已经包含了大部分功能
-    "no-redundant-jsdoc": true,
+    // "no-redundant-jsdoc": true,
+    "no-redundant-jsdoc": false,
     // 禁止使用三斜杠引入类型定义文件
     "no-reference-import": true,
     // 禁止行尾有空格

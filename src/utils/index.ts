@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, July 28th 2018, 6:43:08 pm
+ * Last Modified: Sunday, July 29th 2018, 6:06:07 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -13,6 +13,7 @@
 
 
 import { Vec3 } from '../math/vec3';
+import { type } from '../core/core';
 export function calculateNormals(positions: number[], indices: number[]): number[] {
     const triangleCount = indices.length / 3;
     const vertexCount = positions.length / 3;
@@ -70,4 +71,24 @@ export function calculateNormals(positions: number[], indices: number[]): number
     }
 
     return normals;
+}
+
+export function extend(target, ex) {
+    // tslint:disable-next-line:one-variable-per-declaration
+    let prop,
+        copy;
+
+    // tslint:disable-next-line:forin
+    for (prop in ex) {
+        copy = ex[prop];
+        if (type(copy) === 'object') {
+            target[prop] = extend({}, copy);
+        } else if (type(copy) === 'array') {
+            target[prop] = extend([], copy);
+        } else {
+            target[prop] = copy;
+        }
+    }
+
+    return target;
 }
