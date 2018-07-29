@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, July 29th 2018, 8:52:48 pm
+ * Last Modified: Sunday, July 29th 2018, 8:55:50 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -100,7 +100,7 @@ export class MeshInstance extends Material {
     parameters = {};
     stencilFront = null;
     stencilBack = null;
-    _aabb
+    _aabb: BoundingBox;
     constructor(node: GraphNode, mesh: Mesh, material: Material) {
         super();
         mesh._refCount++;
@@ -129,7 +129,7 @@ export class MeshInstance extends Material {
         if (mesh) mesh._refCount++;
     }
 
-    get aabb() {
+    get aabb(): BoundingBox {
         let aabb;
         if (!this._updateAabb) return this._aabb;
         if (this._updateAabbFunc) {
@@ -342,7 +342,7 @@ export class MeshInstance extends Material {
         this._aabb = aabb;
     }
 
-    get material() {
+    get material(): Material {
         return this._material;
     }
 
@@ -395,7 +395,7 @@ export class MeshInstance extends Material {
         this.updateKey();
     }
 
-    get receiveShadow() {
+    get receiveShadow(): boolean {
         return this._receiveShadow;
     }
 
