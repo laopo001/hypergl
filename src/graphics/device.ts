@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, July 27th 2018, 12:06:59 am
+ * Last Modified: Saturday, July 28th 2018, 6:01:15 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -15,12 +15,21 @@
 import { ScopeSpace } from './program/scope-space';
 import { ProgramLibrary } from './program/program-library';
 import { generators } from './program/shader-help';
+import { Shader } from './program/shader';
+import { VertexBuffer } from './vertexBuffer';
 type precision = 'highp' | 'mediump' | 'lowp';
 type version = 'webgl' | 'webgl2';
 export class GraphicsDevice {
+
     gl: WebGLRenderingContext;
     webgl2: boolean = false;
-    buffers = [];
+    shaders: Shader[] = [];
+    shader: Shader;
+    buffers: VertexBuffer[] = [];
+    vertexBuffers = [];
+    vbOffsets = [];
+    attributesInvalidated = true;
+    enabledAttributes = {};
     scope: ScopeSpace;
     precision: precision = 'mediump';
     _shaderStats = {
@@ -29,6 +38,16 @@ export class GraphicsDevice {
         linked: 0,
         materialShaders: 0,
         compileTime: 0
+    };
+    _vram = {
+        // #ifdef PROFILER
+        texShadow: 0,
+        texAsset: 0,
+        texLightmap: 0,
+        // #endif
+        tex: 0,
+        vb: 0,
+        ib: 0
     };
     boneLimit = 128;
     supportsBoneTextures: any;
@@ -49,6 +68,8 @@ export class GraphicsDevice {
     extCompressedTexturePVRTC: any;
     extCompressedTextureS3TC: any;
     programLib: ProgramLibrary;
+    boundBuffer: any;
+    _shaderSwitchesPerFrame = 0;
     constructor(private canvas: HTMLCanvasElement) {
         this.gl = canvas.getContext('webgl');
         this.scope = new ScopeSpace('Device');
@@ -107,6 +128,27 @@ export class GraphicsDevice {
     }
     getBoneLimit() {
         return this.boneLimit;
+    }
+    setShader(shader: Shader) {
+        if (shader !== this.shader) {
+            this.shader = shader;
+
+            if (!shader.ready) {
+                if (!shader.link()) {
+                    return false;
+                }
+            }
+
+            // Set the active shader
+            this._shaderSwitchesPerFrame++;
+            this.gl.useProgram(shader.program);
+
+            this.attributesInvalidated = true;
+        }
+        return true;
+    }
+    removeShaderFromCache(shader) {
+        this.programLib.removeFromCache(shader);
     }
 }
 

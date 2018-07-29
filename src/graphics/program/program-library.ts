@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, July 27th 2018, 12:05:58 am
+ * Last Modified: Saturday, July 28th 2018, 2:22:42 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -18,7 +18,7 @@ import { generators } from './shader-help';
 
 
 export class ProgramLibrary {
-    _cache = {};
+    _cache: { [x: string]: Shader } = {};
     _generators: {
         [x: string]: ShaderGenerate
     } = {};

@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, July 27th 2018, 1:06:54 am
+ * Last Modified: Saturday, July 28th 2018, 12:03:54 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -13,7 +13,7 @@
 
 import { Material } from './material';
 import { Color } from '../core/color';
-class BasicMaterial extends Material {
+export class BasicMaterial extends Material {
     color = new Color(1, 1, 1, 1);
     colorMap = null;
     vertexColors = false;

@@ -6,9 +6,9 @@
  * @summary: short description for the file
  * -----
 <<<<<<< HEAD
- * Last Modified: Friday, July 27th 2018, 1:18:19 am
+ * Last Modified: Saturday, July 28th 2018, 2:30:12 am
 =======
- * Last Modified: Wednesday, July 25th 2018, 12:24:42 am
+ * Last Modified: Saturday, July 28th 2018, 2:30:12 am
 >>>>>>> a59a1a480c976e9f2165e74cf2fca136d87fc14f
  * Modified By: liaodh
  * -----
@@ -20,7 +20,7 @@ import { GraphicsDevice } from '../device';
 import { SHADERTAG_MATERIAL, UNIFORMTYPE } from '../../hgl';
 import { ShaderInput } from './shader-input';
 
-function addLineNumbers(src) {
+function addLineNumbers(src: string) {
     let chunks = src.split('\n');
 
     // Chrome reports shader errors on lines indexed from 1
@@ -31,7 +31,7 @@ function addLineNumbers(src) {
     return chunks.join('\n');
 }
 
-function createShader(gl: WebGLRenderingContext, type, src): WebGLShader {
+function createShader(gl: WebGLRenderingContext, type: number, src: string): WebGLShader {
     let shader = gl.createShader(type);
 
     gl.shaderSource(shader, src);
@@ -40,7 +40,7 @@ function createShader(gl: WebGLRenderingContext, type, src): WebGLShader {
     return shader;
 }
 
-function createProgram(gl: WebGLRenderingContext, vertexShader, fragmentShader): WebGLProgram {
+function createProgram(gl: WebGLRenderingContext, vertexShader: WebGLShader, fragmentShader: WebGLShader): WebGLProgram {
     let program = gl.createProgram();
 
     gl.attachShader(program, vertexShader);
@@ -62,13 +62,24 @@ export class Shader {
     vshader: WebGLShader;
     fshader: WebGLShader;
     program: WebGLProgram;
+    ready: boolean;
+    _refCount = 0;
     attributes;
     uniforms;
     samplers;
     constructor(private device: GraphicsDevice, private definition: Definition) {
+        this.device = device;
+        this.definition = definition;
 
+        // Used for shader variants (see pc.Material)
+        // this._refCount = 0;
+
+        this.compile();
+
+        this.device.shaders.push(this);
     }
     compile() {
+        this.ready = false;
         let gl = this.device.gl;
         let startTime = new Date().getTime();
 
@@ -184,7 +195,7 @@ export class Shader {
             // }
 
 
-            // this.ready = true;
+            this.ready = true;
 
             // #ifdef PROFILER
             let endTime = new Date().getTime();
@@ -193,6 +204,20 @@ export class Shader {
             // #endif
 
             return retValue;
+        }
+    }
+    destroy() {
+        const device = this.device;
+        const idx = device.shaders.indexOf(this);
+        if (idx !== -1) {
+            device.shaders.splice(idx, 1);
+        }
+
+        if (this.program) {
+            const gl = device.gl;
+            gl.deleteProgram(this.program);
+            this.program = null;
+            this.device.removeShaderFromCache(this);
         }
     }
 }

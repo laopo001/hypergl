@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, July 27th 2018, 12:54:45 am
+ * Last Modified: Sunday, July 29th 2018, 8:03:22 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -13,10 +13,12 @@
 
 export const version = '0.0.1';
 
-export const BUFFER_STATIC = 1;
-export const BUFFER_DYNAMIC = 2;
-export const BUFFER_STREAM = 3;
-export const BUFFER_GPUDYNAMIC = 4;
+export enum BUFFER {
+    STATIC = 1,
+    DYNAMIC = 2,
+    STREAM = 3,
+    GPUDYNAMIC = 4
+}
 
 export const SHADERTAG_MATERIAL = 1;
 export enum DataType {
@@ -136,5 +138,64 @@ export enum BLEND {
     SCREEN = 8,
     MIN = 9,
     MAX = 10
+}
+
+export enum CURVE {
+    LINEAR = 0,
+    SMOOTHSTEP = 1,
+    CATMULL = 2,
+    CARDINAL = 3
+}
+
+export enum MASK {
+    DYNAMIC = 1,
+    BAKED = 2,
+    LIGHTMAP = 4
+}
+
+export enum SHADERDEF {
+    NOSHADOW = 1,
+    SKIN = 2,
+    UV0 = 4,
+    UV1 = 8,
+    VCOLOR = 16,
+    INSTANCING = 32,
+    LM = 64,
+    DIRLM = 128,
+    SCREENSPACE = 256
+}
+
+export enum LAYER {
+    HUD = 0,
+    GIZMO = 1,
+    FX = 2,
+    WORLD = 15
+}
+
+export enum RENDERSTYLE {
+    SOLID = 0,
+    WIREFRAME = 1,
+    POINTS = 2
+}
+
+export enum SORTKEY {
+    FORWARD = 0,
+    DEPTH = 1,
+}
+
+export enum PRIMITIVE {
+    POINTS = 0,
+    LINES = 1,
+    LINELOOP = 2,
+    LINESTRIP = 3,
+    TRIANGLES = 4,
+    TRISTRIP = 5,
+    TRIFAN = 6,
+}
+
+export enum INDEXFORMAT {
+    UINT8 = 0,
+    UINT16 = 1,
+    UINT32 = 2
 }
 

@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, July 15th 2018, 11:45:24 am
+ * Last Modified: Sunday, July 29th 2018, 8:10:25 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -18,7 +18,7 @@ export interface VertexType {
     semantic: HGL.SEMANTIC,
     length: 1 | 2 | 3 | 4;
     dataType: HGL.DataType;
-    normalize: boolean;
+    normalize?: boolean;
 }
 
 export interface VertexAttribData extends VertexType {
@@ -51,7 +51,7 @@ _typeSize[HGL.DataType.FLOAT32] = 4;
 * ]);
 */
 export class VertexFormat {
-    size: number;
+    size: number = 0;
     hasUv0 = false;
     hasUv1 = false;
     hasColor = false;

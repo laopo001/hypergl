@@ -5,7 +5,7 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, July 24th 2018, 11:00:29 pm
+ * Last Modified: Saturday, July 28th 2018, 12:54:01 am
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
@@ -14,7 +14,7 @@
 
 import * as HGL from '../src/index';
 // tslint:disable-next-line:no-duplicate-imports
-import { VertexBuffer, VertexFormat, Application } from '../src/index';
+import { VertexBuffer, VertexFormat, Application, BasicMaterial } from '../src/index';
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 
@@ -47,4 +47,10 @@ const vertices = new Float32Array([
     0.5, -0.5, 0, 1, 0.4, 0.4
 ]);
 
-const buffer = new VertexBuffer(device, format, 9, HGL.BUFFER_STATIC, vertices.buffer);
+const buffer = new VertexBuffer(device, format, 9, HGL.BUFFER.STATIC, vertices.buffer);
+
+let m = new BasicMaterial();
+console.log(m);
+
+let s = device.programLib.getProgram('basic', m);
+console.log(s);

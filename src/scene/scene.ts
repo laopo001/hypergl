@@ -5,15 +5,17 @@
  * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, July 27th 2018, 12:58:28 am
+ * Last Modified: Sunday, July 29th 2018, 4:31:19 pm
  * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
  */
 
 import { IElement } from '../core/element';
+import { BasicMaterial } from '../materials/basic-material';
+import { Material } from '../materials/material';
 export class Scene extends IElement {
-    static defaultMaterial: any = 'defaultMaterial';
+    static defaultMaterial: Material = new BasicMaterial();
     fog;
     add() {
         console.log();
