@@ -20,6 +20,7 @@
     "url": "https://github.com/playcanvas/engine.git"
   },
   "devDependencies": {
+    "@types/jest": "^23.3.1",
     "@types/node": "^10.0.3",
     "ali-oss": "^5.1.1",
     "browser-sync": "^2.18.12",
@@ -34,6 +35,7 @@
     "pre-commit": "^1.2.2",
     "raw-loader": "^0.5.1",
     "thread-loader": "^1.1.5",
+    "ts-jest": "^23.1.3",
     "ts-loader": "^4.2.0",
     "tslint": "^5.10.0",
     "typescript": "^2.8.0-insiders.20180127",
@@ -42,10 +44,12 @@
   },
   "scripts": {
     "start": "webpack --colors --watch",
-    "lint": "node node_modules/tslint/bin/tslint -c tslint.json 'src/**/*.ts'"
+    "lint": "node node_modules/tslint/bin/tslint -c tslint.json 'src/**/*.ts'",
+    "test": "jest"
   },
   "pre-commit": [
-    "lint"
+    "lint",
+    "test"
   ],
   "engines": {
     "node": ">= 0.6.12"
