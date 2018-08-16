@@ -29,5 +29,6 @@
                 "Copyright (c) <<year>> <<company>>"
             ]
         },
-    ]
+    ],
+    "typescript.tsdk": "node_modules\\typescript\\lib"
 }
