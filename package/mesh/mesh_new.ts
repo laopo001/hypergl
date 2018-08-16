@@ -1,16 +1,15 @@
-/*
- * ProjectName: hypergl
- * FilePath: \src\mesh\mesh.ts
- * Created Date: Tuesday, August 14th 2018, 5:02:26 pm
- * @author: dadigua
+/**
+ * File: c:\Users\35327\Documents\Githubs\hypergl\src\mesh\mesh_new.ts
+ * Project: c:\Users\35327\Documents\Githubs\hypergl
+ * Created Date: Monday, August 13th 2018, 8:54:48 pm
+ * @author: liaodh
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, August 14th 2018, 5:02:27 pm
- * Modified By: dadigua
+ * Last Modified: Tuesday, August 14th 2018, 10:10:59 am
+ * Modified By: liaodh
  * -----
  * Copyright (c) 2018 jiguang
  */
-
 
 
 import { VertexBuffer } from '../graphics/vertexBuffer';
