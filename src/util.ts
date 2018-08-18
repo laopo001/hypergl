@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, August 14th 2018, 5:01:54 pm
+ * Last Modified: Saturday, August 18th 2018, 5:10:59 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -28,8 +28,13 @@ export namespace Log {
             console.warn(message);
         }
     }
-
+    export function error(message: string) {
+        throw new Error(message);
+    }
     export function log(message: any) {
         console.log(message);
+    }
+    export function debug(message: any) {
+        console.debug(message);
     }
 }

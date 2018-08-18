@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, August 14th 2018, 5:02:19 pm
+ * Last Modified: Saturday, August 18th 2018, 5:22:47 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -51,4 +51,11 @@ export enum SEMANTIC {
     TEXCOORD5 = 'TEXCOORD5',
     TEXCOORD6 = 'TEXCOORD6',
     TEXCOORD7 = 'TEXCOORD7'
+}
+
+export enum BUFFER {
+    STATIC = 1,
+    DYNAMIC = 2,
+    STREAM = 3,
+    GPUDYNAMIC = 4
 }

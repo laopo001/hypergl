@@ -3,6 +3,7 @@
   "compilerOptions": {
     "target": "es5",
     "strict": true,
+    "newLine": "lf",
     "module": "es2015",
     "moduleResolution": "node",
     "sourceMap": true,
@@ -10,7 +11,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "jsx": "react",
-    "jsxFactory": "hpc.h",
+    "jsxFactory": "hgl.h",
     "lib": [
       "webworker",
       "dom",
@@ -26,15 +27,13 @@
       "./typings"
     ],
     "outDir": "build/output",
-    "types": [
-    ],
+    "types": [],
     "allowSyntheticDefaultImports": true
   },
-  "files": [
-    "src/**/*"
-  ],
   "include": [
-    "src","typings"
+    "src",
+    "typings",
+    "demo"
   ],
   "exclude": [
     "node_modules"
