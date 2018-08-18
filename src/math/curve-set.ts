@@ -1,6 +1,5 @@
 import { Curve } from './curve';
-import { type } from '../core/core';
-import { CURVE } from '../hgl';
+import { CURVE } from '../conf';
 /* tslint:disable */
 
 export class CurveSet {
@@ -21,7 +20,7 @@ export class CurveSet {
                 this.curves.push(new Curve());
             } else {
                 const arg = args[0];
-                if (type(arg) === 'number') {
+                if (typeof(arg) === 'number') {
                     for (i = 0; i < arg; i++) {
                         this.curves.push(new Curve());
                     }

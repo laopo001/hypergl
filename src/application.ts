@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 10:29:46 pm
+ * Last Modified: Saturday, August 18th 2018, 11:50:47 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -14,20 +14,20 @@
 
 import { Scene } from './scene/scene';
 import { RendererPlatform } from './graphics/renderer';
-import { CanvasOption } from './types';
-import { createCanvas, appendCanvas } from './graphics/canvas';
+import { AppOption } from './types';
+
 export class Application {
-    sceneInstances: Scene[] = [new Scene()];
+    sceneInstances: Scene[] = [];
     activeIndex = 0;
     rendererPlatform: RendererPlatform;
     canvas: HTMLCanvasElement;
     get scene() {
         return this.sceneInstances[this.activeIndex];
     }
-    constructor(option: CanvasOption) {
-        this.canvas = createCanvas(option);
+    constructor(canvas: HTMLCanvasElement, option?: AppOption) {
+        this.canvas = canvas;
         this.rendererPlatform = new RendererPlatform(this.canvas);
-        this.complete();
+        this.sceneInstances.push(new Scene(this));
     }
     start() {
         window.requestAnimationFrame(this.tick);
@@ -36,12 +36,10 @@ export class Application {
         this.sceneInstances.push(scene);
     }
     private tick() {
-        this.render();
+        this.scene.renderer();
     }
-    private render() {
-        // TODO
-    }
+
     private complete() {
-        appendCanvas(this.canvas);
+        // appendCanvas(this.canvas);
     }
 }

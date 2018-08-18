@@ -5,14 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 7:09:01 pm
+ * Last Modified: Sunday, August 19th 2018, 12:48:57 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
 
 
-import { DataType, SEMANTIC } from '../conf';
+import {  SEMANTIC } from '../conf';
 import { TypeArray, TypeArrayConstructor } from '../types';
 export interface VertexType {
     semantic: SEMANTIC,

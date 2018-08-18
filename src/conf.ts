@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 5:22:47 pm
+ * Last Modified: Sunday, August 19th 2018, 12:48:35 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -54,8 +54,15 @@ export enum SEMANTIC {
 }
 
 export enum BUFFER {
-    STATIC = 1,
-    DYNAMIC = 2,
-    STREAM = 3,
-    GPUDYNAMIC = 4
+    STATIC = 'STATIC',
+    DYNAMIC = 'DYNAMIC',
+    STREAM = 'STREAM',
+    GPUDYNAMIC = 'GPUDYNAMIC'
+}
+
+export enum CURVE {
+    LINEAR = 0,
+    SMOOTHSTEP = 1,
+    CATMULL = 2,
+    CARDINAL = 3
 }

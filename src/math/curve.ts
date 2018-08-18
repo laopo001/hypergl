@@ -1,5 +1,5 @@
 /* tslint:disable */
-import { CURVE } from '../hgl';
+import { CURVE } from '../conf';
 import * as math from './math';
 
 export class Curve {

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 9:18:09 pm
+ * Last Modified: Sunday, August 19th 2018, 12:49:20 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -21,9 +21,9 @@ export class VertexBuffer {
     buffer!: ArrayBuffer;
     numVertices!: number;
     bufferId?: WebGLBuffer;
-    constructor(renderer: RendererPlatform, format: VertexFormat, usage: number, data: ArrayBuffer, numVertices: number)
-    constructor(renderer: RendererPlatform, format: VertexFormat, usage: number, data: Array<number>)
-    constructor(private renderer: RendererPlatform, private format: VertexFormat, private usage: number = BUFFER.STATIC, data: Array<number> | ArrayBuffer, numVertices?) {
+    constructor(renderer: RendererPlatform, format: VertexFormat, usage: BUFFER, data: ArrayBuffer, numVertices: number)
+    constructor(renderer: RendererPlatform, format: VertexFormat, usage: BUFFER, data: Array<number>)
+    constructor(private renderer: RendererPlatform, private format: VertexFormat, private usage: BUFFER = BUFFER.STATIC, data: Array<number> | ArrayBuffer, numVertices?) {
         let size = this.format.sum_size;
         if (Array.isArray(data)) {
             // tslint:disable-next-line:no-parameter-reassignment
@@ -49,8 +49,11 @@ export class VertexBuffer {
         this.numVertices = numVertices;
     }
     bind() {
+
         let gl = this.renderer.gl;
-        this.bufferId = !gl.createBuffer();
+        if (!this.bufferId) {
+            this.bufferId = gl.createBuffer() as WebGLBuffer;
+        }
         let glUsage;
         switch (this.usage) {
             case BUFFER.STATIC:

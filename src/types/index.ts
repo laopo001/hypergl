@@ -5,16 +5,15 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 5:46:09 pm
+ * Last Modified: Saturday, August 18th 2018, 11:46:26 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
 
 
-export interface CanvasOption {
-    width: number;
-    height: number;
+export interface AppOption {
+
 }
 
 export type TypeArray = Int8Array | Uint8Array | Int16Array | Uint16Array | Int32Array | Uint32Array | Float32Array | Float64Array;

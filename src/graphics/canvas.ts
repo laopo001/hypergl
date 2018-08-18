@@ -5,18 +5,16 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 5:17:15 pm
+ * Last Modified: Saturday, August 18th 2018, 11:46:32 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
 
 
-import { CanvasOption } from '../types';
-export function createCanvas(option: CanvasOption) {
+import { AppOption } from '../types';
+export function createCanvas(option: AppOption) {
     const canvas = document.createElement('canvas');
-    canvas.width = option.width;
-    canvas.height = option.height;
     return canvas;
 }
 export function appendCanvas(canvas: HTMLCanvasElement) {
