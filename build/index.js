@@ -103,7 +103,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 7:52:14 pm
+ * Last Modified: Saturday, August 18th 2018, 10:31:15 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -135,7 +135,7 @@ var vertices = [
     -0.5, -0.5, 0, 0.4, 0.4, 1,
     0.5, -0.5, 0, 1, 0.4, 0.4
 ];
-var buffer = new _src_index__WEBPACK_IMPORTED_MODULE_0__["VertexBuffer"](format, _src_index__WEBPACK_IMPORTED_MODULE_0__["BUFFER"].STATIC, vertices);
+var buffer = new _src_index__WEBPACK_IMPORTED_MODULE_0__["VertexBuffer"](app.rendererPlatform, format, _src_index__WEBPACK_IMPORTED_MODULE_0__["BUFFER"].STATIC, vertices);
 console.log(format, buffer);
 
 
@@ -151,8 +151,9 @@ console.log(format, buffer);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Application", function() { return Application; });
-/* harmony import */ var _graphics_renderer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./graphics/renderer */ "./src/graphics/renderer.ts");
-/* harmony import */ var _graphics_canvas__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphics/canvas */ "./src/graphics/canvas.ts");
+/* harmony import */ var _scene_scene__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./scene/scene */ "./src/scene/scene.ts");
+/* harmony import */ var _graphics_renderer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphics/renderer */ "./src/graphics/renderer.ts");
+/* harmony import */ var _graphics_canvas__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./graphics/canvas */ "./src/graphics/canvas.ts");
 /*
  * ProjectName: hypergl
  * FilePath: \src\application.ts
@@ -160,32 +161,43 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 5:17:37 pm
+ * Last Modified: Saturday, August 18th 2018, 10:29:46 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
 
 
+
 var Application = /** @class */ (function () {
     function Application(option) {
-        this.sceneInstances = [];
+        this.sceneInstances = [new _scene_scene__WEBPACK_IMPORTED_MODULE_0__["Scene"]()];
         this.activeIndex = 0;
-        this.canvas = Object(_graphics_canvas__WEBPACK_IMPORTED_MODULE_1__["createCanvas"])(option);
-        this.device = new _graphics_renderer__WEBPACK_IMPORTED_MODULE_0__["RendererPlatform"](this.canvas);
+        this.canvas = Object(_graphics_canvas__WEBPACK_IMPORTED_MODULE_2__["createCanvas"])(option);
+        this.rendererPlatform = new _graphics_renderer__WEBPACK_IMPORTED_MODULE_1__["RendererPlatform"](this.canvas);
         this.complete();
     }
+    Object.defineProperty(Application.prototype, "scene", {
+        get: function () {
+            return this.sceneInstances[this.activeIndex];
+        },
+        enumerable: true,
+        configurable: true
+    });
     Application.prototype.start = function () {
-        var scene = this.sceneInstances[this.activeIndex];
+        window.requestAnimationFrame(this.tick);
     };
     Application.prototype.add = function (scene) {
         this.sceneInstances.push(scene);
     };
     Application.prototype.tick = function () {
+        this.render();
+    };
+    Application.prototype.render = function () {
         // TODO
     };
     Application.prototype.complete = function () {
-        Object(_graphics_canvas__WEBPACK_IMPORTED_MODULE_1__["appendCanvas"])(this.canvas);
+        Object(_graphics_canvas__WEBPACK_IMPORTED_MODULE_2__["appendCanvas"])(this.canvas);
     };
     return Application;
 }());
@@ -264,6 +276,46 @@ var BUFFER;
     BUFFER[BUFFER["STREAM"] = 3] = "STREAM";
     BUFFER[BUFFER["GPUDYNAMIC"] = 4] = "GPUDYNAMIC";
 })(BUFFER || (BUFFER = {}));
+
+
+/***/ }),
+
+/***/ "./src/core/element.ts":
+/*!*****************************!*\
+  !*** ./src/core/element.ts ***!
+  \*****************************/
+/*! exports provided: IElement */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IElement", function() { return IElement; });
+/* harmony import */ var _math_math__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../math/math */ "./src/math/math.ts");
+/*
+ * ProjectName: hypergl
+ * FilePath: \src\core\element.ts
+ * Created Date: Saturday, August 18th 2018, 4:23:54 pm
+ * @author: dadigua
+ * @summary: short description for the file
+ * -----
+ * Last Modified: Saturday, August 18th 2018, 4:24:14 pm
+ * Modified By: dadigua
+ * -----
+ * Copyright (c) 2018 jiguang
+ */
+
+var ComponentIdCount = 0;
+var IElement = /** @class */ (function () {
+    function IElement() {
+        this.id = ComponentIdCount++;
+        this.uuid = Object(_math_math__WEBPACK_IMPORTED_MODULE_0__["generateUUID"])();
+        this.name = '';
+        this.tag = '';
+        this.enable = true;
+    }
+    return IElement;
+}());
+
 
 
 /***/ }),
@@ -355,7 +407,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 5:13:51 pm
+ * Last Modified: Saturday, August 18th 2018, 9:28:29 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -364,13 +416,13 @@ __webpack_require__.r(__webpack_exports__);
 var RendererPlatform = /** @class */ (function () {
     function RendererPlatform(canvas) {
         this.platform = 'webgl2';
-        this.gl = canvas.getContext('webgl2');
+        this.webgl2 = canvas.getContext('webgl2');
         if (this.gl) {
             this.platform = 'webgl2';
             _util__WEBPACK_IMPORTED_MODULE_0__["Log"].debug("platform:" + this.platform);
         }
         else {
-            this.gl = canvas.getContext('webgl');
+            this.webgl = canvas.getContext('webgl');
             if (this.gl) {
                 this.platform = 'webgl';
                 _util__WEBPACK_IMPORTED_MODULE_0__["Log"].debug("platform:" + this.platform);
@@ -380,6 +432,13 @@ var RendererPlatform = /** @class */ (function () {
             }
         }
     }
+    Object.defineProperty(RendererPlatform.prototype, "gl", {
+        get: function () {
+            return this.webgl2 || this.webgl;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return RendererPlatform;
 }());
 
@@ -405,15 +464,16 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 8:25:12 pm
+ * Last Modified: Saturday, August 18th 2018, 9:18:09 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
 
 var VertexBuffer = /** @class */ (function () {
-    function VertexBuffer(format, usage, data, numVertices) {
+    function VertexBuffer(renderer, format, usage, data, numVertices) {
         if (usage === void 0) { usage = _conf__WEBPACK_IMPORTED_MODULE_0__["BUFFER"].STATIC; }
+        this.renderer = renderer;
         this.format = format;
         this.usage = usage;
         var size = this.format.sum_size;
@@ -441,6 +501,32 @@ var VertexBuffer = /** @class */ (function () {
         }
         this.numVertices = numVertices;
     }
+    VertexBuffer.prototype.bind = function () {
+        var gl = this.renderer.gl;
+        this.bufferId = !gl.createBuffer();
+        var glUsage;
+        switch (this.usage) {
+            case _conf__WEBPACK_IMPORTED_MODULE_0__["BUFFER"].STATIC:
+                glUsage = gl.STATIC_DRAW;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_0__["BUFFER"].DYNAMIC:
+                glUsage = gl.DYNAMIC_DRAW;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_0__["BUFFER"].STREAM:
+                glUsage = gl.STREAM_DRAW;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_0__["BUFFER"].GPUDYNAMIC:
+                if (this.renderer.platform === 'webgl2') {
+                    glUsage = gl.DYNAMIC_COPY;
+                }
+                else {
+                    glUsage = gl.STATIC_DRAW;
+                }
+                break;
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.bufferId);
+        gl.bufferData(gl.ARRAY_BUFFER, this.buffer, glUsage);
+    };
     return VertexBuffer;
 }());
 
@@ -556,6 +642,209 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 
+
+
+
+/***/ }),
+
+/***/ "./src/math/math.ts":
+/*!**************************!*\
+  !*** ./src/math/math.ts ***!
+  \**************************/
+/*! exports provided: generateUUID, intToBytes24, intToBytes32, bytesToInt24, bytesToInt32, DEG_TO_RAD, RAD_TO_DEG, INV_LOG2, clamp, lerp, lerpAngle, powerOfTwo, nextPowerOfTwo, random, smoothstep, smootherstep, intToBytes, bytesToInt */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "generateUUID", function() { return generateUUID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "intToBytes24", function() { return intToBytes24; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "intToBytes32", function() { return intToBytes32; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bytesToInt24", function() { return bytesToInt24; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bytesToInt32", function() { return bytesToInt32; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DEG_TO_RAD", function() { return DEG_TO_RAD; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RAD_TO_DEG", function() { return RAD_TO_DEG; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "INV_LOG2", function() { return INV_LOG2; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "clamp", function() { return clamp; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "lerp", function() { return lerp; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "lerpAngle", function() { return lerpAngle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "powerOfTwo", function() { return powerOfTwo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "nextPowerOfTwo", function() { return nextPowerOfTwo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "random", function() { return random; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "smoothstep", function() { return smoothstep; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "smootherstep", function() { return smootherstep; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "intToBytes", function() { return intToBytes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bytesToInt", function() { return bytesToInt; });
+/* tslint:disable */
+var generateUUID = (function _() {
+    // http://www.broofa.com/Tools/Math.uuid.htm
+    var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+    var uuid = new Array(36);
+    var rnd = 0;
+    var r;
+    return function generateUUID() {
+        for (var i = 0; i < 36; i++) {
+            if (i === 8 || i === 13 || i === 18 || i === 23) {
+                uuid[i] = '-';
+            }
+            else if (i === 14) {
+                uuid[i] = '4';
+            }
+            else {
+                if (rnd <= 0x02)
+                    rnd = 0x2000000 + (Math.random() * 0x1000000) | 0;
+                // tslint:disable-next-line:number-literal-format
+                r = rnd & 0xf;
+                rnd = rnd >> 4;
+                uuid[i] = chars[(i === 19) ? (r & 0x3) | 0x8 : r];
+            }
+        }
+        return uuid.join(''); //返回36位的uuid通用唯一识别码 (Universally Unique Identifier).
+    };
+})();
+function intToBytes24(i) {
+    var r, g, b;
+    r = (i >> 16) & 0xff;
+    g = (i >> 8) & 0xff;
+    b = (i) & 0xff;
+    return [r, g, b];
+}
+function intToBytes32(i) {
+    var r, g, b, a;
+    r = (i >> 24) & 0xff;
+    g = (i >> 16) & 0xff;
+    b = (i >> 8) & 0xff;
+    a = (i) & 0xff;
+    return [r, g, b, a];
+}
+function bytesToInt24(r, g, b) {
+    if (r.length) {
+        b = r[2];
+        g = r[1];
+        r = r[0];
+    }
+    return ((r << 16) | (g << 8) | b);
+}
+function bytesToInt32(r, g, b, a) {
+    if (r.length) {
+        a = r[3];
+        b = r[2];
+        g = r[1];
+        r = r[0];
+    }
+    // Why ((r << 24)>>>32)?
+    // << operator uses signed 32 bit numbers, so 128<<24 is negative.
+    // >>> used unsigned so >>>32 converts back to an unsigned.
+    // See http://stackoverflow.com/questions/1908492/unsigned-integer-in-javascript
+    return ((r << 24) | (g << 16) | (b << 8) | a) >>> 32;
+}
+var DEG_TO_RAD = Math.PI / 180;
+var RAD_TO_DEG = 180 / Math.PI;
+var INV_LOG2 = 1 / Math.log(2);
+function clamp(value, min, max) {
+    if (value >= max)
+        return max;
+    if (value <= min)
+        return min;
+    return value;
+}
+function lerp(a, b, alpha) {
+    return a + (b - a) * clamp(alpha, 0, 1);
+}
+function lerpAngle(a, b, alpha) {
+    if (b - a > 180) {
+        b -= 360;
+    }
+    if (b - a < -180) {
+        b += 360;
+    }
+    return lerp(a, b, clamp(alpha, 0, 1));
+}
+function powerOfTwo(x) {
+    return ((x !== 0) && !(x & (x - 1)));
+}
+function nextPowerOfTwo(val) {
+    val--;
+    val = (val >> 1) | val;
+    val = (val >> 2) | val;
+    val = (val >> 4) | val;
+    val = (val >> 8) | val;
+    val = (val >> 16) | val;
+    val++;
+    return val;
+}
+function random(min, max) {
+    var diff = max - min;
+    return Math.random() * diff + min;
+}
+function smoothstep(min, max, x) {
+    if (x <= min)
+        return 0;
+    if (x >= max)
+        return 1;
+    x = (x - min) / (max - min);
+    return x * x * (3 - 2 * x);
+}
+function smootherstep(min, max, x) {
+    if (x <= min)
+        return 0;
+    if (x >= max)
+        return 1;
+    x = (x - min) / (max - min);
+    return x * x * x * (x * (x * 6 - 15) + 10);
+}
+var intToBytes = intToBytes32;
+var bytesToInt = bytesToInt32;
+if (!Math.log2) {
+    Math.log2 = function (x) { return Math.log(x) * INV_LOG2; };
+}
+
+
+/***/ }),
+
+/***/ "./src/scene/scene.ts":
+/*!****************************!*\
+  !*** ./src/scene/scene.ts ***!
+  \****************************/
+/*! exports provided: Scene */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Scene", function() { return Scene; });
+/* harmony import */ var _core_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/element */ "./src/core/element.ts");
+/*
+ * ProjectName: hypergl
+ * FilePath: \src\scene.ts
+ * Created Date: Saturday, August 18th 2018, 4:22:49 pm
+ * @author: dadigua
+ * @summary: short description for the file
+ * -----
+ * Last Modified: Saturday, August 18th 2018, 10:15:10 pm
+ * Modified By: dadigua
+ * -----
+ * Copyright (c) 2018 jiguang
+ */
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+var Scene = /** @class */ (function (_super) {
+    __extends(Scene, _super);
+    function Scene() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Scene.prototype.add = function () {
+        // TODO
+    };
+    return Scene;
+}(_core_element__WEBPACK_IMPORTED_MODULE_0__["IElement"]));
 
 
 

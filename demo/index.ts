@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 7:52:14 pm
+ * Last Modified: Saturday, August 18th 2018, 10:31:15 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -47,7 +47,7 @@ const vertices = [
     0.5, -0.5, 0, 1, 0.4, 0.4
 ];
 
-const buffer = new VertexBuffer(format, BUFFER.STATIC, vertices);
+const buffer = new VertexBuffer(app.rendererPlatform, format, BUFFER.STATIC, vertices);
 
 
 console.log(format, buffer);

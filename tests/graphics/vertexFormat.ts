@@ -5,28 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 8:23:10 pm
+ * Last Modified: Saturday, August 18th 2018, 8:53:20 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
 
 
-import { VertexFormat } from '../../src/graphics/vertexFormat';
-import { SEMANTIC } from '../../src/conf';
-
-const format = new VertexFormat([{
-    semantic: SEMANTIC.POSITION,
-    size: 3,
-    dataType: Float32Array,
-    normalize: true
-}, {
-    semantic: SEMANTIC.COLOR,
-    size: 3,
-    dataType: Float32Array,
-    normalize: true
-}]);
-
+import { format } from '../app';
 
 test('VertexFormat.sum_size', () => {
     expect(format.sum_size).toBe(6);

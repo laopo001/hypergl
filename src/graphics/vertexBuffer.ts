@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 8:25:12 pm
+ * Last Modified: Saturday, August 18th 2018, 9:18:09 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -16,13 +16,14 @@
 import { TypeArray } from '../types';
 import { VertexFormat } from './vertexFormat';
 import { BUFFER } from '../conf';
+import { RendererPlatform } from './renderer';
 export class VertexBuffer {
     buffer!: ArrayBuffer;
     numVertices!: number;
-    constructor(format: VertexFormat, usage: number, data: ArrayBuffer, numVertices: number)
-    constructor(format: VertexFormat, usage: number, data: Array<number>)
-    constructor(private format: VertexFormat, private usage: number = BUFFER.STATIC, data: Array<number> | ArrayBuffer, numVertices?) {
-
+    bufferId?: WebGLBuffer;
+    constructor(renderer: RendererPlatform, format: VertexFormat, usage: number, data: ArrayBuffer, numVertices: number)
+    constructor(renderer: RendererPlatform, format: VertexFormat, usage: number, data: Array<number>)
+    constructor(private renderer: RendererPlatform, private format: VertexFormat, private usage: number = BUFFER.STATIC, data: Array<number> | ArrayBuffer, numVertices?) {
         let size = this.format.sum_size;
         if (Array.isArray(data)) {
             // tslint:disable-next-line:no-parameter-reassignment
@@ -46,5 +47,30 @@ export class VertexBuffer {
             this.buffer = data;
         }
         this.numVertices = numVertices;
+    }
+    bind() {
+        let gl = this.renderer.gl;
+        this.bufferId = !gl.createBuffer();
+        let glUsage;
+        switch (this.usage) {
+            case BUFFER.STATIC:
+                glUsage = gl.STATIC_DRAW;
+                break;
+            case BUFFER.DYNAMIC:
+                glUsage = gl.DYNAMIC_DRAW;
+                break;
+            case BUFFER.STREAM:
+                glUsage = gl.STREAM_DRAW;
+                break;
+            case BUFFER.GPUDYNAMIC:
+                if (this.renderer.platform === 'webgl2') {
+                    glUsage = gl.DYNAMIC_COPY;
+                } else {
+                    glUsage = gl.STATIC_DRAW;
+                }
+                break;
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.bufferId);
+        gl.bufferData(gl.ARRAY_BUFFER, this.buffer, glUsage);
     }
 }
