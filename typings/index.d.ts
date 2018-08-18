@@ -1,11 +1,11 @@
 
 declare module '*.frag' {
-    const content: any;
+    const content: string;
     export default content;
 }
 
 declare module '*.vert' {
-    const content: any;
+    const content: string;
     export default content;
 }
 

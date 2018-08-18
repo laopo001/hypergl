@@ -13,6 +13,6 @@
 
 
 
-test('adds 1 + 2 to equal 3', () => {
+test('None', () => {
     expect(1 + 2).toBe(3);
 });

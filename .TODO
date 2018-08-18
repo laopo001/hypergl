@@ -1,5 +1,19 @@
 Projects:
   hypergl
 
-Todo:
-  ☐ 添加.travis.yml @started(18-08-16 19:23)
+Todos:
+  实现基本功能
+  new: 
+    
+  Done:
+    None
+  Cancelled:
+    None
+  Tagging:
+    None
+  Timekeeping:
+    None
+
+Archive:
+  ✔ 跑起来一个demo，展示一个空间立方体 @started(18-08-17 01:28) @done(18-08-19 00:26) @lasted(1d22h58m40s)
+  ✔ 添加.travis.yml 测试 @started(18-08-16 19:23) @done(18-08-16 20:26) @lasted(1h3m1s)

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, August 14th 2018, 5:02:19 pm
+ * Last Modified: Sunday, August 19th 2018, 12:48:35 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -51,4 +51,18 @@ export enum SEMANTIC {
     TEXCOORD5 = 'TEXCOORD5',
     TEXCOORD6 = 'TEXCOORD6',
     TEXCOORD7 = 'TEXCOORD7'
+}
+
+export enum BUFFER {
+    STATIC = 'STATIC',
+    DYNAMIC = 'DYNAMIC',
+    STREAM = 'STREAM',
+    GPUDYNAMIC = 'GPUDYNAMIC'
+}
+
+export enum CURVE {
+    LINEAR = 0,
+    SMOOTHSTEP = 1,
+    CATMULL = 2,
+    CARDINAL = 3
 }
