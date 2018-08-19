@@ -638,7 +638,7 @@ var RendererPlatform = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "precision mediump float;\nvarying vec4 v_Color;            \n\nvoid main(void) {                          \n    gl_FragColor = v_Color;                \n}"
+module.exports = "#version 300 es\nprecision mediump float;\nin vec4 v_Color;           \nout vec4 outputColor; \n\nvoid main(void) {                          \n    outputColor = v_Color;                \n}"
 
 /***/ }),
 
@@ -649,7 +649,7 @@ module.exports = "precision mediump float;\nvarying vec4 v_Color;            \n\
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "attribute vec4 a_Position;\nattribute vec4 a_Color;\nuniform mat4 u_MvpjMatrix;\nvarying vec4 v_Color;\n\nvoid main(){  \n    gl_Position = u_MvpjMatrix * a_Position;\n    v_Color = a_Color;\n}"
+module.exports = "#version 300 es\nin vec4 a_Position;\nin vec4 a_Color;\nuniform mat4 u_MvpjMatrix;\nout vec4 v_Color;\n\nvoid main(){  \n    gl_Position = u_MvpjMatrix * a_Position;\n    v_Color = a_Color;\n}"
 
 /***/ }),
 
