@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 10:52:51 pm
+ * Last Modified: Sunday, August 19th 2018, 1:35:27 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -26,7 +26,7 @@ export class Scene extends IElement {
         super();
     }
     renderer() {
-
+        // fix sdfa
     }
     add() {
         // TODO

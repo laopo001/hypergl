@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 19th 2018, 12:54:39 am
+ * Last Modified: Sunday, August 19th 2018, 1:06:59 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -22,9 +22,9 @@ export class RendererPlatform {
     private webgl!: WebGLRenderingContext;
     private webgl2!: WebGL2RenderingContext;
     constructor(canvas: HTMLCanvasElement) {
-        this.webgl2 = canvas.getContext('webgl') as any;
+        this.webgl2 = canvas.getContext('webgl2') as any;
         if (this.webgl2) {
-            this.platform = 'webgl';
+            this.platform = 'webgl2';
             Log.debug(`platform:${this.platform}`);
         } else {
             this.webgl = canvas.getContext('webgl') as any;

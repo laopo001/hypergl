@@ -593,7 +593,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 19th 2018, 12:54:39 am
+ * Last Modified: Sunday, August 19th 2018, 1:06:59 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -601,9 +601,9 @@ __webpack_require__.r(__webpack_exports__);
 
 var RendererPlatform = /** @class */ (function () {
     function RendererPlatform(canvas) {
-        this.webgl2 = canvas.getContext('webgl');
+        this.webgl2 = canvas.getContext('webgl2');
         if (this.webgl2) {
-            this.platform = 'webgl';
+            this.platform = 'webgl2';
             _util__WEBPACK_IMPORTED_MODULE_0__["Log"].debug("platform:" + this.platform);
         }
         else {
@@ -3156,7 +3156,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 10:52:51 pm
+ * Last Modified: Sunday, August 19th 2018, 1:35:27 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -3182,6 +3182,7 @@ var Scene = /** @class */ (function (_super) {
         return _this;
     }
     Scene.prototype.renderer = function () {
+        // fix sdfa
     };
     Scene.prototype.add = function () {
         // TODO
