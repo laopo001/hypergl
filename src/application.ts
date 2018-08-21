@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 11:50:47 pm
+ * Last Modified: Tuesday, August 21st 2018, 6:50:35 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -41,5 +41,8 @@ export class Application {
 
     private complete() {
         // appendCanvas(this.canvas);
+    }
+    get [Symbol.toStringTag]() {
+        return 'Application';
     }
 }
