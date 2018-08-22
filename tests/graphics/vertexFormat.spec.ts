@@ -5,14 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 8:53:20 pm
+ * Last Modified: Wednesday, August 22nd 2018, 10:18:35 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
 
 
-import { format } from '../app';
+import { format } from '../app.ignore';
 
 test('VertexFormat.sum_size', () => {
     expect(format.sum_size).toBe(6);

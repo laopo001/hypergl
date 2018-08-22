@@ -5,14 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 9:01:48 pm
+ * Last Modified: Wednesday, August 22nd 2018, 10:19:16 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
 
 
-import { SEMANTIC, BUFFER, VertexBuffer, VertexFormat, Application } from '../src/index';
+import { SEMANTIC, BUFFER, VertexBuffer, VertexFormat, Application } from '../src';
 import { RendererPlatform } from '../src/graphics/renderer';
 
 
@@ -47,6 +47,4 @@ const vertices = [
 // tslint:disable-next-line:no-object-literal-type-assertion
 export const buffer = new VertexBuffer(({} as RendererPlatform), format, BUFFER.STATIC, vertices);
 
-test('None', () => {
-    expect(1 + 2).toBe(3);
-});
+
