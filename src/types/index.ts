@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 22nd 2018, 10:02:16 am
+ * Last Modified: Wednesday, August 22nd 2018, 11:32:51 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -25,3 +25,5 @@ export type TypeArrayConstructor = Int8ArrayConstructor | Uint8ArrayConstructor 
 export type Fn<T> = (...args) => T;
 
 export type FnVoid = Fn<void>;
+
+export type Nullable<T> = T | null;

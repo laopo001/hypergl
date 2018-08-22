@@ -225,7 +225,14 @@ export class Mat4 {
         return this.mul2(this, rhs);
     }
 
-
+    /**
+     * 移动到某个点
+     *
+     * @param {Vec3} vec
+     * @param {Vec3} [res] returns
+     * @returns {Vec3} res
+     * @memberof Mat4
+     */
     transformPoint(vec: Vec3, res?: Vec3): Vec3 {
         let x, y, z,
             m = this.data,
@@ -499,7 +506,12 @@ export class Mat4 {
         return this;
     }
 
-
+    /**
+     * 修改自身，逆矩阵
+     *
+     * @returns {this} this
+     * @memberof Mat4
+     */
     invert(): this {
         let a00, a01, a02, a03,
             a10, a11, a12, a13,
@@ -798,7 +810,7 @@ export class Mat4 {
         y = new Vec3();
         z = new Vec3();
 
-        return function (scale?: Vec3) {
+        return (scale?: Vec3) => {
             scale = (scale === undefined) ? new Vec3() : scale;
 
             this.getX(x);
@@ -859,7 +871,7 @@ export class Mat4 {
     getEulerAngles = (() => {
         let scale = new Vec3();
 
-        return function (eulers: Vec3): Vec3 {
+        return (eulers: Vec3): Vec3 => {
             let x, y, z, sx, sy, sz, m, halfPi;
 
             eulers = (eulers === undefined) ? new Vec3() : eulers;
