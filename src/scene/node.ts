@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, August 23rd 2018, 1:26:10 am
+ * Last Modified: Thursday, August 23rd 2018, 1:45:34 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -66,6 +66,7 @@ export class INode extends IElement {
         if (this.parent == null) {
             this.localPosition = position;
         } else {
+            // TODO
             this.invParentWtm.copy(this.parent.getWorldTransform()).invert();
             this.invParentWtm.transformPoint(position, this.localPosition);
         }
