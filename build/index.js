@@ -110,7 +110,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 22nd 2018, 1:50:58 am
+ * Last Modified: Wednesday, August 22nd 2018, 9:56:40 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -184,9 +184,8 @@ gl.clearColor(0.0, 0.0, 0.0, 1.0);
 gl.clear(gl.COLOR_BUFFER_BIT);
 gl.drawElements(gl.TRIANGLES, ibuffer.length, gl.UNSIGNED_BYTE, 0);
 console.log(format, vbuffer, ibuffer);
-// app.addEventListen(() => {
-//     camera.lookAt(target)
-// })
+app.on('update', function () {
+});
 
 
 /***/ }),
@@ -308,7 +307,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 22nd 2018, 1:50:27 am
+ * Last Modified: Wednesday, August 22nd 2018, 10:03:00 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -338,8 +337,8 @@ var Application = /** @class */ (function () {
     Application.prototype.add = function (scene) {
         this.sceneInstances.push(scene);
     };
-    Application.prototype.addEventListen = function (cb) {
-        _core_event__WEBPACK_IMPORTED_MODULE_2__["event"].on('update', cb);
+    Application.prototype.on = function (name, cb) {
+        _core_event__WEBPACK_IMPORTED_MODULE_2__["event"].on(name, cb);
     };
     Application.prototype.tick = function () {
         // this.scene.renderer();
@@ -3263,7 +3262,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 22nd 2018, 1:38:35 am
+ * Last Modified: Wednesday, August 22nd 2018, 10:05:49 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -3275,7 +3274,7 @@ var Camera = /** @class */ (function () {
     near, // 相机渲染最近的距离，小于这距离的不会进行渲染
     far // 相机渲染最远的距离，大于这距离的不会进行渲染
     ) {
-        this.matrixWorldInverse = new _math__WEBPACK_IMPORTED_MODULE_0__["Mat4"]().setLookAt(new _math__WEBPACK_IMPORTED_MODULE_0__["Vec3"](0, 0, 3), new _math__WEBPACK_IMPORTED_MODULE_0__["Vec3"](0, 0, 1), new _math__WEBPACK_IMPORTED_MODULE_0__["Vec3"](0, 1, 0)).invert();
+        this.matrixWorldInverse = new _math__WEBPACK_IMPORTED_MODULE_0__["Mat4"]().setLookAt(new _math__WEBPACK_IMPORTED_MODULE_0__["Vec3"](0, 0, 0), new _math__WEBPACK_IMPORTED_MODULE_0__["Vec3"](0, 0, 1), new _math__WEBPACK_IMPORTED_MODULE_0__["Vec3"](0, 1, 0)).invert();
         // quaternion: Quat = new Quat();
         // scala: Vec3 = new Vec3();
         this.projectionMatrix = new _math__WEBPACK_IMPORTED_MODULE_0__["Mat4"]();

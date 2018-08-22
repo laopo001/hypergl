@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 22nd 2018, 1:50:27 am
+ * Last Modified: Wednesday, August 22nd 2018, 10:03:00 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -14,7 +14,7 @@
 
 import { Scene } from './scene/scene';
 import { RendererPlatform } from './graphics/renderer';
-import { AppOption } from './types';
+import { AppOption, FnVoid } from './types';
 import { event } from './core/event';
 export class Application {
     sceneInstances: Scene[] = [];
@@ -36,8 +36,8 @@ export class Application {
     add(scene: Scene) {
         this.sceneInstances.push(scene);
     }
-    addEventListen(cb) {
-        event.on('update', cb);
+    on(name: string, cb: FnVoid) {
+        event.on(name, cb);
     }
     private tick() {
         // this.scene.renderer();

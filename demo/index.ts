@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 22nd 2018, 1:50:58 am
+ * Last Modified: Wednesday, August 22nd 2018, 9:56:40 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -96,6 +96,6 @@ gl.drawElements(gl.TRIANGLES, ibuffer.length, gl.UNSIGNED_BYTE, 0);
 
 console.log(format, vbuffer, ibuffer);
 
-// app.addEventListen(() => {
-//     camera.lookAt(target)
-// })
+app.on('update', () => {
+    
+})
