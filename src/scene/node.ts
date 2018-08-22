@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 10:56:19 pm
+ * Last Modified: Wednesday, August 22nd 2018, 6:05:23 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -15,6 +15,7 @@
 import { IElement } from '../core/element';
 import { Vec3, Quat } from '../math';
 export class INode extends IElement {
+    // local
     localPosition = new Vec3(0, 0, 0);
     localRotation = new Quat(0, 0, 0, 1);
     localScale = new Vec3(1, 1, 1);
@@ -25,5 +26,8 @@ export class INode extends IElement {
     eulerAngles = new Vec3(0, 0, 0);
     constructor() {
         super();
+    }
+    lookat(target: INode) {
+        // TODO
     }
 }
