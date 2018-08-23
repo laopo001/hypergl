@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, August 23rd 2018, 1:45:34 am
+ * Last Modified: Thursday, August 23rd 2018, 12:22:50 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -41,12 +41,17 @@ export class INode extends IElement {
     scaleCompensation = false;
     private _dirtyLocal = false;
     private _dirtyWorld = false;
+    private _up = new Vec3();
 
     constructor() {
         super();
     }
     lookat(target: INode) {
         // TODO
+        let targetLocation = target.getPosition();
+        let up = target.up;
+        this.getWorldTransform().setLookAt(this.getPosition(), targetLocation, up);
+
     }
     addChild(child: INode) {
         this.children.push(child);
@@ -54,8 +59,8 @@ export class INode extends IElement {
     }
     // tslint:disable-next-line:member-ordering
     invParentWtm = new Mat4(); // setPosition _val
-    setPosition(position: Vec3);
-    setPosition(x: number, y: number, z: number);
+    setPosition(position: Vec3): void;
+    setPosition(x: number, y: number, z: number): void;
     setPosition(x?, y?, z?) {
         let position;
         if (x instanceof Vec3) {
@@ -66,7 +71,6 @@ export class INode extends IElement {
         if (this.parent == null) {
             this.localPosition = position;
         } else {
-            // TODO
             this.invParentWtm.copy(this.parent.getWorldTransform()).invert();
             this.invParentWtm.transformPoint(position, this.localPosition);
         }
@@ -194,5 +198,8 @@ export class INode extends IElement {
         this.dirtyNormal = true;
         // this._aabbVer++;
         // TODO
+    }
+    get up() {
+        return  this.getWorldTransform().getY(this._up).normalize();
     }
 }

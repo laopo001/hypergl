@@ -229,11 +229,11 @@ export class Mat4 {
      * 移动到某个点
      *
      * @param {Vec3} vec
-     * @param {Vec3} [res] returns
+     * @param {Vec3} [res] ref
      * @returns {Vec3} res
      * @memberof Mat4
      */
-    transformPoint(vec: Vec3, res?: Vec3): Vec3 {
+    transformPoint(vec: Vec3, res?/* ref */: Vec3): Vec3 {
         let x, y, z,
             m = this.data,
             v = vec.data;
@@ -318,7 +318,7 @@ export class Mat4 {
 
 
     setLookAt = (() => {
-        let x, y, z;
+        let x:Vec3, y:Vec3, z: Vec3;
 
         x = new Vec3();
         y = new Vec3();
@@ -775,7 +775,7 @@ export class Mat4 {
     }
 
 
-    getTranslation(t?: Vec3): Vec3 {
+    getTranslation(t?/* ref */: Vec3): Vec3 {
         t = (t === undefined) ? new Vec3() : t;
 
         return t.set(this.data[12], this.data[13], this.data[14]);
@@ -789,7 +789,7 @@ export class Mat4 {
     }
 
 
-    getY(y?: Vec3): Vec3 {
+    getY(y?/*ref and return*/: Vec3): Vec3 {
         y = (y === undefined) ? new Vec3() : y;
 
         return y.set(this.data[4], this.data[5], this.data[6]);
