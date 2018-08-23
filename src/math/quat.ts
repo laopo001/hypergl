@@ -6,7 +6,6 @@ export class Quat {
     x: number;
     y: number;
     z: number;
-
     w: number;
     constructor(x: number, y: number, z: number, w: number)
     constructor(x: [number, number, number, number])
@@ -40,7 +39,7 @@ export class Quat {
     }
 
 
-    copy({ x, y, z, w }) {
+    copy({ x, y, z, w }: Quat) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -50,7 +49,7 @@ export class Quat {
     }
 
 
-    equals({ x, y, z, w }) {
+    equals({ x, y, z, w }: Quat) {
         return (this.x === x) && (this.y === y) && (this.z === z) && (this.w === w);
     }
 
@@ -79,7 +78,7 @@ export class Quat {
     }
 
 
-    getEulerAngles(eulers) {
+    getEulerAngles(eulers?/*ref*/) {
         let x, y, z, qx, qy, qz, qw, a2;
 
         eulers = (eulers === undefined) ? new Vec3() : eulers;
@@ -131,7 +130,7 @@ export class Quat {
     }
 
 
-    mul({ x, y, z, w }) {
+    mul({ x, y, z, w }: Quat) {
         let q1x, q1y, q1z, q1w, q2x, q2y, q2z, q2w;
 
         q1x = this.x;
@@ -412,7 +411,7 @@ export class Quat {
 
         return res;
     }
-
+    static readonly TEMP = new Quat();
 
     static readonly IDENTITY: Quat = new Quat();
 

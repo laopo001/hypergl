@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, August 23rd 2018, 12:22:50 pm
+ * Last Modified: Friday, August 24th 2018, 1:42:14 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -13,7 +13,7 @@
 
 
 import { IElement } from '../core/element';
-import { Vec3, Quat, Mat4 } from '../math';
+import { Vec3, Quat, Mat4, Vec2 } from '../math';
 import { Log } from '../util';
 
 let scaleCompensatePosTransform = new Mat4();
@@ -46,33 +46,24 @@ export class INode extends IElement {
     constructor() {
         super();
     }
-    lookat(target: INode) {
+    lookAt(target: INode) {
         // TODO
         let targetLocation = target.getPosition();
         let up = target.up;
-        this.getWorldTransform().setLookAt(this.getPosition(), targetLocation, up);
-
+        let mat4 = new Mat4().setLookAt(this.getPosition(), targetLocation, up);
+        let quat = new Quat().setFromMat4(mat4);
+        this.setRotation(quat);
     }
     addChild(child: INode) {
         this.children.push(child);
         child.parent = this;
     }
-    // tslint:disable-next-line:member-ordering
-    invParentWtm = new Mat4(); // setPosition _val
-    setPosition(position: Vec3): void;
-    setPosition(x: number, y: number, z: number): void;
-    setPosition(x?, y?, z?) {
-        let position;
-        if (x instanceof Vec3) {
-            position = x.clone();
-        } else {
-            position = new Vec3(x, y, z);
-        }
+    setPosition(position: Vec3) {
         if (this.parent == null) {
             this.localPosition = position;
         } else {
-            this.invParentWtm.copy(this.parent.getWorldTransform()).invert();
-            this.invParentWtm.transformPoint(position, this.localPosition);
+            let invParentWtm = new Mat4().copy(this.parent.getWorldTransform()).invert();
+            invParentWtm.transformPoint(position, this.localPosition);
         }
         if (!this._dirtyLocal) {
             this._dirtify(true);
@@ -86,6 +77,59 @@ export class INode extends IElement {
     getPosition() {
         this.getWorldTransform().getTranslation(this.position);
         return this.position;
+    }
+    setLocalEulerAngles(vec3: Vec3) {
+        this.localRotation.setFromEulerAngles(vec3.data[0], vec3.data[1], vec3.data[2]);
+        if (!this._dirtyLocal) {
+            this._dirtify(true);
+        }
+    }
+    getLocalEulerAngles() {
+        this.localRotation.getEulerAngles(this.localEulerAngles);
+        return this.localEulerAngles;
+    }
+    setEulerAngles(vec3: Vec3) {
+        this.localRotation.setFromEulerAngles(vec3.data[0], vec3.data[1], vec3.data[2]);
+        if (this.parent != null) {
+            let parentRot = this.parent.getRotation();
+            let invParentRot = new Quat().copy(parentRot).invert();
+            this.localRotation.mul2(invParentRot, this.localRotation);
+        }
+
+        if (!this._dirtyLocal) {
+            this._dirtify(true);
+        }
+
+    }
+    getEulerAngles() {
+        this.getWorldTransform().getEulerAngles(this.eulerAngles);
+        return this.eulerAngles;
+    }
+    setLocalPosition(vec3: Vec3) {
+        this.localPosition.copy(vec3);
+        if (!this._dirtyLocal) {
+            this._dirtify(true);
+        }
+    }
+    getLocalPosition() {
+        return this.localPosition;
+    }
+    setRotation(rotation: Quat) {
+        if (this.parent == null) {
+            this.localRotation.copy(rotation);
+        } else {
+            let parentRot = this.parent.getRotation();
+            let invParentRot = new Quat().copy(parentRot).invert();
+            this.localRotation.copy(invParentRot).mul(rotation);
+        }
+
+        if (!this._dirtyLocal) {
+            this._dirtify(true);
+        }
+    }
+    getRotation() {
+        this.rotation.setFromMat4(this.getWorldTransform());
+        return this.rotation;
     }
     getWorldTransform() {
         if (!this._dirtyLocal && !this._dirtyWorld) {
@@ -107,6 +151,7 @@ export class INode extends IElement {
         }
         if (this._dirtyWorld) {
             if (this.parent == null) {
+
                 this.worldTransform.copy(this.localTransform);
             } else {
                 if (this.scaleCompensation) {
@@ -200,6 +245,6 @@ export class INode extends IElement {
         // TODO
     }
     get up() {
-        return  this.getWorldTransform().getY(this._up).normalize();
+        return this.getWorldTransform().getY(this._up).normalize();
     }
 }
