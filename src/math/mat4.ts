@@ -225,8 +225,15 @@ export class Mat4 {
         return this.mul2(this, rhs);
     }
 
-
-    transformPoint(vec: Vec3, res?: Vec3): Vec3 {
+    /**
+     * 移动到某个点
+     *
+     * @param {Vec3} vec
+     * @param {Vec3} [res] ref
+     * @returns {Vec3} res
+     * @memberof Mat4
+     */
+    transformPoint(vec: Vec3, res?/* ref */: Vec3): Vec3 {
         let x, y, z,
             m = this.data,
             v = vec.data;
@@ -311,7 +318,7 @@ export class Mat4 {
 
 
     setLookAt = (() => {
-        let x, y, z;
+        let x:Vec3, y:Vec3, z: Vec3;
 
         x = new Vec3();
         y = new Vec3();
@@ -499,7 +506,12 @@ export class Mat4 {
         return this;
     }
 
-
+    /**
+     * 修改自身，逆矩阵
+     *
+     * @returns {this} this
+     * @memberof Mat4
+     */
     invert(): this {
         let a00, a01, a02, a03,
             a10, a11, a12, a13,
@@ -763,7 +775,7 @@ export class Mat4 {
     }
 
 
-    getTranslation(t?: Vec3): Vec3 {
+    getTranslation(t?/* ref */: Vec3): Vec3 {
         t = (t === undefined) ? new Vec3() : t;
 
         return t.set(this.data[12], this.data[13], this.data[14]);
@@ -777,7 +789,7 @@ export class Mat4 {
     }
 
 
-    getY(y?: Vec3): Vec3 {
+    getY(y?/*ref and return*/: Vec3): Vec3 {
         y = (y === undefined) ? new Vec3() : y;
 
         return y.set(this.data[4], this.data[5], this.data[6]);
@@ -798,7 +810,7 @@ export class Mat4 {
         y = new Vec3();
         z = new Vec3();
 
-        return function (scale?: Vec3) {
+        return (scale?: Vec3) => {
             scale = (scale === undefined) ? new Vec3() : scale;
 
             this.getX(x);
@@ -859,7 +871,7 @@ export class Mat4 {
     getEulerAngles = (() => {
         let scale = new Vec3();
 
-        return function (eulers: Vec3): Vec3 {
+        return (eulers: Vec3): Vec3 => {
             let x, y, z, sx, sy, sz, m, halfPi;
 
             eulers = (eulers === undefined) ? new Vec3() : eulers;

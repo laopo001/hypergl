@@ -4,9 +4,13 @@ Projects:
 Todos:
   实现基本功能
   new: 
-    
+    ☐ 封装camera @started(18-08-21 18:51)
+    ☐ 纹理
+    ☐ graph-node 
+    ☐ 使用handlebars模板，生产shader文件
   Done:
-    None
+    ✔ 空间立方体的demo webgl1 to webgl2 @done(18-08-20 00:04)
+    ✔ event 事件模块 @started(18-08-22 01:31) @done(18-08-22 01:52) @lasted(21m14s)
   Cancelled:
     None
   Tagging:

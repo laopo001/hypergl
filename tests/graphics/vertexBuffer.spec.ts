@@ -5,14 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 8:51:42 pm
+ * Last Modified: Wednesday, August 22nd 2018, 10:18:35 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
 
 
-import { buffer } from '../app';
+import { buffer } from '../app.ignore';
 
 test('VertexBuffer.buffer tobe ArrayBuffer', () => {
     expect(buffer.buffer.constructor).toBe(ArrayBuffer);

@@ -102,6 +102,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_graphics_shaders_fragment_frag__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_src_graphics_shaders_fragment_frag__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _utils_util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils/util */ "./demo/utils/util.ts");
 /* harmony import */ var _src_math__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../src/math */ "./src/math/index.ts");
+/* harmony import */ var _src_scene_camera__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../src/scene/camera */ "./src/scene/camera.ts");
 /*
  * ProjectName: hypergl
  * FilePath: \demo\index.ts
@@ -109,12 +110,13 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 19th 2018, 1:36:25 am
+ * Last Modified: Wednesday, August 22nd 2018, 9:56:40 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
 // tslint:disable
+
 
 
 
@@ -155,13 +157,15 @@ console.log(new Float32Array(vbuffer.buffer));
 vbuffer.bind();
 var ibuffer = new _src_index__WEBPACK_IMPORTED_MODULE_0__["IndexBuffer"](app.rendererPlatform, Uint8Array, _src_index__WEBPACK_IMPORTED_MODULE_0__["BUFFER"].STATIC, indices);
 ibuffer.bind();
-var viewMatrix = new _src_math__WEBPACK_IMPORTED_MODULE_4__["Mat4"]().setLookAt(new _src_math__WEBPACK_IMPORTED_MODULE_4__["Vec3"](3, 3, 3), new _src_math__WEBPACK_IMPORTED_MODULE_4__["Vec3"](0, 0, 0), new _src_math__WEBPACK_IMPORTED_MODULE_4__["Vec3"](0, 1, 0)).invert();
-var projMatrix = new _src_math__WEBPACK_IMPORTED_MODULE_4__["Mat4"]();
-projMatrix.setPerspective(45, app.canvas.width / app.canvas.height, 1, 1000);
+var camera = new _src_scene_camera__WEBPACK_IMPORTED_MODULE_5__["Camera"](45, app.canvas.width / app.canvas.height, 1, 1000);
+// let viewMatrix = new Mat4().setLookAt(new Vec3(3, 3, 3), new Vec3(0, 0, 0), new Vec3(0, 1, 0)).invert();
+// let projMatrix = new Mat4();
+// projMatrix.setPerspective(45, app.canvas.width / app.canvas.height, 1, 1000);
 var modelMatrix = new _src_math__WEBPACK_IMPORTED_MODULE_4__["Mat4"]();
 // modelMatrix.setTranslate(0, 0, 1);
 // modelMatrix.setFromEulerAngles(45, 45, 45);
-var mvpMatrix = new _src_math__WEBPACK_IMPORTED_MODULE_4__["Mat4"]().mul(projMatrix).mul(viewMatrix).mul(modelMatrix);
+// let mvpMatrix = new Mat4().mul(projMatrix).mul(viewMatrix).mul(modelMatrix);
+var mvpMatrix = camera.PVMatrix.mul(modelMatrix);
 var gl = app.rendererPlatform.gl;
 var program = Object(_utils_util__WEBPACK_IMPORTED_MODULE_3__["initShaders"])(gl, _src_graphics_shaders_vertex_vert__WEBPACK_IMPORTED_MODULE_1___default.a, _src_graphics_shaders_fragment_frag__WEBPACK_IMPORTED_MODULE_2___default.a);
 var FSIZE = Float32Array.BYTES_PER_ELEMENT;
@@ -180,6 +184,8 @@ gl.clearColor(0.0, 0.0, 0.0, 1.0);
 gl.clear(gl.COLOR_BUFFER_BIT);
 gl.drawElements(gl.TRIANGLES, ibuffer.length, gl.UNSIGNED_BYTE, 0);
 console.log(format, vbuffer, ibuffer);
+app.on('update', function () {
+});
 
 
 /***/ }),
@@ -293,6 +299,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Application", function() { return Application; });
 /* harmony import */ var _scene_scene__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./scene/scene */ "./src/scene/scene.ts");
 /* harmony import */ var _graphics_renderer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphics/renderer */ "./src/graphics/renderer.ts");
+/* harmony import */ var _core_event__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./core/event */ "./src/core/event.ts");
 /*
  * ProjectName: hypergl
  * FilePath: \src\application.ts
@@ -300,11 +307,12 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 11:50:47 pm
+ * Last Modified: Wednesday, August 22nd 2018, 10:03:00 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
+
 
 
 var Application = /** @class */ (function () {
@@ -314,6 +322,7 @@ var Application = /** @class */ (function () {
         this.canvas = canvas;
         this.rendererPlatform = new _graphics_renderer__WEBPACK_IMPORTED_MODULE_1__["RendererPlatform"](this.canvas);
         this.sceneInstances.push(new _scene_scene__WEBPACK_IMPORTED_MODULE_0__["Scene"](this));
+        this.start();
     }
     Object.defineProperty(Application.prototype, "scene", {
         get: function () {
@@ -323,17 +332,29 @@ var Application = /** @class */ (function () {
         configurable: true
     });
     Application.prototype.start = function () {
-        window.requestAnimationFrame(this.tick);
+        this.tick();
     };
     Application.prototype.add = function (scene) {
         this.sceneInstances.push(scene);
     };
+    Application.prototype.on = function (name, cb) {
+        _core_event__WEBPACK_IMPORTED_MODULE_2__["event"].on(name, cb);
+    };
     Application.prototype.tick = function () {
-        this.scene.renderer();
+        // this.scene.renderer();
+        _core_event__WEBPACK_IMPORTED_MODULE_2__["event"].fire('update');
+        window.requestAnimationFrame(this.tick.bind(this));
     };
     Application.prototype.complete = function () {
         // appendCanvas(this.canvas);
     };
+    Object.defineProperty(Application.prototype, Symbol.toStringTag, {
+        get: function () {
+            return 'Application';
+        },
+        enumerable: true,
+        configurable: true
+    });
     return Application;
 }());
 
@@ -459,6 +480,91 @@ var IElement = /** @class */ (function () {
     return IElement;
 }());
 
+
+
+/***/ }),
+
+/***/ "./src/core/event.ts":
+/*!***************************!*\
+  !*** ./src/core/event.ts ***!
+  \***************************/
+/*! exports provided: event */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "event", function() { return event; });
+/*
+ * ProjectName: hypergl
+ * FilePath: \src\core\event.ts
+ * Created Date: Wednesday, August 22nd 2018, 1:40:58 am
+ * @author: dadigua
+ * @summary: short description for the file
+ * -----
+ * Last Modified: Wednesday, August 22nd 2018, 1:48:02 am
+ * Modified By: dadigua
+ * -----
+ * Copyright (c) 2018 jiguang
+ */
+var _callbacks = {};
+var event = {
+    on: function (name, callback) {
+        if (event.hasEvent(name)) {
+            _callbacks[name].push(callback);
+        }
+        else {
+            _callbacks[name] = [callback];
+        }
+        return event;
+    },
+    off: function (name, callback) {
+        if (event.hasEvent(name)) {
+            var index = _callbacks[name].findIndex(function (x) { return x === callback; });
+            _callbacks[name].splice(index, 1);
+        }
+        return event;
+    },
+    fireOnce: function (name) {
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        if (event.hasEvent(name)) {
+            var waitMoves_1 = [];
+            _callbacks[name].forEach(function (x, index) {
+                x.apply(window, args);
+                // tslint:disable-next-line:no-unused-expression
+                x.once && waitMoves_1.push(index);
+            });
+            var t = void 0;
+            // tslint:disable-next-line:no-conditional-assignment
+            while (t = waitMoves_1.pop()) {
+                _callbacks[name].splice(t, 1);
+            }
+        }
+        return event;
+    },
+    fire: function (name) {
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        if (event.hasEvent(name)) {
+            _callbacks[name].forEach(function (x, index) {
+                x.apply(window, args);
+            });
+        }
+        return event;
+    },
+    once: function (name, callback) {
+        callback.once = true;
+        this.on(name, callback);
+        return event;
+    },
+    hasEvent: function (name) {
+        return name in _callbacks;
+    }
+};
 
 
 /***/ }),
@@ -593,7 +699,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 19th 2018, 12:54:39 am
+ * Last Modified: Sunday, August 19th 2018, 1:06:59 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -601,9 +707,9 @@ __webpack_require__.r(__webpack_exports__);
 
 var RendererPlatform = /** @class */ (function () {
     function RendererPlatform(canvas) {
-        this.webgl2 = canvas.getContext('webgl');
+        this.webgl2 = canvas.getContext('webgl2');
         if (this.webgl2) {
-            this.platform = 'webgl';
+            this.platform = 'webgl2';
             _util__WEBPACK_IMPORTED_MODULE_0__["Log"].debug("platform:" + this.platform);
         }
         else {
@@ -638,7 +744,7 @@ var RendererPlatform = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "precision mediump float;\nvarying vec4 v_Color;            \n\nvoid main(void) {                          \n    gl_FragColor = v_Color;                \n}"
+module.exports = "#version 300 es\nprecision mediump float;\nin vec4 v_Color;           \nout vec4 outputColor; \n\nvoid main(void) {                          \n    outputColor = v_Color;                \n}"
 
 /***/ }),
 
@@ -649,7 +755,7 @@ module.exports = "precision mediump float;\nvarying vec4 v_Color;            \n\
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "attribute vec4 a_Position;\nattribute vec4 a_Color;\nuniform mat4 u_MvpjMatrix;\nvarying vec4 v_Color;\n\nvoid main(){  \n    gl_Position = u_MvpjMatrix * a_Position;\n    v_Color = a_Color;\n}"
+module.exports = "#version 300 es\nin vec4 a_Position;\nin vec4 a_Color;\nuniform mat4 u_MvpjMatrix;\nout vec4 v_Color;\n\nvoid main(){  \n    gl_Position = u_MvpjMatrix * a_Position;\n    v_Color = a_Color;\n}"
 
 /***/ }),
 
@@ -3138,6 +3244,62 @@ var Vec4 = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/scene/camera.ts":
+/*!*****************************!*\
+  !*** ./src/scene/camera.ts ***!
+  \*****************************/
+/*! exports provided: Camera */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Camera", function() { return Camera; });
+/* harmony import */ var _math__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../math */ "./src/math/index.ts");
+/*
+ * ProjectName: hypergl
+ * FilePath: \src\scene\camera.ts
+ * Created Date: Tuesday, August 21st 2018, 6:51:36 pm
+ * @author: dadigua
+ * @summary: short description for the file
+ * -----
+ * Last Modified: Wednesday, August 22nd 2018, 10:05:49 am
+ * Modified By: dadigua
+ * -----
+ * Copyright (c) 2018 jiguang
+ */
+
+var Camera = /** @class */ (function () {
+    function Camera(fov, // 相机视野的角度。一般是以Y轴
+    aspect, // 相机的纵横比（宽度除以高度）
+    near, // 相机渲染最近的距离，小于这距离的不会进行渲染
+    far // 相机渲染最远的距离，大于这距离的不会进行渲染
+    ) {
+        this.matrixWorldInverse = new _math__WEBPACK_IMPORTED_MODULE_0__["Mat4"]().setLookAt(new _math__WEBPACK_IMPORTED_MODULE_0__["Vec3"](0, 0, 0), new _math__WEBPACK_IMPORTED_MODULE_0__["Vec3"](0, 0, 1), new _math__WEBPACK_IMPORTED_MODULE_0__["Vec3"](0, 1, 0)).invert();
+        // quaternion: Quat = new Quat();
+        // scala: Vec3 = new Vec3();
+        this.projectionMatrix = new _math__WEBPACK_IMPORTED_MODULE_0__["Mat4"]();
+        // TODO
+        this.projectionMatrix.setPerspective(fov, aspect, near, far);
+        this.position = this.matrixWorldInverse.getTranslation();
+    }
+    Camera.prototype.lookAt = function (target) {
+        // TODO
+        this.matrixWorldInverse.setLookAt(this.position, target, new _math__WEBPACK_IMPORTED_MODULE_0__["Vec3"](0, 1, 0)).invert();
+    };
+    Object.defineProperty(Camera.prototype, "PVMatrix", {
+        get: function () {
+            return new _math__WEBPACK_IMPORTED_MODULE_0__["Mat4"]().mul(this.projectionMatrix).mul(this.matrixWorldInverse);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Camera;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/scene/scene.ts":
 /*!****************************!*\
   !*** ./src/scene/scene.ts ***!
@@ -3156,7 +3318,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 10:52:51 pm
+ * Last Modified: Sunday, August 19th 2018, 1:35:27 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -3182,6 +3344,7 @@ var Scene = /** @class */ (function (_super) {
         return _this;
     }
     Scene.prototype.renderer = function () {
+        // fix sdfa
     };
     Scene.prototype.add = function () {
         // TODO

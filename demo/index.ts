@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 19th 2018, 1:36:25 am
+ * Last Modified: Wednesday, August 22nd 2018, 9:56:40 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -18,6 +18,7 @@ import vert from '../src/graphics/shaders/vertex.vert';
 import frag from '../src/graphics/shaders/fragment.frag';
 import { initShaders } from './utils/util'
 import { Mat4, Vec3 } from '../src/math';
+import { Camera } from '../src/scene/camera';
 
 const app = new Application(document.getElementById('canvas') as HTMLCanvasElement);
 
@@ -59,13 +60,17 @@ vbuffer.bind();
 const ibuffer = new IndexBuffer(app.rendererPlatform, Uint8Array, BUFFER.STATIC, indices);
 ibuffer.bind();
 
-let viewMatrix = new Mat4().setLookAt(new Vec3(3, 3, 3), new Vec3(0, 0, 0), new Vec3(0, 1, 0)).invert();
-let projMatrix = new Mat4();
-projMatrix.setPerspective(45, app.canvas.width / app.canvas.height, 1, 1000);
+let camera = new Camera(45, app.canvas.width / app.canvas.height, 1, 1000)
+// let viewMatrix = new Mat4().setLookAt(new Vec3(3, 3, 3), new Vec3(0, 0, 0), new Vec3(0, 1, 0)).invert();
+// let projMatrix = new Mat4();
+// projMatrix.setPerspective(45, app.canvas.width / app.canvas.height, 1, 1000);
+
 let modelMatrix = new Mat4();
+
 // modelMatrix.setTranslate(0, 0, 1);
 // modelMatrix.setFromEulerAngles(45, 45, 45);
-let mvpMatrix = new Mat4().mul(projMatrix).mul(viewMatrix).mul(modelMatrix);
+// let mvpMatrix = new Mat4().mul(projMatrix).mul(viewMatrix).mul(modelMatrix);
+let mvpMatrix = camera.PVMatrix.mul(modelMatrix);
 
 let gl = app.rendererPlatform.gl;
 
@@ -90,3 +95,7 @@ gl.clear(gl.COLOR_BUFFER_BIT);
 gl.drawElements(gl.TRIANGLES, ibuffer.length, gl.UNSIGNED_BYTE, 0);
 
 console.log(format, vbuffer, ibuffer);
+
+app.on('update', () => {
+    
+})
