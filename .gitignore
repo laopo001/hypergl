@@ -6,3 +6,4 @@ node_modules/
 npm-debug.log
 lib/
 .cache-loader/
+yarn-error.log
