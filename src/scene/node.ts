@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, August 24th 2018, 1:42:14 am
+ * Last Modified: Saturday, August 25th 2018, 1:23:52 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -144,6 +144,18 @@ export class INode extends IElement {
     getLocalScale() {
         return this.localScale;
     }
+    // 更新此节点及其所有后代的世界转换矩阵。
+    syncHierarchy() {
+        if (!this.enable) {
+            return;
+        }
+        if (this._dirtyLocal || this._dirtyWorld) {
+            this._sync();
+        }
+        for (let i = 0; i < this.children.length; i++) {
+            this.children[i].syncHierarchy();
+        }
+    }
     private _sync() {
         if (this._dirtyLocal) {
             this.localTransform.setTRS(this.localPosition, this.localRotation, this.localScale);
@@ -247,4 +259,5 @@ export class INode extends IElement {
     get up() {
         return this.getWorldTransform().getY(this._up).normalize();
     }
+
 }
