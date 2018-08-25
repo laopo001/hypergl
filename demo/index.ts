@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 22nd 2018, 9:56:40 am
+ * Last Modified: Saturday, August 25th 2018, 4:19:21 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -19,6 +19,9 @@ import frag from '../src/graphics/shaders/fragment.frag';
 import { initShaders } from './utils/util'
 import { Mat4, Vec3 } from '../src/math';
 import { Camera } from '../src/scene/camera';
+import { basicVertStr, basicFragStr } from '../src/graphics/generateShader'
+
+
 
 const app = new Application(document.getElementById('canvas') as HTMLCanvasElement);
 
@@ -74,7 +77,7 @@ let mvpMatrix = camera.PVMatrix.mul(modelMatrix);
 
 let gl = app.rendererPlatform.gl;
 
-let program = initShaders(gl as any, vert, frag);
+let program = initShaders(gl as any, vert(), frag());
 
 let FSIZE = Float32Array.BYTES_PER_ELEMENT;
 
@@ -97,5 +100,7 @@ gl.drawElements(gl.TRIANGLES, ibuffer.length, gl.UNSIGNED_BYTE, 0);
 console.log(format, vbuffer, ibuffer);
 
 app.on('update', () => {
-    
+
 })
+
+console.log(basicVertStr, basicFragStr)
