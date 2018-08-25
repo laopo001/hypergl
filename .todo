@@ -7,6 +7,7 @@ Todos:
     ☐ 封装camera @started(18-08-21 18:51)
     ☐ 纹理
     ☐ graph-node 
+    ☐ mesh
   Done:
     ✔ BasicMaterial @started(18-08-25 16:43) @done(18-08-25 20:30) @lasted(3h47m3s)
     ✔ 使用handlebars模板，生成shader文件 @started(18-08-25 15:47) @done(18-08-25 16:42) @lasted(55m18s)
