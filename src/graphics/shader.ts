@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 25th 2018, 2:28:41 am
+ * Last Modified: Saturday, August 25th 2018, 3:36:15 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -19,6 +19,9 @@ export class Shader {
     program?: WebGLProgram;
     vshader?: WebGLShader;
     fshader?: WebGLShader;
+    samplers = [];
+    uniforms = [];
+    attributes = [];
     constructor(private renderer: RendererPlatform, private definition: {
         attributes: { [s: string]: any };
         vshader: string;
@@ -34,26 +37,47 @@ export class Shader {
         this.program = createProgram(gl, this.definition.vshader, this.definition.fshader) as WebGLProgram;
     }
     link() {
-        Log.assert(this.program == null, 'link前,必须compile');
+        if (this.program == null) {
+            Log.error('link前,必须compile');
+            return;
+        }
         let gl = this.renderer.gl;
         if (this.renderer.platform === 'webgl2' && this.definition.useTransformFeedback) {
             // Collect all "out_" attributes and use them for output
             let attrs = this.definition.attributes;
             let outNames: string[] = [];
-            for (let attr in attrs) {
-                if (attrs.hasOwnProperty(attr)) {
-                    outNames.push('out_' + attr);
-                }
-            }
-            gl.transformFeedbackVaryings(this.program as WebGLProgram, outNames, gl.INTERLEAVED_ATTRIBS);
+            // for (let attr in attrs) {
+            //     if (attrs.hasOwnProperty(attr)) {
+            //         outNames.push('out_' + attr);
+            //     }
+            // }
+            attrs.keys().forEach(attr => {
+                outNames.push('out_' + attr);
+            });
+            // webgl2缓存
+            gl.transformFeedbackVaryings(this.program, outNames, gl.INTERLEAVED_ATTRIBS);
         }
-        gl.linkProgram(this.program as WebGLProgram);
-        const linked = gl.getProgramParameter(this.program as WebGLProgram, gl.LINK_STATUS);
+        gl.linkProgram(this.program);
+        const linked = gl.getProgramParameter(this.program, gl.LINK_STATUS);
         if (!linked) {
-            Log.error(gl.getProgramInfoLog(this.program as WebGLProgram) as string);
+            Log.error(gl.getProgramInfoLog(this.program) as string);
         }
         gl.deleteShader(this.vshader as WebGLShader);
         gl.deleteShader(this.fshader as WebGLShader);
+
+        let i = 0;
+        // tslint:disable-next-line:one-variable-per-declaration
+        let info, location;
+        let numAttributes = gl.getProgramParameter(this.program, gl.ACTIVE_ATTRIBUTES);
+        while (i < numAttributes) {
+            info = gl.getActiveAttrib(this.program, i++);
+            location = gl.getAttribLocation(this.program, info.name);
+            // Check attributes are correctly linked up
+            if (this.definition.attributes[info.name] === undefined) {
+                Log.error('Vertex shader attribute "' + info.name + '" is not mapped to a semantic in shader definition.');
+            }
+            // this.attributes.push(new ShaderInput(this.device, this.definition.attributes[info.name], _typeToPc[info.type], location));
+        }
     }
 }
 
