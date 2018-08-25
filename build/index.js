@@ -307,7 +307,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 22nd 2018, 10:03:00 am
+ * Last Modified: Saturday, August 25th 2018, 1:19:23 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -343,6 +343,7 @@ var Application = /** @class */ (function () {
     Application.prototype.tick = function () {
         // this.scene.renderer();
         _core_event__WEBPACK_IMPORTED_MODULE_2__["event"].fire('update');
+        this.scene.renderer();
         window.requestAnimationFrame(this.tick.bind(this));
     };
     Application.prototype.complete = function () {
@@ -366,7 +367,7 @@ var Application = /** @class */ (function () {
 /*!*********************!*\
   !*** ./src/conf.ts ***!
   \*********************/
-/*! exports provided: DataType, SEMANTIC, BUFFER, CURVE */
+/*! exports provided: DataType, SEMANTIC, BUFFER, CURVE, GLType */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -375,6 +376,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SEMANTIC", function() { return SEMANTIC; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BUFFER", function() { return BUFFER; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CURVE", function() { return CURVE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GLType", function() { return GLType; });
 /*
  * ProjectName: hypergl
  * FilePath: \src\conf.ts
@@ -382,7 +384,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 19th 2018, 12:48:35 am
+ * Last Modified: Saturday, August 25th 2018, 2:11:44 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -435,11 +437,34 @@ var BUFFER;
 })(BUFFER || (BUFFER = {}));
 var CURVE;
 (function (CURVE) {
-    CURVE[CURVE["LINEAR"] = 0] = "LINEAR";
-    CURVE[CURVE["SMOOTHSTEP"] = 1] = "SMOOTHSTEP";
-    CURVE[CURVE["CATMULL"] = 2] = "CATMULL";
-    CURVE[CURVE["CARDINAL"] = 3] = "CARDINAL";
+    CURVE["LINEAR"] = "LINEAR";
+    CURVE["SMOOTHSTEP"] = "SMOOTHSTEP";
+    CURVE["CATMULL"] = "CATMULL";
+    CURVE["CARDINAL"] = "CARDINAL";
 })(CURVE || (CURVE = {}));
+var GLType;
+(function (GLType) {
+    GLType[GLType["BOOL"] = 0] = "BOOL";
+    GLType[GLType["INT"] = 1] = "INT";
+    GLType[GLType["FLOAT"] = 2] = "FLOAT";
+    GLType[GLType["FLOAT_VEC2"] = 3] = "FLOAT_VEC2";
+    GLType[GLType["FLOAT_VEC3"] = 4] = "FLOAT_VEC3";
+    GLType[GLType["FLOAT_VEC4"] = 5] = "FLOAT_VEC4";
+    GLType[GLType["INT_VEC2"] = 6] = "INT_VEC2";
+    GLType[GLType["INT_VEC3"] = 7] = "INT_VEC3";
+    GLType[GLType["INT_VEC4"] = 8] = "INT_VEC4";
+    GLType[GLType["BOOL_VEC2"] = 9] = "BOOL_VEC2";
+    GLType[GLType["BOOL_VEC3"] = 10] = "BOOL_VEC3";
+    GLType[GLType["BOOL_VEC4"] = 11] = "BOOL_VEC4";
+    GLType[GLType["FLOAT_MAT2"] = 12] = "FLOAT_MAT2";
+    GLType[GLType["FLOAT_MAT3"] = 13] = "FLOAT_MAT3";
+    GLType[GLType["FLOAT_MAT4"] = 14] = "FLOAT_MAT4";
+    GLType[GLType["SAMPLER_2D"] = 15] = "SAMPLER_2D";
+    GLType[GLType["SAMPLER_CUBE"] = 16] = "SAMPLER_CUBE";
+    GLType[GLType["SAMPLER_2D_SHADOW"] = 17] = "SAMPLER_2D_SHADOW";
+    GLType[GLType["SAMPLER_CUBE_SHADOW"] = 18] = "SAMPLER_CUBE_SHADOW";
+    GLType[GLType["SAMPLER_3D"] = 19] = "SAMPLER_3D";
+})(GLType || (GLType = {}));
 
 
 /***/ }),
@@ -462,7 +487,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 4:24:14 pm
+ * Last Modified: Saturday, August 25th 2018, 1:22:54 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -473,8 +498,8 @@ var IElement = /** @class */ (function () {
     function IElement() {
         this.id = ComponentIdCount++;
         this.uuid = Object(_math_math__WEBPACK_IMPORTED_MODULE_0__["generateUUID"])();
-        this.name = '';
-        this.tag = '';
+        this.name = null;
+        this.tag = null;
         this.enable = true;
     }
     return IElement;
@@ -692,6 +717,7 @@ var IndexBuffer = /** @class */ (function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RendererPlatform", function() { return RendererPlatform; });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util */ "./src/util.ts");
+/* harmony import */ var _conf__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../conf */ "./src/conf.ts");
 /*
  * ProjectName: hypergl
  * FilePath: \src\graphics\device.ts
@@ -699,11 +725,12 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 19th 2018, 1:06:59 pm
+ * Last Modified: Saturday, August 25th 2018, 2:14:04 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
+
 
 var RendererPlatform = /** @class */ (function () {
     function RendererPlatform(canvas) {
@@ -722,6 +749,7 @@ var RendererPlatform = /** @class */ (function () {
                 _util__WEBPACK_IMPORTED_MODULE_0__["Log"].error('你的浏览器不支持webgl');
             }
         }
+        this.init();
     }
     Object.defineProperty(RendererPlatform.prototype, "gl", {
         get: function () {
@@ -730,6 +758,32 @@ var RendererPlatform = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    RendererPlatform.prototype.init = function () {
+        var gl = this.gl;
+        var glTypeToJs = {};
+        glTypeToJs[gl.BOOL] = _conf__WEBPACK_IMPORTED_MODULE_1__["GLType"].BOOL;
+        glTypeToJs[gl.INT] = _conf__WEBPACK_IMPORTED_MODULE_1__["GLType"].INT;
+        glTypeToJs[gl.FLOAT] = _conf__WEBPACK_IMPORTED_MODULE_1__["GLType"].FLOAT;
+        glTypeToJs[gl.FLOAT_VEC2] = _conf__WEBPACK_IMPORTED_MODULE_1__["GLType"].FLOAT_VEC2;
+        glTypeToJs[gl.FLOAT_VEC3] = _conf__WEBPACK_IMPORTED_MODULE_1__["GLType"].FLOAT_VEC3;
+        glTypeToJs[gl.FLOAT_VEC4] = _conf__WEBPACK_IMPORTED_MODULE_1__["GLType"].FLOAT_VEC4;
+        glTypeToJs[gl.INT_VEC2] = _conf__WEBPACK_IMPORTED_MODULE_1__["GLType"].INT_VEC2;
+        glTypeToJs[gl.INT_VEC3] = _conf__WEBPACK_IMPORTED_MODULE_1__["GLType"].INT_VEC3;
+        glTypeToJs[gl.INT_VEC4] = _conf__WEBPACK_IMPORTED_MODULE_1__["GLType"].INT_VEC4;
+        glTypeToJs[gl.BOOL_VEC2] = _conf__WEBPACK_IMPORTED_MODULE_1__["GLType"].BOOL_VEC2;
+        glTypeToJs[gl.BOOL_VEC3] = _conf__WEBPACK_IMPORTED_MODULE_1__["GLType"].BOOL_VEC3;
+        glTypeToJs[gl.BOOL_VEC4] = _conf__WEBPACK_IMPORTED_MODULE_1__["GLType"].BOOL_VEC4;
+        glTypeToJs[gl.FLOAT_MAT2] = _conf__WEBPACK_IMPORTED_MODULE_1__["GLType"].FLOAT_MAT2;
+        glTypeToJs[gl.FLOAT_MAT3] = _conf__WEBPACK_IMPORTED_MODULE_1__["GLType"].FLOAT_MAT3;
+        glTypeToJs[gl.FLOAT_MAT4] = _conf__WEBPACK_IMPORTED_MODULE_1__["GLType"].FLOAT_MAT4;
+        glTypeToJs[gl.SAMPLER_2D] = _conf__WEBPACK_IMPORTED_MODULE_1__["GLType"].SAMPLER_2D;
+        glTypeToJs[gl.SAMPLER_CUBE] = _conf__WEBPACK_IMPORTED_MODULE_1__["GLType"].SAMPLER_CUBE;
+        if (this.platform === 'webgl2') {
+            glTypeToJs[gl.SAMPLER_2D_SHADOW] = _conf__WEBPACK_IMPORTED_MODULE_1__["GLType"].SAMPLER_2D_SHADOW;
+            glTypeToJs[gl.SAMPLER_CUBE_SHADOW] = _conf__WEBPACK_IMPORTED_MODULE_1__["GLType"].SAMPLER_CUBE_SHADOW;
+            glTypeToJs[gl.SAMPLER_3D] = _conf__WEBPACK_IMPORTED_MODULE_1__["GLType"].SAMPLER_3D;
+        }
+    };
     return RendererPlatform;
 }());
 
@@ -923,7 +977,7 @@ var VertexFormat = /** @class */ (function () {
 /*!**********************!*\
   !*** ./src/index.ts ***!
   \**********************/
-/*! exports provided: DataType, SEMANTIC, BUFFER, CURVE, Application, VertexBuffer, VertexFormat, IndexBuffer */
+/*! exports provided: DataType, SEMANTIC, BUFFER, CURVE, GLType, Application, VertexBuffer, VertexFormat, IndexBuffer */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -936,6 +990,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BUFFER", function() { return _conf__WEBPACK_IMPORTED_MODULE_0__["BUFFER"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CURVE", function() { return _conf__WEBPACK_IMPORTED_MODULE_0__["CURVE"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GLType", function() { return _conf__WEBPACK_IMPORTED_MODULE_0__["GLType"]; });
 
 /* harmony import */ var _application__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./application */ "./src/application.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Application", function() { return _application__WEBPACK_IMPORTED_MODULE_1__["Application"]; });
@@ -1538,9 +1594,9 @@ var Mat4 = /** @class */ (function () {
             z = new _vec3__WEBPACK_IMPORTED_MODULE_0__["Vec3"]();
             return function (scale) {
                 scale = (scale === undefined) ? new _vec3__WEBPACK_IMPORTED_MODULE_0__["Vec3"]() : scale;
-                this.getX(x);
-                this.getY(y);
-                this.getZ(z);
+                _this.getX(x);
+                _this.getY(y);
+                _this.getZ(z);
                 scale.set(x.length(), y.length(), z.length());
                 return scale;
             };
@@ -1550,11 +1606,11 @@ var Mat4 = /** @class */ (function () {
             return function (eulers) {
                 var x, y, z, sx, sy, sz, m, halfPi;
                 eulers = (eulers === undefined) ? new _vec3__WEBPACK_IMPORTED_MODULE_0__["Vec3"]() : eulers;
-                this.getScale(scale);
+                _this.getScale(scale);
                 sx = scale.x;
                 sy = scale.y;
                 sz = scale.z;
-                m = this.data;
+                m = _this.data;
                 y = Math.asin(-m[2] / sx);
                 halfPi = Math.PI * 0.5;
                 if (y < halfPi) {
@@ -1743,6 +1799,14 @@ var Mat4 = /** @class */ (function () {
     Mat4.prototype.mul = function (rhs) {
         return this.mul2(this, rhs);
     };
+    /**
+     * 移动到某个点
+     *
+     * @param {Vec3} vec
+     * @param {Vec3} [res] ref
+     * @returns {Vec3} res
+     * @memberof Mat4
+     */
     Mat4.prototype.transformPoint = function (vec, res) {
         var x, y, z, m = this.data, v = vec.data;
         res = (res === undefined) ? new _vec3__WEBPACK_IMPORTED_MODULE_0__["Vec3"]() : res;
@@ -1932,6 +1996,12 @@ var Mat4 = /** @class */ (function () {
         m[15] = 1;
         return this;
     };
+    /**
+     * 修改自身，逆矩阵
+     *
+     * @returns {this} this
+     * @memberof Mat4
+     */
     Mat4.prototype.invert = function () {
         var a00, a01, a02, a03, a10, a11, a12, a13, a20, a21, a22, a23, a30, a31, a32, a33, b00, b01, b02, b03, b04, b05, b06, b07, b08, b09, b10, b11, det, invDet, m;
         m = this.data;
@@ -2435,7 +2505,7 @@ var Quat = /** @class */ (function () {
         }
         return rad * _math__WEBPACK_IMPORTED_MODULE_1__["RAD_TO_DEG"];
     };
-    Quat.prototype.getEulerAngles = function (eulers) {
+    Quat.prototype.getEulerAngles = function (eulers /*ref*/) {
         var x, y, z, qx, qy, qz, qw, a2;
         eulers = (eulers === undefined) ? new _vec3__WEBPACK_IMPORTED_MODULE_0__["Vec3"]() : eulers;
         qx = this.x;
@@ -2707,6 +2777,7 @@ var Quat = /** @class */ (function () {
         res.z = iz * qw + iw * -qz + ix * -qy - iy * -qx;
         return res;
     };
+    Quat.TEMP = new Quat();
     Quat.IDENTITY = new Quat();
     Quat.ZERO = new Quat(0, 0, 0, 0);
     return Quat;
@@ -3300,25 +3371,27 @@ var Camera = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/scene/scene.ts":
-/*!****************************!*\
-  !*** ./src/scene/scene.ts ***!
-  \****************************/
-/*! exports provided: Scene */
+/***/ "./src/scene/node.ts":
+/*!***************************!*\
+  !*** ./src/scene/node.ts ***!
+  \***************************/
+/*! exports provided: INode */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Scene", function() { return Scene; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "INode", function() { return INode; });
 /* harmony import */ var _core_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/element */ "./src/core/element.ts");
+/* harmony import */ var _math__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../math */ "./src/math/index.ts");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util */ "./src/util.ts");
 /*
  * ProjectName: hypergl
- * FilePath: \src\scene.ts
- * Created Date: Saturday, August 18th 2018, 4:22:49 pm
+ * FilePath: \src\scene\node.ts
+ * Created Date: Saturday, August 18th 2018, 10:49:00 pm
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 19th 2018, 1:35:27 pm
+ * Last Modified: Saturday, August 25th 2018, 1:23:52 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -3334,6 +3407,290 @@ var __extends = (undefined && undefined.__extends) || (function () {
     };
 })();
 
+
+
+var scaleCompensatePosTransform = new _math__WEBPACK_IMPORTED_MODULE_1__["Mat4"]();
+var scaleCompensatePos = new _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
+var scaleCompensateRot = new _math__WEBPACK_IMPORTED_MODULE_1__["Quat"]();
+var scaleCompensateRot2 = new _math__WEBPACK_IMPORTED_MODULE_1__["Quat"]();
+var scaleCompensateScale = new _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
+var scaleCompensateScaleForParent = new _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
+var INode = /** @class */ (function (_super) {
+    __extends(INode, _super);
+    function INode() {
+        var _this = _super.call(this) || this;
+        // local
+        _this.localPosition = new _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"](0, 0, 0);
+        _this.localRotation = new _math__WEBPACK_IMPORTED_MODULE_1__["Quat"](0, 0, 0, 1);
+        _this.localScale = new _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"](1, 1, 1);
+        _this.localEulerAngles = new _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"](0, 0, 0);
+        _this.localTransform = new _math__WEBPACK_IMPORTED_MODULE_1__["Mat4"]();
+        _this.children = [];
+        // World-space
+        _this.position = new _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"](0, 0, 0);
+        _this.rotation = new _math__WEBPACK_IMPORTED_MODULE_1__["Quat"](0, 0, 0, 1);
+        _this.eulerAngles = new _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"](0, 0, 0);
+        _this.worldTransform = new _math__WEBPACK_IMPORTED_MODULE_1__["Mat4"]();
+        _this.dirtyNormal = true;
+        _this.scaleCompensation = false;
+        _this._dirtyLocal = false;
+        _this._dirtyWorld = false;
+        _this._up = new _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
+        return _this;
+    }
+    INode.prototype.lookAt = function (target) {
+        // TODO
+        var targetLocation = target.getPosition();
+        var up = target.up;
+        var mat4 = new _math__WEBPACK_IMPORTED_MODULE_1__["Mat4"]().setLookAt(this.getPosition(), targetLocation, up);
+        var quat = new _math__WEBPACK_IMPORTED_MODULE_1__["Quat"]().setFromMat4(mat4);
+        this.setRotation(quat);
+    };
+    INode.prototype.addChild = function (child) {
+        this.children.push(child);
+        child.parent = this;
+    };
+    INode.prototype.setPosition = function (position) {
+        if (this.parent == null) {
+            this.localPosition = position;
+        }
+        else {
+            var invParentWtm = new _math__WEBPACK_IMPORTED_MODULE_1__["Mat4"]().copy(this.parent.getWorldTransform()).invert();
+            invParentWtm.transformPoint(position, this.localPosition);
+        }
+        if (!this._dirtyLocal) {
+            this._dirtify(true);
+        }
+    };
+    /**
+     * 获取世界坐标
+     * @returns
+     * @memberof INode
+     */
+    INode.prototype.getPosition = function () {
+        this.getWorldTransform().getTranslation(this.position);
+        return this.position;
+    };
+    INode.prototype.setLocalEulerAngles = function (vec3) {
+        this.localRotation.setFromEulerAngles(vec3.data[0], vec3.data[1], vec3.data[2]);
+        if (!this._dirtyLocal) {
+            this._dirtify(true);
+        }
+    };
+    INode.prototype.getLocalEulerAngles = function () {
+        this.localRotation.getEulerAngles(this.localEulerAngles);
+        return this.localEulerAngles;
+    };
+    INode.prototype.setEulerAngles = function (vec3) {
+        this.localRotation.setFromEulerAngles(vec3.data[0], vec3.data[1], vec3.data[2]);
+        if (this.parent != null) {
+            var parentRot = this.parent.getRotation();
+            var invParentRot = new _math__WEBPACK_IMPORTED_MODULE_1__["Quat"]().copy(parentRot).invert();
+            this.localRotation.mul2(invParentRot, this.localRotation);
+        }
+        if (!this._dirtyLocal) {
+            this._dirtify(true);
+        }
+    };
+    INode.prototype.getEulerAngles = function () {
+        this.getWorldTransform().getEulerAngles(this.eulerAngles);
+        return this.eulerAngles;
+    };
+    INode.prototype.setLocalPosition = function (vec3) {
+        this.localPosition.copy(vec3);
+        if (!this._dirtyLocal) {
+            this._dirtify(true);
+        }
+    };
+    INode.prototype.getLocalPosition = function () {
+        return this.localPosition;
+    };
+    INode.prototype.setRotation = function (rotation) {
+        if (this.parent == null) {
+            this.localRotation.copy(rotation);
+        }
+        else {
+            var parentRot = this.parent.getRotation();
+            var invParentRot = new _math__WEBPACK_IMPORTED_MODULE_1__["Quat"]().copy(parentRot).invert();
+            this.localRotation.copy(invParentRot).mul(rotation);
+        }
+        if (!this._dirtyLocal) {
+            this._dirtify(true);
+        }
+    };
+    INode.prototype.getRotation = function () {
+        this.rotation.setFromMat4(this.getWorldTransform());
+        return this.rotation;
+    };
+    INode.prototype.getWorldTransform = function () {
+        if (!this._dirtyLocal && !this._dirtyWorld) {
+            return this.worldTransform;
+        }
+        if (this.parent) {
+            this.parent.getWorldTransform();
+        }
+        this._sync();
+        return this.worldTransform;
+    };
+    INode.prototype.getLocalScale = function () {
+        return this.localScale;
+    };
+    // 更新此节点及其所有后代的世界转换矩阵。
+    INode.prototype.syncHierarchy = function () {
+        if (!this.enable) {
+            return;
+        }
+        if (this._dirtyLocal || this._dirtyWorld) {
+            this._sync();
+        }
+        for (var i = 0; i < this.children.length; i++) {
+            this.children[i].syncHierarchy();
+        }
+    };
+    INode.prototype._sync = function () {
+        if (this._dirtyLocal) {
+            this.localTransform.setTRS(this.localPosition, this.localRotation, this.localScale);
+            this._dirtyLocal = false;
+        }
+        if (this._dirtyWorld) {
+            if (this.parent == null) {
+                this.worldTransform.copy(this.localTransform);
+            }
+            else {
+                if (this.scaleCompensation) {
+                    var parentWorldScale = void 0;
+                    var parent = this.parent;
+                    // Find a parent of the first uncompensated node up in the hierarchy and use its scale * localScale
+                    var scale = this.localScale;
+                    var parentToUseScaleFrom = parent; // current parent
+                    if (parentToUseScaleFrom) {
+                        while (parentToUseScaleFrom && parentToUseScaleFrom.scaleCompensation) {
+                            parentToUseScaleFrom = parentToUseScaleFrom.parent;
+                        }
+                        // topmost node with scale compensation
+                        if (parentToUseScaleFrom) {
+                            parentToUseScaleFrom = parentToUseScaleFrom.parent;
+                        } // node without scale compensation
+                        if (parentToUseScaleFrom) {
+                            parentWorldScale = parentToUseScaleFrom.worldTransform.getScale();
+                            scaleCompensateScale.mul2(parentWorldScale, this.localScale);
+                            scale = scaleCompensateScale;
+                        }
+                    }
+                    // Rotation is as usual
+                    scaleCompensateRot2.setFromMat4(parent.worldTransform);
+                    scaleCompensateRot.mul2(scaleCompensateRot2, this.localRotation);
+                    // Find matrix to transform position
+                    var tmatrix = parent.worldTransform;
+                    if (parent.scaleCompensation) {
+                        _util__WEBPACK_IMPORTED_MODULE_2__["Log"].assert(parentWorldScale, 'parentWorldScale 不能是null');
+                        scaleCompensateScaleForParent.mul2(parentWorldScale, parent.getLocalScale());
+                        scaleCompensatePosTransform.setTRS(parent.worldTransform.getTranslation(scaleCompensatePos), scaleCompensateRot2, scaleCompensateScaleForParent);
+                        tmatrix = scaleCompensatePosTransform;
+                    }
+                    tmatrix.transformPoint(this.localPosition, scaleCompensatePos);
+                    this.worldTransform.setTRS(scaleCompensatePos, scaleCompensateRot, scale);
+                }
+                else {
+                    this.worldTransform.mul2(this.parent.worldTransform, this.localTransform);
+                }
+            }
+            this._dirtyWorld = false;
+        }
+    };
+    Object.defineProperty(INode.prototype, "root", {
+        get: function () {
+            var parent = this.parent;
+            if (!parent) {
+                return this;
+            }
+            while (parent.parent) {
+                parent = parent.parent;
+            }
+            return parent;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * 标记自己和儿子“脏” 需要重新获取位置
+     *
+     * @private
+     * @param {boolean} [local]
+     * @returns
+     * @memberof INode
+     */
+    INode.prototype._dirtify = function (local) {
+        if ((!local || (local && this._dirtyLocal)) && this._dirtyWorld) {
+            return;
+        }
+        if (local) {
+            this._dirtyLocal = true;
+        }
+        if (!this._dirtyWorld) {
+            this._dirtyWorld = true;
+            var i = this.children.length;
+            while (i--) {
+                if (this.children[i]._dirtyWorld) {
+                    continue;
+                }
+                this.children[i]._dirtify();
+            }
+        }
+        this.dirtyNormal = true;
+        // this._aabbVer++;
+        // TODO
+    };
+    Object.defineProperty(INode.prototype, "up", {
+        get: function () {
+            return this.getWorldTransform().getY(this._up).normalize();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return INode;
+}(_core_element__WEBPACK_IMPORTED_MODULE_0__["IElement"]));
+
+
+
+/***/ }),
+
+/***/ "./src/scene/scene.ts":
+/*!****************************!*\
+  !*** ./src/scene/scene.ts ***!
+  \****************************/
+/*! exports provided: Scene */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Scene", function() { return Scene; });
+/* harmony import */ var _core_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/element */ "./src/core/element.ts");
+/* harmony import */ var _node__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node */ "./src/scene/node.ts");
+/*
+ * ProjectName: hypergl
+ * FilePath: \src\scene.ts
+ * Created Date: Saturday, August 18th 2018, 4:22:49 pm
+ * @author: dadigua
+ * @summary: short description for the file
+ * -----
+ * Last Modified: Saturday, August 25th 2018, 1:22:48 am
+ * Modified By: dadigua
+ * -----
+ * Copyright (c) 2018 jiguang
+ */
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
 var Scene = /** @class */ (function (_super) {
     __extends(Scene, _super);
     function Scene(app) {
@@ -3341,10 +3698,11 @@ var Scene = /** @class */ (function (_super) {
         _this.app = app;
         _this.lights = [];
         _this.cameras = [];
+        _this.root = new _node__WEBPACK_IMPORTED_MODULE_1__["INode"]();
         return _this;
     }
     Scene.prototype.renderer = function () {
-        // fix sdfa
+        this.root.syncHierarchy();
     };
     Scene.prototype.add = function () {
         // TODO
@@ -3380,7 +3738,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 5:10:59 pm
+ * Last Modified: Saturday, August 25th 2018, 1:28:51 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -3397,10 +3755,14 @@ var Log;
         }
     }
     Log.assert = assert;
-    function warn(condition, message) {
+    function warning(condition, message) {
         if (condition) {
             console.warn(message);
         }
+    }
+    Log.warning = warning;
+    function warn(condition, message) {
+        console.warn(message);
     }
     Log.warn = warn;
     function error(message) {

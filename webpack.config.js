@@ -52,12 +52,15 @@ module.exports = function (env, webpackConfig) {
                 {
                     test: /\.(frag|vert)$/,
                     use: 'raw-loader'
-                }
+                },
+                { test: /\.handlebars$/, loader: 'handlebars-loader' }
+
             ]
         },
         resolve: {
             extensions: ['.ts', '.tsx', '.js'],
             alias: {
+                'handlebars': 'handlebars/dist/handlebars.js'
             }
         },
         externals: [],
