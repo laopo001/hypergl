@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 22nd 2018, 11:32:51 pm
+ * Last Modified: Saturday, August 25th 2018, 6:04:14 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -27,3 +27,5 @@ export type Fn<T> = (...args) => T;
 export type FnVoid = Fn<void>;
 
 export type Nullable<T> = T | null;
+
+export type Undefined<T> = T | undefined;

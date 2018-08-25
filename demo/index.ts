@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 25th 2018, 4:19:21 pm
+ * Last Modified: Saturday, August 25th 2018, 8:12:09 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -13,13 +13,13 @@
 
 
 // tslint:disable
-import { SEMANTIC, BUFFER, VertexBuffer, IndexBuffer, VertexFormat, Application } from '../src/index';
+import { SEMANTIC, BUFFER, VertexBuffer, IndexBuffer, VertexFormat, Application, BasicMaterial } from '../src/index';
 import vert from '../src/graphics/shaders/vertex.vert';
 import frag from '../src/graphics/shaders/fragment.frag';
 import { initShaders } from './utils/util'
 import { Mat4, Vec3 } from '../src/math';
 import { Camera } from '../src/scene/camera';
-import { basicVertStr, basicFragStr } from '../src/graphics/generateShader'
+
 
 
 
@@ -103,4 +103,6 @@ app.on('update', () => {
 
 })
 
-console.log(basicVertStr, basicFragStr)
+let m = new BasicMaterial();
+m.updateShader(app.rendererPlatform);
+console.log(m)

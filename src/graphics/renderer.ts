@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 25th 2018, 2:14:04 am
+ * Last Modified: Saturday, August 25th 2018, 8:26:01 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -14,13 +14,16 @@
 
 import { Log } from '../util';
 import { GLType } from '../conf';
-type Platform = 'webgl' | 'webgl2';
+import { ShaderProgramGenerator } from './shaderProgramGenerator';
+import { Undefined } from '../types';
+export type Platform = 'webgl' | 'webgl2';
 export class RendererPlatform {
     get gl() {
         return this.webgl2 || this.webgl;
     }
     platform!: Platform;
-    glTypeToJs!: { [s: string]: GLType };
+    glTypeToJs: { [s: string]: Undefined<GLType> } = {};
+    programGenerator = new ShaderProgramGenerator(this);
     private webgl!: WebGLRenderingContext;
     private webgl2!: WebGL2RenderingContext;
     constructor(canvas: HTMLCanvasElement) {
@@ -41,7 +44,7 @@ export class RendererPlatform {
     }
     init() {
         let gl = this.gl;
-        let glTypeToJs = {};
+        let glTypeToJs = this.glTypeToJs;
         glTypeToJs[gl.BOOL] = GLType.BOOL;
         glTypeToJs[gl.INT] = GLType.INT;
         glTypeToJs[gl.FLOAT] = GLType.FLOAT;

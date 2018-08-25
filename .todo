@@ -6,9 +6,9 @@ Todos:
   new: 
     ☐ 封装camera @started(18-08-21 18:51)
     ☐ 纹理
-    ☐ BasicMaterial @started(18-08-25 16:43)
     ☐ graph-node 
   Done:
+    ✔ BasicMaterial @started(18-08-25 16:43) @done(18-08-25 20:30) @lasted(3h47m3s)
     ✔ 使用handlebars模板，生成shader文件 @started(18-08-25 15:47) @done(18-08-25 16:42) @lasted(55m18s)
     ✔ 空间立方体的demo webgl1 to webgl2 @done(18-08-20 00:04)
     ✔ event 事件模块 @started(18-08-22 01:31) @done(18-08-22 01:52) @lasted(21m14s)

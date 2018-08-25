@@ -103,7 +103,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils/util */ "./demo/utils/util.ts");
 /* harmony import */ var _src_math__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../src/math */ "./src/math/index.ts");
 /* harmony import */ var _src_scene_camera__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../src/scene/camera */ "./src/scene/camera.ts");
-/* harmony import */ var _src_graphics_generateShader__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../src/graphics/generateShader */ "./src/graphics/generateShader.ts");
 /*
  * ProjectName: hypergl
  * FilePath: \demo\index.ts
@@ -111,13 +110,12 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 25th 2018, 4:19:21 pm
+ * Last Modified: Saturday, August 25th 2018, 8:12:09 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
 // tslint:disable
-
 
 
 
@@ -188,7 +186,9 @@ gl.drawElements(gl.TRIANGLES, ibuffer.length, gl.UNSIGNED_BYTE, 0);
 console.log(format, vbuffer, ibuffer);
 app.on('update', function () {
 });
-console.log(_src_graphics_generateShader__WEBPACK_IMPORTED_MODULE_6__["basicVertStr"], _src_graphics_generateShader__WEBPACK_IMPORTED_MODULE_6__["basicFragStr"]);
+var m = new _src_index__WEBPACK_IMPORTED_MODULE_0__["BasicMaterial"]();
+m.updateShader(app.rendererPlatform);
+console.log(m);
 
 
 /***/ }),
@@ -1820,6 +1820,134 @@ var GLType;
 
 /***/ }),
 
+/***/ "./src/core/color.ts":
+/*!***************************!*\
+  !*** ./src/core/color.ts ***!
+  \***************************/
+/*! exports provided: Color */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Color", function() { return Color; });
+/* harmony import */ var _math_math__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../math/math */ "./src/math/math.ts");
+/*
+ * ProjectName: hypergl
+ * FilePath: \src\core\color.ts
+ * Created Date: Saturday, August 25th 2018, 4:51:43 pm
+ * @author: dadigua
+ * @summary: short description for the file
+ * -----
+ * Last Modified: Saturday, August 25th 2018, 8:27:36 pm
+ * Modified By: dadigua
+ * -----
+ * Copyright (c) 2018 jiguang
+ */
+
+var Color = /** @class */ (function () {
+    function Color(r, g, b, a) {
+        this.buffer = new ArrayBuffer(4 * 4);
+        this.data = new Float32Array(this.buffer, 0, 4);
+        this.data3 = new Float32Array(this.buffer, 0, 3);
+        this.data[0] = r || 0;
+        this.data[1] = g || 0;
+        this.data[2] = b || 0;
+        this.data[3] = a !== undefined ? a : 1;
+    }
+    Color.prototype.clone = function () {
+        return new Color(this.data[0], this.data[1], this.data[2], this.data[3]);
+    };
+    Color.prototype.copy = function (_a) {
+        var data = _a.data;
+        // tslint:disable-next-line:one-variable-per-declaration
+        var a = this.data, b = data;
+        a[0] = b[0];
+        a[1] = b[1];
+        a[2] = b[2];
+        a[3] = b[3];
+        return this;
+    };
+    Color.prototype.set = function (r, g, b, a) {
+        var c = this.data;
+        c[0] = r;
+        c[1] = g;
+        c[2] = b;
+        c[3] = (a === undefined) ? 1 : a;
+        return this;
+    };
+    Color.prototype.fromString = function (hex) {
+        var i = parseInt(hex.replace('#', '0x'), 10);
+        var bytes;
+        if (hex.length > 7) {
+            bytes = Object(_math_math__WEBPACK_IMPORTED_MODULE_0__["intToBytes32"])(i);
+        }
+        else {
+            bytes = Object(_math_math__WEBPACK_IMPORTED_MODULE_0__["intToBytes24"])(i);
+            bytes[3] = 255;
+        }
+        this.set(bytes[0] / 255, bytes[1] / 255, bytes[2] / 255, bytes[3] / 255);
+        return this;
+    };
+    Color.prototype.toString = function (alpha) {
+        var s = "#" + ((1 << 24) + (parseInt((this.r * 255).toString(), 10) << 16) + (parseInt((this.g * 255).toString(), 10) << 8) + parseInt((this.b * 255).toString(), 10)).toString(16).slice(1);
+        if (alpha === true) {
+            var a = parseInt((this.a * 255).toString(), 10).toString(16);
+            if (this.a < 16 / 255) {
+                s += "0" + a;
+            }
+            else {
+                s += a;
+            }
+        }
+        return s;
+    };
+    Object.defineProperty(Color.prototype, "r", {
+        get: function () {
+            return this.data[0];
+        },
+        set: function (value) {
+            this.data[0] = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Color.prototype, "g", {
+        get: function () {
+            return this.data[1];
+        },
+        set: function (value) {
+            this.data[1] = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Color.prototype, "b", {
+        get: function () {
+            return this.data[2];
+        },
+        set: function (value) {
+            this.data[2] = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Color.prototype, "a", {
+        get: function () {
+            return this.data[3];
+        },
+        set: function (value) {
+            this.data[3] = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Color;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/core/element.ts":
 /*!*****************************!*\
   !*** ./src/core/element.ts ***!
@@ -1941,50 +2069,6 @@ var event = {
         return name in _callbacks;
     }
 };
-
-
-/***/ }),
-
-/***/ "./src/graphics/generateShader.ts":
-/*!****************************************!*\
-  !*** ./src/graphics/generateShader.ts ***!
-  \****************************************/
-/*! exports provided: basicVertStr, basicFragStr, ShaderGenerater */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "basicVertStr", function() { return basicVertStr; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "basicFragStr", function() { return basicFragStr; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ShaderGenerater", function() { return ShaderGenerater; });
-/* harmony import */ var _shaders_basic_vert__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./shaders/basic.vert */ "./src/graphics/shaders/basic.vert");
-/* harmony import */ var _shaders_basic_vert__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_shaders_basic_vert__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _shaders_basic_frag__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./shaders/basic.frag */ "./src/graphics/shaders/basic.frag");
-/* harmony import */ var _shaders_basic_frag__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_shaders_basic_frag__WEBPACK_IMPORTED_MODULE_1__);
-/*
- * ProjectName: hypergl
- * FilePath: \src\graphics\generateShader.ts
- * Created Date: Saturday, August 25th 2018, 3:45:20 pm
- * @author: dadigua
- * @summary: short description for the file
- * -----
- * Last Modified: Saturday, August 25th 2018, 4:27:54 pm
- * Modified By: dadigua
- * -----
- * Copyright (c) 2018 jiguang
- */
-
-
-var basicVertStr = _shaders_basic_vert__WEBPACK_IMPORTED_MODULE_0___default()({ 'GL2': true });
-var basicFragStr = _shaders_basic_frag__WEBPACK_IMPORTED_MODULE_1___default()({ 'GL2': true });
-
-var ShaderGenerater = /** @class */ (function () {
-    function ShaderGenerater(renderer) {
-        this.renderer = renderer;
-    }
-    return ShaderGenerater;
-}());
-
 
 
 /***/ }),
@@ -2113,6 +2197,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RendererPlatform", function() { return RendererPlatform; });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util */ "./src/util.ts");
 /* harmony import */ var _conf__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../conf */ "./src/conf.ts");
+/* harmony import */ var _shaderProgramGenerator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./shaderProgramGenerator */ "./src/graphics/shaderProgramGenerator.ts");
 /*
  * ProjectName: hypergl
  * FilePath: \src\graphics\device.ts
@@ -2120,15 +2205,18 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 25th 2018, 2:14:04 am
+ * Last Modified: Saturday, August 25th 2018, 8:26:01 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
 
 
+
 var RendererPlatform = /** @class */ (function () {
     function RendererPlatform(canvas) {
+        this.glTypeToJs = {};
+        this.programGenerator = new _shaderProgramGenerator__WEBPACK_IMPORTED_MODULE_2__["ShaderProgramGenerator"](this);
         this.webgl2 = canvas.getContext('webgl2');
         if (this.webgl2) {
             this.platform = 'webgl2';
@@ -2155,7 +2243,7 @@ var RendererPlatform = /** @class */ (function () {
     });
     RendererPlatform.prototype.init = function () {
         var gl = this.gl;
-        var glTypeToJs = {};
+        var glTypeToJs = this.glTypeToJs;
         glTypeToJs[gl.BOOL] = _conf__WEBPACK_IMPORTED_MODULE_1__["GLType"].BOOL;
         glTypeToJs[gl.INT] = _conf__WEBPACK_IMPORTED_MODULE_1__["GLType"].INT;
         glTypeToJs[gl.FLOAT] = _conf__WEBPACK_IMPORTED_MODULE_1__["GLType"].FLOAT;
@@ -2182,6 +2270,188 @@ var RendererPlatform = /** @class */ (function () {
     return RendererPlatform;
 }());
 
+
+
+/***/ }),
+
+/***/ "./src/graphics/shader.ts":
+/*!********************************!*\
+  !*** ./src/graphics/shader.ts ***!
+  \********************************/
+/*! exports provided: Shader, createProgram, loadShader */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Shader", function() { return Shader; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createProgram", function() { return createProgram; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadShader", function() { return loadShader; });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util */ "./src/util.ts");
+/*
+ * ProjectName: hypergl
+ * FilePath: \src\graphics\shader.ts
+ * Created Date: Saturday, August 25th 2018, 1:38:57 am
+ * @author: dadigua
+ * @summary: short description for the file
+ * -----
+ * Last Modified: Saturday, August 25th 2018, 5:57:32 pm
+ * Modified By: dadigua
+ * -----
+ * Copyright (c) 2018 jiguang
+ */
+
+var Shader = /** @class */ (function () {
+    function Shader(renderer, definition) {
+        this.renderer = renderer;
+        this.definition = definition;
+        this.samplers = [];
+        this.uniforms = [];
+        this.attributes = [];
+    }
+    Shader.prototype.compile = function () {
+        var gl = this.renderer.gl;
+        this.vshader = loadShader(gl, gl.VERTEX_SHADER, this.definition.vshader);
+        this.fshader = loadShader(gl, gl.FRAGMENT_SHADER, this.definition.fshader);
+        this.program = createProgram(gl, this.definition.vshader, this.definition.fshader);
+    };
+    Shader.prototype.link = function () {
+        if (this.program == null) {
+            _util__WEBPACK_IMPORTED_MODULE_0__["Log"].error('link前,必须compile');
+            return;
+        }
+        var gl = this.renderer.gl;
+        if (this.renderer.platform === 'webgl2' && this.definition.useTransformFeedback) {
+            // Collect all "out_" attributes and use them for output
+            var attrs = this.definition.attributes;
+            var outNames_1 = [];
+            // for (let attr in attrs) {
+            //     if (attrs.hasOwnProperty(attr)) {
+            //         outNames.push('out_' + attr);
+            //     }
+            // }
+            attrs.keys().forEach(function (attr) {
+                outNames_1.push('out_' + attr);
+            });
+            // webgl2缓存
+            gl.transformFeedbackVaryings(this.program, outNames_1, gl.INTERLEAVED_ATTRIBS);
+        }
+        gl.linkProgram(this.program);
+        var linked = gl.getProgramParameter(this.program, gl.LINK_STATUS);
+        if (!linked) {
+            _util__WEBPACK_IMPORTED_MODULE_0__["Log"].error(gl.getProgramInfoLog(this.program));
+        }
+        gl.deleteShader(this.vshader);
+        gl.deleteShader(this.fshader);
+        var i = 0;
+        // tslint:disable-next-line:one-variable-per-declaration
+        var info, location;
+        var numAttributes = gl.getProgramParameter(this.program, gl.ACTIVE_ATTRIBUTES);
+        while (i < numAttributes) {
+            info = gl.getActiveAttrib(this.program, i++);
+            location = gl.getAttribLocation(this.program, info.name);
+            // Check attributes are correctly linked up
+            if (this.definition.attributes[info.name] === undefined) {
+                _util__WEBPACK_IMPORTED_MODULE_0__["Log"].error('Vertex shader attribute "' + info.name + '" is not mapped to a semantic in shader definition.');
+            }
+            // this.attributes.push(new ShaderInput(this.device, this.definition.attributes[info.name], _typeToPc[info.type], location));
+        }
+    };
+    return Shader;
+}());
+
+function createProgram(gl, vertexShader, fragmentShader) {
+    var program = gl.createProgram();
+    gl.attachShader(program, vertexShader);
+    gl.attachShader(program, fragmentShader);
+    return program;
+}
+function loadShader(gl, type, source) {
+    var shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    var compiled = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+    if (!compiled) {
+        _util__WEBPACK_IMPORTED_MODULE_0__["Log"].error(gl.getShaderInfoLog(shader));
+        return false;
+    }
+    return shader;
+}
+
+
+/***/ }),
+
+/***/ "./src/graphics/shaderProgramGenerator.ts":
+/*!************************************************!*\
+  !*** ./src/graphics/shaderProgramGenerator.ts ***!
+  \************************************************/
+/*! exports provided: ShaderProgramGenerator */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ShaderProgramGenerator", function() { return ShaderProgramGenerator; });
+/* harmony import */ var _shaders_basic_vert__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./shaders/basic.vert */ "./src/graphics/shaders/basic.vert");
+/* harmony import */ var _shaders_basic_vert__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_shaders_basic_vert__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _shaders_basic_frag__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./shaders/basic.frag */ "./src/graphics/shaders/basic.frag");
+/* harmony import */ var _shaders_basic_frag__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_shaders_basic_frag__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _shader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./shader */ "./src/graphics/shader.ts");
+/* harmony import */ var _conf__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../conf */ "./src/conf.ts");
+/*
+ * ProjectName: hypergl
+ * FilePath: \src\graphics\generateShader.ts
+ * Created Date: Saturday, August 25th 2018, 3:45:20 pm
+ * @author: dadigua
+ * @summary: short description for the file
+ * -----
+ * Last Modified: Saturday, August 25th 2018, 6:57:42 pm
+ * Modified By: dadigua
+ * -----
+ * Copyright (c) 2018 jiguang
+ */
+
+
+
+
+var ShaderProgramGenerator = /** @class */ (function () {
+    function ShaderProgramGenerator(renderer) {
+        this.renderer = renderer;
+        this.generator = {};
+        this._cache = {};
+    }
+    ShaderProgramGenerator.prototype.getProgram = function (name, options) {
+        if (options === void 0) { options = {}; }
+        var platform = this.renderer.platform;
+        options['GL2'] = platform === 'webgl2';
+        var key = generateKey(options);
+        var shader = this._cache[key];
+        if (!shader) {
+            var shaderDefinition = createShaderDefinition(this.renderer, options);
+            shader = this._cache[key] = new _shader__WEBPACK_IMPORTED_MODULE_2__["Shader"](this.renderer, shaderDefinition);
+        }
+        return shader;
+    };
+    return ShaderProgramGenerator;
+}());
+
+function generateKey(options) {
+    return JSON.stringify(options);
+}
+function createShaderDefinition(renderer, options) {
+    var basicVertStr = _shaders_basic_vert__WEBPACK_IMPORTED_MODULE_0___default()(options);
+    var basicFragStr = _shaders_basic_frag__WEBPACK_IMPORTED_MODULE_1___default()(options);
+    var attributes = { vertex_position: _conf__WEBPACK_IMPORTED_MODULE_3__["SEMANTIC"].POSITION };
+    if (options.vertexColors) {
+        attributes.vertex_color = _conf__WEBPACK_IMPORTED_MODULE_3__["SEMANTIC"].COLOR;
+    }
+    if (options.diffuseMap) {
+        attributes.vertex_texCoord0 = _conf__WEBPACK_IMPORTED_MODULE_3__["SEMANTIC"].TEXCOORD0;
+    }
+    return {
+        attributes: attributes,
+        vshader: basicVertStr,
+        fshader: basicFragStr
+    };
+}
 
 
 /***/ }),
@@ -2454,7 +2724,7 @@ var VertexFormat = /** @class */ (function () {
 /*!**********************!*\
   !*** ./src/index.ts ***!
   \**********************/
-/*! exports provided: DataType, SEMANTIC, BUFFER, CURVE, GLType, Application, VertexBuffer, VertexFormat, IndexBuffer */
+/*! exports provided: DataType, SEMANTIC, BUFFER, CURVE, GLType, Application, VertexBuffer, VertexFormat, IndexBuffer, BasicMaterial */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2480,6 +2750,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "IndexBuffer", function() { return _graphics__WEBPACK_IMPORTED_MODULE_2__["IndexBuffer"]; });
 
+/* harmony import */ var _material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./material */ "./src/material/index.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BasicMaterial", function() { return _material__WEBPACK_IMPORTED_MODULE_3__["BasicMaterial"]; });
+
 /*
  * ProjectName: hypergl
  * FilePath: \src\index.ts
@@ -2487,13 +2760,147 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 18th 2018, 5:30:15 pm
+ * Last Modified: Saturday, August 25th 2018, 7:16:52 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
 
 
+
+
+
+
+/***/ }),
+
+/***/ "./src/material/basicMaterial.ts":
+/*!***************************************!*\
+  !*** ./src/material/basicMaterial.ts ***!
+  \***************************************/
+/*! exports provided: BasicMaterial */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BasicMaterial", function() { return BasicMaterial; });
+/* harmony import */ var _core_color__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/color */ "./src/core/color.ts");
+/* harmony import */ var _material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./material */ "./src/material/material.ts");
+/*
+ * ProjectName: hypergl
+ * FilePath: \src\material\basicMaterial.ts
+ * Created Date: Saturday, August 25th 2018, 4:46:29 pm
+ * @author: dadigua
+ * @summary: short description for the file
+ * -----
+ * Last Modified: Saturday, August 25th 2018, 8:29:16 pm
+ * Modified By: dadigua
+ * -----
+ * Copyright (c) 2018 jiguang
+ */
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+var BasicMaterial = /** @class */ (function (_super) {
+    __extends(BasicMaterial, _super);
+    function BasicMaterial() {
+        var _this = _super.call(this) || this;
+        _this.color = new _core_color__WEBPACK_IMPORTED_MODULE_0__["Color"](1, 1, 1, 1);
+        _this.update();
+        return _this;
+    }
+    BasicMaterial.prototype.update = function () {
+        this.setParameter('vertex_color', this.color.data);
+        if (this.colorMap) {
+            // TODO
+            // this.setParameter('texture_diffuseMap', this.colorMap);
+        }
+    };
+    BasicMaterial.prototype.updateShader = function (renderer) {
+        this.shader = renderer.programGenerator.getProgram('basice');
+    };
+    return BasicMaterial;
+}(_material__WEBPACK_IMPORTED_MODULE_1__["Material"]));
+
+
+
+/***/ }),
+
+/***/ "./src/material/index.ts":
+/*!*******************************!*\
+  !*** ./src/material/index.ts ***!
+  \*******************************/
+/*! exports provided: BasicMaterial */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _basicMaterial__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./basicMaterial */ "./src/material/basicMaterial.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BasicMaterial", function() { return _basicMaterial__WEBPACK_IMPORTED_MODULE_0__["BasicMaterial"]; });
+
+/*
+ * ProjectName: hypergl
+ * FilePath: \src\material\index.ts
+ * Created Date: Saturday, August 25th 2018, 7:13:48 pm
+ * @author: dadigua
+ * @summary: short description for the file
+ * -----
+ * Last Modified: Saturday, August 25th 2018, 7:13:55 pm
+ * Modified By: dadigua
+ * -----
+ * Copyright (c) 2018 jiguang
+ */
+
+
+
+/***/ }),
+
+/***/ "./src/material/material.ts":
+/*!**********************************!*\
+  !*** ./src/material/material.ts ***!
+  \**********************************/
+/*! exports provided: Material */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Material", function() { return Material; });
+/*
+ * ProjectName: hypergl
+ * FilePath: \src\material\material.ts
+ * Created Date: Saturday, August 25th 2018, 5:01:50 pm
+ * @author: dadigua
+ * @summary: short description for the file
+ * -----
+ * Last Modified: Saturday, August 25th 2018, 5:15:56 pm
+ * Modified By: dadigua
+ * -----
+ * Copyright (c) 2018 jiguang
+ */
+var Material = /** @class */ (function () {
+    function Material() {
+        this.parameters = {};
+    }
+    Material.prototype.setParameter = function (name, data) {
+        this.parameters[name] = data;
+    };
+    Material.prototype.getParameter = function (name) {
+        return this.parameters[name];
+    };
+    Material.prototype.deleteParameter = function () {
+        // x
+        delete this.parameters[name];
+    };
+    return Material;
+}());
 
 
 

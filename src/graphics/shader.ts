@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 25th 2018, 3:36:15 pm
+ * Last Modified: Saturday, August 25th 2018, 5:57:32 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -26,7 +26,7 @@ export class Shader {
         attributes: { [s: string]: any };
         vshader: string;
         fshader: string;
-        useTransformFeedback: boolean;
+        useTransformFeedback?: boolean;
     }) {
 
     }
