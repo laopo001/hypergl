@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 26th 2018, 4:18:03 pm
+ * Last Modified: Monday, August 27th 2018, 12:12:01 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -13,6 +13,7 @@
 
 
 import { Vec3, Quat, Mat4 } from '../math';
+import { INode } from './node';
 export class Camera {
     worldMatrixInverse = new Mat4().setLookAt(new Vec3(0, 0, 0), new Vec3(0, 0, 1), new Vec3(0, 1, 0)).invert();
     position: Vec3;

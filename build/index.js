@@ -1672,7 +1672,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 25th 2018, 1:19:23 am
+ * Last Modified: Sunday, August 26th 2018, 10:45:01 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -1708,7 +1708,7 @@ var Application = /** @class */ (function () {
     Application.prototype.tick = function () {
         // this.scene.renderer();
         _core_event__WEBPACK_IMPORTED_MODULE_2__["event"].fire('update');
-        this.scene.renderer();
+        this.scene.render();
         window.requestAnimationFrame(this.tick.bind(this));
     };
     Application.prototype.complete = function () {
@@ -5444,7 +5444,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 26th 2018, 4:18:03 pm
+ * Last Modified: Monday, August 27th 2018, 12:12:01 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -5785,7 +5785,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 25th 2018, 1:22:48 am
+ * Last Modified: Sunday, August 26th 2018, 10:45:00 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -5812,11 +5812,8 @@ var Scene = /** @class */ (function (_super) {
         _this.root = new _node__WEBPACK_IMPORTED_MODULE_1__["INode"]();
         return _this;
     }
-    Scene.prototype.renderer = function () {
+    Scene.prototype.render = function () {
         this.root.syncHierarchy();
-    };
-    Scene.prototype.add = function () {
-        // TODO
     };
     Object.defineProperty(Scene.prototype, Symbol.toStringTag, {
         get: function () {

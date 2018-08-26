@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 25th 2018, 1:22:48 am
+ * Last Modified: Sunday, August 26th 2018, 10:45:00 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -25,11 +25,8 @@ export class Scene extends IElement {
     constructor(private app: Application) {
         super();
     }
-    renderer() {
+    render() {
         this.root.syncHierarchy();
-    }
-    add() {
-        // TODO
     }
     get [Symbol.toStringTag]() {
         return 'Scene';
