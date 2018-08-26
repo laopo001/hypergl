@@ -103,6 +103,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils/util */ "./demo/utils/util.ts");
 /* harmony import */ var _src_math__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../src/math */ "./src/math/index.ts");
 /* harmony import */ var _src_scene_camera__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../src/scene/camera */ "./src/scene/camera.ts");
+/* harmony import */ var _src_mesh_mesh__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../src/mesh/mesh */ "./src/mesh/mesh.ts");
 /*
  * ProjectName: hypergl
  * FilePath: \demo\index.ts
@@ -110,12 +111,12 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 25th 2018, 8:12:09 pm
+ * Last Modified: Sunday, August 26th 2018, 4:06:23 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
-// tslint:disable
+
 
 
 
@@ -123,26 +124,36 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var app = new _src_index__WEBPACK_IMPORTED_MODULE_0__["Application"](document.getElementById('canvas'));
-var format = new _src_index__WEBPACK_IMPORTED_MODULE_0__["VertexFormat"]([{
-        semantic: _src_index__WEBPACK_IMPORTED_MODULE_0__["SEMANTIC"].POSITION,
-        size: 3,
-        dataType: Float32Array,
-        normalize: true
-    }, {
-        semantic: _src_index__WEBPACK_IMPORTED_MODULE_0__["SEMANTIC"].COLOR,
-        size: 3,
-        dataType: Float32Array,
-        normalize: true
-    }]);
+// const format = new VertexFormat([{
+//     semantic: SEMANTIC.POSITION,
+//     size: 3,
+//     dataType: Float32Array,
+//     normalize: true
+// }, {
+//     semantic: SEMANTIC.COLOR,
+//     size: 3,
+//     dataType: Float32Array,
+//     normalize: true
+// }]);
 var vertices = [
-    1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
-    -1.0, 1.0, 1.0, 1.0, 0.0, 1.0,
-    -1.0, -1.0, 1.0, 1.0, 0.0, 0.0,
-    1.0, -1.0, 1.0, 1.0, 1.0, 0.0,
-    1.0, -1.0, -1.0, 0.0, 1.0, 0.0,
-    1.0, 1.0, -1.0, 0.0, 1.0, 1.0,
-    -1.0, 1.0, -1.0, 0.0, 0.0, 1.0,
-    -1.0, -1.0, -1.0, 0.0, 0.0, 0.0 // v7 Black
+    1, 1, 1,
+    -1, 1, 1,
+    -1, -1, 1,
+    1, -1, 1,
+    1, -1, -1,
+    1, 1, -1,
+    -1, 1, -1,
+    -1, -1, -1 // v7 Black
+];
+var colors = [
+    1, 1, 1, 1,
+    1, 0, 1, 1,
+    1, 0, 0, 1,
+    1, 1, 0, 1,
+    0, 1, 0, 1,
+    0, 1, 1, 1,
+    0, 0, 1, 1,
+    0, 0, 0, 1 // v7 Black
 ];
 var indices = [
     0, 1, 2, 0, 2, 3,
@@ -152,10 +163,15 @@ var indices = [
     7, 4, 3, 7, 3, 2,
     4, 7, 6, 4, 6, 5 // back
 ];
-var vbuffer = new _src_index__WEBPACK_IMPORTED_MODULE_0__["VertexBuffer"](app.rendererPlatform, format, _src_index__WEBPACK_IMPORTED_MODULE_0__["BUFFER"].STATIC, vertices);
-console.log(new Float32Array(vbuffer.buffer));
+//
+var mesh = _src_mesh_mesh__WEBPACK_IMPORTED_MODULE_6__["Mesh"].createMesh(app.rendererPlatform, {
+    positions: vertices,
+    colors: colors,
+    indices: indices
+});
+var vbuffer = mesh.vertexBuffer;
+var ibuffer = mesh.indexBuffer;
 vbuffer.bind();
-var ibuffer = new _src_index__WEBPACK_IMPORTED_MODULE_0__["IndexBuffer"](app.rendererPlatform, Uint8Array, _src_index__WEBPACK_IMPORTED_MODULE_0__["BUFFER"].STATIC, indices);
 ibuffer.bind();
 var camera = new _src_scene_camera__WEBPACK_IMPORTED_MODULE_5__["Camera"](45, app.canvas.width / app.canvas.height, 1, 1000);
 // let viewMatrix = new Mat4().setLookAt(new Vec3(3, 3, 3), new Vec3(0, 0, 0), new Vec3(0, 1, 0)).invert();
@@ -168,27 +184,25 @@ var modelMatrix = new _src_math__WEBPACK_IMPORTED_MODULE_4__["Mat4"]();
 var mvpMatrix = camera.PVMatrix.mul(modelMatrix);
 var gl = app.rendererPlatform.gl;
 var program = Object(_utils_util__WEBPACK_IMPORTED_MODULE_3__["initShaders"])(gl, _src_graphics_shaders_vertex_vert__WEBPACK_IMPORTED_MODULE_1___default()(), _src_graphics_shaders_fragment_frag__WEBPACK_IMPORTED_MODULE_2___default()());
-var FSIZE = Float32Array.BYTES_PER_ELEMENT;
 var a_Position = gl.getAttribLocation(program, 'a_Position');
-gl.vertexAttribPointer(a_Position, 3, gl.FLOAT, false, 6 * FSIZE, 0);
+var length = Float32Array.BYTES_PER_ELEMENT * 3 + Uint8Array.BYTES_PER_ELEMENT * 4;
+gl.vertexAttribPointer(a_Position, 3, gl.FLOAT, false, length, 0);
 gl.enableVertexAttribArray(a_Position);
 var a_Color = gl.getAttribLocation(program, 'a_Color');
-gl.vertexAttribPointer(a_Color, 3, gl.FLOAT, false, 6 * FSIZE, 3 * FSIZE);
+gl.vertexAttribPointer(a_Color, 4, gl.UNSIGNED_BYTE, false, length, 3 * Float32Array.BYTES_PER_ELEMENT);
 gl.enableVertexAttribArray(a_Color);
 var u_MvpjMatrix = gl.getUniformLocation(program, 'u_MvpjMatrix');
 gl.uniformMatrix4fv(u_MvpjMatrix, false, mvpMatrix.data);
 // 深度测试
 gl.enable(gl.DEPTH_TEST);
 gl.clear(gl.DEPTH_BUFFER_BIT);
-gl.clearColor(0.0, 0.0, 0.0, 1.0);
+gl.clearColor(0, 0, 0, 1);
 gl.clear(gl.COLOR_BUFFER_BIT);
-gl.drawElements(gl.TRIANGLES, ibuffer.length, gl.UNSIGNED_BYTE, 0);
-console.log(format, vbuffer, ibuffer);
-app.on('update', function () {
-});
-var m = new _src_index__WEBPACK_IMPORTED_MODULE_0__["BasicMaterial"]();
-m.updateShader(app.rendererPlatform);
-console.log(m);
+gl.drawElements(gl.TRIANGLES, ibuffer.length, ibuffer.drawFormat, 0);
+console.log(vbuffer.format, vbuffer, ibuffer);
+// app.on('update', () => {
+// });
+// s
 
 
 /***/ }),
@@ -2077,13 +2091,17 @@ var event = {
 /*!*******************************!*\
   !*** ./src/graphics/index.ts ***!
   \*******************************/
-/*! exports provided: VertexBuffer, VertexFormat, IndexBuffer */
+/*! exports provided: VertexBuffer, Iterator, Setter, VertexFormat, IndexBuffer */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _vertexBuffer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vertexBuffer */ "./src/graphics/vertexBuffer.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "VertexBuffer", function() { return _vertexBuffer__WEBPACK_IMPORTED_MODULE_0__["VertexBuffer"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Iterator", function() { return _vertexBuffer__WEBPACK_IMPORTED_MODULE_0__["Iterator"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Setter", function() { return _vertexBuffer__WEBPACK_IMPORTED_MODULE_0__["Setter"]; });
 
 /* harmony import */ var _vertexFormat__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./vertexFormat */ "./src/graphics/vertexFormat.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "VertexFormat", function() { return _vertexFormat__WEBPACK_IMPORTED_MODULE_1__["VertexFormat"]; });
@@ -2128,7 +2146,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 19th 2018, 1:36:08 am
+ * Last Modified: Sunday, August 26th 2018, 4:06:09 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -2141,6 +2159,16 @@ var IndexBuffer = /** @class */ (function () {
         this.dataType = dataType;
         this.usage = usage;
         this.length = 0;
+        var gl = renderer.gl;
+        if (dataType === Uint8Array) {
+            this.drawFormat = gl.UNSIGNED_BYTE;
+        }
+        else if (dataType === Uint16Array) {
+            this.drawFormat = gl.UNSIGNED_SHORT;
+        }
+        else if (dataType === Uint32Array) {
+            this.drawFormat = gl.UNSIGNED_INT;
+        }
         if (Array.isArray(data)) {
             this.buffer = new dataType(data).buffer;
             this.length = data.length;
@@ -2564,12 +2592,14 @@ module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[7,"
 /*!**************************************!*\
   !*** ./src/graphics/vertexBuffer.ts ***!
   \**************************************/
-/*! exports provided: VertexBuffer */
+/*! exports provided: VertexBuffer, Iterator, Setter */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VertexBuffer", function() { return VertexBuffer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Iterator", function() { return Iterator; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Setter", function() { return Setter; });
 /* harmony import */ var _conf__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../conf */ "./src/conf.ts");
 /*
  * ProjectName: hypergl
@@ -2578,40 +2608,27 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 19th 2018, 12:49:20 am
+ * Last Modified: Sunday, August 26th 2018, 3:07:04 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
 
 var VertexBuffer = /** @class */ (function () {
-    function VertexBuffer(renderer, format, usage, data, numVertices) {
+    // constructor(renderer: RendererPlatform, format: VertexFormat, usage: BUFFER, data: ArrayBuffer, numVertices: number)
+    function VertexBuffer(renderer, format, numVertices, usage, data) {
         if (usage === void 0) { usage = _conf__WEBPACK_IMPORTED_MODULE_0__["BUFFER"].STATIC; }
         this.renderer = renderer;
         this.format = format;
+        this.numVertices = numVertices;
         this.usage = usage;
-        var size = this.format.sum_size;
-        if (Array.isArray(data)) {
-            // tslint:disable-next-line:no-parameter-reassignment
-            numVertices = data.length / size;
-            this.buffer = new ArrayBuffer(this.format.stride * numVertices);
-            for (var i = 0; i < numVertices; i++) {
-                var slice = data.slice(i * size, (i + 1) * size);
-                var sum = 0;
-                for (var j = 0; j < this.format.elements.length; j++) {
-                    var item = this.format.elements[j];
-                    var view = new item.dataType(this.buffer, i * format.stride + item.offset, item.size);
-                    var end = sum + item.size;
-                    var slice2 = slice.slice(sum, end);
-                    sum = end;
-                    for (var k = 0; k < item.size; k++) {
-                        view[k] = slice2[k];
-                    }
-                }
-            }
+        var stride = this.format.stride;
+        this.numBytes = stride * numVertices;
+        if (data) {
+            this.buffer = data;
         }
         else {
-            this.buffer = data;
+            this.buffer = new ArrayBuffer(this.numBytes);
         }
         this.numVertices = numVertices;
     }
@@ -2643,7 +2660,82 @@ var VertexBuffer = /** @class */ (function () {
         gl.bindBuffer(gl.ARRAY_BUFFER, this.bufferId);
         gl.bufferData(gl.ARRAY_BUFFER, this.buffer, glUsage);
     };
+    VertexBuffer.prototype.toIterator = function () {
+        return new Iterator(this);
+    };
     return VertexBuffer;
+}());
+
+var Iterator = /** @class */ (function () {
+    function Iterator(vertexBuffer) {
+        this.vertexBuffer = vertexBuffer;
+        this.index = 0;
+        this.done = false;
+    }
+    Object.defineProperty(Iterator.prototype, "value", {
+        get: function () {
+            var setter = {};
+            var _a = this.vertexBuffer, format = _a.format, buffer = _a.buffer;
+            for (var j = 0; j < format.elements.length; j++) {
+                var element = format.elements[j];
+                var view = new element.dataType(buffer, this.index + element.offset, element.size);
+                setter[element.semantic] = new Setter(view);
+            }
+            return setter;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Iterator.prototype.next = function () {
+        if (this.done === false) {
+            this.index += this.vertexBuffer.format.stride;
+            if (this.index >= this.vertexBuffer.numBytes) {
+                this.done = true;
+            }
+        }
+    };
+    return Iterator;
+}());
+
+var Setter = /** @class */ (function () {
+    function Setter(view) {
+        this.view = view;
+    }
+    Setter.prototype.set = function (a, b, c, d) {
+        switch (this.view.length) {
+            case 1:
+                this.set1(a);
+                break;
+            case 2:
+                this.set2(a, b);
+                break;
+            case 3:
+                this.set3(a, b, c);
+                break;
+            case 4:
+                this.set4(a, b, c, d);
+                break;
+        }
+    };
+    Setter.prototype.set1 = function (a) {
+        this.view[0] = a;
+    };
+    Setter.prototype.set2 = function (a, b) {
+        this.view[0] = a;
+        this.view[1] = b;
+    };
+    Setter.prototype.set3 = function (a, b, c) {
+        this.view[0] = a;
+        this.view[1] = b;
+        this.view[2] = c;
+    };
+    Setter.prototype.set4 = function (a, b, c, d) {
+        this.view[0] = a;
+        this.view[1] = b;
+        this.view[2] = c;
+        this.view[3] = d;
+    };
+    return Setter;
 }());
 
 
@@ -2724,7 +2816,7 @@ var VertexFormat = /** @class */ (function () {
 /*!**********************!*\
   !*** ./src/index.ts ***!
   \**********************/
-/*! exports provided: DataType, SEMANTIC, BUFFER, CURVE, GLType, Application, VertexBuffer, VertexFormat, IndexBuffer, BasicMaterial */
+/*! exports provided: DataType, SEMANTIC, BUFFER, CURVE, GLType, Application, VertexBuffer, Iterator, Setter, VertexFormat, IndexBuffer, BasicMaterial */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2745,6 +2837,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony import */ var _graphics__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./graphics */ "./src/graphics/index.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "VertexBuffer", function() { return _graphics__WEBPACK_IMPORTED_MODULE_2__["VertexBuffer"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Iterator", function() { return _graphics__WEBPACK_IMPORTED_MODULE_2__["Iterator"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Setter", function() { return _graphics__WEBPACK_IMPORTED_MODULE_2__["Setter"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "VertexFormat", function() { return _graphics__WEBPACK_IMPORTED_MODULE_2__["VertexFormat"]; });
 
@@ -5193,6 +5289,137 @@ var Vec4 = /** @class */ (function () {
         configurable: true
     });
     return Vec4;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/mesh/mesh.ts":
+/*!**************************!*\
+  !*** ./src/mesh/mesh.ts ***!
+  \**************************/
+/*! exports provided: Mesh */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Mesh", function() { return Mesh; });
+/* harmony import */ var _graphics_vertexBuffer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../graphics/vertexBuffer */ "./src/graphics/vertexBuffer.ts");
+/* harmony import */ var _graphics_indexBuffer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../graphics/indexBuffer */ "./src/graphics/indexBuffer.ts");
+/* harmony import */ var _material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../material */ "./src/material/index.ts");
+/* harmony import */ var _conf__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../conf */ "./src/conf.ts");
+/* harmony import */ var _graphics_vertexFormat__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../graphics/vertexFormat */ "./src/graphics/vertexFormat.ts");
+/*
+ * ProjectName: hypergl
+ * FilePath: \src\mesh\mesh.ts
+ * Created Date: Tuesday, August 14th 2018, 5:02:26 pm
+ * @author: dadigua
+ * @summary: short description for the file
+ * -----
+ * Last Modified: Sunday, August 26th 2018, 3:47:29 pm
+ * Modified By: dadigua
+ * -----
+ * Copyright (c) 2018 jiguang
+ */
+
+
+
+
+
+var Mesh = /** @class */ (function () {
+    function Mesh() {
+        this._material = Mesh.defaultMaterial;
+        // TODO
+    }
+    Object.defineProperty(Mesh.prototype, "material", {
+        get: function () {
+            return this._material;
+        },
+        set: function (x) {
+            this._material = x;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    // tslint:disable-next-line:cyclomatic-complexity
+    Mesh.createMesh = function (renderer, opts) {
+        // Check the supplied options and provide defaults for unspecified ones
+        var positions = opts.positions;
+        var normals = opts && opts.normals !== undefined ? opts.normals : null;
+        var indices = opts.indices;
+        var tangents = opts && opts.tangents !== undefined ? opts.tangents : null;
+        var colors = opts && opts.colors !== undefined ? opts.colors : null;
+        var uvs = opts && opts.uvs !== undefined ? opts.uvs : null;
+        var uvs1 = opts && opts.uvs1 !== undefined ? opts.uvs1 : null;
+        var blendIndices = opts && opts.blendIndices !== undefined ? opts.blendIndices : null;
+        var blendWeights = opts && opts.blendWeights !== undefined ? opts.blendWeights : null;
+        var vertexDesc = [
+            { semantic: _conf__WEBPACK_IMPORTED_MODULE_3__["SEMANTIC"].POSITION, size: 3, dataType: Float32Array }
+        ];
+        if (normals !== null) {
+            vertexDesc.push({ semantic: _conf__WEBPACK_IMPORTED_MODULE_3__["SEMANTIC"].NORMAL, size: 3, dataType: Float32Array });
+        }
+        if (tangents !== null) {
+            vertexDesc.push({ semantic: _conf__WEBPACK_IMPORTED_MODULE_3__["SEMANTIC"].TANGENT, size: 4, dataType: Float32Array });
+        }
+        if (colors !== null) {
+            vertexDesc.push({ semantic: _conf__WEBPACK_IMPORTED_MODULE_3__["SEMANTIC"].COLOR, size: 4, dataType: Uint8Array, normalize: true });
+        }
+        if (uvs !== null) {
+            vertexDesc.push({ semantic: _conf__WEBPACK_IMPORTED_MODULE_3__["SEMANTIC"].TEXCOORD0, size: 2, dataType: Float32Array });
+        }
+        if (uvs1 !== null) {
+            vertexDesc.push({ semantic: _conf__WEBPACK_IMPORTED_MODULE_3__["SEMANTIC"].TEXCOORD1, size: 2, dataType: Float32Array });
+        }
+        if (blendIndices !== null) {
+            vertexDesc.push({ semantic: _conf__WEBPACK_IMPORTED_MODULE_3__["SEMANTIC"].BLENDINDICES, size: 2, dataType: Uint8Array });
+        }
+        if (blendWeights !== null) {
+            vertexDesc.push({ semantic: _conf__WEBPACK_IMPORTED_MODULE_3__["SEMANTIC"].BLENDWEIGHT, size: 2, dataType: Float32Array });
+        }
+        var vertexFormat = new _graphics_vertexFormat__WEBPACK_IMPORTED_MODULE_4__["VertexFormat"](vertexDesc);
+        // Create the vertex buffer
+        var numVertices = positions.length / 3;
+        var vertexBuffer = new _graphics_vertexBuffer__WEBPACK_IMPORTED_MODULE_0__["VertexBuffer"](renderer, vertexFormat, numVertices);
+        var iterator = vertexBuffer.toIterator();
+        for (var i = 0; i < numVertices; i++) {
+            var setter = iterator.value;
+            setter[_conf__WEBPACK_IMPORTED_MODULE_3__["SEMANTIC"].POSITION].set(positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2]);
+            if (normals !== null) {
+                setter[_conf__WEBPACK_IMPORTED_MODULE_3__["SEMANTIC"].NORMAL].set(normals[i * 3], normals[i * 3 + 1], normals[i * 3 + 2]);
+            }
+            if (tangents !== null) {
+                setter[_conf__WEBPACK_IMPORTED_MODULE_3__["SEMANTIC"].TANGENT].set(tangents[i * 4], tangents[i * 4 + 1], tangents[i * 4 + 2], tangents[i * 4 + 3]);
+            }
+            if (colors !== null) {
+                setter[_conf__WEBPACK_IMPORTED_MODULE_3__["SEMANTIC"].COLOR].set(colors[i * 4], colors[i * 4 + 1], colors[i * 4 + 2], colors[i * 4 + 3]);
+            }
+            if (uvs !== null) {
+                setter[_conf__WEBPACK_IMPORTED_MODULE_3__["SEMANTIC"].TEXCOORD0].set(uvs[i * 2], uvs[i * 2 + 1]);
+            }
+            if (uvs1 !== null) {
+                setter[_conf__WEBPACK_IMPORTED_MODULE_3__["SEMANTIC"].TEXCOORD1].set(uvs1[i * 2], uvs1[i * 2 + 1]);
+            }
+            if (blendIndices !== null) {
+                setter[_conf__WEBPACK_IMPORTED_MODULE_3__["SEMANTIC"].BLENDINDICES].set(blendIndices[i * 2], blendIndices[i * 2 + 1]);
+            }
+            if (blendWeights !== null) {
+                setter[_conf__WEBPACK_IMPORTED_MODULE_3__["SEMANTIC"].BLENDWEIGHT].set(blendWeights[i * 2], blendWeights[i * 2 + 1]);
+            }
+            iterator.next();
+        }
+        // Create the index buffer
+        var indexBuffer = new _graphics_indexBuffer__WEBPACK_IMPORTED_MODULE_1__["IndexBuffer"](renderer, Uint16Array, _conf__WEBPACK_IMPORTED_MODULE_3__["BUFFER"].STATIC, indices);
+        // let aabb = new pc.BoundingBox();
+        // aabb.compute(positions);
+        var mesh = new Mesh();
+        mesh.vertexBuffer = vertexBuffer;
+        mesh.indexBuffer = indexBuffer;
+        return mesh;
+    };
+    Mesh.defaultMaterial = new _material__WEBPACK_IMPORTED_MODULE_2__["BasicMaterial"]();
+    return Mesh;
 }());
 
 

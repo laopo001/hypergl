@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 19th 2018, 1:36:08 am
+ * Last Modified: Sunday, August 26th 2018, 4:06:09 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -19,9 +19,18 @@ export class IndexBuffer {
     buffer!: ArrayBuffer;
     bufferId?: WebGLBuffer;
     length = 0;
+    drawFormat!: number;
     constructor(renderer: RendererPlatform, dataType: TypeArrayConstructor, usage: BUFFER, data: ArrayBuffer, length?: number)
     constructor(renderer: RendererPlatform, dataType: TypeArrayConstructor, usage: BUFFER, data: Array<number>)
     constructor(private renderer: RendererPlatform, private dataType: TypeArrayConstructor, private usage: BUFFER = BUFFER.STATIC, data: Array<number> | ArrayBuffer, length?: number) {
+        const gl = renderer.gl;
+        if (dataType === Uint8Array) {
+            this.drawFormat = gl.UNSIGNED_BYTE;
+        } else if (dataType === Uint16Array) {
+            this.drawFormat = gl.UNSIGNED_SHORT;
+        } else if (dataType === Uint32Array) {
+            this.drawFormat = gl.UNSIGNED_INT;
+        }
         if (Array.isArray(data)) {
             this.buffer = new (dataType as any)(data).buffer;
             this.length = data.length;
