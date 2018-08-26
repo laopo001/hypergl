@@ -111,7 +111,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 26th 2018, 4:06:23 pm
+ * Last Modified: Sunday, August 26th 2018, 4:21:16 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -181,6 +181,7 @@ var modelMatrix = new _src_math__WEBPACK_IMPORTED_MODULE_4__["Mat4"]();
 // modelMatrix.setTranslate(0, 0, 1);
 // modelMatrix.setFromEulerAngles(45, 45, 45);
 // let mvpMatrix = new Mat4().mul(projMatrix).mul(viewMatrix).mul(modelMatrix);
+camera.worldMatrixInverse = new _src_math__WEBPACK_IMPORTED_MODULE_4__["Mat4"]().setLookAt(new _src_math__WEBPACK_IMPORTED_MODULE_4__["Vec3"](3, 3, 3), new _src_math__WEBPACK_IMPORTED_MODULE_4__["Vec3"](0, 0, 0), new _src_math__WEBPACK_IMPORTED_MODULE_4__["Vec3"](0, 1, 0)).invert();
 var mvpMatrix = camera.PVMatrix.mul(modelMatrix);
 var gl = app.rendererPlatform.gl;
 var program = Object(_utils_util__WEBPACK_IMPORTED_MODULE_3__["initShaders"])(gl, _src_graphics_shaders_vertex_vert__WEBPACK_IMPORTED_MODULE_1___default()(), _src_graphics_shaders_fragment_frag__WEBPACK_IMPORTED_MODULE_2___default()());
@@ -202,7 +203,6 @@ gl.drawElements(gl.TRIANGLES, ibuffer.length, ibuffer.drawFormat, 0);
 console.log(vbuffer.format, vbuffer, ibuffer);
 // app.on('update', () => {
 // });
-// s
 
 
 /***/ }),
@@ -5444,7 +5444,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 22nd 2018, 10:05:49 am
+ * Last Modified: Sunday, August 26th 2018, 4:18:03 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -5456,21 +5456,21 @@ var Camera = /** @class */ (function () {
     near, // 相机渲染最近的距离，小于这距离的不会进行渲染
     far // 相机渲染最远的距离，大于这距离的不会进行渲染
     ) {
-        this.matrixWorldInverse = new _math__WEBPACK_IMPORTED_MODULE_0__["Mat4"]().setLookAt(new _math__WEBPACK_IMPORTED_MODULE_0__["Vec3"](0, 0, 0), new _math__WEBPACK_IMPORTED_MODULE_0__["Vec3"](0, 0, 1), new _math__WEBPACK_IMPORTED_MODULE_0__["Vec3"](0, 1, 0)).invert();
+        this.worldMatrixInverse = new _math__WEBPACK_IMPORTED_MODULE_0__["Mat4"]().setLookAt(new _math__WEBPACK_IMPORTED_MODULE_0__["Vec3"](0, 0, 0), new _math__WEBPACK_IMPORTED_MODULE_0__["Vec3"](0, 0, 1), new _math__WEBPACK_IMPORTED_MODULE_0__["Vec3"](0, 1, 0)).invert();
         // quaternion: Quat = new Quat();
         // scala: Vec3 = new Vec3();
         this.projectionMatrix = new _math__WEBPACK_IMPORTED_MODULE_0__["Mat4"]();
         // TODO
         this.projectionMatrix.setPerspective(fov, aspect, near, far);
-        this.position = this.matrixWorldInverse.getTranslation();
+        this.position = this.worldMatrixInverse.getTranslation();
     }
     Camera.prototype.lookAt = function (target) {
         // TODO
-        this.matrixWorldInverse.setLookAt(this.position, target, new _math__WEBPACK_IMPORTED_MODULE_0__["Vec3"](0, 1, 0)).invert();
+        this.worldMatrixInverse.setLookAt(this.position, target, new _math__WEBPACK_IMPORTED_MODULE_0__["Vec3"](0, 1, 0)).invert();
     };
     Object.defineProperty(Camera.prototype, "PVMatrix", {
         get: function () {
-            return new _math__WEBPACK_IMPORTED_MODULE_0__["Mat4"]().mul(this.projectionMatrix).mul(this.matrixWorldInverse);
+            return new _math__WEBPACK_IMPORTED_MODULE_0__["Mat4"]().mul(this.projectionMatrix).mul(this.worldMatrixInverse);
         },
         enumerable: true,
         configurable: true

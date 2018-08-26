@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 26th 2018, 4:06:23 pm
+ * Last Modified: Sunday, August 26th 2018, 4:21:16 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -91,6 +91,7 @@ let modelMatrix = new Mat4();
 // modelMatrix.setTranslate(0, 0, 1);
 // modelMatrix.setFromEulerAngles(45, 45, 45);
 // let mvpMatrix = new Mat4().mul(projMatrix).mul(viewMatrix).mul(modelMatrix);
+camera.worldMatrixInverse = new Mat4().setLookAt(new Vec3(3, 3, 3), new Vec3(0, 0, 0), new Vec3(0, 1, 0)).invert();
 let mvpMatrix = camera.PVMatrix.mul(modelMatrix);
 
 let gl = app.rendererPlatform.gl;
@@ -123,5 +124,3 @@ console.log(vbuffer.format, vbuffer, ibuffer);
 // app.on('update', () => {
 
 // });
-
-// s
