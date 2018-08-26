@@ -12,7 +12,9 @@ declare var WebGLQuery: {
     prototype: WebGLQuery;
     new(): WebGLQuery;
 }
-
+/**
+ * WebGLSampler接口是WebGL 2 API的一部分，它存储着色器内WebGLTexture访问的采样参数。
+ */
 interface WebGLSampler extends WebGLObject {
 }
 

@@ -11,3 +11,5 @@
 > 使用handlebars模板，生产shader文件
 
 
+!**/typings/**,!**/node_modules/**
+

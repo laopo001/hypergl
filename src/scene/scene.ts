@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 19th 2018, 1:35:27 pm
+ * Last Modified: Sunday, August 26th 2018, 10:45:00 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -21,15 +21,12 @@ export class Scene extends IElement {
     baseMaterial;
     lights = [];
     cameras = [];
-    root?: INode;
+    root: INode = new INode();
     constructor(private app: Application) {
         super();
     }
-    renderer() {
-        // fix sdfa
-    }
-    add() {
-        // TODO
+    render() {
+        this.root.syncHierarchy();
     }
     get [Symbol.toStringTag]() {
         return 'Scene';

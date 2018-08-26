@@ -5,17 +5,16 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 22nd 2018, 10:19:16 am
+ * Last Modified: Saturday, August 25th 2018, 8:39:33 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
 
 
-import { SEMANTIC, BUFFER, VertexBuffer, VertexFormat, Application } from '../src';
-import { RendererPlatform } from '../src/graphics/renderer';
-
-
+import { SEMANTIC, BUFFER } from '../src/conf';
+import { VertexFormat } from '../src/graphics/vertexFormat';
+import { VertexBuffer } from '../src/graphics/vertexBuffer';
 
 export const format = new VertexFormat([{
     semantic: SEMANTIC.POSITION,
@@ -45,6 +44,6 @@ const vertices = [
 
 
 // tslint:disable-next-line:no-object-literal-type-assertion
-export const buffer = new VertexBuffer(({} as RendererPlatform), format, BUFFER.STATIC, vertices);
+export const buffer = new VertexBuffer(({} as any), format, BUFFER.STATIC, vertices);
 
 

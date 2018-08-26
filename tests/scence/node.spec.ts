@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, August 24th 2018, 1:40:08 am
+ * Last Modified: Saturday, August 25th 2018, 12:56:11 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -29,10 +29,25 @@ test('INode setPosition getPosition', () => {
 test('INode setLocalPosition getLocalPosition', () => {
     let node = new INode();
     let child = new INode();
+    let grandson = new INode();
     node.addChild(child);
-    child.setPosition(new Vec3(1, 0, 0));
+    child.addChild(grandson);
+    child.setLocalPosition(new Vec3(1, 0, 0));
+    grandson.setLocalPosition(new Vec3(1, 0, 0));
     node.setEulerAngles(new Vec3(0, 0, 90));
-    console.log(child.getPosition());
     expect(child.getPosition().data.map(x => Math.floor(x))).toEqual(new Vec3(0, 1, 0).data);
+    expect(grandson.getPosition().data.map(x => Math.floor(x))).toEqual(new Vec3(0, 2, 0).data);
+});
 
+test('INode setPosition getPosition', () => {
+    let node = new INode();
+    let child = new INode();
+    let grandson = new INode();
+    node.addChild(child);
+    child.addChild(grandson);
+    child.setPosition(new Vec3(1, 0, 0));
+    grandson.setPosition(new Vec3(1, 0, 0));
+    node.setEulerAngles(new Vec3(0, 0, 90));
+    expect(child.getPosition().data.map(x => Math.floor(x))).toEqual(new Vec3(0, 1, 0).data);
+    expect(grandson.getPosition().data.map(x => Math.floor(x))).toEqual(new Vec3(0, 1, 0).data);
 });

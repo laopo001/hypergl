@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 19th 2018, 12:48:35 am
+ * Last Modified: Saturday, August 25th 2018, 2:11:44 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -61,8 +61,32 @@ export enum BUFFER {
 }
 
 export enum CURVE {
-    LINEAR = 0,
-    SMOOTHSTEP = 1,
-    CATMULL = 2,
-    CARDINAL = 3
+    LINEAR = 'LINEAR',
+    SMOOTHSTEP = 'SMOOTHSTEP',
+    CATMULL = 'CATMULL',
+    CARDINAL = 'CARDINAL'
+}
+
+
+export enum GLType {
+    BOOL,
+    INT,
+    FLOAT,
+    FLOAT_VEC2,
+    FLOAT_VEC3,
+    FLOAT_VEC4,
+    INT_VEC2,
+    INT_VEC3,
+    INT_VEC4,
+    BOOL_VEC2,
+    BOOL_VEC3,
+    BOOL_VEC4,
+    FLOAT_MAT2,
+    FLOAT_MAT3,
+    FLOAT_MAT4,
+    SAMPLER_2D,
+    SAMPLER_CUBE,
+    SAMPLER_2D_SHADOW,
+    SAMPLER_CUBE_SHADOW,
+    SAMPLER_3D,
 }

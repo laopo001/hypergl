@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 22nd 2018, 11:32:51 pm
+ * Last Modified: Sunday, August 26th 2018, 3:09:33 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -20,10 +20,21 @@ export type TypeArray = Int8Array | Uint8Array | Int16Array | Uint16Array | Int3
 
 export type TypeArrayConstructor = Int8ArrayConstructor | Uint8ArrayConstructor | Int16ArrayConstructor | Uint16ArrayConstructor |
     Int32ArrayConstructor | Uint32ArrayConstructor | Float32ArrayConstructor | Float64Array;
-
-
 export type Fn<T> = (...args) => T;
-
 export type FnVoid = Fn<void>;
-
 export type Nullable<T> = T | null;
+export type Undefined<T> = T | undefined;
+export interface Obj<T> { [s: string]: Undefined<T> }
+export interface CreateMeshOption {
+    positions: number[];
+    normals?: number[]; // 法线
+    indices: number[];
+    tangents?: number[]; //
+    colors?: number[];
+    uvs?: number[];
+    uvs1?: number[];
+    blendIndices?: number[];
+    blendWeights?: string[];
+}
+
+
