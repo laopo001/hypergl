@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 26th 2018, 4:21:16 pm
+ * Last Modified: Wednesday, August 29th 2018, 12:58:46 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -13,7 +13,7 @@
 
 
 
-import { SEMANTIC, BUFFER, VertexBuffer, IndexBuffer, VertexFormat, Application, BasicMaterial } from '../src/index';
+import { SEMANTIC, BUFFER, VertexBuffer, IndexBuffer, VertexFormat, Application, BasicMaterial } from '../src';
 import vert from '../src/graphics/shaders/vertex.vert';
 import frag from '../src/graphics/shaders/fragment.frag';
 import { initShaders } from './utils/util';

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 26th 2018, 10:45:00 pm
+ * Last Modified: Wednesday, August 29th 2018, 12:58:46 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -15,18 +15,26 @@
 import { IElement } from '../core/element';
 import { Application } from '../application';
 import { INode } from './node';
-
+import { renderScence } from './renderScence';
+import { Camera } from './camera';
+import { Entity } from '../component/entity';
 export class Scene extends IElement {
     fog;
     baseMaterial;
-    lights = [];
-    cameras = [];
-    root: INode = new INode();
-    constructor(private app: Application) {
+    readonly lights = [];
+    readonly cameras: Camera[] = [];
+    get activeCamera() {
+        return this.cameras[0];
+    }
+    readonly layer: Entity[] = [];
+    root: Entity = new Entity();
+    constructor(public app: Application) {
         super();
+        this.root.scene = this;
     }
     render() {
         this.root.syncHierarchy();
+        renderScence(this);
     }
     get [Symbol.toStringTag]() {
         return 'Scene';

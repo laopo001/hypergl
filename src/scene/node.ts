@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 25th 2018, 1:23:52 am
+ * Last Modified: Wednesday, August 29th 2018, 1:20:51 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -15,6 +15,8 @@
 import { IElement } from '../core/element';
 import { Vec3, Quat, Mat4, Vec2 } from '../math';
 import { Log } from '../util';
+import { Scene } from './scene';
+import { Entity } from '../component/entity';
 
 let scaleCompensatePosTransform = new Mat4();
 let scaleCompensatePos = new Vec3();
@@ -32,6 +34,7 @@ export class INode extends IElement {
     localTransform = new Mat4();
     parent?: INode;
     readonly children: INode[] = [];
+    scene!: Scene;
     // World-space
     position = new Vec3(0, 0, 0);
     rotation = new Quat(0, 0, 0, 1);
@@ -54,9 +57,11 @@ export class INode extends IElement {
         let quat = new Quat().setFromMat4(mat4);
         this.setRotation(quat);
     }
-    addChild(child: INode) {
+    addChild(child: Entity) {
         this.children.push(child);
         child.parent = this;
+        child.scene = this.scene;
+        this.scene.layer.push(child);
     }
     setPosition(position: Vec3) {
         if (this.parent == null) {

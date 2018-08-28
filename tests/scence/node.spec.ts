@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 25th 2018, 12:56:11 am
+ * Last Modified: Wednesday, August 29th 2018, 1:20:40 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -30,6 +30,7 @@ test('INode setLocalPosition getLocalPosition', () => {
     let node = new INode();
     let child = new INode();
     let grandson = new INode();
+    node.scene = { layer: [] } as any;
     node.addChild(child);
     child.addChild(grandson);
     child.setLocalPosition(new Vec3(1, 0, 0));
@@ -43,6 +44,7 @@ test('INode setPosition getPosition', () => {
     let node = new INode();
     let child = new INode();
     let grandson = new INode();
+    node.scene = { layer: [] } as any;
     node.addChild(child);
     child.addChild(grandson);
     child.setPosition(new Vec3(1, 0, 0));
