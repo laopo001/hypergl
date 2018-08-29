@@ -1,6 +1,8 @@
+#version 300 es
+#define GL2
 #define varying in
-out highp vec4 fragColor;
-#define gl_FragColor pc_fragColor
+out highp vec4 hyper_ragColor;
+#define gl_FragColor hyper_ragColor
 #define texture2D texture
 #define textureCube texture
 #define texture2DProj textureProj
@@ -10,4 +12,3 @@ out highp vec4 fragColor;
 #define texture2DGradEXT textureGrad
 #define texture2DProjGradEXT textureProjGrad
 #define textureCubeGradEXT textureGrad
-#define GL2

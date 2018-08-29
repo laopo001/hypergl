@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 29th 2018, 12:58:46 am
+ * Last Modified: Wednesday, August 29th 2018, 7:58:56 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -17,7 +17,7 @@ import { Application } from '../application';
 import { INode } from './node';
 import { renderScence } from './renderScence';
 import { Camera } from './camera';
-import { Entity } from '../component/entity';
+import { Entity } from '../ecs/entity';
 export class Scene extends IElement {
     fog;
     baseMaterial;

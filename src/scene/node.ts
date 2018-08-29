@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 29th 2018, 1:20:51 am
+ * Last Modified: Wednesday, August 29th 2018, 7:58:56 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -16,7 +16,7 @@ import { IElement } from '../core/element';
 import { Vec3, Quat, Mat4, Vec2 } from '../math';
 import { Log } from '../util';
 import { Scene } from './scene';
-import { Entity } from '../component/entity';
+import { Entity } from '../ecs/entity';
 
 let scaleCompensatePosTransform = new Mat4();
 let scaleCompensatePos = new Vec3();

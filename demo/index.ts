@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 29th 2018, 12:58:46 am
+ * Last Modified: Wednesday, August 29th 2018, 8:01:19 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -13,7 +13,7 @@
 
 
 
-import { SEMANTIC, BUFFER, VertexBuffer, IndexBuffer, VertexFormat, Application, BasicMaterial } from '../src';
+import { SEMANTIC, BUFFER, VertexBuffer, IndexBuffer, VertexFormat, Application, BasicMaterial, Entity } from '../src';
 import vert from '../src/graphics/shaders/vertex.vert';
 import frag from '../src/graphics/shaders/fragment.frag';
 import { initShaders } from './utils/util';
@@ -79,6 +79,10 @@ let vbuffer = mesh.vertexBuffer;
 let ibuffer = mesh.indexBuffer;
 vbuffer.bind();
 ibuffer.bind();
+
+let obj = new Entity();
+obj.mesh = mesh;
+app.scene.root.addChild(obj);
 
 
 let camera = new Camera(45, app.canvas.width / app.canvas.height, 1, 1000);

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 29th 2018, 12:44:45 am
+ * Last Modified: Wednesday, August 29th 2018, 8:02:05 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -18,6 +18,5 @@ import { Material } from '../material/material';
 import { Shader } from '../graphics/shader';
 export class Entity extends INode {
     mesh?: Mesh;
-    material?: Material;
     _shader?: Shader;
 }

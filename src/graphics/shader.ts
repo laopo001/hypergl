@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 25th 2018, 5:57:32 pm
+ * Last Modified: Wednesday, August 29th 2018, 8:18:22 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -14,14 +14,16 @@
 
 import { RendererPlatform } from './renderer';
 import { Log } from '../util';
+import { ShaderInput } from './shaderInput';
+import { GLType } from '../conf';
 
 export class Shader {
     program?: WebGLProgram;
     vshader?: WebGLShader;
     fshader?: WebGLShader;
-    samplers = [];
-    uniforms = [];
-    attributes = [];
+    samplers: ShaderInput[] = [];
+    uniforms: ShaderInput[] = [];
+    attributes: ShaderInput[] = [];
     constructor(private renderer: RendererPlatform, private definition: {
         attributes: { [s: string]: any };
         vshader: string;
@@ -34,7 +36,7 @@ export class Shader {
         let gl = this.renderer.gl;
         this.vshader = loadShader(gl, gl.VERTEX_SHADER, this.definition.vshader) as WebGLShader;
         this.fshader = loadShader(gl, gl.FRAGMENT_SHADER, this.definition.fshader) as WebGLShader;
-        this.program = createProgram(gl, this.definition.vshader, this.definition.fshader) as WebGLProgram;
+        this.program = createProgram(gl, this.vshader, this.fshader) as WebGLProgram;
     }
     link() {
         if (this.program == null) {
@@ -76,7 +78,21 @@ export class Shader {
             if (this.definition.attributes[info.name] === undefined) {
                 Log.error('Vertex shader attribute "' + info.name + '" is not mapped to a semantic in shader definition.');
             }
-            // this.attributes.push(new ShaderInput(this.device, this.definition.attributes[info.name], _typeToPc[info.type], location));
+            // this.attributes.push(new ShaderInput(this.renderer, this.definition.attributes[info.name], this.renderer.glTypeToJs[info.type] as GLType, location));
+            this.attributes.push(new ShaderInput(this.renderer, this.definition.attributes[info.name], this.renderer.glTypeToJs[info.type] as GLType, location));
+        }
+        i = 0;
+        let numUniforms = gl.getProgramParameter(this.program, gl.ACTIVE_UNIFORMS);
+        while (i < numUniforms) {
+            info = gl.getActiveUniform(this.program, i++);
+            location = gl.getUniformLocation(this.program, info.name);
+            if (info.type === gl.SAMPLER_2D || info.type === gl.SAMPLER_CUBE ||
+                (this.renderer.platform === 'webgl2' && (info.type === gl.SAMPLER_2D_SHADOW || info.type === gl.SAMPLER_CUBE_SHADOW || info.type === gl.SAMPLER_3D))
+            ) {
+                this.samplers.push(new ShaderInput(this.renderer, info.name, this.renderer.glTypeToJs[info.type] as GLType, location));
+            } else {
+                this.uniforms.push(new ShaderInput(this.renderer, info.name, this.renderer.glTypeToJs[info.type] as GLType, location));
+            }
         }
     }
 }
@@ -95,7 +111,7 @@ export function loadShader(gl: WebGLRenderingContext | WebGL2RenderingContext, t
     gl.compileShader(shader);
     const compiled = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
     if (!compiled) {
-        Log.error(gl.getShaderInfoLog(shader) as string);
+        Log.error(`${gl.VERTEX_SHADER === type ? 'VERTEX_SHADER' : 'FRAGMENT_SHADER'}\n` + gl.getShaderInfoLog(shader) as string);
         return false;
     }
     return shader;

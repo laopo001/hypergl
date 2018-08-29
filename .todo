@@ -8,6 +8,8 @@ Todos:
     ☐ graph-node 
     ☐ mesh
     ☐ Entity
+    ☐ shaderInput
+    ☐ renderSecne
   Done:
     ✔ 封装camera @started(18-08-21 18:51) @done(18-08-26 18:37) @lasted(4d23h46m37s)
     ✔ mesh.createMesh完成，vertexBuffer.ts添加迭代器 @started(18-08-25 23:53) @done(18-08-26 15:53) @lasted(16h26s)
