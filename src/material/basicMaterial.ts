@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 29th 2018, 8:34:28 pm
+ * Last Modified: Thursday, August 30th 2018, 7:10:24 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -32,6 +32,6 @@ export class BasicMaterial extends Material {
         }
     }
     updateShader(renderer: RendererPlatform) {
-        this.shader = renderer.programGenerator.getProgram('basice', this.parameters);
+        this.shader = renderer.programGenerator.getProgram('basice', { ...this.parameters });
     }
 }

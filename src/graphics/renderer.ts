@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 29th 2018, 12:24:32 pm
+ * Last Modified: Thursday, August 30th 2018, 8:16:29 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -16,6 +16,8 @@ import { Log } from '../util';
 import { GLType } from '../conf';
 import { ShaderProgramGenerator } from './shaderProgramGenerator';
 import { Undefined } from '../types';
+import { Shader } from './shader';
+import { IndexBuffer } from './indexBuffer';
 export type Platform = 'webgl' | 'webgl2';
 export class RendererPlatform {
     get gl() {
@@ -67,6 +69,18 @@ export class RendererPlatform {
             glTypeToJs[gl.SAMPLER_CUBE_SHADOW] = GLType.SAMPLER_CUBE_SHADOW;
             glTypeToJs[gl.SAMPLER_3D] = GLType.SAMPLER_3D;
         }
+    }
+    useProgram(shader: Shader) {
+        if (shader.ready === false) {
+            shader.link();
+        }
+        this.gl.useProgram(shader.program as WebGLProgram);
+    }
+    setVertexBuffer() {
+        // TODO
+    }
+    setIndexBuffer(indexBuffer: IndexBuffer) {
+        indexBuffer.bind();
     }
 
 }

@@ -2311,7 +2311,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 29th 2018, 12:24:32 pm
+ * Last Modified: Thursday, August 30th 2018, 8:16:29 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -2373,6 +2373,18 @@ var RendererPlatform = /** @class */ (function () {
             glTypeToJs[gl.SAMPLER_3D] = _conf__WEBPACK_IMPORTED_MODULE_1__["GLType"].SAMPLER_3D;
         }
     };
+    RendererPlatform.prototype.useProgram = function (shader) {
+        if (shader.ready === false) {
+            shader.link();
+        }
+        this.gl.useProgram(shader.program);
+    };
+    RendererPlatform.prototype.setVertexBuffer = function () {
+        // TODO
+    };
+    RendererPlatform.prototype.setIndexBuffer = function (indexBuffer) {
+        indexBuffer.bind();
+    };
     return RendererPlatform;
 }());
 
@@ -2401,7 +2413,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 29th 2018, 8:18:22 pm
+ * Last Modified: Thursday, August 30th 2018, 6:54:36 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -2415,6 +2427,8 @@ var Shader = /** @class */ (function () {
         this.samplers = [];
         this.uniforms = [];
         this.attributes = [];
+        this.ready = false;
+        this.compile();
     }
     Shader.prototype.compile = function () {
         var gl = this.renderer.gl;
@@ -2477,6 +2491,7 @@ var Shader = /** @class */ (function () {
                 this.uniforms.push(new _shaderInput__WEBPACK_IMPORTED_MODULE_1__["ShaderInput"](this.renderer, info.name, this.renderer.glTypeToJs[info.type], location));
             }
         }
+        this.ready = true;
     };
     return Shader;
 }());
@@ -3022,7 +3037,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 29th 2018, 8:34:28 pm
+ * Last Modified: Thursday, August 30th 2018, 7:10:24 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -3037,6 +3052,14 @@ var __extends = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __assign = (undefined && undefined.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
 
 
 var BasicMaterial = /** @class */ (function (_super) {
@@ -3055,7 +3078,7 @@ var BasicMaterial = /** @class */ (function (_super) {
         }
     };
     BasicMaterial.prototype.updateShader = function (renderer) {
-        this.shader = renderer.programGenerator.getProgram('basice', this.parameters);
+        this.shader = renderer.programGenerator.getProgram('basice', __assign({}, this.parameters));
     };
     return BasicMaterial;
 }(_material__WEBPACK_IMPORTED_MODULE_1__["Material"]));
@@ -5919,24 +5942,26 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 29th 2018, 8:14:53 pm
+ * Last Modified: Thursday, August 30th 2018, 8:04:59 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
 function renderScence(scene) {
     var entitys = scene.layer;
+    var renderer = scene.app.rendererPlatform;
     // TODO
     for (var i = 0; i < entitys.length; i++) {
         var entity = entitys[i];
         var mesh = entity.mesh;
-        var material = mesh.material;
+        if (mesh == null) {
+            return;
+        }
+        var material = (mesh).material;
         material.updateShader(scene.app.rendererPlatform);
-        var shader = material.shader;
-        console.log(shader);
-        shader.compile();
-        shader.link();
-        console.log(shader);
+        renderer.useProgram(material.shader);
+        renderer.setVertexBuffer(mesh.vertexBuffer);
+        renderer.setIndexBuffer(mesh.indexBuffer);
     }
 }
 

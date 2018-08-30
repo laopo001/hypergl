@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 29th 2018, 8:18:22 pm
+ * Last Modified: Thursday, August 30th 2018, 6:54:36 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -24,13 +24,14 @@ export class Shader {
     samplers: ShaderInput[] = [];
     uniforms: ShaderInput[] = [];
     attributes: ShaderInput[] = [];
+    ready = false;
     constructor(private renderer: RendererPlatform, private definition: {
         attributes: { [s: string]: any };
         vshader: string;
         fshader: string;
         useTransformFeedback?: boolean;
     }) {
-
+        this.compile();
     }
     compile() {
         let gl = this.renderer.gl;
@@ -94,6 +95,7 @@ export class Shader {
                 this.uniforms.push(new ShaderInput(this.renderer, info.name, this.renderer.glTypeToJs[info.type] as GLType, location));
             }
         }
+        this.ready = true;
     }
 }
 
