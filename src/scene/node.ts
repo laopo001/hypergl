@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 6:07:29 pm
+ * Last Modified: Sunday, September 2nd 2018, 1:06:23 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -91,8 +91,14 @@ export class INode extends IElement {
         this.getWorldTransform().getTranslation(this.position);
         return this.position;
     }
-    setLocalEulerAngles(vec3: Vec3) {
-        this.localRotation.setFromEulerAngles(vec3.data[0], vec3.data[1], vec3.data[2]);
+    setLocalEulerAngles(x: Vec3);
+    setLocalEulerAngles(x: number, y: number, z: number);
+    setLocalEulerAngles(x?, y?, z?) {
+        if (x instanceof Vec3) {
+            this.localRotation.setFromEulerAngles(x.data[0], x.data[1], x.data[2]);
+        } else {
+            this.localRotation.setFromEulerAngles(x, y, z);
+        }
         if (!this._dirtyLocal) {
             this._dirtify(true);
         }
@@ -101,8 +107,14 @@ export class INode extends IElement {
         this.localRotation.getEulerAngles(this.localEulerAngles);
         return this.localEulerAngles;
     }
-    setEulerAngles(vec3: Vec3) {
-        this.localRotation.setFromEulerAngles(vec3.data[0], vec3.data[1], vec3.data[2]);
+    setEulerAngles(x: Vec3);
+    setEulerAngles(x: number, y: number, z: number);
+    setEulerAngles(x?, y?, z?) {
+        if (x instanceof Vec3) {
+            this.localRotation.setFromEulerAngles(x.data[0], x.data[1], x.data[2]);
+        } else {
+            this.localRotation.setFromEulerAngles(x, y, z);
+        }
         if (this.parent != null) {
             let parentRot = this.parent.getRotation();
             let invParentRot = new Quat().copy(parentRot).invert();
@@ -118,8 +130,15 @@ export class INode extends IElement {
         this.getWorldTransform().getEulerAngles(this.eulerAngles);
         return this.eulerAngles;
     }
-    setLocalPosition(vec3: Vec3) {
-        this.localPosition.copy(vec3);
+    setLocalPosition(x: Vec3);
+    setLocalPosition(x: number, y: number, z: number);
+    setLocalPosition(x?, y?, z?) {
+        if (x instanceof Vec3) {
+            this.localPosition.copy(x);
+        } else {
+            this.localPosition.set(x, y, z);
+        }
+        // this.localPosition.copy(vec3);
         if (!this._dirtyLocal) {
             this._dirtify(true);
         }
@@ -127,19 +146,17 @@ export class INode extends IElement {
     getLocalPosition() {
         return this.localPosition;
     }
-    setLocalScale(x: Vec3);
-    setLocalScale(x: number, y: number, z: number);
-    setLocalScale(x?, y?, z?) {
-        if (x instanceof Vec3) {
-            this.localScale.copy(x);
+
+
+    setRotation(x: Quat);
+    setRotation(x: number, y: number, z: number, w: number);
+    setRotation(x?, y?, z?, w?) {
+        let rotation: Quat;
+        if (x instanceof Quat) {
+            rotation = x;
         } else {
-            this.localScale.set(x, y, z);
+            rotation = new Quat(x, y, z, w);
         }
-        if (!this._dirtyLocal) {
-            this._dirtify(true);
-        }
-    }
-    setRotation(rotation: Quat) {
         if (this.parent == null) {
             this.localRotation.copy(rotation);
         } else {
@@ -165,6 +182,18 @@ export class INode extends IElement {
         }
         this._sync();
         return this.worldTransform;
+    }
+    setLocalScale(x: Vec3);
+    setLocalScale(x: number, y: number, z: number);
+    setLocalScale(x?, y?, z?) {
+        if (x instanceof Vec3) {
+            this.localScale.copy(x);
+        } else {
+            this.localScale.set(x, y, z);
+        }
+        if (!this._dirtyLocal) {
+            this._dirtify(true);
+        }
     }
     getLocalScale() {
         return this.localScale;

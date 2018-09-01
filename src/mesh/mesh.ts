@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 2:51:24 pm
+ * Last Modified: Sunday, September 2nd 2018, 12:48:49 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -105,7 +105,7 @@ export class Mesh {
             }
             iterator.next();
         }
-
+        vertexBuffer.bind();
 
         // Create the index buffer
         let indexBuffer = new IndexBuffer(renderer, Uint16Array, BUFFER.STATIC, indices);

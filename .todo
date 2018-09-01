@@ -4,12 +4,12 @@ Projects:
 Todos:
   实现基本功能
   new: 
+    ☐ 完成 BasicMaterial 的纹理(texture)参数 @started(18-09-02 01:08)
     ☐ ECS框架 Entity,Component,System 
-    ☐ 纹理
-    ☐ graph-node 
     ☐ mesh
     ☐ Entity
   Done:
+    ✔ graph-node @done(18-09-02 01:08)
     ✔ shaderInput @done(18-09-01 15:42)
     ✔ renderSecne @done(18-09-01 15:42)
     ✔ 封装camera @started(18-08-21 18:51) @done(18-08-26 18:37) @lasted(4d23h46m37s)

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 5:20:48 pm
+ * Last Modified: Sunday, September 2nd 2018, 12:43:49 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -194,11 +194,14 @@ export class RendererPlatform {
         this.gl.useProgram(shader.program as WebGLProgram);
     }
     setVertexBuffer(vertexBuffer: VertexBuffer) {
-        // TODO
-        vertexBuffer.bind();
+        const gl = this.gl;
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer.bufferId as WebGLBuffer);
+        // vertexBuffer.bind();
     }
     setIndexBuffer(indexBuffer: IndexBuffer) {
-        indexBuffer.bind();
+        const gl = this.gl;
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer.bufferId as WebGLBuffer);
+        // indexBuffer.bind();
     }
     initDraw() {
         const gl = this.gl;
@@ -222,10 +225,22 @@ export class RendererPlatform {
         shader.setUniformValue('matrix_model', entity.getWorldTransform().data);
         for (let i = 0; i < attributes.length; i++) {
             let attrbute = attributes[i];
-            let data = format.elements.find(x => x.semantic === attrbute.name);
-            if (data) {
-                gl.vertexAttribPointer(attrbute.locationId, data.size, this.AttrbuteType[(data.dataType as any).name], data.normalize, data.stride, data.offset);
-                gl.enableVertexAttribArray(attrbute.locationId);
+            let element;
+            if (attrbute.element) {
+                element = attrbute.element;
+            } else {
+                element = format.elements.find(x => x.semantic === attrbute.name);
+                attrbute.element = element;
+            }
+
+            if (element) {
+                gl.vertexAttribPointer(attrbute.locationId, element.size, this.AttrbuteType[(element.dataType as any).name], element.normalize, element.stride, element.offset);
+                if (attrbute.enable === false) {
+                    gl.enableVertexAttribArray(attrbute.locationId);
+                    attrbute.enable = true;
+                }
+            } else {
+                throw new Error('element 为 null');
             }
         }
         Log.assert(shader.checkUniformScope() === true, 'UniformScopValue not set', shader.uniformScope);

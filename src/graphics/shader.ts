@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 3:44:23 pm
+ * Last Modified: Sunday, September 2nd 2018, 12:20:01 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -14,7 +14,7 @@
 
 import { RendererPlatform } from './renderer';
 import { Log } from '../util';
-import { ShaderVariable } from './shaderInput';
+import { ShaderVariable } from './shaderVariable';
 import { UNIFORM_TYPE } from '../conf';
 
 export class Shader {

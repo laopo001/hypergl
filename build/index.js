@@ -2086,7 +2086,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 26th 2018, 4:06:09 pm
+ * Last Modified: Sunday, September 2nd 2018, 12:45:34 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -2117,6 +2117,7 @@ var IndexBuffer = /** @class */ (function () {
             this.buffer = data;
             this.length = length || new dataType(data).length;
         }
+        this.bind();
     }
     IndexBuffer.prototype.bind = function () {
         var gl = this.renderer.gl;
@@ -2173,7 +2174,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 5:20:48 pm
+ * Last Modified: Sunday, September 2nd 2018, 12:43:49 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -2357,11 +2358,14 @@ var RendererPlatform = /** @class */ (function () {
         this.gl.useProgram(shader.program);
     };
     RendererPlatform.prototype.setVertexBuffer = function (vertexBuffer) {
-        // TODO
-        vertexBuffer.bind();
+        var gl = this.gl;
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer.bufferId);
+        // vertexBuffer.bind();
     };
     RendererPlatform.prototype.setIndexBuffer = function (indexBuffer) {
-        indexBuffer.bind();
+        var gl = this.gl;
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer.bufferId);
+        // indexBuffer.bind();
     };
     RendererPlatform.prototype.initDraw = function () {
         var gl = this.gl;
@@ -2387,10 +2391,23 @@ var RendererPlatform = /** @class */ (function () {
         shader.setUniformValue('matrix_model', entity.getWorldTransform().data);
         var _loop_1 = function (i) {
             var attrbute = attributes[i];
-            var data = format.elements.find(function (x) { return x.semantic === attrbute.name; });
-            if (data) {
-                gl.vertexAttribPointer(attrbute.locationId, data.size, this_1.AttrbuteType[data.dataType.name], data.normalize, data.stride, data.offset);
-                gl.enableVertexAttribArray(attrbute.locationId);
+            var element = void 0;
+            if (attrbute.element) {
+                element = attrbute.element;
+            }
+            else {
+                element = format.elements.find(function (x) { return x.semantic === attrbute.name; });
+                attrbute.element = element;
+            }
+            if (element) {
+                gl.vertexAttribPointer(attrbute.locationId, element.size, this_1.AttrbuteType[element.dataType.name], element.normalize, element.stride, element.offset);
+                if (attrbute.enable === false) {
+                    gl.enableVertexAttribArray(attrbute.locationId);
+                    attrbute.enable = true;
+                }
+            }
+            else {
+                throw new Error('element 为 null');
             }
         };
         var this_1 = this;
@@ -2424,7 +2441,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createProgram", function() { return createProgram; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadShader", function() { return loadShader; });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util */ "./src/util.ts");
-/* harmony import */ var _shaderInput__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./shaderInput */ "./src/graphics/shaderInput.ts");
+/* harmony import */ var _shaderVariable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./shaderVariable */ "./src/graphics/shaderVariable.ts");
 /*
  * ProjectName: hypergl
  * FilePath: \src\graphics\shader.ts
@@ -2432,7 +2449,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 3:44:23 pm
+ * Last Modified: Sunday, September 2nd 2018, 12:20:01 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -2507,7 +2524,7 @@ var Shader = /** @class */ (function () {
                 _util__WEBPACK_IMPORTED_MODULE_0__["Log"].error('Vertex shader attribute "' + info.name + '" is not mapped to a semantic in shader definition.');
             }
             // this.attributes.push(new ShaderInput(this.renderer, this.definition.attributes[info.name], this.renderer.glTypeToJs[info.type] as GLType, location));
-            this.attributes.push(new _shaderInput__WEBPACK_IMPORTED_MODULE_1__["ShaderVariable"](this.definition.attributes[info.name], this.renderer.glTypeToJs[info.type], location));
+            this.attributes.push(new _shaderVariable__WEBPACK_IMPORTED_MODULE_1__["ShaderVariable"](this.definition.attributes[info.name], this.renderer.glTypeToJs[info.type], location));
         }
         i = 0;
         var numUniforms = gl.getProgramParameter(this.program, gl.ACTIVE_UNIFORMS);
@@ -2516,10 +2533,10 @@ var Shader = /** @class */ (function () {
             var location = gl.getUniformLocation(this.program, info.name);
             if (info.type === gl.SAMPLER_2D || info.type === gl.SAMPLER_CUBE ||
                 (this.renderer.platform === 'webgl2' && (info.type === gl.SAMPLER_2D_SHADOW || info.type === gl.SAMPLER_CUBE_SHADOW || info.type === gl.SAMPLER_3D))) {
-                this.samplers.push(new _shaderInput__WEBPACK_IMPORTED_MODULE_1__["ShaderVariable"](info.name, this.renderer.glTypeToJs[info.type], location));
+                this.samplers.push(new _shaderVariable__WEBPACK_IMPORTED_MODULE_1__["ShaderVariable"](info.name, this.renderer.glTypeToJs[info.type], location));
             }
             else {
-                this.uniforms.push(new _shaderInput__WEBPACK_IMPORTED_MODULE_1__["ShaderVariable"](info.name, this.renderer.glTypeToJs[info.type], location));
+                this.uniforms.push(new _shaderVariable__WEBPACK_IMPORTED_MODULE_1__["ShaderVariable"](info.name, this.renderer.glTypeToJs[info.type], location));
             }
             this.uniformScope[info.name] = null;
         }
@@ -2545,41 +2562,6 @@ function loadShader(gl, type, source) {
     }
     return shader;
 }
-
-
-/***/ }),
-
-/***/ "./src/graphics/shaderInput.ts":
-/*!*************************************!*\
-  !*** ./src/graphics/shaderInput.ts ***!
-  \*************************************/
-/*! exports provided: ShaderVariable */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ShaderVariable", function() { return ShaderVariable; });
-/*
- * ProjectName: hypergl
- * FilePath: \src\graphics\shaderInput.ts
- * Created Date: Wednesday, August 29th 2018, 12:20:47 pm
- * @author: dadigua
- * @summary: short description for the file
- * -----
- * Last Modified: Saturday, September 1st 2018, 3:44:23 pm
- * Modified By: dadigua
- * -----
- * Copyright (c) 2018 jiguang
- */
-var ShaderVariable = /** @class */ (function () {
-    function ShaderVariable(name, type, locationId) {
-        this.name = name;
-        this.type = type;
-        this.locationId = locationId;
-    }
-    return ShaderVariable;
-}());
-
 
 
 /***/ }),
@@ -2656,6 +2638,42 @@ function createShaderDefinition(renderer, options) {
         fshader: basicFragStr
     };
 }
+
+
+/***/ }),
+
+/***/ "./src/graphics/shaderVariable.ts":
+/*!****************************************!*\
+  !*** ./src/graphics/shaderVariable.ts ***!
+  \****************************************/
+/*! exports provided: ShaderVariable */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ShaderVariable", function() { return ShaderVariable; });
+/*
+ * ProjectName: hypergl
+ * FilePath: \src\graphics\shaderInput.ts
+ * Created Date: Wednesday, August 29th 2018, 12:20:47 pm
+ * @author: dadigua
+ * @summary: short description for the file
+ * -----
+ * Last Modified: Sunday, September 2nd 2018, 12:26:04 am
+ * Modified By: dadigua
+ * -----
+ * Copyright (c) 2018 jiguang
+ */
+var ShaderVariable = /** @class */ (function () {
+    function ShaderVariable(name, type, locationId) {
+        this.name = name;
+        this.type = type;
+        this.locationId = locationId;
+        this.enable = false;
+    }
+    return ShaderVariable;
+}());
+
 
 
 /***/ }),
@@ -2754,7 +2772,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 26th 2018, 3:07:04 pm
+ * Last Modified: Sunday, September 2nd 2018, 12:48:01 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -2772,6 +2790,7 @@ var VertexBuffer = /** @class */ (function () {
         this.numBytes = stride * numVertices;
         if (data) {
             this.buffer = data;
+            this.bind();
         }
         else {
             this.buffer = new ArrayBuffer(this.numBytes);
@@ -5475,7 +5494,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 2:51:24 pm
+ * Last Modified: Sunday, September 2nd 2018, 12:48:49 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -5567,6 +5586,7 @@ var Mesh = /** @class */ (function () {
             }
             iterator.next();
         }
+        vertexBuffer.bind();
         // Create the index buffer
         var indexBuffer = new _graphics_indexBuffer__WEBPACK_IMPORTED_MODULE_1__["IndexBuffer"](renderer, Uint16Array, _conf__WEBPACK_IMPORTED_MODULE_3__["BUFFER"].STATIC, indices);
         // let aabb = new pc.BoundingBox();
@@ -5660,7 +5680,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 6:07:29 pm
+ * Last Modified: Sunday, September 2nd 2018, 1:06:23 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -5749,8 +5769,13 @@ var INode = /** @class */ (function (_super) {
         this.getWorldTransform().getTranslation(this.position);
         return this.position;
     };
-    INode.prototype.setLocalEulerAngles = function (vec3) {
-        this.localRotation.setFromEulerAngles(vec3.data[0], vec3.data[1], vec3.data[2]);
+    INode.prototype.setLocalEulerAngles = function (x, y, z) {
+        if (x instanceof _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"]) {
+            this.localRotation.setFromEulerAngles(x.data[0], x.data[1], x.data[2]);
+        }
+        else {
+            this.localRotation.setFromEulerAngles(x, y, z);
+        }
         if (!this._dirtyLocal) {
             this._dirtify(true);
         }
@@ -5759,8 +5784,13 @@ var INode = /** @class */ (function (_super) {
         this.localRotation.getEulerAngles(this.localEulerAngles);
         return this.localEulerAngles;
     };
-    INode.prototype.setEulerAngles = function (vec3) {
-        this.localRotation.setFromEulerAngles(vec3.data[0], vec3.data[1], vec3.data[2]);
+    INode.prototype.setEulerAngles = function (x, y, z) {
+        if (x instanceof _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"]) {
+            this.localRotation.setFromEulerAngles(x.data[0], x.data[1], x.data[2]);
+        }
+        else {
+            this.localRotation.setFromEulerAngles(x, y, z);
+        }
         if (this.parent != null) {
             var parentRot = this.parent.getRotation();
             var invParentRot = new _math__WEBPACK_IMPORTED_MODULE_1__["Quat"]().copy(parentRot).invert();
@@ -5774,8 +5804,14 @@ var INode = /** @class */ (function (_super) {
         this.getWorldTransform().getEulerAngles(this.eulerAngles);
         return this.eulerAngles;
     };
-    INode.prototype.setLocalPosition = function (vec3) {
-        this.localPosition.copy(vec3);
+    INode.prototype.setLocalPosition = function (x, y, z) {
+        if (x instanceof _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"]) {
+            this.localPosition.copy(x);
+        }
+        else {
+            this.localPosition.set(x, y, z);
+        }
+        // this.localPosition.copy(vec3);
         if (!this._dirtyLocal) {
             this._dirtify(true);
         }
@@ -5783,18 +5819,14 @@ var INode = /** @class */ (function (_super) {
     INode.prototype.getLocalPosition = function () {
         return this.localPosition;
     };
-    INode.prototype.setLocalScale = function (x, y, z) {
-        if (x instanceof _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"]) {
-            this.localScale.copy(x);
+    INode.prototype.setRotation = function (x, y, z, w) {
+        var rotation;
+        if (x instanceof _math__WEBPACK_IMPORTED_MODULE_1__["Quat"]) {
+            rotation = x;
         }
         else {
-            this.localScale.set(x, y, z);
+            rotation = new _math__WEBPACK_IMPORTED_MODULE_1__["Quat"](x, y, z, w);
         }
-        if (!this._dirtyLocal) {
-            this._dirtify(true);
-        }
-    };
-    INode.prototype.setRotation = function (rotation) {
         if (this.parent == null) {
             this.localRotation.copy(rotation);
         }
@@ -5820,6 +5852,17 @@ var INode = /** @class */ (function (_super) {
         }
         this._sync();
         return this.worldTransform;
+    };
+    INode.prototype.setLocalScale = function (x, y, z) {
+        if (x instanceof _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"]) {
+            this.localScale.copy(x);
+        }
+        else {
+            this.localScale.set(x, y, z);
+        }
+        if (!this._dirtyLocal) {
+            this._dirtify(true);
+        }
     };
     INode.prototype.getLocalScale = function () {
         return this.localScale;
