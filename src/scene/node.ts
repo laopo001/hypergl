@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 3:34:33 pm
+ * Last Modified: Saturday, September 1st 2018, 6:07:29 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -63,7 +63,15 @@ export class INode extends IElement {
         child.scene = this.scene;
         this.scene.layer.push(child);
     }
-    setPosition(position: Vec3) {
+    setPosition(x: Vec3);
+    setPosition(x: number, y: number, z: number);
+    setPosition(x?, y?, z?) {
+        let position = new Vec3();
+        if (x instanceof Vec3) {
+            position.copy(x);
+        } else {
+            position.set(x, y, z);
+        }
         if (this.parent == null) {
             this.localPosition = position;
         } else {
@@ -118,6 +126,18 @@ export class INode extends IElement {
     }
     getLocalPosition() {
         return this.localPosition;
+    }
+    setLocalScale(x: Vec3);
+    setLocalScale(x: number, y: number, z: number);
+    setLocalScale(x?, y?, z?) {
+        if (x instanceof Vec3) {
+            this.localScale.copy(x);
+        } else {
+            this.localScale.set(x, y, z);
+        }
+        if (!this._dirtyLocal) {
+            this._dirtify(true);
+        }
     }
     setRotation(rotation: Quat) {
         if (this.parent == null) {

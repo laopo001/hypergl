@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 2:51:24 pm
+ * Last Modified: Saturday, September 1st 2018, 5:20:48 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -200,6 +200,13 @@ export class RendererPlatform {
     setIndexBuffer(indexBuffer: IndexBuffer) {
         indexBuffer.bind();
     }
+    initDraw() {
+        const gl = this.gl;
+        gl.enable(gl.DEPTH_TEST);
+        gl.clear(gl.DEPTH_BUFFER_BIT);
+        gl.clearColor(0, 0, 0, 1);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+    }
     draw(entity: Entity) {
         const gl = this.gl;
         const mesh = entity.mesh;
@@ -227,10 +234,7 @@ export class RendererPlatform {
             this.uniformFunction[uniform.type](uniform, shader.uniformScope[uniform.name]);
         }
 
-        gl.enable(gl.DEPTH_TEST);
-        gl.clear(gl.DEPTH_BUFFER_BIT);
-        gl.clearColor(0, 0, 0, 1);
-        gl.clear(gl.COLOR_BUFFER_BIT);
+
 
         gl.drawElements(
             gl.TRIANGLES,

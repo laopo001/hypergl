@@ -106,7 +106,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 3:35:59 pm
+ * Last Modified: Saturday, September 1st 2018, 9:37:32 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -152,13 +152,19 @@ var mesh = _src_mesh_mesh__WEBPACK_IMPORTED_MODULE_3__["Mesh"].createMesh(app.re
 var entity = new _src__WEBPACK_IMPORTED_MODULE_0__["Entity"]();
 entity.mesh = mesh;
 app.scene.root.addChild(entity);
+var entity2 = new _src__WEBPACK_IMPORTED_MODULE_0__["Entity"]();
+entity2.mesh = mesh;
+entity2.setLocalScale(1.5, 0.5, 1.5);
+// entity2.rotate(0, 10, 0);
+entity2.setPosition(2, 0, 0);
+app.scene.root.addChild(entity2);
 var camera = new _src_scene_camera__WEBPACK_IMPORTED_MODULE_2__["Camera"](45, app.canvas.width / app.canvas.height, 1, 1000);
 camera.worldMatrixInverse = new _src_math__WEBPACK_IMPORTED_MODULE_1__["Mat4"]().setLookAt(new _src_math__WEBPACK_IMPORTED_MODULE_1__["Vec3"](3, 3, 3), new _src_math__WEBPACK_IMPORTED_MODULE_1__["Vec3"](0, 0, 0), new _src_math__WEBPACK_IMPORTED_MODULE_1__["Vec3"](0, 1, 0)).invert();
 app.scene.cameras.push(camera);
 app.start();
-setInterval(function (_) {
+app.on('update', function (_) {
     entity.rotate(0, 1, 0);
-}, 100);
+});
 
 
 /***/ }),
@@ -2167,7 +2173,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 2:51:24 pm
+ * Last Modified: Saturday, September 1st 2018, 5:20:48 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -2357,6 +2363,13 @@ var RendererPlatform = /** @class */ (function () {
     RendererPlatform.prototype.setIndexBuffer = function (indexBuffer) {
         indexBuffer.bind();
     };
+    RendererPlatform.prototype.initDraw = function () {
+        var gl = this.gl;
+        gl.enable(gl.DEPTH_TEST);
+        gl.clear(gl.DEPTH_BUFFER_BIT);
+        gl.clearColor(0, 0, 0, 1);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+    };
     RendererPlatform.prototype.draw = function (entity) {
         var gl = this.gl;
         var mesh = entity.mesh;
@@ -2389,10 +2402,6 @@ var RendererPlatform = /** @class */ (function () {
             var uniform = uniforms[i];
             this.uniformFunction[uniform.type](uniform, shader.uniformScope[uniform.name]);
         }
-        gl.enable(gl.DEPTH_TEST);
-        gl.clear(gl.DEPTH_BUFFER_BIT);
-        gl.clearColor(0, 0, 0, 1);
-        gl.clear(gl.COLOR_BUFFER_BIT);
         gl.drawElements(gl.TRIANGLES, mesh.indexBuffer.length, mesh.indexBuffer.drawFormat, 0);
     };
     return RendererPlatform;
@@ -5651,7 +5660,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 3:34:33 pm
+ * Last Modified: Saturday, September 1st 2018, 6:07:29 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -5712,7 +5721,14 @@ var INode = /** @class */ (function (_super) {
         child.scene = this.scene;
         this.scene.layer.push(child);
     };
-    INode.prototype.setPosition = function (position) {
+    INode.prototype.setPosition = function (x, y, z) {
+        var position = new _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
+        if (x instanceof _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"]) {
+            position.copy(x);
+        }
+        else {
+            position.set(x, y, z);
+        }
         if (this.parent == null) {
             this.localPosition = position;
         }
@@ -5766,6 +5782,17 @@ var INode = /** @class */ (function (_super) {
     };
     INode.prototype.getLocalPosition = function () {
         return this.localPosition;
+    };
+    INode.prototype.setLocalScale = function (x, y, z) {
+        if (x instanceof _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"]) {
+            this.localScale.copy(x);
+        }
+        else {
+            this.localScale.set(x, y, z);
+        }
+        if (!this._dirtyLocal) {
+            this._dirtify(true);
+        }
     };
     INode.prototype.setRotation = function (rotation) {
         if (this.parent == null) {
@@ -5970,7 +5997,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 2:35:29 pm
+ * Last Modified: Saturday, September 1st 2018, 5:20:46 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -5979,6 +6006,7 @@ function renderScence(scene) {
     var entitys = scene.layer;
     var camera = scene.activeCamera;
     var renderer = scene.app.rendererPlatform;
+    renderer.initDraw();
     // TODO
     for (var i = 0; i < entitys.length; i++) {
         var entity = entitys[i];

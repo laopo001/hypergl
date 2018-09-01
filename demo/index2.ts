@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 3:35:59 pm
+ * Last Modified: Saturday, September 1st 2018, 9:37:32 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -67,6 +67,12 @@ let entity = new Entity();
 entity.mesh = mesh;
 app.scene.root.addChild(entity);
 
+let entity2 = new Entity();
+entity2.mesh = mesh;
+entity2.setLocalScale(1.5, 0.5, 1.5);
+// entity2.rotate(0, 10, 0);
+entity2.setPosition(2, 0, 0);
+app.scene.root.addChild(entity2);
 
 let camera = new Camera(45, app.canvas.width / app.canvas.height, 1, 1000);
 
@@ -76,8 +82,6 @@ app.scene.cameras.push(camera);
 
 app.start();
 
-
-
-setInterval(_ => {
+app.on('update', _ => {
     entity.rotate(0, 1, 0);
-}, 100);
+});

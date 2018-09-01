@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 2:35:29 pm
+ * Last Modified: Saturday, September 1st 2018, 5:20:46 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -23,6 +23,7 @@ export function renderScence(scene: Scene) {
     let camera = scene.activeCamera;
 
     let renderer = scene.app.rendererPlatform;
+    renderer.initDraw();
     // TODO
     for (let i = 0; i < entitys.length; i++) {
         let entity = entitys[i];
