@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, August 30th 2018, 6:54:36 pm
+ * Last Modified: Saturday, September 1st 2018, 1:58:21 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -15,7 +15,7 @@
 import { RendererPlatform } from './renderer';
 import { Log } from '../util';
 import { ShaderInput } from './shaderInput';
-import { GLType } from '../conf';
+import { UNIFORM_TYPE } from '../conf';
 
 export class Shader {
     program?: WebGLProgram;
@@ -24,6 +24,7 @@ export class Shader {
     samplers: ShaderInput[] = [];
     uniforms: ShaderInput[] = [];
     attributes: ShaderInput[] = [];
+    uniformScope: { [s: string]: any; } = {};
     ready = false;
     constructor(private renderer: RendererPlatform, private definition: {
         attributes: { [s: string]: any };
@@ -32,6 +33,16 @@ export class Shader {
         useTransformFeedback?: boolean;
     }) {
         this.compile();
+    }
+    setUniformValue(name, value) {
+        this.uniformScope[name] = value;
+    }
+    checkUniformScope() {
+        // tslint:disable-next-line:forin
+        for (let x in this.uniformScope) {
+            if (this.uniformScope[x] == null) { return false; }
+        }
+        return true;
     }
     compile() {
         let gl = this.renderer.gl;
@@ -70,30 +81,31 @@ export class Shader {
 
         let i = 0;
         // tslint:disable-next-line:one-variable-per-declaration
-        let info, location;
+
         let numAttributes = gl.getProgramParameter(this.program, gl.ACTIVE_ATTRIBUTES);
         while (i < numAttributes) {
-            info = gl.getActiveAttrib(this.program, i++);
-            location = gl.getAttribLocation(this.program, info.name);
+            let info = gl.getActiveAttrib(this.program, i++) as WebGLActiveInfo;
+            let location = gl.getAttribLocation(this.program, info.name);
             // Check attributes are correctly linked up
             if (this.definition.attributes[info.name] === undefined) {
                 Log.error('Vertex shader attribute "' + info.name + '" is not mapped to a semantic in shader definition.');
             }
             // this.attributes.push(new ShaderInput(this.renderer, this.definition.attributes[info.name], this.renderer.glTypeToJs[info.type] as GLType, location));
-            this.attributes.push(new ShaderInput(this.renderer, this.definition.attributes[info.name], this.renderer.glTypeToJs[info.type] as GLType, location));
+            this.attributes.push(new ShaderInput(this.renderer, this.definition.attributes[info.name], this.renderer.glTypeToJs[info.type] as UNIFORM_TYPE, location));
         }
         i = 0;
         let numUniforms = gl.getProgramParameter(this.program, gl.ACTIVE_UNIFORMS);
         while (i < numUniforms) {
-            info = gl.getActiveUniform(this.program, i++);
-            location = gl.getUniformLocation(this.program, info.name);
+            let info = gl.getActiveUniform(this.program, i++) as WebGLActiveInfo;
+            let location = gl.getUniformLocation(this.program, info.name) as number;
             if (info.type === gl.SAMPLER_2D || info.type === gl.SAMPLER_CUBE ||
                 (this.renderer.platform === 'webgl2' && (info.type === gl.SAMPLER_2D_SHADOW || info.type === gl.SAMPLER_CUBE_SHADOW || info.type === gl.SAMPLER_3D))
             ) {
-                this.samplers.push(new ShaderInput(this.renderer, info.name, this.renderer.glTypeToJs[info.type] as GLType, location));
+                this.samplers.push(new ShaderInput(this.renderer, info.name, this.renderer.glTypeToJs[info.type] as UNIFORM_TYPE, location));
             } else {
-                this.uniforms.push(new ShaderInput(this.renderer, info.name, this.renderer.glTypeToJs[info.type] as GLType, location));
+                this.uniforms.push(new ShaderInput(this.renderer, info.name, this.renderer.glTypeToJs[info.type] as UNIFORM_TYPE, location));
             }
+            this.uniformScope[info.name] = null;
         }
         this.ready = true;
     }

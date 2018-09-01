@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 29th 2018, 7:58:56 pm
+ * Last Modified: Saturday, September 1st 2018, 3:38:52 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -23,8 +23,12 @@ export class Scene extends IElement {
     baseMaterial;
     readonly lights = [];
     readonly cameras: Camera[] = [];
+    private _activeCamera!: Camera;
     get activeCamera() {
-        return this.cameras[0];
+        return this._activeCamera || this.cameras[0];
+    }
+    set activeCamera(x) {
+        this._activeCamera = x;
     }
     readonly layer: Entity[] = [];
     root: Entity = new Entity();

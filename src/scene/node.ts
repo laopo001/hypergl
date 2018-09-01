@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 29th 2018, 7:58:56 pm
+ * Last Modified: Saturday, September 1st 2018, 3:34:33 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -148,6 +148,48 @@ export class INode extends IElement {
     }
     getLocalScale() {
         return this.localScale;
+    }
+    rotate(x: Vec3);
+    rotate(x: number, y: number, z: number);
+    rotate(x?, y?, z?) {
+        let quaternion = new Quat();
+        let invParentRot = new Quat();
+        if (x instanceof Vec3) {
+            quaternion.setFromEulerAngles(x.data[0], x.data[1], x.data[2]);
+        } else {
+            quaternion.setFromEulerAngles(x, y, z);
+        }
+
+        if (this.parent == null) {
+            this.localRotation.mul2(quaternion, this.localRotation);
+        } else {
+            let rot = this.getRotation();
+            let parentRot = this.parent.getRotation();
+
+            invParentRot.copy(parentRot).invert();
+            quaternion.mul2(invParentRot, quaternion);
+            this.localRotation.mul2(quaternion, rot);
+        }
+
+        if (!this._dirtyLocal) {
+            this._dirtify(true);
+        }
+    }
+    rotateLocal(x: Vec3);
+    rotateLocal(x: number, y: number, z: number);
+    rotateLocal(x?, y?, z?) {
+        let quaternion = new Quat();
+        if (x instanceof Vec3) {
+            quaternion.setFromEulerAngles(x.data[0], x.data[1], x.data[2]);
+        } else {
+            quaternion.setFromEulerAngles(x, y, z);
+        }
+
+        this.localRotation.mul(quaternion);
+
+        if (!this._dirtyLocal) {
+            this._dirtify(true);
+        }
     }
     // 更新此节点及其所有后代的世界转换矩阵。
     syncHierarchy() {

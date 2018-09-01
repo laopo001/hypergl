@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 26th 2018, 10:45:01 pm
+ * Last Modified: Saturday, September 1st 2018, 2:28:51 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -28,7 +28,6 @@ export class Application {
         this.canvas = canvas;
         this.rendererPlatform = new RendererPlatform(this.canvas);
         this.sceneInstances.push(new Scene(this));
-        this.start();
     }
     start() {
         this.tick();

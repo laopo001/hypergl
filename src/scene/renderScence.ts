@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, August 30th 2018, 8:04:59 pm
+ * Last Modified: Saturday, September 1st 2018, 2:35:29 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -20,16 +20,19 @@ import { Mesh } from '../mesh/mesh';
 import { Shader } from '../graphics/shader';
 export function renderScence(scene: Scene) {
     let entitys = scene.layer;
+    let camera = scene.activeCamera;
+
     let renderer = scene.app.rendererPlatform;
     // TODO
     for (let i = 0; i < entitys.length; i++) {
         let entity = entitys[i];
-        let mesh = entity.mesh;
+        const mesh = entity.mesh;
         if (mesh == null) { return; }
-        let material = (mesh).material;
-        material.updateShader(scene.app.rendererPlatform);
-        renderer.useProgram(material.shader as Shader);
-        renderer.setVertexBuffer(mesh.vertexBuffer);
-        renderer.setIndexBuffer(mesh.indexBuffer);
+        const material = mesh.material;
+        material.updateShader(renderer);
+        let shader = mesh.material.shader as Shader;
+        renderer.setShader(shader as Shader);
+        shader.setUniformValue('matrix_viewProjection', camera.PVMatrix.data);
+        renderer.draw(entity);
     }
 }

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 19th 2018, 12:48:57 am
+ * Last Modified: Saturday, September 1st 2018, 1:21:22 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -25,6 +25,7 @@ export interface VertexAttribData extends VertexType {
     offset: number;
     stride: number;
     length: number;
+    normalize: boolean;
 }
 
 
