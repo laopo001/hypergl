@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 3:38:52 pm
+ * Last Modified: Saturday, September 1st 2018, 3:42:35 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -22,6 +22,8 @@ export class Scene extends IElement {
     fog;
     baseMaterial;
     readonly lights = [];
+    readonly layer: Entity[] = [];
+    root: Entity = new Entity();
     readonly cameras: Camera[] = [];
     private _activeCamera!: Camera;
     get activeCamera() {
@@ -30,8 +32,6 @@ export class Scene extends IElement {
     set activeCamera(x) {
         this._activeCamera = x;
     }
-    readonly layer: Entity[] = [];
-    root: Entity = new Entity();
     constructor(public app: Application) {
         super();
         this.root.scene = this;

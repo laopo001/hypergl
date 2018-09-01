@@ -4,13 +4,14 @@ Projects:
 Todos:
   实现基本功能
   new: 
+    ☐ ECS框架 Entity,Component,System 
     ☐ 纹理
     ☐ graph-node 
     ☐ mesh
     ☐ Entity
-    ☐ shaderInput
-    ☐ renderSecne
   Done:
+    ✔ shaderInput @done(18-09-01 15:42)
+    ✔ renderSecne @done(18-09-01 15:42)
     ✔ 封装camera @started(18-08-21 18:51) @done(18-08-26 18:37) @lasted(4d23h46m37s)
     ✔ mesh.createMesh完成，vertexBuffer.ts添加迭代器 @started(18-08-25 23:53) @done(18-08-26 15:53) @lasted(16h26s)
     ✔ BasicMaterial @started(18-08-25 16:43) @done(18-08-25 20:30) @lasted(3h47m3s)

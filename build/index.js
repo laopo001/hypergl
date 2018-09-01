@@ -2423,7 +2423,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 1:58:21 pm
+ * Last Modified: Saturday, September 1st 2018, 3:44:23 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -2498,7 +2498,7 @@ var Shader = /** @class */ (function () {
                 _util__WEBPACK_IMPORTED_MODULE_0__["Log"].error('Vertex shader attribute "' + info.name + '" is not mapped to a semantic in shader definition.');
             }
             // this.attributes.push(new ShaderInput(this.renderer, this.definition.attributes[info.name], this.renderer.glTypeToJs[info.type] as GLType, location));
-            this.attributes.push(new _shaderInput__WEBPACK_IMPORTED_MODULE_1__["ShaderInput"](this.renderer, this.definition.attributes[info.name], this.renderer.glTypeToJs[info.type], location));
+            this.attributes.push(new _shaderInput__WEBPACK_IMPORTED_MODULE_1__["ShaderVariable"](this.definition.attributes[info.name], this.renderer.glTypeToJs[info.type], location));
         }
         i = 0;
         var numUniforms = gl.getProgramParameter(this.program, gl.ACTIVE_UNIFORMS);
@@ -2507,10 +2507,10 @@ var Shader = /** @class */ (function () {
             var location = gl.getUniformLocation(this.program, info.name);
             if (info.type === gl.SAMPLER_2D || info.type === gl.SAMPLER_CUBE ||
                 (this.renderer.platform === 'webgl2' && (info.type === gl.SAMPLER_2D_SHADOW || info.type === gl.SAMPLER_CUBE_SHADOW || info.type === gl.SAMPLER_3D))) {
-                this.samplers.push(new _shaderInput__WEBPACK_IMPORTED_MODULE_1__["ShaderInput"](this.renderer, info.name, this.renderer.glTypeToJs[info.type], location));
+                this.samplers.push(new _shaderInput__WEBPACK_IMPORTED_MODULE_1__["ShaderVariable"](info.name, this.renderer.glTypeToJs[info.type], location));
             }
             else {
-                this.uniforms.push(new _shaderInput__WEBPACK_IMPORTED_MODULE_1__["ShaderInput"](this.renderer, info.name, this.renderer.glTypeToJs[info.type], location));
+                this.uniforms.push(new _shaderInput__WEBPACK_IMPORTED_MODULE_1__["ShaderVariable"](info.name, this.renderer.glTypeToJs[info.type], location));
             }
             this.uniformScope[info.name] = null;
         }
@@ -2544,12 +2544,12 @@ function loadShader(gl, type, source) {
 /*!*************************************!*\
   !*** ./src/graphics/shaderInput.ts ***!
   \*************************************/
-/*! exports provided: ShaderInput */
+/*! exports provided: ShaderVariable */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ShaderInput", function() { return ShaderInput; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ShaderVariable", function() { return ShaderVariable; });
 /*
  * ProjectName: hypergl
  * FilePath: \src\graphics\shaderInput.ts
@@ -2557,19 +2557,18 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 2:17:10 am
+ * Last Modified: Saturday, September 1st 2018, 3:44:23 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
-var ShaderInput = /** @class */ (function () {
-    function ShaderInput(renderer, name, type, locationId) {
-        this.renderer = renderer;
+var ShaderVariable = /** @class */ (function () {
+    function ShaderVariable(name, type, locationId) {
         this.name = name;
         this.type = type;
         this.locationId = locationId;
     }
-    return ShaderInput;
+    return ShaderVariable;
 }());
 
 
@@ -6019,7 +6018,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 3:38:52 pm
+ * Last Modified: Saturday, September 1st 2018, 3:42:35 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -6043,9 +6042,9 @@ var Scene = /** @class */ (function (_super) {
         var _this = _super.call(this) || this;
         _this.app = app;
         _this.lights = [];
-        _this.cameras = [];
         _this.layer = [];
         _this.root = new _ecs_entity__WEBPACK_IMPORTED_MODULE_2__["Entity"]();
+        _this.cameras = [];
         _this.root.scene = _this;
         return _this;
     }

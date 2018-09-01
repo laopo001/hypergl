@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 1:58:21 pm
+ * Last Modified: Saturday, September 1st 2018, 3:44:23 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -14,16 +14,16 @@
 
 import { RendererPlatform } from './renderer';
 import { Log } from '../util';
-import { ShaderInput } from './shaderInput';
+import { ShaderVariable } from './shaderInput';
 import { UNIFORM_TYPE } from '../conf';
 
 export class Shader {
     program?: WebGLProgram;
     vshader?: WebGLShader;
     fshader?: WebGLShader;
-    samplers: ShaderInput[] = [];
-    uniforms: ShaderInput[] = [];
-    attributes: ShaderInput[] = [];
+    samplers: ShaderVariable[] = [];
+    uniforms: ShaderVariable[] = [];
+    attributes: ShaderVariable[] = [];
     uniformScope: { [s: string]: any; } = {};
     ready = false;
     constructor(private renderer: RendererPlatform, private definition: {
@@ -91,7 +91,7 @@ export class Shader {
                 Log.error('Vertex shader attribute "' + info.name + '" is not mapped to a semantic in shader definition.');
             }
             // this.attributes.push(new ShaderInput(this.renderer, this.definition.attributes[info.name], this.renderer.glTypeToJs[info.type] as GLType, location));
-            this.attributes.push(new ShaderInput(this.renderer, this.definition.attributes[info.name], this.renderer.glTypeToJs[info.type] as UNIFORM_TYPE, location));
+            this.attributes.push(new ShaderVariable(this.definition.attributes[info.name], this.renderer.glTypeToJs[info.type] as UNIFORM_TYPE, location));
         }
         i = 0;
         let numUniforms = gl.getProgramParameter(this.program, gl.ACTIVE_UNIFORMS);
@@ -101,9 +101,9 @@ export class Shader {
             if (info.type === gl.SAMPLER_2D || info.type === gl.SAMPLER_CUBE ||
                 (this.renderer.platform === 'webgl2' && (info.type === gl.SAMPLER_2D_SHADOW || info.type === gl.SAMPLER_CUBE_SHADOW || info.type === gl.SAMPLER_3D))
             ) {
-                this.samplers.push(new ShaderInput(this.renderer, info.name, this.renderer.glTypeToJs[info.type] as UNIFORM_TYPE, location));
+                this.samplers.push(new ShaderVariable(info.name, this.renderer.glTypeToJs[info.type] as UNIFORM_TYPE, location));
             } else {
-                this.uniforms.push(new ShaderInput(this.renderer, info.name, this.renderer.glTypeToJs[info.type] as UNIFORM_TYPE, location));
+                this.uniforms.push(new ShaderVariable(info.name, this.renderer.glTypeToJs[info.type] as UNIFORM_TYPE, location));
             }
             this.uniformScope[info.name] = null;
         }

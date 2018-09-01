@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 2:17:10 am
+ * Last Modified: Saturday, September 1st 2018, 3:44:23 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -14,8 +14,8 @@
 
 import { RendererPlatform } from './renderer';
 import { UNIFORM_TYPE } from '../conf';
-export class ShaderInput {
-    constructor(private renderer: RendererPlatform, public name: string, public type: UNIFORM_TYPE, public locationId: number) {
+export class ShaderVariable {
+    constructor(public name: string, public type: UNIFORM_TYPE, public locationId: number) {
 
     }
 }
