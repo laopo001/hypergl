@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 26th 2018, 3:07:04 pm
+ * Last Modified: Sunday, September 2nd 2018, 12:48:01 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -27,11 +27,12 @@ export class VertexBuffer {
         this.numBytes = stride * numVertices;
         if (data) {
             this.buffer = data;
+            this.bind();
+
         } else {
             this.buffer = new ArrayBuffer(this.numBytes);
         }
         this.numVertices = numVertices;
-
     }
     bind() {
         let gl = this.renderer.gl;

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 25th 2018, 2:11:44 am
+ * Last Modified: Saturday, September 1st 2018, 1:45:13 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -68,7 +68,7 @@ export enum CURVE {
 }
 
 
-export enum GLType {
+export enum UNIFORM_TYPE {
     BOOL,
     INT,
     FLOAT,
@@ -89,4 +89,6 @@ export enum GLType {
     SAMPLER_2D_SHADOW,
     SAMPLER_CUBE_SHADOW,
     SAMPLER_3D,
+    FLOATARRAY
 }
+

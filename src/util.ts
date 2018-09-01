@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 25th 2018, 1:28:51 pm
+ * Last Modified: Saturday, September 1st 2018, 2:05:52 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -18,8 +18,10 @@
  */
 // tslint:disable-next-line:no-namespace
 export namespace Log {
-    export function assert(condition: any, message: string) {
-        if (condition) {
+    export function assert(condition: any, message: string, log?: any) {
+        if (!condition) {
+            // tslint:disable-next-line:no-unused-expression
+            log && console.error(log);
             throw new Error(message);
         }
     }

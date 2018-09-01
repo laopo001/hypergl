@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 25th 2018, 1:23:52 am
+ * Last Modified: Sunday, September 2nd 2018, 1:06:23 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -15,6 +15,8 @@
 import { IElement } from '../core/element';
 import { Vec3, Quat, Mat4, Vec2 } from '../math';
 import { Log } from '../util';
+import { Scene } from './scene';
+import { Entity } from '../ecs/entity';
 
 let scaleCompensatePosTransform = new Mat4();
 let scaleCompensatePos = new Vec3();
@@ -32,6 +34,7 @@ export class INode extends IElement {
     localTransform = new Mat4();
     parent?: INode;
     readonly children: INode[] = [];
+    scene!: Scene;
     // World-space
     position = new Vec3(0, 0, 0);
     rotation = new Quat(0, 0, 0, 1);
@@ -54,11 +57,21 @@ export class INode extends IElement {
         let quat = new Quat().setFromMat4(mat4);
         this.setRotation(quat);
     }
-    addChild(child: INode) {
+    addChild(child: Entity) {
         this.children.push(child);
         child.parent = this;
+        child.scene = this.scene;
+        this.scene.layer.push(child);
     }
-    setPosition(position: Vec3) {
+    setPosition(x: Vec3);
+    setPosition(x: number, y: number, z: number);
+    setPosition(x?, y?, z?) {
+        let position = new Vec3();
+        if (x instanceof Vec3) {
+            position.copy(x);
+        } else {
+            position.set(x, y, z);
+        }
         if (this.parent == null) {
             this.localPosition = position;
         } else {
@@ -78,8 +91,14 @@ export class INode extends IElement {
         this.getWorldTransform().getTranslation(this.position);
         return this.position;
     }
-    setLocalEulerAngles(vec3: Vec3) {
-        this.localRotation.setFromEulerAngles(vec3.data[0], vec3.data[1], vec3.data[2]);
+    setLocalEulerAngles(x: Vec3);
+    setLocalEulerAngles(x: number, y: number, z: number);
+    setLocalEulerAngles(x?, y?, z?) {
+        if (x instanceof Vec3) {
+            this.localRotation.setFromEulerAngles(x.data[0], x.data[1], x.data[2]);
+        } else {
+            this.localRotation.setFromEulerAngles(x, y, z);
+        }
         if (!this._dirtyLocal) {
             this._dirtify(true);
         }
@@ -88,8 +107,14 @@ export class INode extends IElement {
         this.localRotation.getEulerAngles(this.localEulerAngles);
         return this.localEulerAngles;
     }
-    setEulerAngles(vec3: Vec3) {
-        this.localRotation.setFromEulerAngles(vec3.data[0], vec3.data[1], vec3.data[2]);
+    setEulerAngles(x: Vec3);
+    setEulerAngles(x: number, y: number, z: number);
+    setEulerAngles(x?, y?, z?) {
+        if (x instanceof Vec3) {
+            this.localRotation.setFromEulerAngles(x.data[0], x.data[1], x.data[2]);
+        } else {
+            this.localRotation.setFromEulerAngles(x, y, z);
+        }
         if (this.parent != null) {
             let parentRot = this.parent.getRotation();
             let invParentRot = new Quat().copy(parentRot).invert();
@@ -105,8 +130,15 @@ export class INode extends IElement {
         this.getWorldTransform().getEulerAngles(this.eulerAngles);
         return this.eulerAngles;
     }
-    setLocalPosition(vec3: Vec3) {
-        this.localPosition.copy(vec3);
+    setLocalPosition(x: Vec3);
+    setLocalPosition(x: number, y: number, z: number);
+    setLocalPosition(x?, y?, z?) {
+        if (x instanceof Vec3) {
+            this.localPosition.copy(x);
+        } else {
+            this.localPosition.set(x, y, z);
+        }
+        // this.localPosition.copy(vec3);
         if (!this._dirtyLocal) {
             this._dirtify(true);
         }
@@ -114,7 +146,17 @@ export class INode extends IElement {
     getLocalPosition() {
         return this.localPosition;
     }
-    setRotation(rotation: Quat) {
+
+
+    setRotation(x: Quat);
+    setRotation(x: number, y: number, z: number, w: number);
+    setRotation(x?, y?, z?, w?) {
+        let rotation: Quat;
+        if (x instanceof Quat) {
+            rotation = x;
+        } else {
+            rotation = new Quat(x, y, z, w);
+        }
         if (this.parent == null) {
             this.localRotation.copy(rotation);
         } else {
@@ -141,8 +183,62 @@ export class INode extends IElement {
         this._sync();
         return this.worldTransform;
     }
+    setLocalScale(x: Vec3);
+    setLocalScale(x: number, y: number, z: number);
+    setLocalScale(x?, y?, z?) {
+        if (x instanceof Vec3) {
+            this.localScale.copy(x);
+        } else {
+            this.localScale.set(x, y, z);
+        }
+        if (!this._dirtyLocal) {
+            this._dirtify(true);
+        }
+    }
     getLocalScale() {
         return this.localScale;
+    }
+    rotate(x: Vec3);
+    rotate(x: number, y: number, z: number);
+    rotate(x?, y?, z?) {
+        let quaternion = new Quat();
+        let invParentRot = new Quat();
+        if (x instanceof Vec3) {
+            quaternion.setFromEulerAngles(x.data[0], x.data[1], x.data[2]);
+        } else {
+            quaternion.setFromEulerAngles(x, y, z);
+        }
+
+        if (this.parent == null) {
+            this.localRotation.mul2(quaternion, this.localRotation);
+        } else {
+            let rot = this.getRotation();
+            let parentRot = this.parent.getRotation();
+
+            invParentRot.copy(parentRot).invert();
+            quaternion.mul2(invParentRot, quaternion);
+            this.localRotation.mul2(quaternion, rot);
+        }
+
+        if (!this._dirtyLocal) {
+            this._dirtify(true);
+        }
+    }
+    rotateLocal(x: Vec3);
+    rotateLocal(x: number, y: number, z: number);
+    rotateLocal(x?, y?, z?) {
+        let quaternion = new Quat();
+        if (x instanceof Vec3) {
+            quaternion.setFromEulerAngles(x.data[0], x.data[1], x.data[2]);
+        } else {
+            quaternion.setFromEulerAngles(x, y, z);
+        }
+
+        this.localRotation.mul(quaternion);
+
+        if (!this._dirtyLocal) {
+            this._dirtify(true);
+        }
     }
     // 更新此节点及其所有后代的世界转换矩阵。
     syncHierarchy() {

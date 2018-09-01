@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 25th 2018, 5:57:32 pm
+ * Last Modified: Sunday, September 2nd 2018, 12:20:01 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -14,27 +14,41 @@
 
 import { RendererPlatform } from './renderer';
 import { Log } from '../util';
+import { ShaderVariable } from './shaderVariable';
+import { UNIFORM_TYPE } from '../conf';
 
 export class Shader {
     program?: WebGLProgram;
     vshader?: WebGLShader;
     fshader?: WebGLShader;
-    samplers = [];
-    uniforms = [];
-    attributes = [];
+    samplers: ShaderVariable[] = [];
+    uniforms: ShaderVariable[] = [];
+    attributes: ShaderVariable[] = [];
+    uniformScope: { [s: string]: any; } = {};
+    ready = false;
     constructor(private renderer: RendererPlatform, private definition: {
         attributes: { [s: string]: any };
         vshader: string;
         fshader: string;
         useTransformFeedback?: boolean;
     }) {
-
+        this.compile();
+    }
+    setUniformValue(name, value) {
+        this.uniformScope[name] = value;
+    }
+    checkUniformScope() {
+        // tslint:disable-next-line:forin
+        for (let x in this.uniformScope) {
+            if (this.uniformScope[x] == null) { return false; }
+        }
+        return true;
     }
     compile() {
         let gl = this.renderer.gl;
         this.vshader = loadShader(gl, gl.VERTEX_SHADER, this.definition.vshader) as WebGLShader;
         this.fshader = loadShader(gl, gl.FRAGMENT_SHADER, this.definition.fshader) as WebGLShader;
-        this.program = createProgram(gl, this.definition.vshader, this.definition.fshader) as WebGLProgram;
+        this.program = createProgram(gl, this.vshader, this.fshader) as WebGLProgram;
     }
     link() {
         if (this.program == null) {
@@ -67,17 +81,33 @@ export class Shader {
 
         let i = 0;
         // tslint:disable-next-line:one-variable-per-declaration
-        let info, location;
+
         let numAttributes = gl.getProgramParameter(this.program, gl.ACTIVE_ATTRIBUTES);
         while (i < numAttributes) {
-            info = gl.getActiveAttrib(this.program, i++);
-            location = gl.getAttribLocation(this.program, info.name);
+            let info = gl.getActiveAttrib(this.program, i++) as WebGLActiveInfo;
+            let location = gl.getAttribLocation(this.program, info.name);
             // Check attributes are correctly linked up
             if (this.definition.attributes[info.name] === undefined) {
                 Log.error('Vertex shader attribute "' + info.name + '" is not mapped to a semantic in shader definition.');
             }
-            // this.attributes.push(new ShaderInput(this.device, this.definition.attributes[info.name], _typeToPc[info.type], location));
+            // this.attributes.push(new ShaderInput(this.renderer, this.definition.attributes[info.name], this.renderer.glTypeToJs[info.type] as GLType, location));
+            this.attributes.push(new ShaderVariable(this.definition.attributes[info.name], this.renderer.glTypeToJs[info.type] as UNIFORM_TYPE, location));
         }
+        i = 0;
+        let numUniforms = gl.getProgramParameter(this.program, gl.ACTIVE_UNIFORMS);
+        while (i < numUniforms) {
+            let info = gl.getActiveUniform(this.program, i++) as WebGLActiveInfo;
+            let location = gl.getUniformLocation(this.program, info.name) as number;
+            if (info.type === gl.SAMPLER_2D || info.type === gl.SAMPLER_CUBE ||
+                (this.renderer.platform === 'webgl2' && (info.type === gl.SAMPLER_2D_SHADOW || info.type === gl.SAMPLER_CUBE_SHADOW || info.type === gl.SAMPLER_3D))
+            ) {
+                this.samplers.push(new ShaderVariable(info.name, this.renderer.glTypeToJs[info.type] as UNIFORM_TYPE, location));
+            } else {
+                this.uniforms.push(new ShaderVariable(info.name, this.renderer.glTypeToJs[info.type] as UNIFORM_TYPE, location));
+            }
+            this.uniformScope[info.name] = null;
+        }
+        this.ready = true;
     }
 }
 
@@ -95,7 +125,7 @@ export function loadShader(gl: WebGLRenderingContext | WebGL2RenderingContext, t
     gl.compileShader(shader);
     const compiled = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
     if (!compiled) {
-        Log.error(gl.getShaderInfoLog(shader) as string);
+        Log.error(`${gl.VERTEX_SHADER === type ? 'VERTEX_SHADER' : 'FRAGMENT_SHADER'}\n` + gl.getShaderInfoLog(shader) as string);
         return false;
     }
     return shader;

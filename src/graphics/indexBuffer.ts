@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 26th 2018, 4:06:09 pm
+ * Last Modified: Sunday, September 2nd 2018, 12:45:34 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -38,6 +38,7 @@ export class IndexBuffer {
             this.buffer = data;
             this.length = length || new (dataType as any)(data).length;
         }
+        this.bind();
     }
     bind() {
         let gl = this.renderer.gl;

@@ -1,3 +1,4 @@
+#version 300 es
 #define GL2
 #define attribute in
 #define varying out

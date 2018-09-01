@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 26th 2018, 3:47:29 pm
+ * Last Modified: Sunday, September 2nd 2018, 12:48:49 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -57,7 +57,7 @@ export class Mesh {
             vertexDesc.push({ semantic: SEMANTIC.TANGENT, size: 4, dataType: Float32Array });
         }
         if (colors !== null) {
-            vertexDesc.push({ semantic: SEMANTIC.COLOR, size: 4, dataType: Uint8Array, normalize: true });
+            vertexDesc.push({ semantic: SEMANTIC.COLOR, size: 4, dataType: Uint8Array, normalize: false });
         }
         if (uvs !== null) {
             vertexDesc.push({ semantic: SEMANTIC.TEXCOORD0, size: 2, dataType: Float32Array });
@@ -105,7 +105,7 @@ export class Mesh {
             }
             iterator.next();
         }
-
+        vertexBuffer.bind();
 
         // Create the index buffer
         let indexBuffer = new IndexBuffer(renderer, Uint16Array, BUFFER.STATIC, indices);

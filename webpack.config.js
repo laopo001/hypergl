@@ -6,7 +6,7 @@ module.exports = function (env, webpackConfig) {
     return {
         //页面入口文件配置
         entry: {
-            index: `./demo/index`
+            index: `./demo/index2`
         },
         //入口文件输出配置
         output: {

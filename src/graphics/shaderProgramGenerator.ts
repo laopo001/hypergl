@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 25th 2018, 6:57:42 pm
+ * Last Modified: Wednesday, August 29th 2018, 8:35:52 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -49,7 +49,7 @@ function createShaderDefinition(renderer: RendererPlatform, options) {
     const basicVertStr = basicVert(options);
     const basicFragStr = basicFrag(options);
     let attributes: any = { vertex_position: SEMANTIC.POSITION };
-    if (options.vertexColors) {
+    if (options.vertex_color) {
         attributes.vertex_color = SEMANTIC.COLOR;
     }
     if (options.diffuseMap) {
