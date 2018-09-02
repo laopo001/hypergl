@@ -99,6 +99,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_math__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/math */ "./src/math/index.ts");
 /* harmony import */ var _src_scene_camera__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../src/scene/camera */ "./src/scene/camera.ts");
 /* harmony import */ var _src_mesh_mesh__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../src/mesh/mesh */ "./src/mesh/mesh.ts");
+/* harmony import */ var _src_core_color__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../src/core/color */ "./src/core/color.ts");
 /*
  * ProjectName: hypergl
  * FilePath: \demo\index2.ts
@@ -106,7 +107,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 9:37:32 pm
+ * Last Modified: Monday, September 3rd 2018, 1:05:34 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -115,45 +116,21 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var app = new _src__WEBPACK_IMPORTED_MODULE_0__["Application"](document.getElementById('canvas'));
-var vertices = [
-    1, 1, 1,
-    -1, 1, 1,
-    -1, -1, 1,
-    1, -1, 1,
-    1, -1, -1,
-    1, 1, -1,
-    -1, 1, -1,
-    -1, -1, -1 // v7 Black
-];
-var colors = [
-    1, 1, 1, 1,
-    1, 0, 1, 1,
-    1, 0, 0, 1,
-    1, 1, 0, 1,
-    0, 1, 0, 1,
-    0, 1, 1, 1,
-    0, 0, 1, 1,
-    0, 0, 0, 1 // v7 Black
-];
-var indices = [
-    0, 1, 2, 0, 2, 3,
-    0, 3, 4, 0, 4, 5,
-    0, 5, 6, 0, 6, 1,
-    1, 6, 7, 1, 7, 2,
-    7, 4, 3, 7, 3, 2,
-    4, 7, 6, 4, 6, 5 // back
-];
-var mesh = _src_mesh_mesh__WEBPACK_IMPORTED_MODULE_3__["Mesh"].createMesh(app.rendererPlatform, {
-    positions: vertices,
-    colors: colors,
-    indices: indices
+
+var app = new _src__WEBPACK_IMPORTED_MODULE_0__["Application"](document.getElementById('canvas'), {
+// webgl1:true
 });
+var mesh = _src_mesh_mesh__WEBPACK_IMPORTED_MODULE_3__["Mesh"].createBox(app.rendererPlatform);
+var m = new _src__WEBPACK_IMPORTED_MODULE_0__["BasicMaterial"]();
+m.color = new _src_core_color__WEBPACK_IMPORTED_MODULE_4__["Color"](0.5, 1, 0.5);
+m.update();
 var entity = new _src__WEBPACK_IMPORTED_MODULE_0__["Entity"]();
 entity.mesh = mesh;
+mesh.material = m;
 app.scene.root.addChild(entity);
+var mesh2 = _src_mesh_mesh__WEBPACK_IMPORTED_MODULE_3__["Mesh"].createBox(app.rendererPlatform);
 var entity2 = new _src__WEBPACK_IMPORTED_MODULE_0__["Entity"]();
-entity2.mesh = mesh;
+entity2.mesh = mesh2;
 entity2.setLocalScale(1.5, 0.5, 1.5);
 // entity2.rotate(0, 10, 0);
 entity2.setPosition(2, 0, 0);
@@ -1537,7 +1514,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 2:28:51 pm
+ * Last Modified: Sunday, September 2nd 2018, 1:21:14 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -1550,7 +1527,7 @@ var Application = /** @class */ (function () {
         this.sceneInstances = [];
         this.activeIndex = 0;
         this.canvas = canvas;
-        this.rendererPlatform = new _graphics_renderer__WEBPACK_IMPORTED_MODULE_1__["RendererPlatform"](this.canvas);
+        this.rendererPlatform = new _graphics_renderer__WEBPACK_IMPORTED_MODULE_1__["RendererPlatform"](this.canvas, option);
         this.sceneInstances.push(new _scene_scene__WEBPACK_IMPORTED_MODULE_0__["Scene"](this));
     }
     Object.defineProperty(Application.prototype, "scene", {
@@ -2174,7 +2151,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 2nd 2018, 12:43:49 am
+ * Last Modified: Sunday, September 2nd 2018, 1:24:11 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -2183,12 +2160,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var RendererPlatform = /** @class */ (function () {
-    function RendererPlatform(canvas) {
+    function RendererPlatform(canvas, option) {
         this.AttrbuteType = {};
         this.glTypeToJs = {};
         this.uniformFunction = {};
         this.programGenerator = new _shaderProgramGenerator__WEBPACK_IMPORTED_MODULE_2__["ShaderProgramGenerator"](this);
-        this.webgl2 = canvas.getContext('webgl2');
+        var webgl2;
+        if (option && !option.webgl1) {
+            webgl2 = canvas.getContext('webgl2');
+        }
+        this.webgl2 = webgl2;
+        // this.webgl2 = canvas.getContext('webgl2') as any;
         if (this.webgl2) {
             this.platform = 'webgl2';
             _util__WEBPACK_IMPORTED_MODULE_0__["Log"].debug("platform:" + this.platform);
@@ -2589,7 +2571,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 29th 2018, 8:35:52 pm
+ * Last Modified: Sunday, September 2nd 2018, 11:47:16 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -2626,6 +2608,7 @@ function createShaderDefinition(renderer, options) {
     var basicVertStr = _shaders_basic_vert__WEBPACK_IMPORTED_MODULE_0___default()(options);
     var basicFragStr = _shaders_basic_frag__WEBPACK_IMPORTED_MODULE_1___default()(options);
     var attributes = { vertex_position: _conf__WEBPACK_IMPORTED_MODULE_3__["SEMANTIC"].POSITION };
+    var variables = [];
     if (options.vertex_color) {
         attributes.vertex_color = _conf__WEBPACK_IMPORTED_MODULE_3__["SEMANTIC"].COLOR;
     }
@@ -2659,7 +2642,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 2nd 2018, 12:26:04 am
+ * Last Modified: Sunday, September 2nd 2018, 11:43:51 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -2670,6 +2653,7 @@ var ShaderVariable = /** @class */ (function () {
         this.type = type;
         this.locationId = locationId;
         this.enable = false;
+        this.value = [null, null, null, null];
     }
     return ShaderVariable;
 }());
@@ -2691,11 +2675,17 @@ module.exports = (Handlebars["default"] || Handlebars).template({"1":function(co
     var stack1;
 
   return ((stack1 = container.invokePartial(__webpack_require__(/*! ./src/graphics/shaders/gles3.frag */ "./src/graphics/shaders/gles3.frag"),depth0,{"name":"gles3.frag","data":data,"helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "");
+},"3":function(container,depth0,helpers,partials,data) {
+    return "varying vec4 vColor;\nvec4 getOutColor() {\n    return vColor;\n}\n";
+},"5":function(container,depth0,helpers,partials,data) {
+    return "uniform vec4 uColor;\nvec4 getOutColor() {\n    return uColor;\n}\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1;
+    var stack1, alias1=depth0 != null ? depth0 : (container.nullContext || {});
 
-  return ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.GL2 : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "\nprecision highp float;\n#ifdef GL2\nprecision highp sampler2DShadow;\n#endif\nvarying vec4 vColor;\nvoid main(void)\n{\n    gl_FragColor = vColor;\n}";
+  return ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.GL2 : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "\nprecision highp float;\n#ifdef GL2\nprecision highp sampler2DShadow;\n#endif\n"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.vertex_color : depth0),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.program(5, data, 0),"data":data})) != null ? stack1 : "")
+    + "\n\nvoid main(void)\n{\n    gl_FragColor = getOutColor();\n}";
 },"usePartial":true,"useData":true});
 
 /***/ }),
@@ -2713,11 +2703,25 @@ module.exports = (Handlebars["default"] || Handlebars).template({"1":function(co
     var stack1;
 
   return ((stack1 = container.invokePartial(__webpack_require__(/*! ./src/graphics/shaders/gles3.vert */ "./src/graphics/shaders/gles3.vert"),depth0,{"name":"gles3.vert","data":data,"helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "");
+},"3":function(container,depth0,helpers,partials,data) {
+    return "attribute vec4 vertex_color;\nvarying vec4 vColor;\n";
+},"5":function(container,depth0,helpers,partials,data) {
+    return "attribute vec2 vertex_texCoord0;\nvarying vec2 v_vertex_texCoord0;\n";
+},"7":function(container,depth0,helpers,partials,data) {
+    return "    vColor = vertex_color;\n";
+},"9":function(container,depth0,helpers,partials,data) {
+    return "    v_vertex_texCoord0 = vertex_texCoord0;\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1;
+    var stack1, alias1=depth0 != null ? depth0 : (container.nullContext || {});
 
-  return ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.GL2 : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "\nuniform mat4 matrix_model;\nuniform mat4 matrix_viewProjection;\nattribute vec4 vertex_color;\nattribute vec3 vertex_position;\nvarying vec4 vColor;\n\nvec4 getPosition() {\n    vec4 posW = matrix_model * vec4(vertex_position, 1.0);\n    return matrix_viewProjection * posW;\n}\n\n\nvoid main(void) {\n    gl_Position = getPosition();\n    vColor = vertex_color;\n}";
+  return ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.GL2 : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "\nuniform mat4 matrix_model;\nuniform mat4 matrix_viewProjection;\n"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.vertex_color : depth0),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.texture_diffuseMap : depth0),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "\n\nattribute vec3 vertex_position;\n\nvec4 getPosition() {\n    vec4 posW = matrix_model * vec4(vertex_position, 1.0);\n    return matrix_viewProjection * posW;\n}\n\n\nvoid main(void) {\n    gl_Position = getPosition();\n"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.vertex_color : depth0),{"name":"if","hash":{},"fn":container.program(7, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.texture_diffuseMap : depth0),{"name":"if","hash":{},"fn":container.program(9, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "}";
 },"usePartial":true,"useData":true});
 
 /***/ }),
@@ -3057,7 +3061,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, August 30th 2018, 7:10:24 pm
+ * Last Modified: Sunday, September 2nd 2018, 11:14:03 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -3091,10 +3095,11 @@ var BasicMaterial = /** @class */ (function (_super) {
         return _this;
     }
     BasicMaterial.prototype.update = function () {
-        this.setParameter('vertex_color', this.color.data);
+        this.setParameter('vertex_color', false);
+        this.setParameter('uColor', this.color.data);
         if (this.colorMap) {
             // TODO
-            // this.setParameter('texture_diffuseMap', this.colorMap);
+            this.setParameter('texture_diffuseMap', this.colorMap);
         }
     };
     BasicMaterial.prototype.updateShader = function (renderer) {
@@ -3153,7 +3158,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 29th 2018, 8:32:49 pm
+ * Last Modified: Sunday, September 2nd 2018, 9:52:23 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -5476,17 +5481,19 @@ var Vec4 = /** @class */ (function () {
 /*!**************************!*\
   !*** ./src/mesh/mesh.ts ***!
   \**************************/
-/*! exports provided: Mesh */
+/*! exports provided: Mesh, createBox */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Mesh", function() { return Mesh; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createBox", function() { return createBox; });
 /* harmony import */ var _graphics_vertexBuffer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../graphics/vertexBuffer */ "./src/graphics/vertexBuffer.ts");
 /* harmony import */ var _graphics_indexBuffer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../graphics/indexBuffer */ "./src/graphics/indexBuffer.ts");
 /* harmony import */ var _material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../material */ "./src/material/index.ts");
 /* harmony import */ var _conf__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../conf */ "./src/conf.ts");
 /* harmony import */ var _graphics_vertexFormat__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../graphics/vertexFormat */ "./src/graphics/vertexFormat.ts");
+/* harmony import */ var _math__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../math */ "./src/math/index.ts");
 /*
  * ProjectName: hypergl
  * FilePath: \src\mesh\mesh.ts
@@ -5494,11 +5501,12 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 2nd 2018, 12:48:49 am
+ * Last Modified: Monday, September 3rd 2018, 1:05:12 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
+
 
 
 
@@ -5589,7 +5597,7 @@ var Mesh = /** @class */ (function () {
         vertexBuffer.bind();
         // Create the index buffer
         var indexBuffer = new _graphics_indexBuffer__WEBPACK_IMPORTED_MODULE_1__["IndexBuffer"](renderer, Uint16Array, _conf__WEBPACK_IMPORTED_MODULE_3__["BUFFER"].STATIC, indices);
-        // let aabb = new pc.BoundingBox();
+        // let aabb = new BoundingBox();
         // aabb.compute(positions);
         var mesh = new Mesh();
         mesh.vertexBuffer = vertexBuffer;
@@ -5597,9 +5605,113 @@ var Mesh = /** @class */ (function () {
         return mesh;
     };
     Mesh.defaultMaterial = new _material__WEBPACK_IMPORTED_MODULE_2__["BasicMaterial"]();
+    // tslint:disable-next-line:member-ordering
+    Mesh.createBox = createBox;
     return Mesh;
 }());
 
+var primitiveUv1Padding = 4 / 64;
+var primitiveUv1PaddingScale = 1 - primitiveUv1Padding * 2;
+function createBox(renderer, opts) {
+    // Check the supplied options and provide defaults for unspecified ones
+    var he = opts && opts.halfExtents !== undefined ? opts.halfExtents : new _math__WEBPACK_IMPORTED_MODULE_5__["Vec3"](0.5, 0.5, 0.5);
+    var ws = opts && opts.widthSegments !== undefined ? opts.widthSegments : 1;
+    var ls = opts && opts.lengthSegments !== undefined ? opts.lengthSegments : 1;
+    var hs = opts && opts.heightSegments !== undefined ? opts.heightSegments : 1;
+    var corners = [
+        new _math__WEBPACK_IMPORTED_MODULE_5__["Vec3"](-he.x, -he.y, he.z),
+        new _math__WEBPACK_IMPORTED_MODULE_5__["Vec3"](he.x, -he.y, he.z),
+        new _math__WEBPACK_IMPORTED_MODULE_5__["Vec3"](he.x, he.y, he.z),
+        new _math__WEBPACK_IMPORTED_MODULE_5__["Vec3"](-he.x, he.y, he.z),
+        new _math__WEBPACK_IMPORTED_MODULE_5__["Vec3"](he.x, -he.y, -he.z),
+        new _math__WEBPACK_IMPORTED_MODULE_5__["Vec3"](-he.x, -he.y, -he.z),
+        new _math__WEBPACK_IMPORTED_MODULE_5__["Vec3"](-he.x, he.y, -he.z),
+        new _math__WEBPACK_IMPORTED_MODULE_5__["Vec3"](he.x, he.y, -he.z)
+    ];
+    var faceAxes = [
+        [0, 1, 3],
+        [4, 5, 7],
+        [3, 2, 6],
+        [1, 0, 4],
+        [1, 4, 2],
+        [5, 0, 6] // LEFT
+    ];
+    var faceNormals = [
+        [0, 0, 1],
+        [0, 0, -1],
+        [0, 1, 0],
+        [0, -1, 0],
+        [1, 0, 0],
+        [-1, 0, 0] // LEFT
+    ];
+    var sides = {
+        FRONT: 0,
+        BACK: 1,
+        TOP: 2,
+        BOTTOM: 3,
+        RIGHT: 4,
+        LEFT: 5
+    };
+    var positions = [];
+    var normals = [];
+    var uvs = [];
+    var uvs1 = [];
+    var indices = [];
+    var vcounter = 0;
+    var generateFace = function (side, uSegments, vSegments) {
+        // tslint:disable-next-line:one-variable-per-declaration
+        var u, v;
+        // tslint:disable-next-line:one-variable-per-declaration
+        var i, j;
+        var offset = positions.length / 3;
+        for (i = 0; i <= uSegments; i++) {
+            for (j = 0; j <= vSegments; j++) {
+                var temp1 = new _math__WEBPACK_IMPORTED_MODULE_5__["Vec3"]();
+                var temp2 = new _math__WEBPACK_IMPORTED_MODULE_5__["Vec3"]();
+                var temp3 = new _math__WEBPACK_IMPORTED_MODULE_5__["Vec3"]();
+                var r = new _math__WEBPACK_IMPORTED_MODULE_5__["Vec3"]();
+                temp1.lerp(corners[faceAxes[side][0]], corners[faceAxes[side][1]], i / uSegments);
+                temp2.lerp(corners[faceAxes[side][0]], corners[faceAxes[side][2]], j / vSegments);
+                temp3.sub2(temp2, corners[faceAxes[side][0]]);
+                r.add2(temp1, temp3);
+                u = i / uSegments;
+                v = j / vSegments;
+                positions.push(r.x, r.y, r.z);
+                normals.push(faceNormals[side][0], faceNormals[side][1], faceNormals[side][2]);
+                uvs.push(u, v);
+                // pack as 3x2
+                // 1/3 will be empty, but it's either that or stretched pixels
+                // TODO: generate non-rectangular lightMaps, so we could use space without stretching
+                u /= 3;
+                v /= 3;
+                u = u * primitiveUv1PaddingScale + primitiveUv1Padding;
+                v = v * primitiveUv1PaddingScale + primitiveUv1Padding;
+                u += (side % 3) / 3;
+                v += Math.floor(side / 3) / 3;
+                uvs1.push(u, v);
+                if ((i < uSegments) && (j < vSegments)) {
+                    indices.push(vcounter + vSegments + 1, vcounter + 1, vcounter);
+                    indices.push(vcounter + vSegments + 1, vcounter + vSegments + 2, vcounter + 1);
+                }
+                vcounter++;
+            }
+        }
+    };
+    generateFace(sides.FRONT, ws, hs);
+    generateFace(sides.BACK, ws, hs);
+    generateFace(sides.TOP, ws, ls);
+    generateFace(sides.BOTTOM, ws, ls);
+    generateFace(sides.RIGHT, ls, hs);
+    generateFace(sides.LEFT, ls, hs);
+    var options = {
+        positions: positions,
+        normals: normals,
+        uvs: uvs,
+        uvs1: uvs1,
+        indices: indices
+    };
+    return Mesh.createMesh(renderer, options);
+}
 
 
 /***/ }),
@@ -6040,7 +6152,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 5:20:46 pm
+ * Last Modified: Sunday, September 2nd 2018, 11:44:19 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -6062,6 +6174,10 @@ function renderScence(scene) {
         var shader = mesh.material.shader;
         renderer.setShader(shader);
         shader.setUniformValue('matrix_viewProjection', camera.PVMatrix.data);
+        // tslint:disable-next-line:forin
+        for (var key in material.parameters) {
+            shader.setUniformValue(key, material.parameters[key]);
+        }
         renderer.draw(entity);
     }
 }

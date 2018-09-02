@@ -1,3 +1,5 @@
+import { Vec3 } from '../math';
+
 /*
  * ProjectName: hypergl
  * FilePath: \src\types\index.ts
@@ -5,7 +7,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, August 26th 2018, 3:09:33 am
+ * Last Modified: Monday, September 3rd 2018, 12:44:58 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -13,7 +15,7 @@
 
 
 export interface AppOption {
-
+    webgl1?: boolean;
 }
 
 export type TypeArray = Int8Array | Uint8Array | Int16Array | Uint16Array | Int32Array | Uint32Array | Float32Array | Float64Array;
@@ -25,7 +27,7 @@ export type FnVoid = Fn<void>;
 export type Nullable<T> = T | null;
 export type Undefined<T> = T | undefined;
 export interface Obj<T> { [s: string]: Undefined<T> }
-export interface CreateMeshOption {
+export interface CreateMeshOptions {
     positions: number[];
     normals?: number[]; // 法线
     indices: number[];
@@ -38,3 +40,9 @@ export interface CreateMeshOption {
 }
 
 
+export interface CreateBoxOptions {
+    halfExtents?: Vec3;
+    widthSegments?: number;
+    lengthSegments?: number;
+    heightSegments?: number;
+}
