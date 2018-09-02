@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 2nd 2018, 12:43:49 am
+ * Last Modified: Sunday, September 2nd 2018, 1:24:11 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -15,7 +15,7 @@
 import { Log } from '../util';
 import { UNIFORM_TYPE } from '../conf';
 import { ShaderProgramGenerator } from './shaderProgramGenerator';
-import { Undefined, FnVoid } from '../types';
+import { Undefined, FnVoid, AppOption } from '../types';
 import { Shader } from './shader';
 import { IndexBuffer } from './indexBuffer';
 import { VertexBuffer } from './vertexBuffer';
@@ -32,8 +32,13 @@ export class RendererPlatform {
     programGenerator = new ShaderProgramGenerator(this);
     private webgl!: WebGLRenderingContext;
     private webgl2!: WebGL2RenderingContext;
-    constructor(canvas: HTMLCanvasElement) {
-        this.webgl2 = canvas.getContext('webgl2') as any;
+    constructor(canvas: HTMLCanvasElement, option?: AppOption) {
+        let webgl2;
+        if (option && !option.webgl1) {
+            webgl2 = canvas.getContext('webgl2') as any;
+        }
+        this.webgl2 = webgl2;
+        // this.webgl2 = canvas.getContext('webgl2') as any;
         if (this.webgl2) {
             this.platform = 'webgl2';
             Log.debug(`platform:${this.platform}`);

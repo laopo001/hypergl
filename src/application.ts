@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 2:28:51 pm
+ * Last Modified: Sunday, September 2nd 2018, 1:21:14 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -26,7 +26,7 @@ export class Application {
     }
     constructor(canvas: HTMLCanvasElement, option?: AppOption) {
         this.canvas = canvas;
-        this.rendererPlatform = new RendererPlatform(this.canvas);
+        this.rendererPlatform = new RendererPlatform(this.canvas, option);
         this.sceneInstances.push(new Scene(this));
     }
     start() {

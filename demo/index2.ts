@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 9:37:32 pm
+ * Last Modified: Sunday, September 2nd 2018, 1:25:35 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -23,7 +23,9 @@ import { Mesh } from '../src/mesh/mesh';
 
 
 
-const app = new Application(document.getElementById('canvas') as HTMLCanvasElement);
+const app = new Application(document.getElementById('canvas') as HTMLCanvasElement, {
+    // webgl1:true
+});
 
 
 const vertices = [

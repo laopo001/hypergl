@@ -106,7 +106,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 9:37:32 pm
+ * Last Modified: Sunday, September 2nd 2018, 1:25:35 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -115,7 +115,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var app = new _src__WEBPACK_IMPORTED_MODULE_0__["Application"](document.getElementById('canvas'));
+var app = new _src__WEBPACK_IMPORTED_MODULE_0__["Application"](document.getElementById('canvas'), {
+// webgl1:true
+});
 var vertices = [
     1, 1, 1,
     -1, 1, 1,
@@ -1537,7 +1539,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 2:28:51 pm
+ * Last Modified: Sunday, September 2nd 2018, 1:21:14 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -1550,7 +1552,7 @@ var Application = /** @class */ (function () {
         this.sceneInstances = [];
         this.activeIndex = 0;
         this.canvas = canvas;
-        this.rendererPlatform = new _graphics_renderer__WEBPACK_IMPORTED_MODULE_1__["RendererPlatform"](this.canvas);
+        this.rendererPlatform = new _graphics_renderer__WEBPACK_IMPORTED_MODULE_1__["RendererPlatform"](this.canvas, option);
         this.sceneInstances.push(new _scene_scene__WEBPACK_IMPORTED_MODULE_0__["Scene"](this));
     }
     Object.defineProperty(Application.prototype, "scene", {
@@ -2174,7 +2176,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 2nd 2018, 12:43:49 am
+ * Last Modified: Sunday, September 2nd 2018, 1:24:11 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -2183,12 +2185,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var RendererPlatform = /** @class */ (function () {
-    function RendererPlatform(canvas) {
+    function RendererPlatform(canvas, option) {
         this.AttrbuteType = {};
         this.glTypeToJs = {};
         this.uniformFunction = {};
         this.programGenerator = new _shaderProgramGenerator__WEBPACK_IMPORTED_MODULE_2__["ShaderProgramGenerator"](this);
-        this.webgl2 = canvas.getContext('webgl2');
+        var webgl2;
+        if (option && !option.webgl1) {
+            webgl2 = canvas.getContext('webgl2');
+        }
+        this.webgl2 = webgl2;
+        // this.webgl2 = canvas.getContext('webgl2') as any;
         if (this.webgl2) {
             this.platform = 'webgl2';
             _util__WEBPACK_IMPORTED_MODULE_0__["Log"].debug("platform:" + this.platform);
