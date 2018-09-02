@@ -99,6 +99,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_math__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/math */ "./src/math/index.ts");
 /* harmony import */ var _src_scene_camera__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../src/scene/camera */ "./src/scene/camera.ts");
 /* harmony import */ var _src_mesh_mesh__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../src/mesh/mesh */ "./src/mesh/mesh.ts");
+/* harmony import */ var _src_core_color__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../src/core/color */ "./src/core/color.ts");
 /*
  * ProjectName: hypergl
  * FilePath: \demo\index2.ts
@@ -106,11 +107,12 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 2nd 2018, 1:25:35 am
+ * Last Modified: Sunday, September 2nd 2018, 9:36:04 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
+
 
 
 
@@ -154,6 +156,9 @@ var mesh = _src_mesh_mesh__WEBPACK_IMPORTED_MODULE_3__["Mesh"].createMesh(app.re
 var entity = new _src__WEBPACK_IMPORTED_MODULE_0__["Entity"]();
 entity.mesh = mesh;
 app.scene.root.addChild(entity);
+var material = new _src__WEBPACK_IMPORTED_MODULE_0__["BasicMaterial"]();
+material.color = new _src_core_color__WEBPACK_IMPORTED_MODULE_4__["Color"](0.5, 0.5, 0.5);
+entity.mesh.material = material;
 var entity2 = new _src__WEBPACK_IMPORTED_MODULE_0__["Entity"]();
 entity2.mesh = mesh;
 entity2.setLocalScale(1.5, 0.5, 1.5);
@@ -1598,7 +1603,7 @@ var Application = /** @class */ (function () {
 /*!*********************!*\
   !*** ./src/conf.ts ***!
   \*********************/
-/*! exports provided: DataType, SEMANTIC, BUFFER, CURVE, UNIFORM_TYPE */
+/*! exports provided: DataType, SEMANTIC, BUFFER, CURVE, UNIFORM_TYPE, ADDRESS, FILTER, PIXELFORMAT, FUNC, TEXHINT */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1608,6 +1613,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BUFFER", function() { return BUFFER; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CURVE", function() { return CURVE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UNIFORM_TYPE", function() { return UNIFORM_TYPE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADDRESS", function() { return ADDRESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FILTER", function() { return FILTER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PIXELFORMAT", function() { return PIXELFORMAT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FUNC", function() { return FUNC; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TEXHINT", function() { return TEXHINT; });
 /*
  * ProjectName: hypergl
  * FilePath: \src\conf.ts
@@ -1615,7 +1625,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 1:45:13 pm
+ * Last Modified: Sunday, September 2nd 2018, 9:19:43 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -1697,6 +1707,99 @@ var UNIFORM_TYPE;
     UNIFORM_TYPE[UNIFORM_TYPE["SAMPLER_3D"] = 19] = "SAMPLER_3D";
     UNIFORM_TYPE[UNIFORM_TYPE["FLOATARRAY"] = 20] = "FLOATARRAY";
 })(UNIFORM_TYPE || (UNIFORM_TYPE = {}));
+var ADDRESS;
+(function (ADDRESS) {
+    /**
+     * 仅使用小数部分忽略纹理坐标的整数部分
+     */
+    ADDRESS[ADDRESS["REPEAT"] = 0] = "REPEAT";
+    /**
+     * 将纹理坐标夹在0到1的范围内
+     */
+    ADDRESS[ADDRESS["CLAMP_TO_EDGE"] = 1] = "CLAMP_TO_EDGE";
+    /**
+     * 如果整数部分是偶数，则将纹理坐标设置为小数部分;如果整数部分是奇数，则纹理坐标设置为1减去小数部分。
+     */
+    ADDRESS[ADDRESS["MIRRORED_REPEAT"] = 2] = "MIRRORED_REPEAT";
+})(ADDRESS || (ADDRESS = {}));
+var FILTER;
+(function (FILTER) {
+    /**
+     * 在纹理基层上执行线性过滤,从最大的贴图中选择4个像素然后混合
+     */
+    FILTER[FILTER["LINEAR"] = 0] = "LINEAR";
+    /**
+     * 在mip层之间执行线性插补，并执行线性过滤
+     * 选择最合适的两个贴图，从每个上选择 4 个像素然后混合
+     */
+    FILTER[FILTER["LINEAR_MIPMAP_LINEAR"] = 1] = "LINEAR_MIPMAP_LINEAR";
+    /**
+     * 选择最临近的mip层，并执行线性过滤
+     * 选择最合适的贴图，然后取出 4 个像素进行混合
+     */
+    FILTER[FILTER["LINEAR_MIPMAP_NEAREST"] = 2] = "LINEAR_MIPMAP_NEAREST";
+    /**
+     * 在纹理基层上执行最邻近过滤
+     */
+    FILTER[FILTER["NEAREST"] = 3] = "NEAREST";
+    /**
+     * 选择最临近的mip层，并执行最临近的过滤,从最大的贴图中选择 1 个像素
+     * 选择最合适的贴图，然后从上面找到一个像素
+     */
+    FILTER[FILTER["NEAREST_MIPMAP_NEAREST"] = 4] = "NEAREST_MIPMAP_NEAREST";
+    /**
+     * 在mip层之间执行线性插补，并执行最临近的过滤
+     *  选择最合适的两个贴图，从每个上面选择 1 个像素然后混合
+     */
+    FILTER[FILTER["NEAREST_MIPMAP_LINEAR"] = 5] = "NEAREST_MIPMAP_LINEAR";
+})(FILTER || (FILTER = {}));
+var PIXELFORMAT;
+(function (PIXELFORMAT) {
+    PIXELFORMAT[PIXELFORMAT["A8"] = 0] = "A8";
+    PIXELFORMAT[PIXELFORMAT["L8"] = 1] = "L8";
+    PIXELFORMAT[PIXELFORMAT["L8_A8"] = 2] = "L8_A8";
+    PIXELFORMAT[PIXELFORMAT["R5_G6_B5"] = 3] = "R5_G6_B5";
+    PIXELFORMAT[PIXELFORMAT["R5_G5_B5_A1"] = 4] = "R5_G5_B5_A1";
+    PIXELFORMAT[PIXELFORMAT["R4_G4_B4_A4"] = 5] = "R4_G4_B4_A4";
+    PIXELFORMAT[PIXELFORMAT["R8_G8_B8"] = 6] = "R8_G8_B8";
+    PIXELFORMAT[PIXELFORMAT["R8_G8_B8_A8"] = 7] = "R8_G8_B8_A8";
+    PIXELFORMAT[PIXELFORMAT["DXT1"] = 8] = "DXT1";
+    PIXELFORMAT[PIXELFORMAT["DXT3"] = 9] = "DXT3";
+    PIXELFORMAT[PIXELFORMAT["DXT5"] = 10] = "DXT5";
+    PIXELFORMAT[PIXELFORMAT["RGB16F"] = 11] = "RGB16F";
+    PIXELFORMAT[PIXELFORMAT["RGBA16F"] = 12] = "RGBA16F";
+    PIXELFORMAT[PIXELFORMAT["RGB32F"] = 13] = "RGB32F";
+    PIXELFORMAT[PIXELFORMAT["RGBA32F"] = 14] = "RGBA32F";
+    PIXELFORMAT[PIXELFORMAT["ETC1"] = 15] = "ETC1";
+    PIXELFORMAT[PIXELFORMAT["PVRTC_2BPP_RGB_1"] = 16] = "PVRTC_2BPP_RGB_1";
+    PIXELFORMAT[PIXELFORMAT["PVRTC_2BPP_RGBA_1"] = 17] = "PVRTC_2BPP_RGBA_1";
+    PIXELFORMAT[PIXELFORMAT["PVRTC_4BPP_RGB_1"] = 18] = "PVRTC_4BPP_RGB_1";
+    PIXELFORMAT[PIXELFORMAT["PVRTC_4BPP_RGBA_1"] = 19] = "PVRTC_4BPP_RGBA_1";
+    PIXELFORMAT[PIXELFORMAT["_111110F"] = 20] = "_111110F";
+    PIXELFORMAT[PIXELFORMAT["SRGB"] = 21] = "SRGB";
+    PIXELFORMAT[PIXELFORMAT["SRGBA"] = 22] = "SRGBA";
+    PIXELFORMAT[PIXELFORMAT["R32F"] = 23] = "R32F";
+    PIXELFORMAT[PIXELFORMAT["DEPTH"] = 24] = "DEPTH";
+    PIXELFORMAT[PIXELFORMAT["DEPTHSTENCIL"] = 25] = "DEPTHSTENCIL";
+})(PIXELFORMAT || (PIXELFORMAT = {}));
+var FUNC;
+(function (FUNC) {
+    FUNC[FUNC["NEVER"] = 0] = "NEVER";
+    FUNC[FUNC["LESS"] = 1] = "LESS";
+    FUNC[FUNC["EQUAL"] = 2] = "EQUAL";
+    FUNC[FUNC["LESSEQUAL"] = 3] = "LESSEQUAL";
+    FUNC[FUNC["GREATER"] = 4] = "GREATER";
+    FUNC[FUNC["NOTEQUAL"] = 5] = "NOTEQUAL";
+    FUNC[FUNC["GREATEREQUAL"] = 6] = "GREATEREQUAL";
+    FUNC[FUNC["ALWAYS"] = 7] = "ALWAYS";
+})(FUNC || (FUNC = {}));
+var TEXHINT;
+(function (TEXHINT) {
+    TEXHINT[TEXHINT["NONE"] = 0] = "NONE";
+    TEXHINT[TEXHINT["SHADOWMAP"] = 1] = "SHADOWMAP";
+    TEXHINT[TEXHINT["ASSET"] = 2] = "ASSET";
+    TEXHINT[TEXHINT["LIGHTMAP"] = 3] = "LIGHTMAP";
+})(TEXHINT || (TEXHINT = {}));
 
 
 /***/ }),
@@ -1833,11 +1936,12 @@ var Color = /** @class */ (function () {
 /*!*****************************!*\
   !*** ./src/core/element.ts ***!
   \*****************************/
-/*! exports provided: IElement */
+/*! exports provided: Base, IElement */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Base", function() { return Base; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IElement", function() { return IElement; });
 /* harmony import */ var _math_math__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../math/math */ "./src/math/math.ts");
 /*
@@ -1847,23 +1951,44 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 25th 2018, 1:22:54 am
+ * Last Modified: Sunday, September 2nd 2018, 1:44:31 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 
-var ComponentIdCount = 0;
-var IElement = /** @class */ (function () {
-    function IElement() {
-        this.id = ComponentIdCount++;
+var Base = /** @class */ (function () {
+    function Base() {
         this.uuid = Object(_math_math__WEBPACK_IMPORTED_MODULE_0__["generateUUID"])();
         this.name = null;
-        this.tag = null;
-        this.enable = true;
+    }
+    return Base;
+}());
+
+var ComponentIdCount = 0;
+var IElement = /** @class */ (function (_super) {
+    __extends(IElement, _super);
+    function IElement() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.id = ComponentIdCount++;
+        // uuid = generateUUID();
+        // name: Nullable<string> = null;
+        _this.tag = null;
+        _this.enable = true;
+        return _this;
     }
     return IElement;
-}());
+}(Base));
 
 
 
@@ -2169,6 +2294,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util */ "./src/util.ts");
 /* harmony import */ var _conf__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../conf */ "./src/conf.ts");
 /* harmony import */ var _shaderProgramGenerator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./shaderProgramGenerator */ "./src/graphics/shaderProgramGenerator.ts");
+/* harmony import */ var _texture_texture__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../texture/texture */ "./src/texture/texture.ts");
 /*
  * ProjectName: hypergl
  * FilePath: \src\graphics\device.ts
@@ -2176,11 +2302,12 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 2nd 2018, 1:24:11 am
+ * Last Modified: Sunday, September 2nd 2018, 9:32:14 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
+
 
 
 
@@ -2190,6 +2317,16 @@ var RendererPlatform = /** @class */ (function () {
         this.glTypeToJs = {};
         this.uniformFunction = {};
         this.programGenerator = new _shaderProgramGenerator__WEBPACK_IMPORTED_MODULE_2__["ShaderProgramGenerator"](this);
+        this._vram = {
+            // #ifdef PROFILER
+            texShadow: 0,
+            texAsset: 0,
+            texLightmap: 0,
+            // #endif
+            tex: 0,
+            vb: 0,
+            ib: 0
+        };
         var webgl2;
         if (option && !option.webgl1) {
             webgl2 = canvas.getContext('webgl2');
@@ -2211,10 +2348,27 @@ var RendererPlatform = /** @class */ (function () {
             }
         }
         this.init();
+        this.initializeExtensions();
     }
     Object.defineProperty(RendererPlatform.prototype, "gl", {
         get: function () {
             return this.webgl2 || this.webgl;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RendererPlatform.prototype, "maxAnisotropy", {
+        get: function () {
+            if (this.maxAniso === undefined) {
+                var maxAniso = 1;
+                var gl = this.gl;
+                var glExt = this.extTextureFilterAnisotropic;
+                if (glExt) {
+                    maxAniso = gl.getParameter(glExt.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+                }
+                this.maxAniso = maxAniso;
+            }
+            return this.maxAniso;
         },
         enumerable: true,
         configurable: true
@@ -2357,12 +2511,466 @@ var RendererPlatform = /** @class */ (function () {
         this.uniformFunction[_conf__WEBPACK_IMPORTED_MODULE_1__["UNIFORM_TYPE"].FLOATARRAY] = function (uniform, value) {
             gl.uniform1fv(uniform.locationId, value);
         };
+        this.glFilter = [
+            gl.LINEAR,
+            gl.LINEAR_MIPMAP_LINEAR,
+            gl.LINEAR_MIPMAP_NEAREST,
+            gl.NEAREST,
+            gl.NEAREST_MIPMAP_NEAREST,
+            gl.NEAREST_MIPMAP_LINEAR
+        ];
+        this.glAddress = [
+            gl.REPEAT,
+            gl.CLAMP_TO_EDGE,
+            gl.MIRRORED_REPEAT
+        ];
+        this.glComparison = [
+            gl.NEVER,
+            gl.LESS,
+            gl.EQUAL,
+            gl.LEQUAL,
+            gl.GREATER,
+            gl.NOTEQUAL,
+            gl.GEQUAL,
+            gl.ALWAYS
+        ];
+        this.maxCubeMapSize = gl.getParameter(gl.MAX_CUBE_MAP_TEXTURE_SIZE);
+        this.maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+    };
+    RendererPlatform.prototype.initializeExtensions = function () {
+        var gl = this.gl;
+        if (this.webgl2) {
+            this.extTextureHalfFloat = true;
+        }
+        else {
+            this.extTextureHalfFloat = gl.getExtension('OES_texture_half_float');
+        }
+        this.extTextureFilterAnisotropic = gl.getExtension('EXT_texture_filter_anisotropic') || gl.getExtension('WEBKIT_EXT_texture_filter_anisotropic');
+        this.extCompressedTextureETC1 = gl.getExtension('WEBGL_compressed_texture_etc1');
+        this.extCompressedTexturePVRTC = gl.getExtension('WEBGL_compressed_texture_pvrtc') || gl.getExtension('WEBKIT_WEBGL_compressed_texture_pvrtc');
+        this.extCompressedTextureS3TC = gl.getExtension('WEBGL_compressed_texture_s3tc') || gl.getExtension('WEBKIT_WEBGL_compressed_texture_s3tc');
+    };
+    // tslint:disable-next-line:cyclomatic-complexity
+    RendererPlatform.prototype.initializeTexture = function (texture) {
+        var gl = this.gl;
+        var ext;
+        texture.bufferId = gl.createTexture();
+        texture._glTarget = texture.cubemap ? gl.TEXTURE_CUBE_MAP :
+            (texture.volume ? gl.TEXTURE_3D : gl.TEXTURE_2D);
+        switch (texture.format) {
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].A8:
+                texture._glFormat = gl.ALPHA;
+                texture._glInternalFormat = gl.ALPHA;
+                texture._glPixelType = gl.UNSIGNED_BYTE;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].L8:
+                texture._glFormat = gl.LUMINANCE;
+                texture._glInternalFormat = gl.LUMINANCE;
+                texture._glPixelType = gl.UNSIGNED_BYTE;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].L8_A8:
+                texture._glFormat = gl.LUMINANCE_ALPHA;
+                texture._glInternalFormat = gl.LUMINANCE_ALPHA;
+                texture._glPixelType = gl.UNSIGNED_BYTE;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].R5_G6_B5:
+                texture._glFormat = gl.RGB;
+                texture._glInternalFormat = gl.RGB;
+                texture._glPixelType = gl.UNSIGNED_SHORT_5_6_5;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].R5_G5_B5_A1:
+                texture._glFormat = gl.RGBA;
+                texture._glInternalFormat = gl.RGBA;
+                texture._glPixelType = gl.UNSIGNED_SHORT_5_5_5_1;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].R4_G4_B4_A4:
+                texture._glFormat = gl.RGBA;
+                texture._glInternalFormat = gl.RGBA;
+                texture._glPixelType = gl.UNSIGNED_SHORT_4_4_4_4;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].R8_G8_B8:
+                texture._glFormat = gl.RGB;
+                texture._glInternalFormat = this.webgl2 ? gl.RGB8 : gl.RGB;
+                texture._glPixelType = gl.UNSIGNED_BYTE;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].R8_G8_B8_A8:
+                texture._glFormat = gl.RGBA;
+                texture._glInternalFormat = this.webgl2 ? gl.RGBA8 : gl.RGBA;
+                texture._glPixelType = gl.UNSIGNED_BYTE;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].DXT1:
+                ext = this.extCompressedTextureS3TC;
+                texture._glFormat = gl.RGB;
+                texture._glInternalFormat = ext.COMPRESSED_RGB_S3TC_DXT1_EXT;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].DXT3:
+                ext = this.extCompressedTextureS3TC;
+                texture._glFormat = gl.RGBA;
+                texture._glInternalFormat = ext.COMPRESSED_RGBA_S3TC_DXT3_EXT;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].DXT5:
+                ext = this.extCompressedTextureS3TC;
+                texture._glFormat = gl.RGBA;
+                texture._glInternalFormat = ext.COMPRESSED_RGBA_S3TC_DXT5_EXT;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].ETC1:
+                ext = this.extCompressedTextureETC1;
+                texture._glFormat = gl.RGB;
+                texture._glInternalFormat = ext.COMPRESSED_RGB_ETC1_WEBGL;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].PVRTC_2BPP_RGB_1:
+                ext = this.extCompressedTexturePVRTC;
+                texture._glFormat = gl.RGB;
+                texture._glInternalFormat = ext.COMPRESSED_RGB_PVRTC_2BPPV1_IMG;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].PVRTC_2BPP_RGBA_1:
+                ext = this.extCompressedTexturePVRTC;
+                texture._glFormat = gl.RGBA;
+                texture._glInternalFormat = ext.COMPRESSED_RGBA_PVRTC_2BPPV1_IMG;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].PVRTC_4BPP_RGB_1:
+                ext = this.extCompressedTexturePVRTC;
+                texture._glFormat = gl.RGB;
+                texture._glInternalFormat = ext.COMPRESSED_RGB_PVRTC_4BPPV1_IMG;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].PVRTC_4BPP_RGBA_1:
+                ext = this.extCompressedTexturePVRTC;
+                texture._glFormat = gl.RGBA;
+                texture._glInternalFormat = ext.COMPRESSED_RGBA_PVRTC_4BPPV1_IMG;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].RGB16F:
+                // definition varies between WebGL1 and 2
+                ext = this.extTextureHalfFloat;
+                texture._glFormat = gl.RGB;
+                if (this.webgl2) {
+                    texture._glInternalFormat = gl.RGB16F;
+                    texture._glPixelType = gl.HALF_FLOAT;
+                }
+                else {
+                    texture._glInternalFormat = gl.RGB;
+                    texture._glPixelType = ext.HALF_FLOAT_OES;
+                }
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].RGBA16F:
+                // definition varies between WebGL1 and 2
+                ext = this.extTextureHalfFloat;
+                texture._glFormat = gl.RGBA;
+                if (this.webgl2) {
+                    texture._glInternalFormat = gl.RGBA16F;
+                    texture._glPixelType = gl.HALF_FLOAT;
+                }
+                else {
+                    texture._glInternalFormat = gl.RGBA;
+                    texture._glPixelType = ext.HALF_FLOAT_OES;
+                }
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].RGB32F:
+                // definition varies between WebGL1 and 2
+                texture._glFormat = gl.RGB;
+                if (this.webgl2) {
+                    texture._glInternalFormat = gl.RGB32F;
+                }
+                else {
+                    texture._glInternalFormat = gl.RGB;
+                }
+                texture._glPixelType = gl.FLOAT;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].RGBA32F:
+                // definition varies between WebGL1 and 2
+                texture._glFormat = gl.RGBA;
+                if (this.webgl2) {
+                    texture._glInternalFormat = gl.RGBA32F;
+                }
+                else {
+                    texture._glInternalFormat = gl.RGBA;
+                }
+                texture._glPixelType = gl.FLOAT;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].R32F: // WebGL2 only
+                texture._glFormat = gl.RED;
+                texture._glInternalFormat = gl.R32F;
+                texture._glPixelType = gl.FLOAT;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].DEPTH:
+                if (this.webgl2) {
+                    // native WebGL2
+                    texture._glFormat = gl.DEPTH_COMPONENT;
+                    texture._glInternalFormat = gl.DEPTH_COMPONENT32F; // should allow 16/24 bits?
+                    texture._glPixelType = gl.FLOAT;
+                }
+                else {
+                    // using WebGL1 extension
+                    texture._glFormat = gl.DEPTH_COMPONENT;
+                    texture._glInternalFormat = gl.DEPTH_COMPONENT;
+                    texture._glPixelType = gl.UNSIGNED_SHORT; // the only acceptable value?
+                }
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].DEPTHSTENCIL: // WebGL2 only
+                texture._glFormat = gl.DEPTH_STENCIL;
+                texture._glInternalFormat = gl.DEPTH24_STENCIL8;
+                texture._glPixelType = gl.UNSIGNED_INT_24_8;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"]._111110F: // WebGL2 only
+                texture._glFormat = gl.RGB;
+                texture._glInternalFormat = gl.R11F_G11F_B10F;
+                texture._glPixelType = gl.FLOAT;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].SRGB: // WebGL2 only
+                texture._glFormat = gl.RGB;
+                texture._glInternalFormat = gl.SRGB8;
+                texture._glPixelType = gl.UNSIGNED_BYTE;
+                break;
+            case _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].SRGBA: // WebGL2 only
+                texture._glFormat = gl.RGBA;
+                texture._glInternalFormat = gl.SRGB8_ALPHA8;
+                texture._glPixelType = gl.UNSIGNED_BYTE;
+                break;
+        }
     };
     RendererPlatform.prototype.setShader = function (shader) {
         if (shader.ready === false) {
             shader.link();
         }
         this.gl.useProgram(shader.program);
+    };
+    // tslint:disable-next-line:cyclomatic-complexity
+    RendererPlatform.prototype.setTexture = function (texture, textureUnit) {
+        var gl = this.gl;
+        if (!texture.bufferId) {
+            this.initializeTexture(texture);
+        }
+        var paramDirty = texture._minFilterDirty || texture._magFilterDirty ||
+            texture._addressUDirty || texture._addressVDirty || texture._addressWDirty ||
+            texture._anisotropyDirty || texture._compareModeDirty;
+        if ((this.textureUnits[textureUnit] !== texture) || paramDirty) {
+            if (this.activeTexture !== textureUnit) {
+                gl.activeTexture(gl.TEXTURE0 + textureUnit);
+                this.activeTexture = textureUnit;
+            }
+            gl.bindTexture(texture._glTarget, texture.bufferId);
+            this.textureUnits[textureUnit] = texture;
+        }
+        if (paramDirty) {
+            if (texture._minFilterDirty) {
+                var filter = texture.minFilter;
+                if (!texture.pot || !texture.mipmaps || (texture.compressed && texture._levels.length === 1)) {
+                    if (filter === _conf__WEBPACK_IMPORTED_MODULE_1__["FILTER"].NEAREST_MIPMAP_NEAREST || filter === _conf__WEBPACK_IMPORTED_MODULE_1__["FILTER"].NEAREST_MIPMAP_LINEAR) {
+                        filter = _conf__WEBPACK_IMPORTED_MODULE_1__["FILTER"].NEAREST;
+                    }
+                    else if (filter === _conf__WEBPACK_IMPORTED_MODULE_1__["FILTER"].LINEAR_MIPMAP_NEAREST || filter === _conf__WEBPACK_IMPORTED_MODULE_1__["FILTER"].LINEAR_MIPMAP_LINEAR) {
+                        filter = _conf__WEBPACK_IMPORTED_MODULE_1__["FILTER"].LINEAR;
+                    }
+                }
+                gl.texParameteri(texture._glTarget, gl.TEXTURE_MIN_FILTER, this.glFilter[filter]);
+                texture._minFilterDirty = false;
+            }
+            if (texture._magFilterDirty) {
+                gl.texParameteri(texture._glTarget, gl.TEXTURE_MAG_FILTER, this.glFilter[texture.magFilter]);
+                texture._magFilterDirty = false;
+            }
+            if (texture._addressUDirty) {
+                if (this.webgl2) {
+                    gl.texParameteri(texture._glTarget, gl.TEXTURE_WRAP_S, this.glAddress[texture.addressU]);
+                }
+                else {
+                    // WebGL1 doesn't support all addressing modes with NPOT textures
+                    gl.texParameteri(texture._glTarget, gl.TEXTURE_WRAP_S, this.glAddress[texture.pot ? texture.addressU : _conf__WEBPACK_IMPORTED_MODULE_1__["ADDRESS"].CLAMP_TO_EDGE]);
+                }
+                texture._addressUDirty = false;
+            }
+            if (texture._addressVDirty) {
+                if (this.webgl2) {
+                    gl.texParameteri(texture._glTarget, gl.TEXTURE_WRAP_T, this.glAddress[texture.addressV]);
+                }
+                else {
+                    // WebGL1 doesn't support all addressing modes with NPOT textures
+                    gl.texParameteri(texture._glTarget, gl.TEXTURE_WRAP_T, this.glAddress[texture.pot ? texture.addressV : _conf__WEBPACK_IMPORTED_MODULE_1__["ADDRESS"].CLAMP_TO_EDGE]);
+                }
+                texture._addressVDirty = false;
+            }
+            if (this.webgl2) {
+                if (texture._addressWDirty) {
+                    gl.texParameteri(texture._glTarget, gl.TEXTURE_WRAP_R, this.glAddress[texture.addressW]);
+                    texture._addressWDirty = false;
+                }
+                if (texture._compareModeDirty) {
+                    gl.texParameteri(texture._glTarget, gl.TEXTURE_COMPARE_MODE, texture._compareOnRead ? gl.COMPARE_REF_TO_TEXTURE : gl.NONE);
+                    gl.texParameteri(texture._glTarget, gl.TEXTURE_COMPARE_FUNC, this.glComparison[texture._compareFunc]);
+                    texture._compareModeDirty = false;
+                }
+            }
+            if (texture._anisotropyDirty) {
+                var ext = this.extTextureFilterAnisotropic;
+                if (ext)
+                    gl.texParameterf(texture._glTarget, ext.TEXTURE_MAX_ANISOTROPY_EXT, Math.max(1, Math.min(Math.round(texture.anisotropy), this.maxAnisotropy)));
+                texture._anisotropyDirty = false;
+            }
+        }
+        if (texture._needsUpload || texture._needsMipmapsUpload) {
+            this.uploadTexture(texture);
+            texture._needsUpload = false;
+            texture._needsMipmapsUpload = false;
+        }
+    };
+    // tslint:disable-next-line:cyclomatic-complexity
+    RendererPlatform.prototype.uploadTexture = function (texture) {
+        var gl = this.gl;
+        if (!texture._needsUpload && ((texture._needsMipmapsUpload && texture._mipmapsUploaded) || !texture.pot)) {
+            return;
+        }
+        var mipLevel = 0;
+        var mipObject;
+        var resMult;
+        while (texture._levels[mipLevel] || mipLevel === 0) {
+            // Upload all existing mip levels. Initialize 0 mip anyway.
+            if (!texture._needsUpload && mipLevel === 0) {
+                mipLevel++;
+                continue;
+            }
+            else if (mipLevel && (!texture._needsMipmapsUpload || !texture.mipmaps)) {
+                break;
+            }
+            mipObject = texture._levels[mipLevel];
+            if (mipLevel === 1 && !texture.compressed) {
+                // We have more than one mip levels we want to assign, but we need all mips to make
+                // the texture complete. Therefore first generate all mip chain from 0, then assign custom mips.
+                gl.generateMipmap(texture._glTarget);
+                texture._mipmapsUploaded = true;
+            }
+            if (texture.cubemap) {
+                // ----- CUBEMAP -----
+                var face = void 0;
+                gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+                gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+                if ((mipObject[0] instanceof HTMLCanvasElement) || (mipObject[0] instanceof HTMLImageElement) || (mipObject[0] instanceof HTMLVideoElement)) {
+                    // Upload the image, canvas or video
+                    for (face = 0; face < 6; face++) {
+                        if (!texture.levelsUpdated[0][face]) {
+                            continue;
+                        }
+                        var src = mipObject[face];
+                        // Downsize images that are too large to be used as cube maps
+                        if (src instanceof HTMLImageElement) {
+                            if (src.width > this.maxCubeMapSize || src.height > this.maxCubeMapSize) {
+                                src = _downsampleImage(src, this.maxCubeMapSize);
+                                if (mipLevel === 0) {
+                                    texture.width = src.width;
+                                    texture.height = src.height;
+                                }
+                            }
+                        }
+                        gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + face, mipLevel, texture._glInternalFormat, texture._glFormat, texture._glPixelType, src);
+                    }
+                }
+                else {
+                    // Upload the byte array
+                    resMult = 1 / Math.pow(2, mipLevel);
+                    for (face = 0; face < 6; face++) {
+                        if (!texture.levelsUpdated[0][face]) {
+                            continue;
+                        }
+                        var texData = mipObject[face];
+                        if (texture.compressed) {
+                            gl.compressedTexImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + face, mipLevel, texture._glInternalFormat, Math.max(texture.width * resMult, 1), Math.max(texture.height * resMult, 1), 0, texData);
+                        }
+                        else {
+                            gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + face, mipLevel, texture._glInternalFormat, Math.max(texture.width * resMult, 1), Math.max(texture.height * resMult, 1), 0, texture._glFormat, texture._glPixelType, texData);
+                        }
+                    }
+                }
+            }
+            else if (texture.volume) {
+                // ----- 3D -----
+                // Image/canvas/video not supported (yet?)
+                // Upload the byte array
+                gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+                resMult = 1 / Math.pow(2, mipLevel);
+                if (texture.compressed) {
+                    gl.compressedTexImage3D(gl.TEXTURE_3D, mipLevel, texture._glInternalFormat, Math.max(texture.width * resMult, 1), Math.max(texture.height * resMult, 1), Math.max(texture.depth * resMult, 1), 0, mipObject);
+                }
+                else {
+                    gl.texImage3D(gl.TEXTURE_3D, mipLevel, texture._glInternalFormat, Math.max(texture.width * resMult, 1), Math.max(texture.height * resMult, 1), Math.max(texture.depth * resMult, 1), 0, texture._glFormat, texture._glPixelType, mipObject);
+                }
+            }
+            else {
+                // ----- 2D -----
+                if ((mipObject instanceof HTMLCanvasElement) || (mipObject instanceof HTMLImageElement) || (mipObject instanceof HTMLVideoElement)) {
+                    // Downsize images that are too large to be used as textures
+                    if (mipObject instanceof HTMLImageElement) {
+                        if (mipObject.width > this.maxTextureSize || mipObject.height > this.maxTextureSize) {
+                            mipObject = _downsampleImage(mipObject, this.maxTextureSize);
+                            if (mipLevel === 0) {
+                                texture.width = mipObject.width;
+                                texture.height = mipObject.height;
+                            }
+                        }
+                    }
+                    // Upload the image, canvas or video
+                    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, texture.flipY);
+                    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+                    gl.texImage2D(gl.TEXTURE_2D, mipLevel, texture._glInternalFormat, texture._glFormat, texture._glPixelType, mipObject);
+                }
+                else {
+                    // Upload the byte array
+                    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+                    resMult = 1 / Math.pow(2, mipLevel);
+                    if (texture.compressed) {
+                        gl.compressedTexImage2D(gl.TEXTURE_2D, mipLevel, texture._glInternalFormat, Math.max(texture.width * resMult, 1), Math.max(texture.height * resMult, 1), 0, mipObject);
+                    }
+                    else {
+                        gl.texImage2D(gl.TEXTURE_2D, mipLevel, texture._glInternalFormat, Math.max(texture.width * resMult, 1), Math.max(texture.height * resMult, 1), 0, texture._glFormat, texture._glPixelType, mipObject);
+                    }
+                }
+                if (mipLevel === 0) {
+                    texture._mipmapsUploaded = false;
+                }
+                else {
+                    texture._mipmapsUploaded = true;
+                }
+            }
+            mipLevel++;
+        }
+        if (texture._needsUpload) {
+            if (texture.cubemap) {
+                for (var i = 0; i < 6; i++) {
+                    texture.levelsUpdated[0][i] = false;
+                }
+            }
+            else {
+                texture.levelsUpdated[0] = false;
+            }
+        }
+        if (!texture.compressed && texture.mipmaps && texture._needsMipmapsUpload && texture.pot && texture._levels.length === 1) {
+            gl.generateMipmap(texture._glTarget);
+            texture._mipmapsUploaded = true;
+        }
+        if (texture._gpuSize) {
+            this._vram.tex -= texture._gpuSize;
+            // #ifdef PROFILER
+            if (texture.profilerHint === _conf__WEBPACK_IMPORTED_MODULE_1__["TEXHINT"].SHADOWMAP) {
+                this._vram.texShadow -= texture._gpuSize;
+            }
+            else if (texture.profilerHint === _conf__WEBPACK_IMPORTED_MODULE_1__["TEXHINT"].ASSET) {
+                this._vram.texAsset -= texture._gpuSize;
+            }
+            else if (texture.profilerHint === _conf__WEBPACK_IMPORTED_MODULE_1__["TEXHINT"].LIGHTMAP) {
+                this._vram.texLightmap -= texture._gpuSize;
+            }
+            // #endif
+        }
+        texture._gpuSize = gpuTexSize(gl, texture);
+        this._vram.tex += texture._gpuSize;
+        // #ifdef PROFILER
+        if (texture.profilerHint === _conf__WEBPACK_IMPORTED_MODULE_1__["TEXHINT"].SHADOWMAP) {
+            this._vram.texShadow += texture._gpuSize;
+        }
+        else if (texture.profilerHint === _conf__WEBPACK_IMPORTED_MODULE_1__["TEXHINT"].ASSET) {
+            this._vram.texAsset += texture._gpuSize;
+        }
+        else if (texture.profilerHint === _conf__WEBPACK_IMPORTED_MODULE_1__["TEXHINT"].LIGHTMAP) {
+            this._vram.texLightmap += texture._gpuSize;
+        }
+        // #endif
     };
     RendererPlatform.prototype.setVertexBuffer = function (vertexBuffer) {
         var gl = this.gl;
@@ -2426,11 +3034,126 @@ var RendererPlatform = /** @class */ (function () {
             var uniform = uniforms[i];
             this.uniformFunction[uniform.type](uniform, shader.uniformScope[uniform.name]);
         }
+        var textureUnit = 0;
+        for (var i = 0; i < samplers.length; i++) {
+            var sampler = samplers[i];
+            var samplerValue = sampler.element;
+            if (!samplerValue) {
+                continue; // Because unset constants shouldn't raise random errors
+            }
+            if (samplerValue instanceof _texture_texture__WEBPACK_IMPORTED_MODULE_3__["Texture"]) {
+                var texture = samplerValue;
+                this.setTexture(texture, textureUnit);
+                if (sampler.slot !== textureUnit) {
+                    gl.uniform1i(sampler.locationId, textureUnit);
+                    sampler.slot = textureUnit;
+                }
+                textureUnit++;
+            }
+            else { // Array
+                // sampler.array.length = 0;
+                // numTextures = samplerValue.length;
+                // for (j = 0; j < numTextures; j++) {
+                //     texture = samplerValue[j];
+                //     this.setTexture(texture, textureUnit);
+                //     sampler.array[j] = textureUnit;
+                //     textureUnit++;
+                // }
+                // gl.uniform1iv(sampler.locationId, sampler.array);
+            }
+        }
         gl.drawElements(gl.TRIANGLES, mesh.indexBuffer.length, mesh.indexBuffer.drawFormat, 0);
     };
     return RendererPlatform;
 }());
 
+var _downsampleImage = function (image, size) {
+    var srcW = image.width;
+    var srcH = image.height;
+    if ((srcW > size) || (srcH > size)) {
+        var scale = size / Math.max(srcW, srcH);
+        var dstW = Math.floor(srcW * scale);
+        var dstH = Math.floor(srcH * scale);
+        console.warn('Image dimensions larger than max supported texture size of ' + size + '. ' +
+            'Resizing from ' + srcW + ', ' + srcH + ' to ' + dstW + ', ' + dstH + '.');
+        var canvas = document.createElement('canvas');
+        canvas.width = dstW;
+        canvas.height = dstH;
+        var context = canvas.getContext('2d');
+        context.drawImage(image, 0, 0, srcW, srcH, 0, 0, dstW, dstH);
+        return canvas;
+    }
+    return image;
+};
+function _isIE() {
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf('MSIE ');
+    var trident = navigator.userAgent.match(/Trident.*rv:11\./);
+    return (msie > 0 || !!trident);
+}
+var _pixelFormat2Size;
+function gpuTexSize(gl, tex) {
+    if (!_pixelFormat2Size) {
+        _pixelFormat2Size = {};
+        _pixelFormat2Size[_conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].A8] = 1;
+        _pixelFormat2Size[_conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].L8] = 1;
+        _pixelFormat2Size[_conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].L8_A8] = 1;
+        _pixelFormat2Size[_conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].R5_G6_B5] = 2;
+        _pixelFormat2Size[_conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].R5_G5_B5_A1] = 2;
+        _pixelFormat2Size[_conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].R4_G4_B4_A4] = 2;
+        _pixelFormat2Size[_conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].R8_G8_B8] = 4;
+        _pixelFormat2Size[_conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].R8_G8_B8_A8] = 4;
+        _pixelFormat2Size[_conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].RGB16F] = 8;
+        _pixelFormat2Size[_conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].RGBA16F] = 8;
+        _pixelFormat2Size[_conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].RGB32F] = 16;
+        _pixelFormat2Size[_conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].RGBA32F] = 16;
+        _pixelFormat2Size[_conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].R32F] = 4;
+        _pixelFormat2Size[_conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].DEPTH] = 4; // can be smaller using WebGL1 extension?
+        _pixelFormat2Size[_conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].DEPTHSTENCIL] = 4;
+        _pixelFormat2Size[_conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"]._111110F] = 4;
+        _pixelFormat2Size[_conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].SRGB] = 4;
+        _pixelFormat2Size[_conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].SRGBA] = 4;
+    }
+    var mips = 1;
+    if (tex.pot && (tex.mipmaps || tex.minFilter === _conf__WEBPACK_IMPORTED_MODULE_1__["FILTER"].NEAREST_MIPMAP_NEAREST ||
+        tex.minFilter === _conf__WEBPACK_IMPORTED_MODULE_1__["FILTER"].NEAREST_MIPMAP_LINEAR || tex.minFilter === _conf__WEBPACK_IMPORTED_MODULE_1__["FILTER"].LINEAR_MIPMAP_NEAREST ||
+        tex.minFilter === _conf__WEBPACK_IMPORTED_MODULE_1__["FILTER"].LINEAR_MIPMAP_LINEAR) && !(tex.compressed && tex._levels.length === 1)) {
+        mips = Math.round(Math.log2(Math.max(tex.width, tex.height)) + 1);
+    }
+    var mipWidth = tex.width;
+    var mipHeight = tex.height;
+    var mipDepth = tex.depth;
+    var size = 0;
+    for (var i = 0; i < mips; i++) {
+        if (!tex.compressed) {
+            size += mipWidth * mipHeight * mipDepth * _pixelFormat2Size[tex.format];
+        }
+        else if (tex.format === _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].ETC1) {
+            size += Math.floor((mipWidth + 3) / 4) * Math.floor((mipHeight + 3) / 4) * 8 * mipDepth;
+        }
+        else if (tex.format === _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].PVRTC_2BPP_RGB_1 || tex.format === _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].PVRTC_2BPP_RGBA_1) {
+            size += Math.max(mipWidth, 16) * Math.max(mipHeight, 8) / 4 * mipDepth;
+        }
+        else if (tex.format === _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].PVRTC_4BPP_RGB_1 || tex.format === _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].PVRTC_4BPP_RGBA_1) {
+            size += Math.max(mipWidth, 8) * Math.max(mipHeight, 8) / 2 * mipDepth;
+        }
+        else {
+            var DXT_BLOCK_WIDTH = 4;
+            var DXT_BLOCK_HEIGHT = 4;
+            var blockSize = tex.format === _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].DXT1 ? 8 : 16;
+            var numBlocksAcross = Math.floor((mipWidth + DXT_BLOCK_WIDTH - 1) / DXT_BLOCK_WIDTH);
+            var numBlocksDown = Math.floor((mipHeight + DXT_BLOCK_HEIGHT - 1) / DXT_BLOCK_HEIGHT);
+            var numBlocks = numBlocksAcross * numBlocksDown;
+            size += numBlocks * blockSize * mipDepth;
+        }
+        mipWidth = Math.max(mipWidth * 0.5, 1);
+        mipHeight = Math.max(mipHeight * 0.5, 1);
+        mipDepth = Math.max(mipDepth * 0.5, 1);
+    }
+    if (tex.cubemap)
+        size *= 6;
+    return size;
+}
 
 
 /***/ }),
@@ -2596,7 +3319,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 29th 2018, 8:35:52 pm
+ * Last Modified: Sunday, September 2nd 2018, 1:38:32 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -2666,7 +3389,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 2nd 2018, 12:26:04 am
+ * Last Modified: Sunday, September 2nd 2018, 9:32:09 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -2988,7 +3711,7 @@ var VertexFormat = /** @class */ (function () {
 /*!**********************!*\
   !*** ./src/index.ts ***!
   \**********************/
-/*! exports provided: DataType, SEMANTIC, BUFFER, CURVE, UNIFORM_TYPE, Application, VertexBuffer, Iterator, Setter, VertexFormat, IndexBuffer, BasicMaterial, Entity */
+/*! exports provided: DataType, SEMANTIC, BUFFER, CURVE, UNIFORM_TYPE, ADDRESS, FILTER, PIXELFORMAT, FUNC, TEXHINT, Application, VertexBuffer, Iterator, Setter, VertexFormat, IndexBuffer, BasicMaterial, Entity */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3003,6 +3726,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CURVE", function() { return _conf__WEBPACK_IMPORTED_MODULE_0__["CURVE"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UNIFORM_TYPE", function() { return _conf__WEBPACK_IMPORTED_MODULE_0__["UNIFORM_TYPE"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ADDRESS", function() { return _conf__WEBPACK_IMPORTED_MODULE_0__["ADDRESS"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FILTER", function() { return _conf__WEBPACK_IMPORTED_MODULE_0__["FILTER"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PIXELFORMAT", function() { return _conf__WEBPACK_IMPORTED_MODULE_0__["PIXELFORMAT"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FUNC", function() { return _conf__WEBPACK_IMPORTED_MODULE_0__["FUNC"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TEXHINT", function() { return _conf__WEBPACK_IMPORTED_MODULE_0__["TEXHINT"]; });
 
 /* harmony import */ var _application__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./application */ "./src/application.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Application", function() { return _application__WEBPACK_IMPORTED_MODULE_1__["Application"]; });
@@ -3064,7 +3797,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, August 30th 2018, 7:10:24 pm
+ * Last Modified: Sunday, September 2nd 2018, 9:33:32 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -3100,8 +3833,7 @@ var BasicMaterial = /** @class */ (function (_super) {
     BasicMaterial.prototype.update = function () {
         this.setParameter('vertex_color', this.color.data);
         if (this.colorMap) {
-            // TODO
-            // this.setParameter('texture_diffuseMap', this.colorMap);
+            this.setParameter('texture_diffuseMap', this.colorMap);
         }
     };
     BasicMaterial.prototype.updateShader = function (renderer) {
@@ -6154,16 +6886,240 @@ var Scene = /** @class */ (function (_super) {
 
 /***/ }),
 
+/***/ "./src/texture/texture.ts":
+/*!********************************!*\
+  !*** ./src/texture/texture.ts ***!
+  \********************************/
+/*! exports provided: Texture */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Texture", function() { return Texture; });
+/* harmony import */ var _core_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/element */ "./src/core/element.ts");
+/* harmony import */ var _conf__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../conf */ "./src/conf.ts");
+/* harmony import */ var _math__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../math */ "./src/math/index.ts");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../util */ "./src/util.ts");
+/*
+ * ProjectName: hypergl
+ * FilePath: \src\texture\texture.ts
+ * Created Date: Sunday, September 2nd 2018, 1:30:12 pm
+ * @author: dadigua
+ * @summary: short description for the file
+ * -----
+ * Last Modified: Sunday, September 2nd 2018, 9:14:50 pm
+ * Modified By: dadigua
+ * -----
+ * Copyright (c) 2018 jiguang
+ */
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+
+var Texture = /** @class */ (function (_super) {
+    __extends(Texture, _super);
+    // tslint:disable-next-line:cyclomatic-complexity
+    function Texture(renderer, options) {
+        var _this = _super.call(this) || this;
+        _this.renderer = renderer;
+        _this.mipmaps = false;
+        _this.width = 4;
+        _this.height = 4;
+        _this.depth = 1;
+        _this.addressU = _conf__WEBPACK_IMPORTED_MODULE_1__["ADDRESS"].REPEAT; // 要水平应用于纹理的寻址模式。
+        _this.addressV = _conf__WEBPACK_IMPORTED_MODULE_1__["ADDRESS"].REPEAT; // 垂直应用于纹理的寻址模式
+        _this.addressW = _conf__WEBPACK_IMPORTED_MODULE_1__["ADDRESS"].REPEAT; // 要应用于3D纹理深度的寻址模式（仅限WebGL2）
+        _this.minFilter = _conf__WEBPACK_IMPORTED_MODULE_1__["FILTER"].LINEAR_MIPMAP_LINEAR; // 纹理在缩小时的过滤方式
+        _this.magFilter = _conf__WEBPACK_IMPORTED_MODULE_1__["FILTER"].LINEAR; // 纹理在放大时的过滤方式
+        _this.anisotropy = 1; // 各向异性,取值范围0.0-1.0,经常用来通过这个值,产生不同的表面效果,木材和金属都发光,但是发光的特点是有区别的
+        _this.format = _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].R8_G8_B8_A8;
+        _this.cubemap = false; // 是否为立方体贴图
+        _this.volume = false; // 指定纹理是否为3D体积（仅限WebGL2）。默认为false。
+        _this.flipY = true; // 文理是否需要垂直翻转,默认为false
+        _this.rgbm = false; // 指定纹理是否包含RGBM编码的HDR数据。默认为false。
+        _this._invalid = false;
+        _this._gpuSize = 0;
+        _this._compareOnRead = false;
+        _this._compareFunc = _conf__WEBPACK_IMPORTED_MODULE_1__["FUNC"].LESS;
+        _this._needsMipmapsUpload = false;
+        _this.compressed = false;
+        // #ifdef PROFILER
+        _this.profilerHint = 0;
+        // #endif
+        _this._lockedLevel = -1;
+        if (options !== undefined) {
+            _this.width = options.width !== undefined ? options.width : _this.width;
+            _this.height = options.height !== undefined ? options.height : _this.height;
+            _this.pot = Object(_math__WEBPACK_IMPORTED_MODULE_2__["powerOfTwo"])(_this.width) && Object(_math__WEBPACK_IMPORTED_MODULE_2__["powerOfTwo"])(_this.height);
+            _this.format = options.format !== undefined ? options.format : _this.format;
+            _this.rgbm = options.rgbm !== undefined ? options.rgbm : _this.rgbm;
+            if (options.mipmaps !== undefined) {
+                _this.mipmaps = options.mipmaps;
+            }
+            else {
+                _this.mipmaps = options.autoMipmap !== undefined ? options.autoMipmap : _this.mipmaps;
+            }
+            _this.cubemap = options.cubemap !== undefined ? options.cubemap : _this.cubemap;
+            // this.fixCubemapSeams = options.fixCubemapSeams !== undefined ? options.fixCubemapSeams : this.fixCubemapSeams;
+            _this.minFilter = options.minFilter !== undefined ? options.minFilter : _this.minFilter;
+            _this.magFilter = options.magFilter !== undefined ? options.magFilter : _this.magFilter;
+            _this.anisotropy = options.anisotropy !== undefined ? options.anisotropy : _this.anisotropy;
+            _this.addressU = options.addressU !== undefined ? options.addressU : _this.addressU;
+            _this.addressV = options.addressV !== undefined ? options.addressV : _this.addressV;
+            _this._compareOnRead = (options.compareOnRead !== undefined) ? options.compareOnRead : _this._compareOnRead;
+            _this._compareFunc = (options._compareFunc !== undefined) ? options._compareFunc : _this._compareFunc;
+            _this.flipY = options.flipY !== undefined ? options.flipY : _this.flipY;
+            if (renderer.platform === 'webgl2') {
+                _this.depth = options.depth !== undefined ? options.depth : _this.depth;
+                _this.volume = options.volume !== undefined ? options.volume : _this.volume;
+                _this.addressW = options.addressW !== undefined ? options.addressW : _this.addressW;
+            }
+            // #ifdef PROFILER
+            _this.profilerHint = (options.profilerHint !== undefined) ? options.profilerHint : _this.profilerHint;
+            // #endif
+        }
+        _this.compressed = (_this.format === _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].DXT1 ||
+            _this.format === _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].DXT3 ||
+            _this.format === _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].DXT5 ||
+            _this.format >= _conf__WEBPACK_IMPORTED_MODULE_1__["PIXELFORMAT"].ETC1);
+        _this._levels = _this.cubemap ? [[null, null, null, null, null, null]] : [null];
+        _this.dirtyAll();
+        return _this;
+    }
+    // tslint:disable-next-line:cyclomatic-complexity
+    Texture.prototype.setSource = function (source) {
+        var i;
+        var invalid = false;
+        // tslint:disable-next-line:one-variable-per-declaration
+        var width, height;
+        if (this.cubemap) {
+            _util__WEBPACK_IMPORTED_MODULE_3__["Log"].assert(Array.isArray(source), '立方体纹理时，source必须是长度为6的数组');
+            if (source[0]) {
+                // rely on first face sizes
+                width = source[0].width || 0;
+                height = source[0].height || 0;
+                for (i = 0; i < 6; i++) {
+                    // cubemap becomes invalid if any condition is not satisfied
+                    if (!source[i] || // face is missing
+                        source[i].width !== width || // face is different width
+                        source[i].height !== height || // face is different height
+                        (!(source[i] instanceof HTMLImageElement) && // not image and
+                            !(source[i] instanceof HTMLCanvasElement) && // not canvas and
+                            !(source[i] instanceof HTMLVideoElement))) { // not video
+                        invalid = true;
+                        break;
+                    }
+                }
+            }
+            else {
+                // first face is missing
+                invalid = true;
+            }
+            if (!invalid) {
+                // mark levels as updated
+                for (i = 0; i < 6; i++) {
+                    if (this._levels[0][i] !== source[i]) {
+                        this.levelsUpdated[0][i] = true;
+                    }
+                }
+            }
+        }
+        else {
+            if (Array.isArray(source)) {
+                return;
+            }
+            // check if source is valid type of element
+            if (!(source instanceof HTMLImageElement) && !(source instanceof HTMLCanvasElement) && !(source instanceof HTMLVideoElement)) {
+                invalid = true;
+            }
+            if (!invalid) {
+                // mark level as updated
+                if (source !== this._levels[0]) {
+                    this.levelsUpdated[0] = true;
+                }
+                width = source.width;
+                height = source.height;
+            }
+        }
+        if (invalid) {
+            // invalid texture
+            // default sizes
+            this.width = 4;
+            this.height = 4;
+            this.pot = true;
+            // remove levels
+            if (this.cubemap) {
+                for (i = 0; i < 6; i++) {
+                    this._levels[0][i] = null;
+                    this.levelsUpdated[0][i] = true;
+                }
+            }
+            else {
+                this._levels[0] = null;
+                this.levelsUpdated[0] = true;
+            }
+        }
+        else {
+            // valid texture
+            this.width = width;
+            this.height = height;
+            this.pot = Object(_math__WEBPACK_IMPORTED_MODULE_2__["powerOfTwo"])(this.width) && Object(_math__WEBPACK_IMPORTED_MODULE_2__["powerOfTwo"])(this.height);
+            this._levels[0] = source;
+        }
+        // valid or changed state of validity
+        if (this._invalid !== invalid || !invalid) {
+            this._invalid = invalid;
+            // reupload
+            this.upload();
+        }
+    };
+    Texture.prototype.dirtyAll = function () {
+        this.glTextureId = undefined;
+        this.levelsUpdated = this.cubemap ? [[true, true, true, true, true, true]] : [true];
+        this._needsUpload = true;
+        this._needsMipmapsUpload = this.mipmaps;
+        this._mipmapsUploaded = false;
+        this._magFilterDirty = true;
+        this._minFilterDirty = true;
+        this._addressUDirty = true;
+        this._addressVDirty = true;
+        this._addressWDirty = this.volume;
+        this._anisotropyDirty = true;
+        this._compareModeDirty = true;
+    };
+    Texture.prototype.upload = function () {
+        this._needsUpload = true;
+        this._needsMipmapsUpload = this.mipmaps;
+    };
+    Texture.DEFAULT_IMAGE = null;
+    return Texture;
+}(_core_element__WEBPACK_IMPORTED_MODULE_0__["Base"]));
+
+
+
+/***/ }),
+
 /***/ "./src/util.ts":
 /*!*********************!*\
   !*** ./src/util.ts ***!
   \*********************/
-/*! exports provided: Log */
+/*! exports provided: Log, loadImage */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Log", function() { return Log; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadImage", function() { return loadImage; });
 /*
  * ProjectName: hypergl
  * FilePath: \src\util.ts
@@ -6171,7 +7127,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 2:05:52 pm
+ * Last Modified: Sunday, September 2nd 2018, 12:44:12 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -6213,6 +7169,15 @@ var Log;
     }
     Log.debug = debug;
 })(Log || (Log = {}));
+function loadImage(url) {
+    return new Promise(function (resolve, reject) {
+        var image = new Image();
+        image.onload = function () {
+            resolve(image);
+        };
+        image.src = url;
+    });
+}
 
 
 /***/ })

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 1:45:13 pm
+ * Last Modified: Sunday, September 2nd 2018, 9:19:43 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -92,3 +92,92 @@ export enum UNIFORM_TYPE {
     FLOATARRAY
 }
 
+export enum ADDRESS {
+    /**
+     * 仅使用小数部分忽略纹理坐标的整数部分
+     */
+    REPEAT,
+    /**
+     * 将纹理坐标夹在0到1的范围内
+     */
+    CLAMP_TO_EDGE,
+    /**
+     * 如果整数部分是偶数，则将纹理坐标设置为小数部分;如果整数部分是奇数，则纹理坐标设置为1减去小数部分。
+     */
+    MIRRORED_REPEAT
+}
+
+export enum FILTER {
+    /**
+     * 在纹理基层上执行线性过滤,从最大的贴图中选择4个像素然后混合
+     */
+    LINEAR,
+    /**
+     * 在mip层之间执行线性插补，并执行线性过滤
+     * 选择最合适的两个贴图，从每个上选择 4 个像素然后混合
+     */
+    LINEAR_MIPMAP_LINEAR,
+    /**
+     * 选择最临近的mip层，并执行线性过滤
+     * 选择最合适的贴图，然后取出 4 个像素进行混合
+     */
+    LINEAR_MIPMAP_NEAREST,
+    /**
+     * 在纹理基层上执行最邻近过滤
+     */
+    NEAREST,
+    /**
+     * 选择最临近的mip层，并执行最临近的过滤,从最大的贴图中选择 1 个像素
+     * 选择最合适的贴图，然后从上面找到一个像素
+     */
+    NEAREST_MIPMAP_NEAREST,
+    /**
+     * 在mip层之间执行线性插补，并执行最临近的过滤
+     *  选择最合适的两个贴图，从每个上面选择 1 个像素然后混合
+     */
+    NEAREST_MIPMAP_LINEAR,
+}
+export enum PIXELFORMAT {
+    A8,
+    L8,
+    L8_A8,
+    R5_G6_B5,
+    R5_G5_B5_A1,
+    R4_G4_B4_A4,
+    R8_G8_B8,
+    R8_G8_B8_A8,
+    DXT1,
+    DXT3,
+    DXT5,
+    RGB16F,
+    RGBA16F,
+    RGB32F,
+    RGBA32F,
+    ETC1,
+    PVRTC_2BPP_RGB_1,
+    PVRTC_2BPP_RGBA_1,
+    PVRTC_4BPP_RGB_1,
+    PVRTC_4BPP_RGBA_1,
+    _111110F, // 浮点颜色格式，红色和绿色通道为11位，蓝色通道为10位（仅限WebGL2）。
+    SRGB,
+    SRGBA,
+    R32F,
+    DEPTH,
+    DEPTHSTENCIL,
+}
+export enum FUNC {
+    NEVER = 0,
+    LESS = 1,
+    EQUAL = 2,
+    LESSEQUAL = 3,
+    GREATER = 4,
+    NOTEQUAL = 5,
+    GREATEREQUAL = 6,
+    ALWAYS = 7,
+}
+export enum TEXHINT {
+    NONE = 0,
+    SHADOWMAP = 1,
+    ASSET = 2,
+    LIGHTMAP = 3,
+}

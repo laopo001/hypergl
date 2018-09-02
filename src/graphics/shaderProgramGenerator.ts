@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 29th 2018, 8:35:52 pm
+ * Last Modified: Sunday, September 2nd 2018, 1:38:32 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -18,13 +18,13 @@ import basicFrag from './shaders/basic.frag';
 import { RendererPlatform } from './renderer';
 import { Shader } from './shader';
 import { SEMANTIC } from '../conf';
-import { Undefined } from '../types';
+import { Obj } from '../types';
 
 
 
 export class ShaderProgramGenerator {
     generator: { [s: string]: any } = {};
-    private _cache: { [s: string]: Undefined<Shader> } = {};
+    private _cache: Obj<Shader> = {};
     constructor(private renderer: RendererPlatform) {
 
     }

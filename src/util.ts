@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 2:05:52 pm
+ * Last Modified: Sunday, September 2nd 2018, 12:44:12 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -42,4 +42,15 @@ export namespace Log {
     export function debug(message: any) {
         console.debug(message);
     }
+}
+
+
+export function loadImage(url: string) {
+    return new Promise<HTMLImageElement>((resolve, reject) => {
+        const image = new Image();
+        image.onload = () => {
+            resolve(image);
+        };
+        image.src = url;
+    });
 }

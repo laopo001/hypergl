@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, August 25th 2018, 1:22:54 am
+ * Last Modified: Sunday, September 2nd 2018, 1:44:31 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -15,13 +15,17 @@
 import { generateUUID } from '../math/math';
 import { Nullable } from '../types';
 
+export class Base {
+    uuid = generateUUID();
+    name: Nullable<string> = null;
+}
 
 
 let ComponentIdCount = 0;
-export class IElement {
+export class IElement extends Base {
     id = ComponentIdCount++;
-    uuid = generateUUID();
-    name: Nullable<string> = null;
+    // uuid = generateUUID();
+    // name: Nullable<string> = null;
     tag: Nullable<string> = null;
     enable = true;
 }

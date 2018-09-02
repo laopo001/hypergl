@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 2nd 2018, 12:26:04 am
+ * Last Modified: Sunday, September 2nd 2018, 9:32:09 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -15,9 +15,11 @@
 import { RendererPlatform } from './renderer';
 import { UNIFORM_TYPE } from '../conf';
 import { VertexAttribData } from './vertexFormat';
+import { Texture } from '../texture/texture';
 export class ShaderVariable {
     enable = false;
-    element?: VertexAttribData;
+    element?: VertexAttribData | Texture;
+    slot?: number;
     constructor(public name: string, public type: UNIFORM_TYPE, public locationId: number) {
 
     }
