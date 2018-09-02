@@ -5,8 +5,10 @@ uniform mat4 matrix_viewProjection;
 attribute vec4 vertex_color;
 varying vec4 vColor;
 {{/if}}
-
-
+{{#if texture_diffuseMap}}
+attribute vec2 vertex_texCoord0;
+varying vec2 v_vertex_texCoord0;
+{{/if}}
 
 
 attribute vec3 vertex_position;
@@ -21,5 +23,8 @@ void main(void) {
     gl_Position = getPosition();
     {{#if vertex_color}}
     vColor = vertex_color;
+    {{/if}}
+    {{#if texture_diffuseMap}}
+    v_vertex_texCoord0 = vertex_texCoord0;
     {{/if}}
 }
