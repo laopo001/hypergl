@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 2nd 2018, 1:25:35 am
+ * Last Modified: Monday, September 3rd 2018, 12:05:13 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -20,6 +20,7 @@ import { initShaders } from './utils/util';
 import { Mat4, Vec3 } from '../src/math';
 import { Camera } from '../src/scene/camera';
 import { Mesh } from '../src/mesh/mesh';
+import { Color } from '../src/core/color';
 
 
 
@@ -64,13 +65,23 @@ let mesh = Mesh.createMesh(app.rendererPlatform, {
     colors,
     indices
 });
-
+let m = new BasicMaterial();
+m.color = new Color(0.5, 1, 0.5);
+m.update();
 let entity = new Entity();
 entity.mesh = mesh;
+mesh.material = m;
+
 app.scene.root.addChild(entity);
 
+let mesh2 = Mesh.createMesh(app.rendererPlatform, {
+    positions: vertices,
+    colors,
+    indices
+});
 let entity2 = new Entity();
-entity2.mesh = mesh;
+entity2.mesh = mesh2;
+
 entity2.setLocalScale(1.5, 0.5, 1.5);
 // entity2.rotate(0, 10, 0);
 entity2.setPosition(2, 0, 0);

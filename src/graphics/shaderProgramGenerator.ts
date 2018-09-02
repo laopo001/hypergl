@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 29th 2018, 8:35:52 pm
+ * Last Modified: Sunday, September 2nd 2018, 11:47:16 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -19,6 +19,7 @@ import { RendererPlatform } from './renderer';
 import { Shader } from './shader';
 import { SEMANTIC } from '../conf';
 import { Undefined } from '../types';
+import { ShaderVariable } from './shaderVariable';
 
 
 
@@ -49,6 +50,7 @@ function createShaderDefinition(renderer: RendererPlatform, options) {
     const basicVertStr = basicVert(options);
     const basicFragStr = basicFrag(options);
     let attributes: any = { vertex_position: SEMANTIC.POSITION };
+    let variables: any[] = [];
     if (options.vertex_color) {
         attributes.vertex_color = SEMANTIC.COLOR;
     }

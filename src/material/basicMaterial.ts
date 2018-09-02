@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, August 30th 2018, 7:10:24 pm
+ * Last Modified: Sunday, September 2nd 2018, 11:14:03 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -25,10 +25,11 @@ export class BasicMaterial extends Material {
         this.update();
     }
     update() {
-        this.setParameter('vertex_color', this.color.data);
+        this.setParameter('vertex_color', false);
+        this.setParameter('uColor', this.color.data);
         if (this.colorMap) {
             // TODO
-            // this.setParameter('texture_diffuseMap', this.colorMap);
+            this.setParameter('texture_diffuseMap', this.colorMap);
         }
     }
     updateShader(renderer: RendererPlatform) {

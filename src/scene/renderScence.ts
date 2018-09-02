@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 5:20:46 pm
+ * Last Modified: Sunday, September 2nd 2018, 11:44:19 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -34,6 +34,10 @@ export function renderScence(scene: Scene) {
         let shader = mesh.material.shader as Shader;
         renderer.setShader(shader as Shader);
         shader.setUniformValue('matrix_viewProjection', camera.PVMatrix.data);
+        // tslint:disable-next-line:forin
+        for (let key in material.parameters) {
+            shader.setUniformValue(key, material.parameters[key]);
+        }
         renderer.draw(entity);
     }
 }

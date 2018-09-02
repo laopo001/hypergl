@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 2nd 2018, 12:26:04 am
+ * Last Modified: Sunday, September 2nd 2018, 11:43:51 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -18,6 +18,7 @@ import { VertexAttribData } from './vertexFormat';
 export class ShaderVariable {
     enable = false;
     element?: VertexAttribData;
+    value = [null, null, null, null];
     constructor(public name: string, public type: UNIFORM_TYPE, public locationId: number) {
 
     }
