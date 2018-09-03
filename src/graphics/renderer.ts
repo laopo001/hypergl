@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, September 4th 2018, 12:54:13 am
+ * Last Modified: Tuesday, September 4th 2018, 1:18:18 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -21,6 +21,7 @@ import { IndexBuffer } from './indexBuffer';
 import { VertexBuffer } from './vertexBuffer';
 import { Entity } from '../ecs';
 import { Texture } from '../texture';
+import { ShaderVariable } from './shaderVariable';
 export type Platform = 'webgl' | 'webgl2';
 export class RendererPlatform {
     get gl() {
@@ -90,94 +91,34 @@ export class RendererPlatform {
             [Float32Array.name]: gl.FLOAT,
             [Float64Array.name]: gl.HIGH_FLOAT
         };
-        // tslint:disable-next-line:one-variable-per-declaration
-        let uniformValue, scopeX, scopeY, scopeZ, scopeW;
-        this.uniformFunction[UNIFORM_TYPE.BOOL] = (uniform, value) => {
-            if (uniform.value !== value) {
-                gl.uniform1i(uniform.locationId, value);
-                uniform.value = value;
-            }
+
+        this.uniformFunction[UNIFORM_TYPE.BOOL] = (uniform: ShaderVariable, value) => {
+            gl.uniform1i(uniform.locationId, value);
+
         };
         this.uniformFunction[UNIFORM_TYPE.INT] = this.uniformFunction[UNIFORM_TYPE.BOOL];
         this.uniformFunction[UNIFORM_TYPE.FLOAT] = (uniform, value) => {
-            if (uniform.value !== value) {
-                gl.uniform1f(uniform.locationId, value);
-                uniform.value = value;
-            }
+            gl.uniform1f(uniform.locationId, value);
         };
         this.uniformFunction[UNIFORM_TYPE.FLOAT_VEC2] = (uniform, value) => {
-            uniformValue = uniform.value;
-            scopeX = value[0];
-            scopeY = value[1];
-            if (uniformValue[0] !== scopeX || uniformValue[1] !== scopeY) {
-                gl.uniform2fv(uniform.locationId, value);
-                uniformValue[0] = scopeX;
-                uniformValue[1] = scopeY;
-            }
+            gl.uniform2fv(uniform.locationId, value);
         };
         this.uniformFunction[UNIFORM_TYPE.FLOAT_VEC3] = (uniform, value) => {
-            uniformValue = uniform.value;
-            scopeX = value[0];
-            scopeY = value[1];
-            scopeZ = value[2];
-            if (uniformValue[0] !== scopeX || uniformValue[1] !== scopeY || uniformValue[2] !== scopeZ) {
-                gl.uniform3fv(uniform.locationId, value);
-                uniformValue[0] = scopeX;
-                uniformValue[1] = scopeY;
-                uniformValue[2] = scopeZ;
-            }
+            gl.uniform3fv(uniform.locationId, value);
         };
         this.uniformFunction[UNIFORM_TYPE.FLOAT_VEC4] = (uniform, value) => {
-            uniformValue = uniform.value;
-            scopeX = value[0];
-            scopeY = value[1];
-            scopeZ = value[2];
-            scopeW = value[3];
-            if (uniformValue[0] !== scopeX || uniformValue[1] !== scopeY || uniformValue[2] !== scopeZ || uniformValue[3] !== scopeW) {
-                gl.uniform4fv(uniform.locationId, value);
-                uniformValue[0] = scopeX;
-                uniformValue[1] = scopeY;
-                uniformValue[2] = scopeZ;
-                uniformValue[3] = scopeW;
-            }
+            gl.uniform4fv(uniform.locationId, value);
         };
         this.uniformFunction[UNIFORM_TYPE.INT_VEC2] = (uniform, value) => {
-            uniformValue = uniform.value;
-            scopeX = value[0];
-            scopeY = value[1];
-            if (uniformValue[0] !== scopeX || uniformValue[1] !== scopeY) {
-                gl.uniform2iv(uniform.locationId, value);
-                uniformValue[0] = scopeX;
-                uniformValue[1] = scopeY;
-            }
+            gl.uniform2iv(uniform.locationId, value);
         };
         this.uniformFunction[UNIFORM_TYPE.BOOL_VEC2] = this.uniformFunction[UNIFORM_TYPE.INT_VEC2];
         this.uniformFunction[UNIFORM_TYPE.INT_VEC3] = (uniform, value) => {
-            uniformValue = uniform.value;
-            scopeX = value[0];
-            scopeY = value[1];
-            scopeZ = value[2];
-            if (uniformValue[0] !== scopeX || uniformValue[1] !== scopeY || uniformValue[2] !== scopeZ) {
-                gl.uniform3iv(uniform.locationId, value);
-                uniformValue[0] = scopeX;
-                uniformValue[1] = scopeY;
-                uniformValue[2] = scopeZ;
-            }
+            gl.uniform3iv(uniform.locationId, value);
         };
         this.uniformFunction[UNIFORM_TYPE.BOOL_VEC3] = this.uniformFunction[UNIFORM_TYPE.INT_VEC3];
         this.uniformFunction[UNIFORM_TYPE.INT_VEC4] = (uniform, value) => {
-            uniformValue = uniform.value;
-            scopeX = value[0];
-            scopeY = value[1];
-            scopeZ = value[2];
-            scopeW = value[3];
-            if (uniformValue[0] !== scopeX || uniformValue[1] !== scopeY || uniformValue[2] !== scopeZ || uniformValue[3] !== scopeW) {
-                gl.uniform4iv(uniform.locationId, value);
-                uniformValue[0] = scopeX;
-                uniformValue[1] = scopeY;
-                uniformValue[2] = scopeZ;
-                uniformValue[3] = scopeW;
-            }
+            gl.uniform4iv(uniform.locationId, value);
         };
         this.uniformFunction[UNIFORM_TYPE.BOOL_VEC4] = this.uniformFunction[UNIFORM_TYPE.INT_VEC4];
         this.uniformFunction[UNIFORM_TYPE.FLOAT_MAT2] = (uniform, value) => {
@@ -202,12 +143,10 @@ export class RendererPlatform {
     setVertexBuffer(vertexBuffer: VertexBuffer) {
         const gl = this.gl;
         gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer.bufferId as WebGLBuffer);
-        // vertexBuffer.bind();
     }
     setIndexBuffer(indexBuffer: IndexBuffer) {
         const gl = this.gl;
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer.bufferId as WebGLBuffer);
-        // indexBuffer.bind();
     }
     initDraw() {
         const gl = this.gl;
@@ -255,11 +194,10 @@ export class RendererPlatform {
             this.uniformFunction[uniform.type](uniform, shader.uniformScope[uniform.name]);
         }
 
-        Log.assert(shader.checkUniformScope() === true, 'UniformScopValue not set', shader.uniformScope);
         for (let i = 0; i < samplers.length; i++) {
             let sampler = samplers[i];
             let value = shader.uniformScope[sampler.name] as Texture;
-            loadTexture(gl,  gl.getUniformLocation(shader.program as WebGLProgram, sampler.name) , value.source as HTMLImageElement, 0);
+            loadTexture(gl, shader.program as WebGLProgram, sampler.name, value, i);
         }
 
         gl.drawElements(
@@ -271,22 +209,25 @@ export class RendererPlatform {
     }
 }
 
-export function loadTexture(gl: WebGL2RenderingContext, u_Sampler, image: ImageBitmap | ImageData | HTMLVideoElement | HTMLImageElement | HTMLCanvasElement, t = 0) {
-    const texture = gl.createTexture();
-    // 对纹理图像进行Y轴反转
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
+export function loadTexture(gl: WebGL2RenderingContext, program: WebGLProgram, name: string, texture: Texture, t = 0) {
+    if (texture.source == null) { Log.error('texture 设置 source' + texture); return; }
+    let u_Sampler = gl.getUniformLocation(program, name);
+    const textureBuffer = gl.createTexture();
+    if (texture.flipY) {
+        // 对纹理图像进行Y轴反转
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
+    }
     // 开启0号纹理单元
-
     gl.activeTexture(gl['TEXTURE' + t]);
     // 向target绑定纹理对象
-    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.bindTexture(gl.TEXTURE_2D, textureBuffer);
     // 配置纹理参数
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     // 配置纹理图像
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, texture.source);
     // 将0号纹理传递给着色器
     gl.uniform1i(u_Sampler, t);
 

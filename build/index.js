@@ -2322,7 +2322,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, September 4th 2018, 12:54:13 am
+ * Last Modified: Tuesday, September 4th 2018, 1:18:18 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -2401,94 +2401,32 @@ var RendererPlatform = /** @class */ (function () {
             _a[Float32Array.name] = gl.FLOAT,
             _a[Float64Array.name] = gl.HIGH_FLOAT,
             _a);
-        // tslint:disable-next-line:one-variable-per-declaration
-        var uniformValue, scopeX, scopeY, scopeZ, scopeW;
         this.uniformFunction[_conf__WEBPACK_IMPORTED_MODULE_1__["UNIFORM_TYPE"].BOOL] = function (uniform, value) {
-            if (uniform.value !== value) {
-                gl.uniform1i(uniform.locationId, value);
-                uniform.value = value;
-            }
+            gl.uniform1i(uniform.locationId, value);
         };
         this.uniformFunction[_conf__WEBPACK_IMPORTED_MODULE_1__["UNIFORM_TYPE"].INT] = this.uniformFunction[_conf__WEBPACK_IMPORTED_MODULE_1__["UNIFORM_TYPE"].BOOL];
         this.uniformFunction[_conf__WEBPACK_IMPORTED_MODULE_1__["UNIFORM_TYPE"].FLOAT] = function (uniform, value) {
-            if (uniform.value !== value) {
-                gl.uniform1f(uniform.locationId, value);
-                uniform.value = value;
-            }
+            gl.uniform1f(uniform.locationId, value);
         };
         this.uniformFunction[_conf__WEBPACK_IMPORTED_MODULE_1__["UNIFORM_TYPE"].FLOAT_VEC2] = function (uniform, value) {
-            uniformValue = uniform.value;
-            scopeX = value[0];
-            scopeY = value[1];
-            if (uniformValue[0] !== scopeX || uniformValue[1] !== scopeY) {
-                gl.uniform2fv(uniform.locationId, value);
-                uniformValue[0] = scopeX;
-                uniformValue[1] = scopeY;
-            }
+            gl.uniform2fv(uniform.locationId, value);
         };
         this.uniformFunction[_conf__WEBPACK_IMPORTED_MODULE_1__["UNIFORM_TYPE"].FLOAT_VEC3] = function (uniform, value) {
-            uniformValue = uniform.value;
-            scopeX = value[0];
-            scopeY = value[1];
-            scopeZ = value[2];
-            if (uniformValue[0] !== scopeX || uniformValue[1] !== scopeY || uniformValue[2] !== scopeZ) {
-                gl.uniform3fv(uniform.locationId, value);
-                uniformValue[0] = scopeX;
-                uniformValue[1] = scopeY;
-                uniformValue[2] = scopeZ;
-            }
+            gl.uniform3fv(uniform.locationId, value);
         };
         this.uniformFunction[_conf__WEBPACK_IMPORTED_MODULE_1__["UNIFORM_TYPE"].FLOAT_VEC4] = function (uniform, value) {
-            uniformValue = uniform.value;
-            scopeX = value[0];
-            scopeY = value[1];
-            scopeZ = value[2];
-            scopeW = value[3];
-            if (uniformValue[0] !== scopeX || uniformValue[1] !== scopeY || uniformValue[2] !== scopeZ || uniformValue[3] !== scopeW) {
-                gl.uniform4fv(uniform.locationId, value);
-                uniformValue[0] = scopeX;
-                uniformValue[1] = scopeY;
-                uniformValue[2] = scopeZ;
-                uniformValue[3] = scopeW;
-            }
+            gl.uniform4fv(uniform.locationId, value);
         };
         this.uniformFunction[_conf__WEBPACK_IMPORTED_MODULE_1__["UNIFORM_TYPE"].INT_VEC2] = function (uniform, value) {
-            uniformValue = uniform.value;
-            scopeX = value[0];
-            scopeY = value[1];
-            if (uniformValue[0] !== scopeX || uniformValue[1] !== scopeY) {
-                gl.uniform2iv(uniform.locationId, value);
-                uniformValue[0] = scopeX;
-                uniformValue[1] = scopeY;
-            }
+            gl.uniform2iv(uniform.locationId, value);
         };
         this.uniformFunction[_conf__WEBPACK_IMPORTED_MODULE_1__["UNIFORM_TYPE"].BOOL_VEC2] = this.uniformFunction[_conf__WEBPACK_IMPORTED_MODULE_1__["UNIFORM_TYPE"].INT_VEC2];
         this.uniformFunction[_conf__WEBPACK_IMPORTED_MODULE_1__["UNIFORM_TYPE"].INT_VEC3] = function (uniform, value) {
-            uniformValue = uniform.value;
-            scopeX = value[0];
-            scopeY = value[1];
-            scopeZ = value[2];
-            if (uniformValue[0] !== scopeX || uniformValue[1] !== scopeY || uniformValue[2] !== scopeZ) {
-                gl.uniform3iv(uniform.locationId, value);
-                uniformValue[0] = scopeX;
-                uniformValue[1] = scopeY;
-                uniformValue[2] = scopeZ;
-            }
+            gl.uniform3iv(uniform.locationId, value);
         };
         this.uniformFunction[_conf__WEBPACK_IMPORTED_MODULE_1__["UNIFORM_TYPE"].BOOL_VEC3] = this.uniformFunction[_conf__WEBPACK_IMPORTED_MODULE_1__["UNIFORM_TYPE"].INT_VEC3];
         this.uniformFunction[_conf__WEBPACK_IMPORTED_MODULE_1__["UNIFORM_TYPE"].INT_VEC4] = function (uniform, value) {
-            uniformValue = uniform.value;
-            scopeX = value[0];
-            scopeY = value[1];
-            scopeZ = value[2];
-            scopeW = value[3];
-            if (uniformValue[0] !== scopeX || uniformValue[1] !== scopeY || uniformValue[2] !== scopeZ || uniformValue[3] !== scopeW) {
-                gl.uniform4iv(uniform.locationId, value);
-                uniformValue[0] = scopeX;
-                uniformValue[1] = scopeY;
-                uniformValue[2] = scopeZ;
-                uniformValue[3] = scopeW;
-            }
+            gl.uniform4iv(uniform.locationId, value);
         };
         this.uniformFunction[_conf__WEBPACK_IMPORTED_MODULE_1__["UNIFORM_TYPE"].BOOL_VEC4] = this.uniformFunction[_conf__WEBPACK_IMPORTED_MODULE_1__["UNIFORM_TYPE"].INT_VEC4];
         this.uniformFunction[_conf__WEBPACK_IMPORTED_MODULE_1__["UNIFORM_TYPE"].FLOAT_MAT2] = function (uniform, value) {
@@ -2513,12 +2451,10 @@ var RendererPlatform = /** @class */ (function () {
     RendererPlatform.prototype.setVertexBuffer = function (vertexBuffer) {
         var gl = this.gl;
         gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer.bufferId);
-        // vertexBuffer.bind();
     };
     RendererPlatform.prototype.setIndexBuffer = function (indexBuffer) {
         var gl = this.gl;
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer.bufferId);
-        // indexBuffer.bind();
     };
     RendererPlatform.prototype.initDraw = function () {
         var gl = this.gl;
@@ -2572,33 +2508,39 @@ var RendererPlatform = /** @class */ (function () {
             var uniform = uniforms[i];
             this.uniformFunction[uniform.type](uniform, shader.uniformScope[uniform.name]);
         }
-        _util__WEBPACK_IMPORTED_MODULE_0__["Log"].assert(shader.checkUniformScope() === true, 'UniformScopValue not set', shader.uniformScope);
         for (var i = 0; i < samplers.length; i++) {
             var sampler = samplers[i];
             var value = shader.uniformScope[sampler.name];
-            loadTexture(gl, gl.getUniformLocation(shader.program, sampler.name), value.source, 0);
+            loadTexture(gl, shader.program, sampler.name, value, i);
         }
         gl.drawElements(gl.TRIANGLES, mesh.indexBuffer.length, mesh.indexBuffer.drawFormat, 0);
     };
     return RendererPlatform;
 }());
 
-function loadTexture(gl, u_Sampler, image, t) {
+function loadTexture(gl, program, name, texture, t) {
     if (t === void 0) { t = 0; }
-    var texture = gl.createTexture();
-    // 对纹理图像进行Y轴反转
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
+    if (texture.source == null) {
+        _util__WEBPACK_IMPORTED_MODULE_0__["Log"].error('texture 设置 source' + texture);
+        return;
+    }
+    var u_Sampler = gl.getUniformLocation(program, name);
+    var textureBuffer = gl.createTexture();
+    if (texture.flipY) {
+        // 对纹理图像进行Y轴反转
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
+    }
     // 开启0号纹理单元
     gl.activeTexture(gl['TEXTURE' + t]);
     // 向target绑定纹理对象
-    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.bindTexture(gl.TEXTURE_2D, textureBuffer);
     // 配置纹理参数
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     // 配置纹理图像
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, texture.source);
     // 将0号纹理传递给着色器
     gl.uniform1i(u_Sampler, t);
 }
@@ -2847,7 +2789,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 2nd 2018, 11:43:51 pm
+ * Last Modified: Tuesday, September 4th 2018, 1:15:32 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -2858,7 +2800,6 @@ var ShaderVariable = /** @class */ (function () {
         this.type = type;
         this.locationId = locationId;
         this.enable = false;
-        this.value = [null, null, null, null];
     }
     return ShaderVariable;
 }());
@@ -6511,7 +6452,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 3rd 2018, 11:07:38 pm
+ * Last Modified: Tuesday, September 4th 2018, 1:05:59 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -6526,6 +6467,7 @@ var Texture = /** @class */ (function () {
         this.level = 0;
         this.format = _types__WEBPACK_IMPORTED_MODULE_0__["PIXELFORMAT"].R8_G8_B8; // gl.RGB
         this.dataType = Uint8Array;
+        this.flipY = true; // 文理是否需要垂直翻转,默认为false
         // TODO
     }
     Texture.prototype.setSource = function (source) {

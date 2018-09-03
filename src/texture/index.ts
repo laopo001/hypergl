@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 3rd 2018, 11:07:38 pm
+ * Last Modified: Tuesday, September 4th 2018, 1:05:59 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -22,6 +22,7 @@ export class Texture {
     level = 0;
     format = PIXELFORMAT.R8_G8_B8; // gl.RGB
     dataType = Uint8Array;
+    flipY = true; // 文理是否需要垂直翻转,默认为false
     constructor() {
         // TODO
     }
