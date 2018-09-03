@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 3:42:35 pm
+ * Last Modified: Monday, September 3rd 2018, 9:29:05 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -14,7 +14,7 @@
 
 import { IElement } from '../core/element';
 import { Application } from '../application';
-import { INode } from './node';
+import { SceneNode } from './node';
 import { renderScence } from './renderScence';
 import { Camera } from './camera';
 import { Entity } from '../ecs/entity';

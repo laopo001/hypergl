@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 2nd 2018, 1:06:23 am
+ * Last Modified: Monday, September 3rd 2018, 9:29:05 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -25,15 +25,15 @@ let scaleCompensateRot2 = new Quat();
 let scaleCompensateScale = new Vec3();
 let scaleCompensateScaleForParent = new Vec3();
 
-export class INode extends IElement {
+export class SceneNode extends IElement {
     // local
     localPosition = new Vec3(0, 0, 0);
     localRotation = new Quat(0, 0, 0, 1);
     localScale = new Vec3(1, 1, 1);
     localEulerAngles = new Vec3(0, 0, 0);
     localTransform = new Mat4();
-    parent?: INode;
-    readonly children: INode[] = [];
+    parent?: SceneNode;
+    readonly children: SceneNode[] = [];
     scene!: Scene;
     // World-space
     position = new Vec3(0, 0, 0);
@@ -49,7 +49,7 @@ export class INode extends IElement {
     constructor() {
         super();
     }
-    lookAt(target: INode) {
+    lookAt(target: SceneNode) {
         // TODO
         let targetLocation = target.getPosition();
         let up = target.up;
@@ -268,7 +268,7 @@ export class INode extends IElement {
 
                     // Find a parent of the first uncompensated node up in the hierarchy and use its scale * localScale
                     let scale = this.localScale;
-                    let parentToUseScaleFrom: INode | undefined = parent; // current parent
+                    let parentToUseScaleFrom: SceneNode | undefined = parent; // current parent
                     if (parentToUseScaleFrom) {
                         while (parentToUseScaleFrom && parentToUseScaleFrom.scaleCompensation) {
                             parentToUseScaleFrom = parentToUseScaleFrom.parent;

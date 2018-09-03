@@ -5,18 +5,18 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 29th 2018, 8:02:05 pm
+ * Last Modified: Monday, September 3rd 2018, 9:29:05 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
 
 
-import { INode } from '../scene/node';
+import { SceneNode } from '../scene/node';
 import { Mesh } from '../mesh/mesh';
 import { Material } from '../material/material';
 import { Shader } from '../graphics/shader';
-export class Entity extends INode {
+export class Entity extends SceneNode {
     mesh?: Mesh;
     _shader?: Shader;
 }

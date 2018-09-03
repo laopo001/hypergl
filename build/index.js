@@ -1947,7 +1947,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 29th 2018, 8:02:05 pm
+ * Last Modified: Monday, September 3rd 2018, 9:29:05 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -1969,7 +1969,7 @@ var Entity = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     return Entity;
-}(_scene_node__WEBPACK_IMPORTED_MODULE_0__["INode"]));
+}(_scene_node__WEBPACK_IMPORTED_MODULE_0__["SceneNode"]));
 
 
 
@@ -5734,7 +5734,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, August 27th 2018, 12:12:01 am
+ * Last Modified: Monday, September 3rd 2018, 9:29:05 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -5776,12 +5776,12 @@ var Camera = /** @class */ (function () {
 /*!***************************!*\
   !*** ./src/scene/node.ts ***!
   \***************************/
-/*! exports provided: INode */
+/*! exports provided: SceneNode */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "INode", function() { return INode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SceneNode", function() { return SceneNode; });
 /* harmony import */ var _core_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/element */ "./src/core/element.ts");
 /* harmony import */ var _math__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../math */ "./src/math/index.ts");
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util */ "./src/util.ts");
@@ -5792,7 +5792,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 2nd 2018, 1:06:23 am
+ * Last Modified: Monday, September 3rd 2018, 9:29:05 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -5816,9 +5816,9 @@ var scaleCompensateRot = new _math__WEBPACK_IMPORTED_MODULE_1__["Quat"]();
 var scaleCompensateRot2 = new _math__WEBPACK_IMPORTED_MODULE_1__["Quat"]();
 var scaleCompensateScale = new _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
 var scaleCompensateScaleForParent = new _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
-var INode = /** @class */ (function (_super) {
-    __extends(INode, _super);
-    function INode() {
+var SceneNode = /** @class */ (function (_super) {
+    __extends(SceneNode, _super);
+    function SceneNode() {
         var _this = _super.call(this) || this;
         // local
         _this.localPosition = new _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"](0, 0, 0);
@@ -5839,7 +5839,7 @@ var INode = /** @class */ (function (_super) {
         _this._up = new _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
         return _this;
     }
-    INode.prototype.lookAt = function (target) {
+    SceneNode.prototype.lookAt = function (target) {
         // TODO
         var targetLocation = target.getPosition();
         var up = target.up;
@@ -5847,13 +5847,13 @@ var INode = /** @class */ (function (_super) {
         var quat = new _math__WEBPACK_IMPORTED_MODULE_1__["Quat"]().setFromMat4(mat4);
         this.setRotation(quat);
     };
-    INode.prototype.addChild = function (child) {
+    SceneNode.prototype.addChild = function (child) {
         this.children.push(child);
         child.parent = this;
         child.scene = this.scene;
         this.scene.layer.push(child);
     };
-    INode.prototype.setPosition = function (x, y, z) {
+    SceneNode.prototype.setPosition = function (x, y, z) {
         var position = new _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"]();
         if (x instanceof _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"]) {
             position.copy(x);
@@ -5877,11 +5877,11 @@ var INode = /** @class */ (function (_super) {
      * @returns
      * @memberof INode
      */
-    INode.prototype.getPosition = function () {
+    SceneNode.prototype.getPosition = function () {
         this.getWorldTransform().getTranslation(this.position);
         return this.position;
     };
-    INode.prototype.setLocalEulerAngles = function (x, y, z) {
+    SceneNode.prototype.setLocalEulerAngles = function (x, y, z) {
         if (x instanceof _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"]) {
             this.localRotation.setFromEulerAngles(x.data[0], x.data[1], x.data[2]);
         }
@@ -5892,11 +5892,11 @@ var INode = /** @class */ (function (_super) {
             this._dirtify(true);
         }
     };
-    INode.prototype.getLocalEulerAngles = function () {
+    SceneNode.prototype.getLocalEulerAngles = function () {
         this.localRotation.getEulerAngles(this.localEulerAngles);
         return this.localEulerAngles;
     };
-    INode.prototype.setEulerAngles = function (x, y, z) {
+    SceneNode.prototype.setEulerAngles = function (x, y, z) {
         if (x instanceof _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"]) {
             this.localRotation.setFromEulerAngles(x.data[0], x.data[1], x.data[2]);
         }
@@ -5912,11 +5912,11 @@ var INode = /** @class */ (function (_super) {
             this._dirtify(true);
         }
     };
-    INode.prototype.getEulerAngles = function () {
+    SceneNode.prototype.getEulerAngles = function () {
         this.getWorldTransform().getEulerAngles(this.eulerAngles);
         return this.eulerAngles;
     };
-    INode.prototype.setLocalPosition = function (x, y, z) {
+    SceneNode.prototype.setLocalPosition = function (x, y, z) {
         if (x instanceof _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"]) {
             this.localPosition.copy(x);
         }
@@ -5928,10 +5928,10 @@ var INode = /** @class */ (function (_super) {
             this._dirtify(true);
         }
     };
-    INode.prototype.getLocalPosition = function () {
+    SceneNode.prototype.getLocalPosition = function () {
         return this.localPosition;
     };
-    INode.prototype.setRotation = function (x, y, z, w) {
+    SceneNode.prototype.setRotation = function (x, y, z, w) {
         var rotation;
         if (x instanceof _math__WEBPACK_IMPORTED_MODULE_1__["Quat"]) {
             rotation = x;
@@ -5951,11 +5951,11 @@ var INode = /** @class */ (function (_super) {
             this._dirtify(true);
         }
     };
-    INode.prototype.getRotation = function () {
+    SceneNode.prototype.getRotation = function () {
         this.rotation.setFromMat4(this.getWorldTransform());
         return this.rotation;
     };
-    INode.prototype.getWorldTransform = function () {
+    SceneNode.prototype.getWorldTransform = function () {
         if (!this._dirtyLocal && !this._dirtyWorld) {
             return this.worldTransform;
         }
@@ -5965,7 +5965,7 @@ var INode = /** @class */ (function (_super) {
         this._sync();
         return this.worldTransform;
     };
-    INode.prototype.setLocalScale = function (x, y, z) {
+    SceneNode.prototype.setLocalScale = function (x, y, z) {
         if (x instanceof _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"]) {
             this.localScale.copy(x);
         }
@@ -5976,10 +5976,10 @@ var INode = /** @class */ (function (_super) {
             this._dirtify(true);
         }
     };
-    INode.prototype.getLocalScale = function () {
+    SceneNode.prototype.getLocalScale = function () {
         return this.localScale;
     };
-    INode.prototype.rotate = function (x, y, z) {
+    SceneNode.prototype.rotate = function (x, y, z) {
         var quaternion = new _math__WEBPACK_IMPORTED_MODULE_1__["Quat"]();
         var invParentRot = new _math__WEBPACK_IMPORTED_MODULE_1__["Quat"]();
         if (x instanceof _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"]) {
@@ -6002,7 +6002,7 @@ var INode = /** @class */ (function (_super) {
             this._dirtify(true);
         }
     };
-    INode.prototype.rotateLocal = function (x, y, z) {
+    SceneNode.prototype.rotateLocal = function (x, y, z) {
         var quaternion = new _math__WEBPACK_IMPORTED_MODULE_1__["Quat"]();
         if (x instanceof _math__WEBPACK_IMPORTED_MODULE_1__["Vec3"]) {
             quaternion.setFromEulerAngles(x.data[0], x.data[1], x.data[2]);
@@ -6016,7 +6016,7 @@ var INode = /** @class */ (function (_super) {
         }
     };
     // 更新此节点及其所有后代的世界转换矩阵。
-    INode.prototype.syncHierarchy = function () {
+    SceneNode.prototype.syncHierarchy = function () {
         if (!this.enable) {
             return;
         }
@@ -6027,7 +6027,7 @@ var INode = /** @class */ (function (_super) {
             this.children[i].syncHierarchy();
         }
     };
-    INode.prototype._sync = function () {
+    SceneNode.prototype._sync = function () {
         if (this._dirtyLocal) {
             this.localTransform.setTRS(this.localPosition, this.localRotation, this.localScale);
             this._dirtyLocal = false;
@@ -6078,7 +6078,7 @@ var INode = /** @class */ (function (_super) {
             this._dirtyWorld = false;
         }
     };
-    Object.defineProperty(INode.prototype, "root", {
+    Object.defineProperty(SceneNode.prototype, "root", {
         get: function () {
             var parent = this.parent;
             if (!parent) {
@@ -6100,7 +6100,7 @@ var INode = /** @class */ (function (_super) {
      * @returns
      * @memberof INode
      */
-    INode.prototype._dirtify = function (local) {
+    SceneNode.prototype._dirtify = function (local) {
         if ((!local || (local && this._dirtyLocal)) && this._dirtyWorld) {
             return;
         }
@@ -6121,14 +6121,14 @@ var INode = /** @class */ (function (_super) {
         // this._aabbVer++;
         // TODO
     };
-    Object.defineProperty(INode.prototype, "up", {
+    Object.defineProperty(SceneNode.prototype, "up", {
         get: function () {
             return this.getWorldTransform().getY(this._up).normalize();
         },
         enumerable: true,
         configurable: true
     });
-    return INode;
+    return SceneNode;
 }(_core_element__WEBPACK_IMPORTED_MODULE_0__["IElement"]));
 
 
@@ -6152,7 +6152,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 2nd 2018, 11:44:19 pm
+ * Last Modified: Monday, September 3rd 2018, 9:29:05 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -6205,7 +6205,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 3:42:35 pm
+ * Last Modified: Monday, September 3rd 2018, 9:29:05 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang

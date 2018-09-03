@@ -5,14 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 2nd 2018, 11:44:19 pm
+ * Last Modified: Monday, September 3rd 2018, 9:29:05 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
 
 
-import { INode } from './node';
+import { SceneNode } from './node';
 import { Entity } from '../ecs/entity';
 import { BasicMaterial } from '../material/basicMaterial';
 import { Scene } from './scene';
