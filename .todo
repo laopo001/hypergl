@@ -4,11 +4,11 @@ Projects:
 Todos:
   实现基本功能
   new: 
-    ☐ 完成 BasicMaterial 的纹理(texture)参数 @started(18-09-02 01:08)
     ☐ ECS框架 Entity,Component,System 
     ☐ mesh
     ☐ Entity
   Done:
+    ✔ 完成 BasicMaterial 的(diffuseMap)参数 @started(18-09-02 01:08) @done(18-09-04 00:55) @lasted(1d23h47m3s)
     ✔ createBox @done(18-09-03 00:45)
     ✔ graph-node @done(18-09-02 01:08)
     ✔ shaderInput @done(18-09-01 15:42)

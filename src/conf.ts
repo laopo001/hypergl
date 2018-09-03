@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 1:45:13 pm
+ * Last Modified: Tuesday, September 4th 2018, 12:03:56 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -52,6 +52,24 @@ export enum SEMANTIC {
     TEXCOORD6 = 'TEXCOORD6',
     TEXCOORD7 = 'TEXCOORD7'
 }
+
+export enum SEMANTICMAP {
+    POSITION = 'vertex_position',
+    NORMAL = 'NORMAL',
+    TANGENT = 'TANGENT',
+    BLENDWEIGHT = 'BLENDWEIGHT',
+    BLENDINDICES = 'BLENDINDICES',
+    COLOR = 'vertex_color',
+    TEXCOORD0 = 'vertex_texCoord0',
+    TEXCOORD1 = 'vertex_texCoord1',
+    TEXCOORD2 = 'vertex_texCoord2',
+    TEXCOORD3 = 'vertex_texCoord3',
+    TEXCOORD4 = 'vertex_texCoord4',
+    TEXCOORD5 = 'vertex_texCoord5',
+    TEXCOORD6 = 'vertex_texCoord6',
+    TEXCOORD7 = 'vertex_texCoord7'
+}
+
 
 export enum BUFFER {
     STATIC = 'STATIC',

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 3rd 2018, 1:05:12 am
+ * Last Modified: Monday, September 3rd 2018, 9:34:22 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -25,6 +25,8 @@ export class Mesh {
     static defaultMaterial = new BasicMaterial();
     vertexBuffer!: VertexBuffer;
     indexBuffer!: IndexBuffer;
+    castShadow = true;
+    receiveShadow = true;
     private _material = Mesh.defaultMaterial;
     get material() {
         return this._material;

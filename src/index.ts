@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 29th 2018, 8:00:10 pm
+ * Last Modified: Monday, September 3rd 2018, 11:06:29 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -17,3 +17,4 @@ export * from './application';
 export * from './graphics';
 export * from './material';
 export * from './ecs';
+export * from './texture';

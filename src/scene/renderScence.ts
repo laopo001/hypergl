@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 3rd 2018, 9:29:05 pm
+ * Last Modified: Tuesday, September 4th 2018, 12:05:13 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -18,6 +18,10 @@ import { BasicMaterial } from '../material/basicMaterial';
 import { Scene } from './scene';
 import { Mesh } from '../mesh/mesh';
 import { Shader } from '../graphics/shader';
+import { SEMANTICMAP } from '../conf';
+
+
+
 export function renderScence(scene: Scene) {
     let entitys = scene.layer;
     let camera = scene.activeCamera;
@@ -30,7 +34,11 @@ export function renderScence(scene: Scene) {
         const mesh = entity.mesh;
         if (mesh == null) { return; }
         const material = mesh.material;
-        material.updateShader(renderer);
+        let attributes = {};
+        mesh.vertexBuffer.format.elements.forEach(x => {
+            attributes[SEMANTICMAP[x.semantic]] = x.semantic;
+        });
+        material.updateShader(renderer, attributes);
         let shader = mesh.material.shader as Shader;
         renderer.setShader(shader as Shader);
         shader.setUniformValue('matrix_viewProjection', camera.PVMatrix.data);

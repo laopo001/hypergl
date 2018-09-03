@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 2nd 2018, 11:47:16 pm
+ * Last Modified: Tuesday, September 4th 2018, 12:42:07 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -29,9 +29,11 @@ export class ShaderProgramGenerator {
     constructor(private renderer: RendererPlatform) {
 
     }
-    getProgram(name: string, options = {}) {
+    getProgram(name: string, attributes = {}, uniforms = {}) {
         let { platform } = this.renderer;
-        options['GL2'] = platform === 'webgl2';
+        let data = {};
+        data['GL2'] = platform === 'webgl2';
+        let options = { attributes, uniforms, data };
         const key = generateKey(options);
         let shader = this._cache[key];
         if (!shader) {
@@ -43,22 +45,28 @@ export class ShaderProgramGenerator {
 }
 
 function generateKey(options) {
-    return JSON.stringify(options);
+    let str = '';
+    // tslint:disable-next-line:forin
+    for (let x in options.uniforms) {
+        str += x + ',';
+    }
+    return JSON.stringify(options.attributes) + JSON.stringify(options.data) + str;
 }
 
 function createShaderDefinition(renderer: RendererPlatform, options) {
+    console.log(options);
     const basicVertStr = basicVert(options);
     const basicFragStr = basicFrag(options);
-    let attributes: any = { vertex_position: SEMANTIC.POSITION };
-    let variables: any[] = [];
-    if (options.vertex_color) {
-        attributes.vertex_color = SEMANTIC.COLOR;
-    }
-    if (options.diffuseMap) {
-        attributes.vertex_texCoord0 = SEMANTIC.TEXCOORD0;
-    }
+    // let attributes: any = { vertex_position: SEMANTIC.POSITION };
+    // let variables: any[] = [];
+    // if (options.vertex_color) {
+    //     attributes.vertex_color = SEMANTIC.COLOR;
+    // }
+    // if (options.diffuseMap) {
+    //     attributes.vertex_texCoord0 = SEMANTIC.TEXCOORD0;
+    // }
     return {
-        attributes,
+        attributes: options.attributes,
         vshader: basicVertStr,
         fshader: basicFragStr
     };

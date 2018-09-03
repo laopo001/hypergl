@@ -96,10 +96,11 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../src */ "./src/index.ts");
-/* harmony import */ var _src_math__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/math */ "./src/math/index.ts");
-/* harmony import */ var _src_scene_camera__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../src/scene/camera */ "./src/scene/camera.ts");
-/* harmony import */ var _src_mesh_mesh__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../src/mesh/mesh */ "./src/mesh/mesh.ts");
-/* harmony import */ var _src_core_color__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../src/core/color */ "./src/core/color.ts");
+/* harmony import */ var _utils_util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/util */ "./demo/utils/util.ts");
+/* harmony import */ var _src_math__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../src/math */ "./src/math/index.ts");
+/* harmony import */ var _src_scene_camera__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../src/scene/camera */ "./src/scene/camera.ts");
+/* harmony import */ var _src_mesh_mesh__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../src/mesh/mesh */ "./src/mesh/mesh.ts");
+/* harmony import */ var _src_core_color__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../src/core/color */ "./src/core/color.ts");
 /*
  * ProjectName: hypergl
  * FilePath: \demo\index2.ts
@@ -107,41 +108,192 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 3rd 2018, 1:05:34 am
+ * Last Modified: Tuesday, September 4th 2018, 12:40:44 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var _this = undefined;
 
 
 
 
 
-var app = new _src__WEBPACK_IMPORTED_MODULE_0__["Application"](document.getElementById('canvas'), {
-// webgl1:true
-});
-var mesh = _src_mesh_mesh__WEBPACK_IMPORTED_MODULE_3__["Mesh"].createBox(app.rendererPlatform);
-var m = new _src__WEBPACK_IMPORTED_MODULE_0__["BasicMaterial"]();
-m.color = new _src_core_color__WEBPACK_IMPORTED_MODULE_4__["Color"](0.5, 1, 0.5);
-m.update();
-var entity = new _src__WEBPACK_IMPORTED_MODULE_0__["Entity"]();
-entity.mesh = mesh;
-mesh.material = m;
-app.scene.root.addChild(entity);
-var mesh2 = _src_mesh_mesh__WEBPACK_IMPORTED_MODULE_3__["Mesh"].createBox(app.rendererPlatform);
-var entity2 = new _src__WEBPACK_IMPORTED_MODULE_0__["Entity"]();
-entity2.mesh = mesh2;
-entity2.setLocalScale(1.5, 0.5, 1.5);
-// entity2.rotate(0, 10, 0);
-entity2.setPosition(2, 0, 0);
-app.scene.root.addChild(entity2);
-var camera = new _src_scene_camera__WEBPACK_IMPORTED_MODULE_2__["Camera"](45, app.canvas.width / app.canvas.height, 1, 1000);
-camera.worldMatrixInverse = new _src_math__WEBPACK_IMPORTED_MODULE_1__["Mat4"]().setLookAt(new _src_math__WEBPACK_IMPORTED_MODULE_1__["Vec3"](3, 3, 3), new _src_math__WEBPACK_IMPORTED_MODULE_1__["Vec3"](0, 0, 0), new _src_math__WEBPACK_IMPORTED_MODULE_1__["Vec3"](0, 1, 0)).invert();
-app.scene.cameras.push(camera);
-app.start();
-app.on('update', function (_) {
-    entity.rotate(0, 1, 0);
-});
+
+var main = function () { return __awaiter(_this, void 0, void 0, function () {
+    var texture, img, app, mesh, m, entity, mesh2, entity2, camera;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                texture = new _src__WEBPACK_IMPORTED_MODULE_0__["Texture"]();
+                return [4 /*yield*/, Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["loadImage"])('assets/images/IMG_0485.JPG')];
+            case 1:
+                img = _a.sent();
+                texture.setSource(img);
+                app = new _src__WEBPACK_IMPORTED_MODULE_0__["Application"](document.getElementById('canvas'), {
+                // webgl1:true
+                });
+                mesh = _src_mesh_mesh__WEBPACK_IMPORTED_MODULE_4__["Mesh"].createBox(app.rendererPlatform);
+                console.log(mesh);
+                m = new _src__WEBPACK_IMPORTED_MODULE_0__["BasicMaterial"]();
+                m.color = new _src_core_color__WEBPACK_IMPORTED_MODULE_5__["Color"](0.5, 1, 0.5);
+                m.colorMap = texture;
+                m.update();
+                entity = new _src__WEBPACK_IMPORTED_MODULE_0__["Entity"]();
+                entity.mesh = mesh;
+                mesh.material = m;
+                app.scene.root.addChild(entity);
+                mesh2 = _src_mesh_mesh__WEBPACK_IMPORTED_MODULE_4__["Mesh"].createBox(app.rendererPlatform);
+                entity2 = new _src__WEBPACK_IMPORTED_MODULE_0__["Entity"]();
+                entity2.mesh = mesh2;
+                entity2.setLocalScale(1.5, 0.5, 1.5);
+                // entity2.rotate(0, 10, 0);
+                entity2.setPosition(2, 0, 0);
+                app.scene.root.addChild(entity2);
+                camera = new _src_scene_camera__WEBPACK_IMPORTED_MODULE_3__["Camera"](45, app.canvas.width / app.canvas.height, 1, 1000);
+                camera.worldMatrixInverse = new _src_math__WEBPACK_IMPORTED_MODULE_2__["Mat4"]().setLookAt(new _src_math__WEBPACK_IMPORTED_MODULE_2__["Vec3"](3, 3, 3), new _src_math__WEBPACK_IMPORTED_MODULE_2__["Vec3"](0, 0, 0), new _src_math__WEBPACK_IMPORTED_MODULE_2__["Vec3"](0, 1, 0)).invert();
+                app.scene.cameras.push(camera);
+                app.start();
+                app.on('update', function (_) {
+                    entity.rotate(0, 1, 0);
+                });
+                return [2 /*return*/];
+        }
+    });
+}); };
+main();
+
+
+/***/ }),
+
+/***/ "./demo/utils/util.ts":
+/*!****************************!*\
+  !*** ./demo/utils/util.ts ***!
+  \****************************/
+/*! exports provided: initShaders, createProgram, loadShader, createVbo, createIbo, loadImage, loadTexture */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initShaders", function() { return initShaders; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createProgram", function() { return createProgram; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadShader", function() { return loadShader; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createVbo", function() { return createVbo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createIbo", function() { return createIbo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadImage", function() { return loadImage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadTexture", function() { return loadTexture; });
+function initShaders(gl, vshader, fshader) {
+    var program = createProgram(gl, vshader, fshader);
+    return program;
+}
+function createProgram(gl, vshader, fshader) {
+    var vertexShader = loadShader(gl, gl.VERTEX_SHADER, vshader);
+    var fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fshader);
+    var program = gl.createProgram();
+    gl.attachShader(program, vertexShader);
+    gl.attachShader(program, fragmentShader);
+    gl.linkProgram(program);
+    var linked = gl.getProgramParameter(program, gl.LINK_STATUS);
+    if (!linked) {
+        console.log(gl.getProgramInfoLog(program));
+        return false;
+    }
+    gl.useProgram(program);
+    return program;
+}
+function loadShader(gl, type, source) {
+    var shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    var compiled = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+    if (!compiled) {
+        console.log(gl.getShaderInfoLog(shader));
+        return false;
+    }
+    return shader;
+}
+function createVbo(gl, data) {
+    // 创建缓存区对象
+    var vbo = gl.createBuffer();
+    // 将缓冲区对象绑定到目标
+    gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+    // 想向缓冲区对象中写入数据
+    gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+    return vbo;
+}
+function createIbo(gl, data) {
+    // 创建缓存区对象
+    var vbo = gl.createBuffer();
+    // 将缓冲区对象绑定到目标
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, vbo);
+    // 想向缓冲区对象中写入数据
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, data, gl.STATIC_DRAW);
+    return vbo;
+}
+function loadImage(url) {
+    return new Promise(function (resolve, reject) {
+        var image = new Image();
+        image.onload = function () {
+            resolve(image);
+        };
+        image.src = url;
+    });
+}
+function loadTexture(gl, u_Sampler, image, t) {
+    if (t === void 0) { t = 0; }
+    console.log(image);
+    var texture = gl.createTexture();
+    // 对纹理图像进行Y轴反转
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
+    // 开启0号纹理单元
+    gl.activeTexture(gl['TEXTURE' + t]);
+    // 向target绑定纹理对象
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    // 配置纹理参数
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    // 配置纹理图像
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
+    // 将0号纹理传递给着色器
+    gl.uniform1i(u_Sampler, t);
+}
 
 
 /***/ }),
@@ -1573,13 +1725,14 @@ var Application = /** @class */ (function () {
 /*!*********************!*\
   !*** ./src/conf.ts ***!
   \*********************/
-/*! exports provided: DataType, SEMANTIC, BUFFER, CURVE, UNIFORM_TYPE */
+/*! exports provided: DataType, SEMANTIC, SEMANTICMAP, BUFFER, CURVE, UNIFORM_TYPE */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataType", function() { return DataType; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SEMANTIC", function() { return SEMANTIC; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SEMANTICMAP", function() { return SEMANTICMAP; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BUFFER", function() { return BUFFER; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CURVE", function() { return CURVE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UNIFORM_TYPE", function() { return UNIFORM_TYPE; });
@@ -1590,7 +1743,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 1st 2018, 1:45:13 pm
+ * Last Modified: Tuesday, September 4th 2018, 12:03:56 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -1634,6 +1787,23 @@ var SEMANTIC;
     SEMANTIC["TEXCOORD6"] = "TEXCOORD6";
     SEMANTIC["TEXCOORD7"] = "TEXCOORD7";
 })(SEMANTIC || (SEMANTIC = {}));
+var SEMANTICMAP;
+(function (SEMANTICMAP) {
+    SEMANTICMAP["POSITION"] = "vertex_position";
+    SEMANTICMAP["NORMAL"] = "NORMAL";
+    SEMANTICMAP["TANGENT"] = "TANGENT";
+    SEMANTICMAP["BLENDWEIGHT"] = "BLENDWEIGHT";
+    SEMANTICMAP["BLENDINDICES"] = "BLENDINDICES";
+    SEMANTICMAP["COLOR"] = "vertex_color";
+    SEMANTICMAP["TEXCOORD0"] = "vertex_texCoord0";
+    SEMANTICMAP["TEXCOORD1"] = "vertex_texCoord1";
+    SEMANTICMAP["TEXCOORD2"] = "vertex_texCoord2";
+    SEMANTICMAP["TEXCOORD3"] = "vertex_texCoord3";
+    SEMANTICMAP["TEXCOORD4"] = "vertex_texCoord4";
+    SEMANTICMAP["TEXCOORD5"] = "vertex_texCoord5";
+    SEMANTICMAP["TEXCOORD6"] = "vertex_texCoord6";
+    SEMANTICMAP["TEXCOORD7"] = "vertex_texCoord7";
+})(SEMANTICMAP || (SEMANTICMAP = {}));
 var BUFFER;
 (function (BUFFER) {
     BUFFER["STATIC"] = "STATIC";
@@ -2135,12 +2305,13 @@ var IndexBuffer = /** @class */ (function () {
 /*!**********************************!*\
   !*** ./src/graphics/renderer.ts ***!
   \**********************************/
-/*! exports provided: RendererPlatform */
+/*! exports provided: RendererPlatform, loadTexture */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RendererPlatform", function() { return RendererPlatform; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadTexture", function() { return loadTexture; });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util */ "./src/util.ts");
 /* harmony import */ var _conf__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../conf */ "./src/conf.ts");
 /* harmony import */ var _shaderProgramGenerator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./shaderProgramGenerator */ "./src/graphics/shaderProgramGenerator.ts");
@@ -2151,7 +2322,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 2nd 2018, 1:24:11 am
+ * Last Modified: Tuesday, September 4th 2018, 12:54:13 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -2401,11 +2572,36 @@ var RendererPlatform = /** @class */ (function () {
             var uniform = uniforms[i];
             this.uniformFunction[uniform.type](uniform, shader.uniformScope[uniform.name]);
         }
+        _util__WEBPACK_IMPORTED_MODULE_0__["Log"].assert(shader.checkUniformScope() === true, 'UniformScopValue not set', shader.uniformScope);
+        for (var i = 0; i < samplers.length; i++) {
+            var sampler = samplers[i];
+            var value = shader.uniformScope[sampler.name];
+            loadTexture(gl, gl.getUniformLocation(shader.program, sampler.name), value.source, 0);
+        }
         gl.drawElements(gl.TRIANGLES, mesh.indexBuffer.length, mesh.indexBuffer.drawFormat, 0);
     };
     return RendererPlatform;
 }());
 
+function loadTexture(gl, u_Sampler, image, t) {
+    if (t === void 0) { t = 0; }
+    var texture = gl.createTexture();
+    // 对纹理图像进行Y轴反转
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
+    // 开启0号纹理单元
+    gl.activeTexture(gl['TEXTURE' + t]);
+    // 向target绑定纹理对象
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    // 配置纹理参数
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    // 配置纹理图像
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
+    // 将0号纹理传递给着色器
+    gl.uniform1i(u_Sampler, t);
+}
 
 
 /***/ }),
@@ -2431,17 +2627,19 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 2nd 2018, 12:20:01 am
+ * Last Modified: Tuesday, September 4th 2018, 12:29:05 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
 
 
+var ShaderID = 0;
 var Shader = /** @class */ (function () {
     function Shader(renderer, definition) {
         this.renderer = renderer;
         this.definition = definition;
+        this.ShaderID = ShaderID++;
         this.samplers = [];
         this.uniforms = [];
         this.attributes = [];
@@ -2563,7 +2761,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shaders_basic_frag__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./shaders/basic.frag */ "./src/graphics/shaders/basic.frag");
 /* harmony import */ var _shaders_basic_frag__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_shaders_basic_frag__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _shader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./shader */ "./src/graphics/shader.ts");
-/* harmony import */ var _conf__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../conf */ "./src/conf.ts");
 /*
  * ProjectName: hypergl
  * FilePath: \src\graphics\generateShader.ts
@@ -2571,12 +2768,11 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 2nd 2018, 11:47:16 pm
+ * Last Modified: Tuesday, September 4th 2018, 12:42:07 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
-
 
 
 
@@ -2586,10 +2782,13 @@ var ShaderProgramGenerator = /** @class */ (function () {
         this.generator = {};
         this._cache = {};
     }
-    ShaderProgramGenerator.prototype.getProgram = function (name, options) {
-        if (options === void 0) { options = {}; }
+    ShaderProgramGenerator.prototype.getProgram = function (name, attributes, uniforms) {
+        if (attributes === void 0) { attributes = {}; }
+        if (uniforms === void 0) { uniforms = {}; }
         var platform = this.renderer.platform;
-        options['GL2'] = platform === 'webgl2';
+        var data = {};
+        data['GL2'] = platform === 'webgl2';
+        var options = { attributes: attributes, uniforms: uniforms, data: data };
         var key = generateKey(options);
         var shader = this._cache[key];
         if (!shader) {
@@ -2602,21 +2801,27 @@ var ShaderProgramGenerator = /** @class */ (function () {
 }());
 
 function generateKey(options) {
-    return JSON.stringify(options);
+    var str = '';
+    // tslint:disable-next-line:forin
+    for (var x in options.uniforms) {
+        str += x + ',';
+    }
+    return JSON.stringify(options.attributes) + JSON.stringify(options.data) + str;
 }
 function createShaderDefinition(renderer, options) {
+    console.log(options);
     var basicVertStr = _shaders_basic_vert__WEBPACK_IMPORTED_MODULE_0___default()(options);
     var basicFragStr = _shaders_basic_frag__WEBPACK_IMPORTED_MODULE_1___default()(options);
-    var attributes = { vertex_position: _conf__WEBPACK_IMPORTED_MODULE_3__["SEMANTIC"].POSITION };
-    var variables = [];
-    if (options.vertex_color) {
-        attributes.vertex_color = _conf__WEBPACK_IMPORTED_MODULE_3__["SEMANTIC"].COLOR;
-    }
-    if (options.diffuseMap) {
-        attributes.vertex_texCoord0 = _conf__WEBPACK_IMPORTED_MODULE_3__["SEMANTIC"].TEXCOORD0;
-    }
+    // let attributes: any = { vertex_position: SEMANTIC.POSITION };
+    // let variables: any[] = [];
+    // if (options.vertex_color) {
+    //     attributes.vertex_color = SEMANTIC.COLOR;
+    // }
+    // if (options.diffuseMap) {
+    //     attributes.vertex_texCoord0 = SEMANTIC.TEXCOORD0;
+    // }
     return {
-        attributes: attributes,
+        attributes: options.attributes,
         vshader: basicVertStr,
         fshader: basicFragStr
     };
@@ -2676,15 +2881,30 @@ module.exports = (Handlebars["default"] || Handlebars).template({"1":function(co
 
   return ((stack1 = container.invokePartial(__webpack_require__(/*! ./src/graphics/shaders/gles3.frag */ "./src/graphics/shaders/gles3.frag"),depth0,{"name":"gles3.frag","data":data,"helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "");
 },"3":function(container,depth0,helpers,partials,data) {
-    return "varying vec4 vColor;\nvec4 getOutColor() {\n    return vColor;\n}\n";
+    return "uniform sampler2D diffuseMap;\n";
 },"5":function(container,depth0,helpers,partials,data) {
-    return "uniform vec4 uColor;\nvec4 getOutColor() {\n    return uColor;\n}\n";
+    return "varying vec2 out_vertex_texCoord0;\n";
+},"7":function(container,depth0,helpers,partials,data) {
+    return "varying vec4 vColor;\nvec4 getOutColor() {\n    return vColor;\n}\n";
+},"9":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "uniform vec4 uColor;\nvec4 getOutColor() {\n"
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.uniforms : depth0)) != null ? stack1.diffuseMap : stack1),{"name":"if","hash":{},"fn":container.program(10, data, 0),"inverse":container.program(12, data, 0),"data":data})) != null ? stack1 : "")
+    + "}\n";
+},"10":function(container,depth0,helpers,partials,data) {
+    return "        return texture2D(diffuseMap,out_vertex_texCoord0);\n";
+},"12":function(container,depth0,helpers,partials,data) {
+    return "    return uColor;\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : (container.nullContext || {});
 
-  return ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.GL2 : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+  return ((stack1 = helpers["if"].call(alias1,((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.GL2 : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "\nprecision highp float;\n#ifdef GL2\nprecision highp sampler2DShadow;\n#endif\n"
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.vertex_color : depth0),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.program(5, data, 0),"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,((stack1 = (depth0 != null ? depth0.uniforms : depth0)) != null ? stack1.diffuseMap : stack1),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,((stack1 = (depth0 != null ? depth0.attributes : depth0)) != null ? stack1.vertex_texCoord0 : stack1),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "\n"
+    + ((stack1 = helpers["if"].call(alias1,((stack1 = (depth0 != null ? depth0.attributes : depth0)) != null ? stack1.vertex_color : stack1),{"name":"if","hash":{},"fn":container.program(7, data, 0),"inverse":container.program(9, data, 0),"data":data})) != null ? stack1 : "")
     + "\n\nvoid main(void)\n{\n    gl_FragColor = getOutColor();\n}";
 },"usePartial":true,"useData":true});
 
@@ -2706,21 +2926,21 @@ module.exports = (Handlebars["default"] || Handlebars).template({"1":function(co
 },"3":function(container,depth0,helpers,partials,data) {
     return "attribute vec4 vertex_color;\nvarying vec4 vColor;\n";
 },"5":function(container,depth0,helpers,partials,data) {
-    return "attribute vec2 vertex_texCoord0;\nvarying vec2 v_vertex_texCoord0;\n";
+    return "attribute vec2 vertex_texCoord0;\nvarying vec2 out_vertex_texCoord0;\n";
 },"7":function(container,depth0,helpers,partials,data) {
     return "    vColor = vertex_color;\n";
 },"9":function(container,depth0,helpers,partials,data) {
-    return "    v_vertex_texCoord0 = vertex_texCoord0;\n";
+    return "    out_vertex_texCoord0 = vertex_texCoord0;\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : (container.nullContext || {});
 
-  return ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.GL2 : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "\nuniform mat4 matrix_model;\nuniform mat4 matrix_viewProjection;\n"
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.vertex_color : depth0),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.texture_diffuseMap : depth0),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "\n\nattribute vec3 vertex_position;\n\nvec4 getPosition() {\n    vec4 posW = matrix_model * vec4(vertex_position, 1.0);\n    return matrix_viewProjection * posW;\n}\n\n\nvoid main(void) {\n    gl_Position = getPosition();\n"
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.vertex_color : depth0),{"name":"if","hash":{},"fn":container.program(7, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.texture_diffuseMap : depth0),{"name":"if","hash":{},"fn":container.program(9, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+  return ((stack1 = helpers["if"].call(alias1,((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.GL2 : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "\nuniform mat4 matrix_model;\nuniform mat4 matrix_viewProjection;\n\nattribute vec3 vertex_position;\n"
+    + ((stack1 = helpers["if"].call(alias1,((stack1 = (depth0 != null ? depth0.attributes : depth0)) != null ? stack1.vertex_color : stack1),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,((stack1 = (depth0 != null ? depth0.attributes : depth0)) != null ? stack1.vertex_texCoord0 : stack1),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "\nvec4 getPosition() {\n    vec4 posW = matrix_model * vec4(vertex_position, 1.0);\n    return matrix_viewProjection * posW;\n}\n\n\nvoid main(void) {\n    gl_Position = getPosition();\n"
+    + ((stack1 = helpers["if"].call(alias1,((stack1 = (depth0 != null ? depth0.attributes : depth0)) != null ? stack1.vertex_color : stack1),{"name":"if","hash":{},"fn":container.program(7, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,((stack1 = (depth0 != null ? depth0.attributes : depth0)) != null ? stack1.vertex_texCoord0 : stack1),{"name":"if","hash":{},"fn":container.program(9, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "}";
 },"usePartial":true,"useData":true});
 
@@ -2985,7 +3205,7 @@ var VertexFormat = /** @class */ (function () {
 /*!**********************!*\
   !*** ./src/index.ts ***!
   \**********************/
-/*! exports provided: DataType, SEMANTIC, BUFFER, CURVE, UNIFORM_TYPE, Application, VertexBuffer, Iterator, Setter, VertexFormat, IndexBuffer, BasicMaterial, Entity */
+/*! exports provided: DataType, SEMANTIC, BUFFER, CURVE, UNIFORM_TYPE, Application, VertexBuffer, Iterator, Setter, VertexFormat, IndexBuffer, BasicMaterial, Entity, Texture */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2994,6 +3214,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DataType", function() { return _conf__WEBPACK_IMPORTED_MODULE_0__["DataType"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SEMANTIC", function() { return _conf__WEBPACK_IMPORTED_MODULE_0__["SEMANTIC"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SEMANTICMAP", function() { return _conf__WEBPACK_IMPORTED_MODULE_0__["SEMANTICMAP"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BUFFER", function() { return _conf__WEBPACK_IMPORTED_MODULE_0__["BUFFER"]; });
 
@@ -3021,6 +3243,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ecs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ecs */ "./src/ecs/index.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Entity", function() { return _ecs__WEBPACK_IMPORTED_MODULE_4__["Entity"]; });
 
+/* harmony import */ var _texture__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./texture */ "./src/texture/index.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Texture", function() { return _texture__WEBPACK_IMPORTED_MODULE_5__["Texture"]; });
+
 /*
  * ProjectName: hypergl
  * FilePath: \src\index.ts
@@ -3028,11 +3253,12 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, August 29th 2018, 8:00:10 pm
+ * Last Modified: Monday, September 3rd 2018, 11:06:29 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
+
 
 
 
@@ -3061,7 +3287,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 2nd 2018, 11:14:03 pm
+ * Last Modified: Tuesday, September 4th 2018, 12:12:56 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -3076,14 +3302,6 @@ var __extends = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (undefined && undefined.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
 
 
 var BasicMaterial = /** @class */ (function (_super) {
@@ -3095,15 +3313,14 @@ var BasicMaterial = /** @class */ (function (_super) {
         return _this;
     }
     BasicMaterial.prototype.update = function () {
-        this.setParameter('vertex_color', false);
         this.setParameter('uColor', this.color.data);
         if (this.colorMap) {
             // TODO
-            this.setParameter('texture_diffuseMap', this.colorMap);
+            this.setParameter('diffuseMap', this.colorMap);
         }
     };
-    BasicMaterial.prototype.updateShader = function (renderer) {
-        this.shader = renderer.programGenerator.getProgram('basice', __assign({}, this.parameters));
+    BasicMaterial.prototype.updateShader = function (renderer, attributes) {
+        this.shader = renderer.programGenerator.getProgram('basice', attributes, this.parameters);
     };
     return BasicMaterial;
 }(_material__WEBPACK_IMPORTED_MODULE_1__["Material"]));
@@ -5501,7 +5718,7 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 3rd 2018, 1:05:12 am
+ * Last Modified: Monday, September 3rd 2018, 9:34:22 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -5514,6 +5731,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var Mesh = /** @class */ (function () {
     function Mesh() {
+        this.castShadow = true;
+        this.receiveShadow = true;
         this._material = Mesh.defaultMaterial;
         // TODO
     }
@@ -6145,6 +6364,7 @@ var SceneNode = /** @class */ (function (_super) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "renderScence", function() { return renderScence; });
+/* harmony import */ var _conf__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../conf */ "./src/conf.ts");
 /*
  * ProjectName: hypergl
  * FilePath: \src\scene\forward-renderer.ts
@@ -6152,25 +6372,29 @@ __webpack_require__.r(__webpack_exports__);
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 3rd 2018, 9:29:05 pm
+ * Last Modified: Tuesday, September 4th 2018, 12:05:13 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
+
 function renderScence(scene) {
     var entitys = scene.layer;
     var camera = scene.activeCamera;
     var renderer = scene.app.rendererPlatform;
     renderer.initDraw();
-    // TODO
-    for (var i = 0; i < entitys.length; i++) {
+    var _loop_1 = function (i) {
         var entity = entitys[i];
         var mesh = entity.mesh;
         if (mesh == null) {
-            return;
+            return { value: void 0 };
         }
         var material = mesh.material;
-        material.updateShader(renderer);
+        var attributes = {};
+        mesh.vertexBuffer.format.elements.forEach(function (x) {
+            attributes[_conf__WEBPACK_IMPORTED_MODULE_0__["SEMANTICMAP"][x.semantic]] = x.semantic;
+        });
+        material.updateShader(renderer, attributes);
         var shader = mesh.material.shader;
         renderer.setShader(shader);
         shader.setUniformValue('matrix_viewProjection', camera.PVMatrix.data);
@@ -6179,6 +6403,12 @@ function renderScence(scene) {
             shader.setUniformValue(key, material.parameters[key]);
         }
         renderer.draw(entity);
+    };
+    // TODO
+    for (var i = 0; i < entitys.length; i++) {
+        var state_1 = _loop_1(i);
+        if (typeof state_1 === "object")
+            return state_1.value;
     }
 }
 
@@ -6259,6 +6489,110 @@ var Scene = /** @class */ (function (_super) {
     return Scene;
 }(_core_element__WEBPACK_IMPORTED_MODULE_0__["IElement"]));
 
+
+
+/***/ }),
+
+/***/ "./src/texture/index.ts":
+/*!******************************!*\
+  !*** ./src/texture/index.ts ***!
+  \******************************/
+/*! exports provided: Texture */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Texture", function() { return Texture; });
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../types */ "./src/types/index.ts");
+/*
+ * ProjectName: hypergl
+ * FilePath: \src\texture\index.ts
+ * Created Date: Monday, September 3rd 2018, 10:18:57 pm
+ * @author: dadigua
+ * @summary: short description for the file
+ * -----
+ * Last Modified: Monday, September 3rd 2018, 11:07:38 pm
+ * Modified By: dadigua
+ * -----
+ * Copyright (c) 2018 jiguang
+ */
+
+var Texture = /** @class */ (function () {
+    function Texture() {
+        this.wrapU = _types__WEBPACK_IMPORTED_MODULE_0__["ADDRESS"].REPEAT;
+        this.wrapV = _types__WEBPACK_IMPORTED_MODULE_0__["ADDRESS"].REPEAT;
+        this.wrapR = _types__WEBPACK_IMPORTED_MODULE_0__["ADDRESS"].REPEAT;
+        this.isCube = false;
+        this.level = 0;
+        this.format = _types__WEBPACK_IMPORTED_MODULE_0__["PIXELFORMAT"].R8_G8_B8; // gl.RGB
+        this.dataType = Uint8Array;
+        // TODO
+    }
+    Texture.prototype.setSource = function (source) {
+        this.source = source;
+    };
+    return Texture;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/types/index.ts":
+/*!****************************!*\
+  !*** ./src/types/index.ts ***!
+  \****************************/
+/*! exports provided: ADDRESS, PIXELFORMAT */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADDRESS", function() { return ADDRESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PIXELFORMAT", function() { return PIXELFORMAT; });
+var ADDRESS;
+(function (ADDRESS) {
+    /**
+     * 仅使用小数部分忽略纹理坐标的整数部分
+     */
+    ADDRESS[ADDRESS["REPEAT"] = 0] = "REPEAT";
+    /**
+     * 将纹理坐标夹在0到1的范围内
+     */
+    ADDRESS[ADDRESS["CLAMP_TO_EDGE"] = 1] = "CLAMP_TO_EDGE";
+    /**
+     * 如果整数部分是偶数，则将纹理坐标设置为小数部分;如果整数部分是奇数，则纹理坐标设置为1减去小数部分。
+     */
+    ADDRESS[ADDRESS["MIRRORED_REPEAT"] = 2] = "MIRRORED_REPEAT";
+})(ADDRESS || (ADDRESS = {}));
+var PIXELFORMAT;
+(function (PIXELFORMAT) {
+    PIXELFORMAT[PIXELFORMAT["A8"] = 0] = "A8";
+    PIXELFORMAT[PIXELFORMAT["L8"] = 1] = "L8";
+    PIXELFORMAT[PIXELFORMAT["L8_A8"] = 2] = "L8_A8";
+    PIXELFORMAT[PIXELFORMAT["R5_G6_B5"] = 3] = "R5_G6_B5";
+    PIXELFORMAT[PIXELFORMAT["R5_G5_B5_A1"] = 4] = "R5_G5_B5_A1";
+    PIXELFORMAT[PIXELFORMAT["R4_G4_B4_A4"] = 5] = "R4_G4_B4_A4";
+    PIXELFORMAT[PIXELFORMAT["R8_G8_B8"] = 6] = "R8_G8_B8";
+    PIXELFORMAT[PIXELFORMAT["R8_G8_B8_A8"] = 7] = "R8_G8_B8_A8";
+    PIXELFORMAT[PIXELFORMAT["DXT1"] = 8] = "DXT1";
+    PIXELFORMAT[PIXELFORMAT["DXT3"] = 9] = "DXT3";
+    PIXELFORMAT[PIXELFORMAT["DXT5"] = 10] = "DXT5";
+    PIXELFORMAT[PIXELFORMAT["RGB16F"] = 11] = "RGB16F";
+    PIXELFORMAT[PIXELFORMAT["RGBA16F"] = 12] = "RGBA16F";
+    PIXELFORMAT[PIXELFORMAT["RGB32F"] = 13] = "RGB32F";
+    PIXELFORMAT[PIXELFORMAT["RGBA32F"] = 14] = "RGBA32F";
+    PIXELFORMAT[PIXELFORMAT["ETC1"] = 15] = "ETC1";
+    PIXELFORMAT[PIXELFORMAT["PVRTC_2BPP_RGB_1"] = 16] = "PVRTC_2BPP_RGB_1";
+    PIXELFORMAT[PIXELFORMAT["PVRTC_2BPP_RGBA_1"] = 17] = "PVRTC_2BPP_RGBA_1";
+    PIXELFORMAT[PIXELFORMAT["PVRTC_4BPP_RGB_1"] = 18] = "PVRTC_4BPP_RGB_1";
+    PIXELFORMAT[PIXELFORMAT["PVRTC_4BPP_RGBA_1"] = 19] = "PVRTC_4BPP_RGBA_1";
+    PIXELFORMAT[PIXELFORMAT["_111110F"] = 20] = "_111110F";
+    PIXELFORMAT[PIXELFORMAT["SRGB"] = 21] = "SRGB";
+    PIXELFORMAT[PIXELFORMAT["SRGBA"] = 22] = "SRGBA";
+    PIXELFORMAT[PIXELFORMAT["R32F"] = 23] = "R32F";
+    PIXELFORMAT[PIXELFORMAT["DEPTH"] = 24] = "DEPTH";
+    PIXELFORMAT[PIXELFORMAT["DEPTHSTENCIL"] = 25] = "DEPTHSTENCIL";
+})(PIXELFORMAT || (PIXELFORMAT = {}));
 
 
 /***/ }),

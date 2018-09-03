@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 2nd 2018, 1:24:11 am
+ * Last Modified: Tuesday, September 4th 2018, 12:54:13 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -20,6 +20,7 @@ import { Shader } from './shader';
 import { IndexBuffer } from './indexBuffer';
 import { VertexBuffer } from './vertexBuffer';
 import { Entity } from '../ecs';
+import { Texture } from '../texture';
 export type Platform = 'webgl' | 'webgl2';
 export class RendererPlatform {
     get gl() {
@@ -254,7 +255,12 @@ export class RendererPlatform {
             this.uniformFunction[uniform.type](uniform, shader.uniformScope[uniform.name]);
         }
 
-
+        Log.assert(shader.checkUniformScope() === true, 'UniformScopValue not set', shader.uniformScope);
+        for (let i = 0; i < samplers.length; i++) {
+            let sampler = samplers[i];
+            let value = shader.uniformScope[sampler.name] as Texture;
+            loadTexture(gl,  gl.getUniformLocation(shader.program as WebGLProgram, sampler.name) , value.source as HTMLImageElement, 0);
+        }
 
         gl.drawElements(
             gl.TRIANGLES,
@@ -263,4 +269,25 @@ export class RendererPlatform {
             0
         );
     }
+}
+
+export function loadTexture(gl: WebGL2RenderingContext, u_Sampler, image: ImageBitmap | ImageData | HTMLVideoElement | HTMLImageElement | HTMLCanvasElement, t = 0) {
+    const texture = gl.createTexture();
+    // 对纹理图像进行Y轴反转
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
+    // 开启0号纹理单元
+
+    gl.activeTexture(gl['TEXTURE' + t]);
+    // 向target绑定纹理对象
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    // 配置纹理参数
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    // 配置纹理图像
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
+    // 将0号纹理传递给着色器
+    gl.uniform1i(u_Sampler, t);
+
 }
