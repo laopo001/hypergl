@@ -5,21 +5,26 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, September 4th 2018, 10:57:22 pm
+ * Last Modified: Wednesday, September 5th 2018, 1:07:23 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
 
-declare let assert;
-if (typeof require === 'function') {
-    assert = require('chai').assert;
-}
+// tslint:disable-next-line:no-reference
+/// <reference path="../typings/test.d.ts" />
 
-describe('sqrt', () => {
+import { assert } from 'chai';
+import { Application } from '../build/index';
+// console.log(Application);
+// let a = require('./index.js');
+console.log(Application);
 
-  it('should 123 compute the square root of 4 as 2', () => {
-    assert.equal(Math.sqrt(4), 2);
+describe('Application', () => {
+
+  it('new Application not null', () => {
+
+    assert.notEqual(new Application(document.createElement('canvas')), null);
   });
 
 });

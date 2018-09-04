@@ -4,7 +4,7 @@ import { CURVE } from '../conf';
 
 export class CurveSet {
     curves: any[];
-    _type: number;
+    _type: string;
     constructor(...args) {
         let i;
 

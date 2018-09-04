@@ -58,10 +58,11 @@
   },
   "scripts": {
     "start": "webpack --colors --watch",
+    "build": "webpack --colors",
     "lint": "node node_modules/tslint/bin/tslint -c tslint.json 'src/**/*.ts'",
     "test": "jest",
     "test:mocha": "mocha testsOnbrowser",
-    "test:karma": "karma start"
+    "test:karma": "webpack --colors && karma start"
   },
   "pre-commit": [
     "lint",

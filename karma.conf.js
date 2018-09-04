@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, September 4th 2018, 10:58:17 pm
+ * Last Modified: Wednesday, September 5th 2018, 12:30:59 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -16,7 +16,7 @@ module.exports = function (config) {
     config.set({
         frameworks: [
             'mocha',
-            "karma-typescript",
+            'karma-typescript',
             'detectBrowsers'
         ],
 
@@ -24,19 +24,23 @@ module.exports = function (config) {
             'testsOnbrowser/**/*.ts'
         ],
         preprocessors: {
-            "**/*.ts": ["karma-typescript"]
+            '**/*.ts': ['karma-typescript']
         },
-        client: {
-            mocha: {
-                reporter: 'html',
-                ui: 'bdd'
-            }
-        },
-        reporters: ["dots", "karma-typescript"],
+        // client: {
+        //     mocha: {
+        //         reporter: 'html',
+        //         ui: 'bdd'
+        //     }
+        // },
+        reporters: ['dots', 'karma-typescript'],
 
         karmaTypescriptConfig: {
+            options: {
 
-            include: ["testsOnbrowser/**/*.ts"],
+                noImplicitAny: true, // (optional) Warn on expressions and declarations with an implied 'any' type.
+                noResolve: true, // (optional) Skip resolution and preprocessing.
+            },
+            include: ['testsOnbrowser/**/*.ts'],
         },
 
         singleRun: true,
@@ -49,7 +53,7 @@ module.exports = function (config) {
 
         plugins: [
             'karma-mocha',
-            "karma-typescript",
+            'karma-typescript',
             'karma-chrome-launcher',
             'karma-firefox-launcher',
             'karma-ie-launcher',

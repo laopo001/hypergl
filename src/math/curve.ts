@@ -4,7 +4,7 @@ import * as math from './math';
 
 export class Curve {
     keys: any[];
-    type: number;
+    type: string;
     tension: number;
     constructor(data?) {
         this.keys = [];

@@ -6,11 +6,13 @@ module.exports = function (env, webpackConfig) {
     return {
         //页面入口文件配置
         entry: {
-            index: `./demo/index2`
+            index: `./src/index`
         },
         //入口文件输出配置
         output: {
             path: path.resolve(__dirname, 'build'),
+            library: 'HGL',
+            libraryTarget: "umd",
             filename: '[name].js'
         },
         //插件项
