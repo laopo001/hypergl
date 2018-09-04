@@ -43,12 +43,23 @@
     "tslint": "^5.10.0",
     "typescript": "^2.8.0-insiders.20180127",
     "webpack": "^4.6.0",
-    "webpack-cli": "^2.1.3"
+    "webpack-cli": "^2.1.3",
+    "chai": "~3.2.0",
+    "karma": "~0.13.3",
+    "karma-chai": "~0.1.0",
+    "karma-chrome-launcher": "~0.2.0",
+    "karma-detect-browsers": "~2.0.1",
+    "karma-firefox-launcher": "~0.1.6",
+    "karma-ie-launcher": "~0.2.0",
+    "karma-mocha": "~0.2.0",
+    "karma-safari-launcher": "~0.1.1",
+    "mocha": "~2.2.5"
   },
   "scripts": {
     "start": "webpack --colors --watch",
     "lint": "node node_modules/tslint/bin/tslint -c tslint.json 'src/**/*.ts'",
-    "test": "jest"
+    "test": "jest",
+    "test:karma": "mocha testsOnbrowser && karma start"
   },
   "pre-commit": [
     "lint",
