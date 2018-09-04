@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, September 5th 2018, 1:53:34 am
+ * Last Modified: Wednesday, September 5th 2018, 1:59:00 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -55,7 +55,7 @@ module.exports = function (config) {
             enabled: true,
 
             // enable/disable phantomjs support, default is true
-            // usePhantomJS: true,
+            usePhantomJS: false,
 
             // use headless mode, for browsers that support it, default is false
             // preferHeadless: true,
@@ -80,6 +80,13 @@ module.exports = function (config) {
                 // }
 
                 //Remove PhantomJS if another browser has been detected
+                // if (availableBrowsers.length > 1 && availableBrowsers.indexOf('PhantomJS') > -1) {
+                //     var i = result.indexOf('PhantomJS');
+
+                //     if (i !== -1) {
+                //         result.splice(i, 1);
+                //     }
+                // }
                 if (availableBrowsers.length > 1 && availableBrowsers.indexOf('IE') > -1) {
                     var i = result.indexOf('IE');
 
@@ -87,7 +94,6 @@ module.exports = function (config) {
                         result.splice(i, 1);
                     }
                 }
-
                 return result;
             }
         },
