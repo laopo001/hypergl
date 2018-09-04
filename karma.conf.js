@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, September 4th 2018, 7:40:09 pm
+ * Last Modified: Tuesday, September 4th 2018, 8:23:54 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -21,7 +21,7 @@ module.exports = function (config) {
         ],
 
         files: [
-            'browserTests/sqrt.js'
+            'testsOnbrowser/**/*.js'
         ],
 
         client: {

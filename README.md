@@ -1,4 +1,6 @@
-# working[![Build Status](https://travis-ci.org/laopo001/hypergl.svg?branch=master)](https://travis-ci.org/laopo001/hypergl)
+# working[![Build Status](https://travis-ci.org/laopo001/hypergl.svg?branch=master)](https://travis-ci.org/laopo001/hypergl)[![Build status](https://ci.appveyor.com/api/projects/status/j1lt85wxmd0ok3il?svg=true)](https://ci.appveyor.com/project/laopo001/hypergl)
+
+
 
 模块 | 功能
 ---|---
