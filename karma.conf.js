@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, September 5th 2018, 12:30:59 am
+ * Last Modified: Wednesday, September 5th 2018, 1:40:14 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -56,7 +56,7 @@ module.exports = function (config) {
             'karma-typescript',
             'karma-chrome-launcher',
             'karma-firefox-launcher',
-            'karma-ie-launcher',
+            // 'karma-ie-launcher',
             'karma-safari-launcher',
             'karma-detect-browsers'
         ]

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, September 5th 2018, 1:07:23 am
+ * Last Modified: Wednesday, September 5th 2018, 1:39:28 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -16,14 +16,9 @@
 
 import { assert } from 'chai';
 import { Application } from '../build/index';
-// console.log(Application);
-// let a = require('./index.js');
-console.log(Application);
-
+// import { Application } from '../src/index';
 describe('Application', () => {
-
   it('new Application not null', () => {
-
     assert.notEqual(new Application(document.createElement('canvas')), null);
   });
 
