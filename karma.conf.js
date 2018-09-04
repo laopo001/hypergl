@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, September 4th 2018, 8:23:54 pm
+ * Last Modified: Tuesday, September 4th 2018, 10:58:17 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -16,19 +16,27 @@ module.exports = function (config) {
     config.set({
         frameworks: [
             'mocha',
-            'chai',
+            "karma-typescript",
             'detectBrowsers'
         ],
 
         files: [
-            'testsOnbrowser/**/*.js'
+            'testsOnbrowser/**/*.ts'
         ],
-
+        preprocessors: {
+            "**/*.ts": ["karma-typescript"]
+        },
         client: {
             mocha: {
                 reporter: 'html',
                 ui: 'bdd'
             }
+        },
+        reporters: ["dots", "karma-typescript"],
+
+        karmaTypescriptConfig: {
+
+            include: ["testsOnbrowser/**/*.ts"],
         },
 
         singleRun: true,
@@ -41,7 +49,7 @@ module.exports = function (config) {
 
         plugins: [
             'karma-mocha',
-            'karma-chai',
+            "karma-typescript",
             'karma-chrome-launcher',
             'karma-firefox-launcher',
             'karma-ie-launcher',

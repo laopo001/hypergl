@@ -5,20 +5,20 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, September 4th 2018, 7:50:50 pm
+ * Last Modified: Tuesday, September 4th 2018, 10:57:22 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
 
-
+declare let assert;
 if (typeof require === 'function') {
-    var assert = require("chai").assert;
+    assert = require('chai').assert;
 }
 
-describe("sqrt", function() {
+describe('sqrt', () => {
 
-  it("should compute the square root of 4 as 2", function() {
+  it('should 123 compute the square root of 4 as 2', () => {
     assert.equal(Math.sqrt(4), 2);
   });
 
