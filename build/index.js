@@ -3146,7 +3146,7 @@ var VertexFormat = /** @class */ (function () {
 /*!**********************!*\
   !*** ./src/index.ts ***!
   \**********************/
-/*! exports provided: DataType, SEMANTIC, SEMANTICMAP, BUFFER, CURVE, UNIFORM_TYPE, Application, VertexBuffer, Iterator, Setter, VertexFormat, IndexBuffer, Texture, BasicMaterial, Entity */
+/*! exports provided: DataType, SEMANTIC, SEMANTICMAP, BUFFER, CURVE, UNIFORM_TYPE, Application, Texture, VertexBuffer, Iterator, Setter, VertexFormat, IndexBuffer, BasicMaterial, Entity */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
