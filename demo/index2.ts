@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, September 4th 2018, 12:40:44 am
+ * Last Modified: Thursday, September 6th 2018, 12:47:44 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -65,7 +65,7 @@ let main = async () => {
     app.on('update', _ => {
         entity.rotate(0, 1, 0);
     });
-
+    // app.rendererPlatform.setViewport(100, 200, 500, 300);
 };
 
 

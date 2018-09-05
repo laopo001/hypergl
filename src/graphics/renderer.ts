@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, September 4th 2018, 1:18:18 am
+ * Last Modified: Thursday, September 6th 2018, 12:47:00 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -13,7 +13,7 @@
 
 
 import { Log } from '../util';
-import { UNIFORM_TYPE } from '../conf';
+import { UNIFORM_TYPE, FILTER } from '../conf';
 import { ShaderProgramGenerator } from './shaderProgramGenerator';
 import { Undefined, FnVoid, AppOption } from '../types';
 import { Shader } from './shader';
@@ -27,6 +27,8 @@ export class RendererPlatform {
     get gl() {
         return this.webgl2 || this.webgl;
     }
+    glFilter!: number[];
+    glAddress!: number[];
     platform!: Platform;
     AttrbuteType: { [s: string]: number } = {};
     glTypeToJs: { [s: string]: Undefined<UNIFORM_TYPE> } = {};
@@ -133,6 +135,19 @@ export class RendererPlatform {
         this.uniformFunction[UNIFORM_TYPE.FLOATARRAY] = (uniform, value) => {
             gl.uniform1fv(uniform.locationId, value);
         };
+        this.glFilter = [
+            gl.LINEAR,
+            gl.LINEAR_MIPMAP_LINEAR,
+            gl.LINEAR_MIPMAP_NEAREST,
+            gl.NEAREST,
+            gl.NEAREST_MIPMAP_NEAREST,
+            gl.NEAREST_MIPMAP_LINEAR
+        ];
+        this.glAddress = [
+            gl.REPEAT,
+            gl.CLAMP_TO_EDGE,
+            gl.MIRRORED_REPEAT
+        ];
     }
     setShader(shader: Shader) {
         if (shader.ready === false) {
@@ -148,12 +163,66 @@ export class RendererPlatform {
         const gl = this.gl;
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer.bufferId as WebGLBuffer);
     }
+    // tslint:disable-next-line:member-ordering
+    private _clearColor = [0, 0, 0, 1];
+    setClearColor(r: number, g: number, b: number, a: number) {
+        this._clearColor = [r, g, b, a];
+    }
+    /**
+     * 写入帧缓冲区。
+     * @param {boolean} writeRed
+     * @param {boolean} writeGreen
+     * @param {boolean} writeBlue
+     * @param {boolean} writeAlpha
+     * @memberof RendererPlatform
+     */
+    setColorWrite(writeRed: boolean, writeGreen: boolean, writeBlue: boolean, writeAlpha: boolean) {
+        this.gl.colorMask(writeRed, writeGreen, writeBlue, writeAlpha);
+    }
+    setViewport(x: number, y: number, w: number, h: number) {
+        this.gl.viewport(x, y, w, h);
+    }
     initDraw() {
+        let [r, g, b, a] = this._clearColor;
         const gl = this.gl;
         gl.enable(gl.DEPTH_TEST);
         gl.clear(gl.DEPTH_BUFFER_BIT);
-        gl.clearColor(0, 0, 0, 1);
+        gl.clearColor(r, g, b, a);
         gl.clear(gl.COLOR_BUFFER_BIT);
+    }
+    loadTexture(gl: WebGL2RenderingContext, program: WebGLProgram, name: string, texture: Texture, t = 0) {
+        if (texture.source == null) { Log.error('texture 设置 source' + texture); return; }
+        let u_Sampler = gl.getUniformLocation(program, name);
+        const textureBuffer = gl.createTexture();
+        if (texture.flipY) {
+            // 对纹理图像进行Y轴反转
+            gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
+        }
+        // 开启0号纹理单元
+        gl.activeTexture(gl['TEXTURE' + t]);
+        // 向target绑定纹理对象
+        gl.bindTexture(gl.TEXTURE_2D, textureBuffer);
+
+        if (texture.isPowerOf2()) {
+            gl.generateMipmap(gl.TEXTURE_2D);
+        } else {
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, this.glFilter[texture.minFilter]);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, this.glFilter[texture.magFilter]);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, this.glAddress[texture.wrapU]);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, this.glAddress[texture.wrapV]);
+        }
+
+
+        // 配置纹理参数
+        // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+        // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+        // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        // 配置纹理图像
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, texture.source);
+        // 将0号纹理传递给着色器
+        gl.uniform1i(u_Sampler, t);
+
     }
     draw(entity: Entity) {
         const gl = this.gl;
@@ -197,7 +266,7 @@ export class RendererPlatform {
         for (let i = 0; i < samplers.length; i++) {
             let sampler = samplers[i];
             let value = shader.uniformScope[sampler.name] as Texture;
-            loadTexture(gl, shader.program as WebGLProgram, sampler.name, value, i);
+            this.loadTexture(gl, shader.program as WebGLProgram, sampler.name, value, i);
         }
 
         gl.drawElements(
@@ -207,28 +276,4 @@ export class RendererPlatform {
             0
         );
     }
-}
-
-export function loadTexture(gl: WebGL2RenderingContext, program: WebGLProgram, name: string, texture: Texture, t = 0) {
-    if (texture.source == null) { Log.error('texture 设置 source' + texture); return; }
-    let u_Sampler = gl.getUniformLocation(program, name);
-    const textureBuffer = gl.createTexture();
-    if (texture.flipY) {
-        // 对纹理图像进行Y轴反转
-        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
-    }
-    // 开启0号纹理单元
-    gl.activeTexture(gl['TEXTURE' + t]);
-    // 向target绑定纹理对象
-    gl.bindTexture(gl.TEXTURE_2D, textureBuffer);
-    // 配置纹理参数
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    // 配置纹理图像
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, texture.source);
-    // 将0号纹理传递给着色器
-    gl.uniform1i(u_Sampler, t);
-
 }

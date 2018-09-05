@@ -5,14 +5,17 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, September 4th 2018, 1:05:59 am
+ * Last Modified: Wednesday, September 5th 2018, 11:42:06 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
  */
 
 
-import { ADDRESS, PIXELFORMAT } from '../types';
+
+import { FILTER, ADDRESS, PIXELFORMAT } from '../conf';
+import { Log } from '../util';
+import { powerOfTwo } from '../math';
 export class Texture {
     source?: HTMLVideoElement | HTMLImageElement | HTMLCanvasElement;
     wrapU = ADDRESS.REPEAT;
@@ -20,6 +23,8 @@ export class Texture {
     wrapR = ADDRESS.REPEAT;
     isCube = false;
     level = 0;
+    minFilter = FILTER.LINEAR; // 纹理在缩小时的过滤方式
+    magFilter = FILTER.LINEAR; // 纹理在放大时的过滤方式
     format = PIXELFORMAT.R8_G8_B8; // gl.RGB
     dataType = Uint8Array;
     flipY = true; // 文理是否需要垂直翻转,默认为false
@@ -28,6 +33,10 @@ export class Texture {
     }
     setSource(source: HTMLVideoElement | HTMLImageElement | HTMLCanvasElement) {
         this.source = source;
+    }
+    isPowerOf2() {
+        if (this.source == null) { Log.error('source not set'); return false; }
+        return powerOfTwo(this.source.width) && powerOfTwo(this.source.height);
     }
 }
 
