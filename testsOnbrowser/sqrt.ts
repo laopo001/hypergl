@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, September 5th 2018, 1:39:28 am
+ * Last Modified: Wednesday, September 5th 2018, 9:06:34 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -15,8 +15,9 @@
 /// <reference path="../typings/test.d.ts" />
 
 import { assert } from 'chai';
-import { Application } from '../build/index';
-// import { Application } from '../src/index';
+// import { Application } from '../build/index';
+import { Application } from '../src/index';
+
 describe('Application', () => {
   it('new Application not null', () => {
     assert.notEqual(new Application(document.createElement('canvas')), null);

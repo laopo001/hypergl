@@ -57,7 +57,7 @@
     "webpack-cli": "^2.1.3"
   },
   "scripts": {
-    "start": "webpack --colors --watch",
+    "start": "webpack --config webpack.demo.js --colors --watch",
     "build": "webpack --colors",
     "lint": "node node_modules/tslint/bin/tslint -c tslint.json 'src/**/*.ts'",
     "test": "jest",
