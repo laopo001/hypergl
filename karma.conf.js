@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, September 5th 2018, 1:59:00 am
+ * Last Modified: Wednesday, September 5th 2018, 10:46:56 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -21,7 +21,7 @@ module.exports = function (config) {
         ],
 
         files: [
-            'testsOnbrowser/**/*.ts'
+            '_temp/**/*.ts'
         ],
         preprocessors: {
             '**/*.ts': ['karma-typescript']
@@ -40,7 +40,7 @@ module.exports = function (config) {
                 noImplicitAny: true, // (optional) Warn on expressions and declarations with an implied 'any' type.
                 noResolve: true, // (optional) Skip resolution and preprocessing.
             },
-            include: ['testsOnbrowser/**/*.ts'],
+            include: ['_temp/**/*.ts'],
         },
 
         singleRun: true,

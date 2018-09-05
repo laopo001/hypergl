@@ -1,6 +1,7 @@
 const gulp = require('gulp')
 const replace = require('gulp-replace')
 const minimist = require('minimist');
+
 var knownOptions = {
     string: 'demo',
     default: { demo: 0 }
@@ -67,3 +68,10 @@ function getAllFiles(root) {
     });
     return res
 }
+
+gulp.task('replaceTests', function (cb) {
+    let stream = gulp.src('./testsOnbrowser/**')
+        .pipe(replace("'../src/index'", "'../build/index'"))
+        .pipe(gulp.dest('_temp'))
+    return stream;
+});

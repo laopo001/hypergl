@@ -9,3 +9,4 @@ lib/
 yarn-error.log
 coverage/
 build/
+_temp/
