@@ -5,10 +5,10 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 6:03:01 pm
+ * Last Modified: Thursday, September 6th 2018, 7:49:56 pm
  * Modified By: dadigua
  * -----
- * Copyright (c) 2018 dadigua
+ * Copyright (c) 2018 jiguang
  */
 
 
@@ -55,8 +55,8 @@ let main = async () => {
     app.scene.root.addChild(entity2);
 
     let camera = new Camera(45, app.canvas.width / app.canvas.height, 1, 1000);
-
-    camera.worldMatrixInverse = new Mat4().setLookAt(new Vec3(3, 3, 3), new Vec3(0, 0, 0), new Vec3(0, 1, 0)).invert();
+    camera.setPosition(3, 3, 3);
+    camera.lookAt(entity);
 
     app.scene.cameras.push(camera);
 

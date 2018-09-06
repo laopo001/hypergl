@@ -5,14 +5,16 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 6:03:02 pm
+ * Last Modified: Thursday, September 6th 2018, 8:46:47 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-export class Material {
+import { RendererPlatform } from '../graphics/renderer';
+import { SEMANTIC } from '../conf';
+export abstract class Material {
     parameters: { [s: string]: any } = {};
     setParameter(name: string, data: any) {
         this.parameters[name] = data;
@@ -24,4 +26,6 @@ export class Material {
         // x
         delete this.parameters[name];
     }
+    abstract update();
+    abstract updateShader(renderer: RendererPlatform, attributes: { [s: string]: SEMANTIC });
 }

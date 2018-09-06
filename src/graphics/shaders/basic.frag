@@ -6,6 +6,9 @@ precision highp sampler2DShadow;
 {{#if uniforms.diffuseMap}}
 uniform sampler2D diffuseMap;
 {{/if}}
+{{#if uniforms.uColor}}
+uniform vec4 uColor;
+{{/if}}
 {{#if attributes.vertex_texCoord0}}
 varying vec2 out_vertex_texCoord0;
 {{/if}}
@@ -16,10 +19,10 @@ vec4 getOutColor() {
     return vColor;
 }
 {{else}}
-uniform vec4 uColor;
+// uniform vec4 uColor;
 vec4 getOutColor() {
     {{#if uniforms.diffuseMap}}
-        return texture2D(diffuseMap,out_vertex_texCoord0);
+    return texture2D(diffuseMap,out_vertex_texCoord0);
     {{else}}
     return uColor;
     {{/if}}

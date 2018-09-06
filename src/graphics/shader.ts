@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 6:03:01 pm
+ * Last Modified: Thursday, September 6th 2018, 8:53:16 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,7 +15,7 @@
 import { RendererPlatform } from './renderer';
 import { Log } from '../util';
 import { ShaderVariable } from './shaderVariable';
-import { UNIFORM_TYPE } from '../conf';
+import { UNIFORM_TYPE, SEMANTIC } from '../conf';
 
 let ShaderID = 0;
 export class Shader {
@@ -29,7 +29,7 @@ export class Shader {
     uniformScope: { [s: string]: any; } = {};
     ready = false;
     constructor(private renderer: RendererPlatform, private definition: {
-        attributes: { [s: string]: any };
+        attributes: { [s: string]: SEMANTIC };
         vshader: string;
         fshader: string;
         useTransformFeedback?: boolean;
@@ -67,7 +67,7 @@ export class Shader {
             //         outNames.push('out_' + attr);
             //     }
             // }
-            attrs.keys().forEach(attr => {
+            Object.getOwnPropertyNames(attrs).forEach(attr => {
                 outNames.push('out_' + attr);
             });
             // webgl2缓存
@@ -107,7 +107,8 @@ export class Shader {
             } else {
                 this.uniforms.push(new ShaderVariable(info.name, this.renderer.glTypeToJs[info.type] as UNIFORM_TYPE, location));
             }
-            this.uniformScope[info.name] = null;
+            // tslint:disable-next-line:no-unused-expression
+            !this.uniformScope.hasOwnProperty(info.name) && (this.uniformScope[info.name] = null);
         }
         this.ready = true;
     }

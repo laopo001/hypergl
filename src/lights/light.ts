@@ -5,10 +5,16 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 6:03:02 pm
+ * Last Modified: Thursday, September 6th 2018, 7:24:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
+import { SceneNode } from '../scene/node';
+export class Light extends SceneNode {
+    constructor() {
+        super();
+    }
+}

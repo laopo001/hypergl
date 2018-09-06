@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 6:03:02 pm
+ * Last Modified: Thursday, September 6th 2018, 8:46:47 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -18,7 +18,7 @@ import { BasicMaterial } from '../material/basicMaterial';
 import { Scene } from './scene';
 import { Mesh } from '../mesh/mesh';
 import { Shader } from '../graphics/shader';
-import { SEMANTICMAP } from '../conf';
+import { SEMANTICMAP, SEMANTIC } from '../conf';
 
 
 
@@ -34,7 +34,7 @@ export function renderScence(scene: Scene) {
         const mesh = entity.mesh;
         if (mesh == null) { return; }
         const material = mesh.material;
-        let attributes = {};
+        let attributes: { [s: string]: SEMANTIC } = {};
         mesh.vertexBuffer.format.elements.forEach(x => {
             attributes[SEMANTICMAP[x.semantic]] = x.semantic;
         });
@@ -43,9 +43,7 @@ export function renderScence(scene: Scene) {
         renderer.setShader(shader as Shader);
         shader.setUniformValue('matrix_viewProjection', camera.PVMatrix.data);
         // tslint:disable-next-line:forin
-        for (let key in material.parameters) {
-            shader.setUniformValue(key, material.parameters[key]);
-        }
+
         renderer.draw(entity);
     }
 }
