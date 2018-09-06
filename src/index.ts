@@ -5,10 +5,10 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 3rd 2018, 11:06:29 pm
+ * Last Modified: Thursday, September 6th 2018, 6:03:01 pm
  * Modified By: dadigua
  * -----
- * Copyright (c) 2018 jiguang
+ * Copyright (c) 2018 dadigua
  */
 
 

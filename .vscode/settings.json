@@ -1,7 +1,8 @@
 {
     "psi-header.config": {
         "author": "dadigua",
-        "authorEmail": "353272497@qq.com"
+        "authorEmail": "353272497@qq.com",
+        "company": "dadigua",
     },
     "psi-header.lang-config": [
         {

@@ -8,7 +8,7 @@
  * Last Modified: Tuesday, August 14th 2018, 12:13:02 pm
  * Modified By: dadigua
  * -----
- * Copyright (c) 2018 jiguang
+ * Copyright (c) 2018 dadigua
  */
 
 
