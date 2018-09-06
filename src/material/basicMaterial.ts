@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 9:03:04 pm
+ * Last Modified: Friday, September 7th 2018, 12:37:29 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -21,21 +21,20 @@ export class BasicMaterial extends Material {
     color: Color = new Color(1, 1, 1, 1);
     colorMap; // TODO
     shader?: Shader;
-    private _dirtyUpdate = true;
     constructor() {
         super();
         this.update();
     }
     update() {
-        this.setParameter('uColor', this.color.data);
+        this.setParameter('diffuseColor', this.color.data);
         if (this.colorMap) {
-            this.setParameter('diffuseMap', this.colorMap);
+            this.setParameter('diffuseTexture', this.colorMap);
         }
         this._dirtyUpdate = true;
     }
     updateShader(renderer: RendererPlatform, attributes: { [s: string]: SEMANTIC }) {
         if (this._dirtyUpdate) {
-            this.shader = renderer.programGenerator.getProgram('BasicMaterial', attributes, this.parameters);
+            this.shader = renderer.programGenerator.getShader('BasicMaterial', attributes, this.parameters);
             // tslint:disable-next-line:forin
             for (let key in this.parameters) {
                 this.shader.setUniformValue(key, this.parameters[key]);

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 6:03:01 pm
+ * Last Modified: Friday, September 7th 2018, 12:58:49 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -55,7 +55,7 @@ export enum SEMANTIC {
 
 export enum SEMANTICMAP {
     POSITION = 'vertex_position',
-    NORMAL = 'NORMAL',
+    NORMAL = 'normal',
     TANGENT = 'TANGENT',
     BLENDWEIGHT = 'BLENDWEIGHT',
     BLENDINDICES = 'BLENDINDICES',

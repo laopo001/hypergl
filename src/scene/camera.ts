@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 7:48:17 pm
+ * Last Modified: Thursday, September 6th 2018, 10:17:06 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,10 +15,6 @@
 import { Vec3, Quat, Mat4 } from '../math';
 import { SceneNode } from './node';
 export class Camera extends SceneNode {
-    // worldMatrixInverse = new Mat4().setLookAt(new Vec3(0, 0, 0), new Vec3(0, 0, 1), new Vec3(0, 1, 0)).invert();
-    // position: Vec3;
-    // quaternion: Quat = new Quat();
-    // scala: Vec3 = new Vec3();
     projectionMatrix = new Mat4();
 
     constructor(
@@ -29,12 +25,7 @@ export class Camera extends SceneNode {
     ) {
         super();
         this.projectionMatrix.setPerspective(fov, aspect, near, far);
-        // this.position = this.worldMatrixInverse.getTranslation();
     }
-    // lookAt(target: Vec3) {
-    //     // TODO
-    //     this.worldMatrixInverse.setLookAt(this.position, target, new Vec3(0, 1, 0)).invert();
-    // }
     get PVMatrix() {
         return new Mat4().mul(this.projectionMatrix).mul(this.getWorldTransform().clone().invert());
     }

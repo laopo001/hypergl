@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 8:19:05 pm
+ * Last Modified: Friday, September 7th 2018, 12:24:10 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,3 +14,4 @@
 
 export * from './basicMaterial';
 export * from './phoneMaterial';
+export * from './material';

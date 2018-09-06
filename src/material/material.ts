@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 8:46:47 pm
+ * Last Modified: Friday, September 7th 2018, 12:49:25 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,8 +14,11 @@
 
 import { RendererPlatform } from '../graphics/renderer';
 import { SEMANTIC } from '../conf';
+import { Shader } from '../graphics/shader';
 export abstract class Material {
     parameters: { [s: string]: any } = {};
+    shader?: Shader;
+    protected _dirtyUpdate = false;
     setParameter(name: string, data: any) {
         this.parameters[name] = data;
     }

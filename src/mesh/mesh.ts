@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 6:03:02 pm
+ * Last Modified: Friday, September 7th 2018, 12:25:01 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,7 +14,7 @@
 
 import { VertexBuffer } from '../graphics/vertexBuffer';
 import { IndexBuffer } from '../graphics/indexBuffer';
-import { BasicMaterial } from '../material';
+import { BasicMaterial, Material } from '../material';
 import { SEMANTIC, BUFFER } from '../conf';
 import { VertexType, VertexFormat } from '../graphics/vertexFormat';
 import { Nullable, CreateMeshOptions, CreateBoxOptions } from '../types';
@@ -22,7 +22,7 @@ import { RendererPlatform } from '../graphics/renderer';
 import { Vec3 } from '../math';
 
 export class Mesh {
-    static defaultMaterial = new BasicMaterial();
+    static defaultMaterial: Material = new BasicMaterial();
     vertexBuffer!: VertexBuffer;
     indexBuffer!: IndexBuffer;
     castShadow = true;
@@ -185,7 +185,7 @@ export function createBox(renderer: RendererPlatform, opts?: CreateBoxOptions) {
         let u, v;
         // tslint:disable-next-line:one-variable-per-declaration
         let i, j;
-        let offset = positions.length / 3;
+        // let offset = positions.length / 3;
 
         for (i = 0; i <= uSegments; i++) {
             for (j = 0; j <= vSegments; j++) {

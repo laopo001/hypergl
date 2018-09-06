@@ -49,7 +49,7 @@ let main = async () => {
     let entity2 = new Entity();
     let m2 = new StandardMaterial();
     m2.diffuseColor.set(0.5, 0, 0.5);
-    // mesh.material = m2;
+    mesh2.material = m2;
     entity2.mesh = mesh2;
 
     entity2.setLocalScale(1.5, 0.5, 1.5);
