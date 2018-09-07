@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, September 7th 2018, 1:56:09 am
+ * Last Modified: Friday, September 7th 2018, 12:17:34 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -49,6 +49,8 @@ let main = async () => {
     let entity2 = new Entity();
     let m2 = new StandardMaterial();
     m2.diffuseColor.set(0.5, 0, 0.5);
+    m2.specularColor.set(0.5, 0, 0.5);
+
     mesh2.material = m2;
     entity2.mesh = mesh2;
 

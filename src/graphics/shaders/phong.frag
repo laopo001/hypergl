@@ -1,5 +1,8 @@
 {{#if data.GL2}}{{> gles3.frag}}{{/if}}
 precision highp float;
+
+uniform vec3 camera_position;
+
 {{#if uniforms.diffuseTexture}}
 uniform sampler2D diffuseTexture;
 {{/if}}
@@ -15,6 +18,10 @@ uniform vec4 specularColor;
 {{#if uniforms.lightPosition}}
 uniform vec3 lightPosition;
 {{/if}}
+{{#if uniforms.shininess}}
+uniform float shininess;
+{{/if}}
+
 //////////////
 {{#if attributes.vertex_texCoord0}}
 varying vec2 out_vertex_texCoord0;
@@ -54,12 +61,12 @@ void main(void)
     vec3 diffuse = lightColor * (diff * diffuseColor.xyz);
 
     // 镜面光
-    // vec3 viewDir = normalize(viewPos - FragPos);
-    // vec3 reflectDir = reflect(-lightDir, norm);  
-    // float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-    // vec3 specular = lightColor * (spec * material.specular);  
+    vec3 viewDir = normalize(camera_position - out_vertex_position);
+    vec3 reflectDir = reflect(-lightDir, norm);  
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
+    vec3 specular = lightColor * (spec * specularColor.xyz);  
 
-    vec3 result = ambient + diffuse;
+    vec3 result = ambient + diffuse + specular;
     gl_FragColor = vec4(result, 1.0);
     // gl_FragColor = vec4(diffuse, 1.0);
 

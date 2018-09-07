@@ -8,12 +8,15 @@ Todos:
     ☐ mesh
     ☐ Entity
     ☐ Light @started(18-09-07 01:56)
-    ☐ StandardMaterial @started(18-09-07 01:56)
+    ☐ StandardMaterial工作 @started(18-09-07 01:56)
+      ✔ StandardMaterial.diffuseColor @started(18-09-07 00:56) @done(18-09-07 12:19) @lasted(11h23m23s)
+      ✔ StandardMaterial.specularColor @started(18-09-07 00:56) @done(18-09-07 12:19) @lasted(11h23m23s)
   Done:
+    ✔ 添加appveyor的ci工具，使用karma测试工具，将自动测试chrome和firefox @done(18-09-05 12:21)
     ✔ 完成 BasicMaterial 的(diffuseTexture)参数 @started(18-09-02 01:08) @done(18-09-04 00:55) @lasted(1d23h47m3s)
     ✔ createBox @done(18-09-03 00:45)
     ✔ graph-node @done(18-09-02 01:08)
-    ✔ shaderInput @done(18-09-01 15:42)
+    ✔ shaderInput（现在更名shaderVariable） @done(18-09-01 15:42)
     ✔ renderSecne @done(18-09-01 15:42)
     ✔ 封装camera @started(18-08-21 18:51) @done(18-08-26 18:37) @lasted(4d23h46m37s)
     ✔ mesh.createMesh完成，vertexBuffer.ts添加迭代器 @started(18-08-25 23:53) @done(18-08-26 15:53) @lasted(16h26s)
@@ -30,4 +33,4 @@ Todos:
 
 Archive:
   ✔ 跑起来一个demo，展示一个空间立方体 @started(18-08-17 01:28) @done(18-08-19 00:26) @lasted(1d22h58m40s)
-  ✔ 添加.travis.yml 测试 @started(18-08-16 19:23) @done(18-08-16 20:26) @lasted(1h3m1s)
+  ✔ 添加.travis.yml 使用jest测试工具 @started(18-08-16 19:23) @done(18-08-16 20:26) @lasted(1h3m1s)

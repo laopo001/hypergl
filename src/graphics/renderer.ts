@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 6:03:01 pm
+ * Last Modified: Friday, September 7th 2018, 12:03:54 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -236,7 +236,7 @@ export class RendererPlatform {
         const uniforms = shader.uniforms;
         const attributes = shader.attributes;
         const format = mesh.vertexBuffer.format;
-        shader.setUniformValue('matrix_model', entity.getWorldTransform().data);
+
         for (let i = 0; i < attributes.length; i++) {
             let attrbute = attributes[i];
             let element;

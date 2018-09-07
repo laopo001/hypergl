@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, September 7th 2018, 12:28:24 am
+ * Last Modified: Friday, September 7th 2018, 12:11:13 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -43,8 +43,9 @@ export function renderScence(scene: Scene) {
         let shader = mesh.material.shader as Shader;
         renderer.setShader(shader as Shader);
         shader.setUniformValue('matrix_viewProjection', camera.PVMatrix.data);
+        shader.setUniformValue('matrix_model', entity.getWorldTransform().data);
+        shader.setUniformValue('camera_position', camera.getPosition().data);
         // tslint:disable-next-line:forin
-
         renderer.draw(entity);
     }
 }
