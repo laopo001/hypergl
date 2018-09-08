@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, September 7th 2018, 1:38:00 am
+ * Last Modified: Saturday, September 8th 2018, 3:15:45 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -19,7 +19,7 @@ import { UNIFORM_TYPE, SEMANTIC } from '../conf';
 
 let ShaderID = 0;
 export class Shader {
-    ShaderID = ShaderID++;
+    id = ShaderID++;
     program?: WebGLProgram;
     vshader?: WebGLShader;
     fshader?: WebGLShader;

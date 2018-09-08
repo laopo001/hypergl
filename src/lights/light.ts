@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 7:24:08 pm
+ * Last Modified: Saturday, September 8th 2018, 3:45:47 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,7 +13,10 @@
 
 
 import { SceneNode } from '../scene/node';
+import { Color } from '../core/color';
 export class Light extends SceneNode {
+    color = new Color(1, 1, 1);
+    castShadows = true;
     constructor() {
         super();
     }

@@ -38,7 +38,7 @@ vec4 getOutColor() {
 }
 {{else}}
 
-vec4 getOutColor() {
+vec4 getOutDiffuseColor() {
     {{#if uniforms.diffuseTexture}}
     return texture2D(diffuseTexture,out_vertex_texCoord0);
     {{else}}
@@ -58,7 +58,7 @@ void main(void)
     vec3 norm = normalize(out_normal);
     vec3 lightDir = normalize(lightPosition - out_vertex_position);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = lightColor * (diff * diffuseColor.xyz);
+    vec3 diffuse = lightColor * (diff * getOutDiffuseColor().xyz);
 
     // 镜面光
     vec3 viewDir = normalize(camera_position - out_vertex_position);

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 6:03:02 pm
+ * Last Modified: Saturday, September 8th 2018, 3:16:06 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -16,7 +16,10 @@
 import { FILTER, ADDRESS, PIXELFORMAT } from '../conf';
 import { Log } from '../util';
 import { powerOfTwo } from '../math';
+
+let TextureID = 0;
 export class Texture {
+    id = TextureID++;
     source?: HTMLVideoElement | HTMLImageElement | HTMLCanvasElement;
     wrapU = ADDRESS.REPEAT;
     wrapV = ADDRESS.REPEAT;

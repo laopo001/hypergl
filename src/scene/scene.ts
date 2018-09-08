@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 7:25:50 pm
+ * Last Modified: Saturday, September 8th 2018, 3:41:37 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,12 +20,13 @@ import { Camera } from './camera';
 import { Entity } from '../ecs/entity';
 import { Color } from '../core/color';
 import { Vec3 } from '../math';
+import { Light } from '../lights';
 export class Scene extends IElement {
     static ambientColor = new Color(0.2, 0.2, 0.2);
     static ambient = new Vec3(0, -1, -1);
     fog;
     baseMaterial;
-    readonly lights = [];
+    readonly lights: Light[] = [];
     readonly layer: Entity[] = [];
     root: Entity = new Entity();
     readonly cameras: Camera[] = [];

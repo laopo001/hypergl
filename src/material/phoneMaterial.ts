@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, September 7th 2018, 1:56:09 am
+ * Last Modified: Saturday, September 8th 2018, 3:28:34 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -24,7 +24,7 @@ export class StandardMaterial extends Material {
     ambientColor = Scene.ambientColor;
     diffuseColor = new Color(1, 1, 1);
     diffuseTexture?: Texture;
-    specularColor = new Color(0, 0, 0);
+    specularColor = new Color(0.22, 0.22, 0.22);
     specularTexture?: Texture;
     shininess = 64;
     constructor() {

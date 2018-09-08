@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, September 7th 2018, 12:17:34 pm
+ * Last Modified: Saturday, September 8th 2018, 3:42:13 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -13,7 +13,7 @@
 
 
 
-import { SEMANTIC, BUFFER, VertexBuffer, IndexBuffer, StandardMaterial, Application, BasicMaterial, Entity, Texture } from '../src';
+import { SEMANTIC, BUFFER, VertexBuffer, Light, StandardMaterial, Application, BasicMaterial, Entity, Texture } from '../src';
 import vert from '../src/graphics/shaders/vertex.vert';
 import frag from '../src/graphics/shaders/fragment.frag';
 import { loadImage } from './utils/util';
@@ -31,7 +31,9 @@ let main = async () => {
     const app = new Application(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
+    let light = new Light();
 
+    app.scene.lights.push(light);
 
     let mesh = Mesh.createBox(app.rendererPlatform);
     console.log(mesh);
@@ -48,18 +50,20 @@ let main = async () => {
     let mesh2 = Mesh.createBox(app.rendererPlatform);
     let entity2 = new Entity();
     let m2 = new StandardMaterial();
-    m2.diffuseColor.set(0.5, 0, 0.5);
-    m2.specularColor.set(0.5, 0, 0.5);
+    // m2.diffuseColor.set(0.5, 0, 0.5);
+    m2.diffuseTexture = texture;
+    m2.update();
+    // m2.specularColor.set(0.5, 0, 0.5);
 
     mesh2.material = m2;
     entity2.mesh = mesh2;
 
-    entity2.setLocalScale(1.5, 0.5, 1.5);
+    // entity2.setLocalScale(1.5, 0.5, 1.5);
     entity2.setPosition(2, 0, 0);
     app.scene.root.addChild(entity2);
 
     let camera = new Camera(45, app.canvas.width / app.canvas.height, 1, 1000);
-    camera.setPosition(3, 3, 3);
+    camera.setPosition(3, 2, 3);
     camera.lookAt(entity);
 
     app.scene.cameras.push(camera);
