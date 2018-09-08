@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 8th 2018, 3:28:34 pm
+ * Last Modified: Sunday, September 9th 2018, 2:40:53 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -32,7 +32,7 @@ export class StandardMaterial extends Material {
         this.update();
     }
     update() {
-        this.setParameter('lightPosition', new Vec3(1, 1, 1).data);
+        // this.setParameter('lightPosition', new Vec3(1, 1, 1).data);
         this.setParameter('ambientColor', this.ambientColor.data);
         this.setParameter('diffuseColor', this.diffuseColor.data);
         // tslint:disable-next-line:no-unused-expression

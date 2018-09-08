@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, September 7th 2018, 12:11:13 pm
+ * Last Modified: Saturday, September 8th 2018, 11:13:29 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -25,6 +25,7 @@ import { Log } from '../util';
 
 export function renderScence(scene: Scene) {
     let entitys = scene.layer;
+    let lights = scene.lights;
     let camera = scene.activeCamera;
 
     let renderer = scene.app.rendererPlatform;
@@ -39,9 +40,12 @@ export function renderScence(scene: Scene) {
         mesh.vertexBuffer.format.elements.forEach(x => {
             attributes[SEMANTICMAP[x.semantic]] = x.semantic;
         });
+        material.setDirectionalLightArr('directionalLightArr', lights.directionalLights);
+        material.setPointLightArr('pointLightArr', lights.pointLights);
         material.updateShader(renderer, attributes);
         let shader = mesh.material.shader as Shader;
         renderer.setShader(shader as Shader);
+
         shader.setUniformValue('matrix_viewProjection', camera.PVMatrix.data);
         shader.setUniformValue('matrix_model', entity.getWorldTransform().data);
         shader.setUniformValue('camera_position', camera.getPosition().data);

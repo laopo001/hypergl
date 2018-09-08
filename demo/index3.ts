@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 8th 2018, 3:42:13 pm
+ * Last Modified: Sunday, September 9th 2018, 2:59:26 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -13,7 +13,7 @@
 
 
 
-import { SEMANTIC, BUFFER, VertexBuffer, Light, StandardMaterial, Application, BasicMaterial, Entity, Texture } from '../src';
+import { SEMANTIC, BUFFER, DirectionalLight, Light, StandardMaterial, Application, BasicMaterial, Entity, Texture } from '../src';
 import vert from '../src/graphics/shaders/vertex.vert';
 import frag from '../src/graphics/shaders/fragment.frag';
 import { loadImage } from './utils/util';
@@ -31,9 +31,9 @@ let main = async () => {
     const app = new Application(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
-    let light = new Light();
-
-    app.scene.lights.push(light);
+    let light = new DirectionalLight();
+    light.setPosition(1, 1, 1);
+    app.scene.lights.directionalLights.push(light);
 
     let mesh = Mesh.createBox(app.rendererPlatform);
     console.log(mesh);
@@ -42,6 +42,8 @@ let main = async () => {
     m.colorMap = texture;
     m.update();
     let entity = new Entity();
+
+
     entity.mesh = mesh;
     mesh.material = m;
 
@@ -63,8 +65,8 @@ let main = async () => {
     app.scene.root.addChild(entity2);
 
     let camera = new Camera(45, app.canvas.width / app.canvas.height, 1, 1000);
-    camera.setPosition(3, 2, 3);
-    camera.lookAt(entity);
+    camera.setPosition(3, 3, 3);
+    camera.lookAt(entity2);
 
     app.scene.cameras.push(camera);
 
