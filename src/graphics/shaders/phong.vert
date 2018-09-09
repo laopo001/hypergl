@@ -1,7 +1,7 @@
 {{#if data.GL2}}{{> gles3.vert}}{{/if}}
 uniform mat4 matrix_model;
 uniform mat4 matrix_viewProjection;
-
+uniform mat4 matrix_normal;
 attribute vec3 vertex_position;
 varying vec3 out_vertex_position;
 {{#if attributes.vertex_color}}
@@ -26,6 +26,7 @@ vec4 getPosition() {
 
 void main(void) {
     gl_Position = getPosition();
+    out_vertex_position = gl_Position.xyz;
     {{#if attributes.vertex_color}}
     vColor = vertex_color;
     {{/if}}
@@ -33,7 +34,6 @@ void main(void) {
     out_vertex_texCoord0 = vertex_texCoord0;
     {{/if}}
     {{#if attributes.normal}}
-        out_normal = normal;
+    out_normal = normalize(vec3(matrix_normal * vec4(normal,1)));;
     {{/if}}
-    out_vertex_position = gl_Position.xyz;
 }

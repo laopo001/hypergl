@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 10:17:06 pm
+ * Last Modified: Sunday, September 9th 2018, 4:23:23 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -26,7 +26,7 @@ export class Camera extends SceneNode {
         super();
         this.projectionMatrix.setPerspective(fov, aspect, near, far);
     }
-    get PVMatrix() {
+    get viewProjectionMatrix() {
         return new Mat4().mul(this.projectionMatrix).mul(this.getWorldTransform().clone().invert());
     }
 

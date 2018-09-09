@@ -7,8 +7,12 @@ Todos:
     ☐ ECS框架 Entity,Component,System 
     ☐ mesh
     ☐ Entity
-    ☐ Light @started(18-09-07 01:56)
-    ☐ StandardMaterial工作 @started(18-09-07 01:56)
+    ☐ scene 多光源 @started(18-09-8 11:04)
+    ☐ Light
+      ✔ Light.directionalLight @started(18-09-8 11:04) @done(18-09-10 01:06) @lasted(1d14h2m22s)
+      ✔ Light.pointLight @started(18-09-8 11:04) @done(18-09-10 01:06) @lasted(1d14h2m26s)
+      ☐ Light.spotLight
+    ☐ StandardMaterial
       ✔ StandardMaterial.diffuseColor @started(18-09-07 00:56) @done(18-09-07 12:19) @lasted(11h23m23s)
       ✔ StandardMaterial.specularColor @started(18-09-07 00:56) @done(18-09-07 12:19) @lasted(11h23m23s)
   Done:

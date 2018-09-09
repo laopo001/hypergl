@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 9th 2018, 2:59:26 am
+ * Last Modified: Monday, September 10th 2018, 1:03:36 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -13,7 +13,7 @@
 
 
 
-import { SEMANTIC, BUFFER, DirectionalLight, Light, StandardMaterial, Application, BasicMaterial, Entity, Texture } from '../src';
+import { SEMANTIC, BUFFER, PointLight, DirectionalLight, Light, StandardMaterial, Application, BasicMaterial, Entity, Texture } from '../src';
 import vert from '../src/graphics/shaders/vertex.vert';
 import frag from '../src/graphics/shaders/fragment.frag';
 import { loadImage } from './utils/util';
@@ -31,9 +31,13 @@ let main = async () => {
     const app = new Application(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
-    let light = new DirectionalLight();
-    light.setPosition(1, 1, 1);
-    app.scene.lights.directionalLights.push(light);
+    let light = new PointLight();
+    light.setPosition(0, 2, 0);
+    app.scene.lights.pointLights.push(light);
+
+    // let light = new DirectionalLight();
+    // app.scene.lights.directionalLights.push(light);
+
 
     let mesh = Mesh.createBox(app.rendererPlatform);
     console.log(mesh);
@@ -52,21 +56,34 @@ let main = async () => {
     let mesh2 = Mesh.createBox(app.rendererPlatform);
     let entity2 = new Entity();
     let m2 = new StandardMaterial();
-    // m2.diffuseColor.set(0.5, 0, 0.5);
+    m2.diffuseColor.set(0.5, 0, 0.5);
     m2.diffuseTexture = texture;
-    m2.update();
-    // m2.specularColor.set(0.5, 0, 0.5);
 
+    // m2.specularColor.set(0.5, 0, 0.5);
+    m2.update();
     mesh2.material = m2;
+    mesh.material = m2;
     entity2.mesh = mesh2;
 
     // entity2.setLocalScale(1.5, 0.5, 1.5);
     entity2.setPosition(2, 0, 0);
     app.scene.root.addChild(entity2);
 
+
+    let mesh3 = Mesh.createBox(app.rendererPlatform);
+    let entity3 = new Entity();
+    entity3.mesh = mesh3;
+    let m3 = new BasicMaterial();
+    m3.color = new Color(0.5, 1, 0.5);
+    m3.update();
+    entity3.mesh.material = m3;
+    entity3.setLocalScale(0.2, 0.2, 0.2);
+    entity3.setPosition(light.getPosition());
+    app.scene.root.addChild(entity3);
+
     let camera = new Camera(45, app.canvas.width / app.canvas.height, 1, 1000);
-    camera.setPosition(3, 3, 3);
-    camera.lookAt(entity2);
+    camera.setPosition(0, 5, 5);
+    camera.lookAt(entity);
 
     app.scene.cameras.push(camera);
 
