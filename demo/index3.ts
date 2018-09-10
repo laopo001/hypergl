@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 10th 2018, 1:03:36 am
+ * Last Modified: Monday, September 10th 2018, 11:22:24 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -22,6 +22,22 @@ import { Camera } from '../src/scene/camera';
 import { Mesh } from '../src/mesh/mesh';
 import { Color } from '../src/core/color';
 
+function addLight(app, v) {
+    let light = new PointLight();
+    light.setPosition(v);
+    // light.color = new Color(0.5, 1, 0.5);
+    app.scene.lights.pointLights.push(light);
+    let mesh = Mesh.createBox(app.rendererPlatform);
+    let entity = new Entity();
+    entity.mesh = mesh;
+    let m3 = new BasicMaterial();
+    m3.color = new Color(0.5, 1, 0.5);
+    m3.update();
+    entity.mesh.material = m3;
+    entity.setLocalScale(0.2, 0.2, 0.2);
+    entity.setPosition(light.getPosition());
+    app.scene.root.addChild(entity);
+}
 
 let main = async () => {
     let texture = new Texture();
@@ -31,13 +47,12 @@ let main = async () => {
     const app = new Application(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
-    let light = new PointLight();
-    light.setPosition(0, 2, 0);
-    app.scene.lights.pointLights.push(light);
 
     // let light = new DirectionalLight();
     // app.scene.lights.directionalLights.push(light);
-
+    addLight(app, new Vec3(0, 2, 0));
+    addLight(app, new Vec3(0, 2, 0));
+    addLight(app, new Vec3(0, 2, 0));
 
     let mesh = Mesh.createBox(app.rendererPlatform);
     console.log(mesh);
@@ -70,19 +85,8 @@ let main = async () => {
     app.scene.root.addChild(entity2);
 
 
-    let mesh3 = Mesh.createBox(app.rendererPlatform);
-    let entity3 = new Entity();
-    entity3.mesh = mesh3;
-    let m3 = new BasicMaterial();
-    m3.color = new Color(0.5, 1, 0.5);
-    m3.update();
-    entity3.mesh.material = m3;
-    entity3.setLocalScale(0.2, 0.2, 0.2);
-    entity3.setPosition(light.getPosition());
-    app.scene.root.addChild(entity3);
-
     let camera = new Camera(45, app.canvas.width / app.canvas.height, 1, 1000);
-    camera.setPosition(0, 5, 5);
+    camera.setPosition(0, 5, 4);
     camera.lookAt(entity);
 
     app.scene.cameras.push(camera);

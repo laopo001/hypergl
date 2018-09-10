@@ -81,10 +81,10 @@ vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor,vec3 lightDirection
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
     // 合并各个光照分量
 
-    vec3 ambient  = ambientColor.xyz * getOutDiffuseColor().xyz;
+    // vec3 ambient  = vec3(0);
     vec3 diffuse  = lightColor * diff * getOutDiffuseColor().xyz;
     vec3 specular = lightColor * spec * getOutSpecularColor().xyz;
-    return (ambient + diffuse + specular);
+    return (diffuse + specular);
 }  
 // 计算定点光在确定位置的光照颜色
 vec3 CalcPointLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPosition, float range)
@@ -109,7 +109,7 @@ void main(void)
     vec3 viewDir = normalize(camera_position - out_vertex_position);
 
     // start
-    vec3 result = vec3(0);
+    vec3 result = ambientColor.xyz * getOutDiffuseColor().xyz;
     {{#each uniforms._directionalLightArr}}
         result += CalcDirLight(norm, viewDir, vec3({{this.color}}), {{this.direction}});
     {{/each}}
