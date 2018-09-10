@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 9th 2018, 5:31:10 pm
+ * Last Modified: Tuesday, September 11th 2018, 12:47:24 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -22,8 +22,8 @@ import { Color } from '../core/color';
 import { Vec3 } from '../math';
 import { Light, PointLight, DirectionalLight } from '../lights';
 export class Scene extends IElement {
-    static ambientColor = new Color(0.5, 0.5, 0.5);
-    static ambient = new Vec3(0, -1, -1);
+    static ambientColor = new Color(0.2, 0.2, 0.2);
+    // static ambient = new Vec3(0, -1, -1);
     fog;
     baseMaterial;
     readonly lights: {

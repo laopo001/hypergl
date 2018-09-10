@@ -25,8 +25,9 @@ vec4 getPosition() {
 
 
 void main(void) {
-    gl_Position = getPosition();
-    out_vertex_position = gl_Position.xyz;
+    vec4 posW = matrix_model * vec4(vertex_position, 1.0);
+    out_vertex_position = vec3(posW);
+    gl_Position = matrix_viewProjection * posW;
     {{#if attributes.vertex_color}}
     vColor = vertex_color;
     {{/if}}
@@ -34,6 +35,6 @@ void main(void) {
     out_vertex_texCoord0 = vertex_texCoord0;
     {{/if}}
     {{#if attributes.normal}}
-    out_normal = normalize(vec3(matrix_normal * vec4(normal,1)));;
+    out_normal = normalize(vec3(matrix_normal * vec4(normal,1)));
     {{/if}}
 }

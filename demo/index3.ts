@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 10th 2018, 11:22:24 pm
+ * Last Modified: Tuesday, September 11th 2018, 12:58:32 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -50,9 +50,8 @@ let main = async () => {
 
     // let light = new DirectionalLight();
     // app.scene.lights.directionalLights.push(light);
-    addLight(app, new Vec3(0, 2, 0));
-    addLight(app, new Vec3(0, 2, 0));
-    addLight(app, new Vec3(0, 2, 0));
+    addLight(app, new Vec3(0, 2, -1));
+
 
     let mesh = Mesh.createBox(app.rendererPlatform);
     console.log(mesh);
@@ -71,7 +70,7 @@ let main = async () => {
     let mesh2 = Mesh.createBox(app.rendererPlatform);
     let entity2 = new Entity();
     let m2 = new StandardMaterial();
-    m2.diffuseColor.set(0.5, 0, 0.5);
+    // m2.diffuseColor.set(0.5, 0, 0.5);
     m2.diffuseTexture = texture;
 
     // m2.specularColor.set(0.5, 0, 0.5);
@@ -86,7 +85,7 @@ let main = async () => {
 
 
     let camera = new Camera(45, app.canvas.width / app.canvas.height, 1, 1000);
-    camera.setPosition(0, 5, 4);
+    camera.setPosition(0, 4, 4);
     camera.lookAt(entity);
 
     app.scene.cameras.push(camera);

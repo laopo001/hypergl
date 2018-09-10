@@ -80,8 +80,8 @@ vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor,vec3 lightDirection
     vec3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
     // 合并各个光照分量
-
-    // vec3 ambient  = vec3(0);
+ 
+    // vec3 ambient = ambientColor.xyz * getOutDiffuseColor().xyz;
     vec3 diffuse  = lightColor * diff * getOutDiffuseColor().xyz;
     vec3 specular = lightColor * spec * getOutSpecularColor().xyz;
     return (diffuse + specular);
