@@ -12,3 +12,7 @@ out highp vec4 hyper_ragColor;
 #define texture2DGradEXT textureGrad
 #define texture2DProjGradEXT textureProjGrad
 #define textureCubeGradEXT textureGrad
+#ifdef GL2
+precision highp sampler2DShadow;
+#endif
+// {{data.name}}

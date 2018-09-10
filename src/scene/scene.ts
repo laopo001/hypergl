@@ -5,10 +5,10 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 3rd 2018, 9:29:05 pm
+ * Last Modified: Tuesday, September 11th 2018, 12:47:24 am
  * Modified By: dadigua
  * -----
- * Copyright (c) 2018 jiguang
+ * Copyright (c) 2018 dadigua
  */
 
 
@@ -18,10 +18,21 @@ import { SceneNode } from './node';
 import { renderScence } from './renderScence';
 import { Camera } from './camera';
 import { Entity } from '../ecs/entity';
+import { Color } from '../core/color';
+import { Vec3 } from '../math';
+import { Light, PointLight, DirectionalLight } from '../lights';
 export class Scene extends IElement {
+    static ambientColor = new Color(0.2, 0.2, 0.2);
+    // static ambient = new Vec3(0, -1, -1);
     fog;
     baseMaterial;
-    readonly lights = [];
+    readonly lights: {
+        directionalLights: DirectionalLight[],
+        pointLights: PointLight[]
+    } = {
+            directionalLights: [],
+            pointLights: []
+        };
     readonly layer: Entity[] = [];
     root: Entity = new Entity();
     readonly cameras: Camera[] = [];
