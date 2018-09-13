@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, September 11th 2018, 12:58:32 am
+ * Last Modified: Thursday, September 13th 2018, 12:20:18 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -60,12 +60,24 @@ let main = async () => {
     m.colorMap = texture;
     m.update();
     let entity = new Entity();
-
-
     entity.mesh = mesh;
     mesh.material = m;
-
     app.scene.root.addChild(entity);
+
+    (_ => {
+        let mesh = Mesh.createBox(app.rendererPlatform);
+        console.log(mesh);
+        let m = new BasicMaterial();
+        m.color = new Color(0.5, 1, 0.5);
+        // m.colorMap = texture;
+        m.update();
+        let entity = new Entity();
+        entity.setPosition(0, -2, 0);
+        entity.setLocalScale(4, 0.1, 4);
+        entity.mesh = mesh;
+        mesh.material = m;
+        app.scene.root.addChild(entity);
+    })();
 
     let mesh2 = Mesh.createBox(app.rendererPlatform);
     let entity2 = new Entity();
