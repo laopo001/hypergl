@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, September 14th 2018, 1:10:12 am
+ * Last Modified: Saturday, September 15th 2018, 12:44:50 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,20 +17,25 @@ import { SceneNode } from './node';
 export class Camera extends SceneNode {
     projectionMatrix = new Mat4();
 
-    constructor(
-        fov: number,			// 相机视野的角度。一般是以Y轴
-        aspect: number,			// 相机的纵横比（宽度除以高度）
-        near: number,			// 相机渲染最近的距离，小于这距离的不会进行渲染
-        far: number			// 相机渲染最远的距离，大于这距离的不会进行渲染
-    ) {
+    constructor() {
         super();
-        this.projectionMatrix.setPerspective(fov, aspect, near, far);
     }
-    setPerspective(fov, aspect, near, far) {
+    /**
+     *
+     *
+     * @param {number} fov 相机视野的角度。一般是以Y轴
+     * @param {number} aspect 相机的纵横比（宽度除以高度）
+     * @param {number} near 相机渲染最近的距离，小于这距离的不会进行渲染
+     * @param {number} far 相机渲染最远的距离，大于这距离的不会进行渲染
+     * @memberof Camera
+     */
+    setPerspective(fov: number, aspect: number, near: number, far: number) {
         this.projectionMatrix.setPerspective(fov, aspect, near, far);
+        return this;
     }
-    setOrtho(left, right, bottom, top, near, far) {
+    setOrtho(left: number, right: number, bottom: number, top: number, near: number, far: number) {
         this.projectionMatrix.setOrtho(left, right, bottom, top, near, far);
+        return this;
     }
     get viewProjectionMatrix() {
         return new Mat4().mul(this.projectionMatrix).mul(this.getWorldTransform().clone().invert());

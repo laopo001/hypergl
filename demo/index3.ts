@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 13th 2018, 12:20:18 pm
+ * Last Modified: Saturday, September 15th 2018, 12:35:02 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -96,7 +96,11 @@ let main = async () => {
     app.scene.root.addChild(entity2);
 
 
-    let camera = new Camera(45, app.canvas.width / app.canvas.height, 1, 1000);
+    let camera = new Camera();
+    camera.setPerspective(45, app.canvas.width / app.canvas.height, 1, 1000);
+    // let height = 3;
+    // let width = app.canvas.width / app.canvas.height * height;
+    // camera.setOrtho(-width, width, -height, height, -100, 100);
     camera.setPosition(0, 4, 4);
     camera.lookAt(entity);
 
