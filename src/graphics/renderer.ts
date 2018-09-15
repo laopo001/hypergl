@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 8th 2018, 3:39:58 pm
+ * Last Modified: Saturday, September 15th 2018, 2:48:37 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -36,7 +36,7 @@ export class RendererPlatform {
     programGenerator = new ShaderProgramGenerator(this);
     private webgl!: WebGLRenderingContext;
     private webgl2!: WebGL2RenderingContext;
-    constructor(canvas: HTMLCanvasElement, option?: AppOption) {
+    constructor(public canvas: HTMLCanvasElement, option?: AppOption) {
         let webgl2;
         if (option && !option.webgl1) {
             webgl2 = canvas.getContext('webgl2') as any;
