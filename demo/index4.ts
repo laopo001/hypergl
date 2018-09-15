@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 15th 2018, 3:19:17 pm
+ * Last Modified: Saturday, September 15th 2018, 5:58:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,7 +13,7 @@
 
 
 
-import { SEMANTIC, BUFFER, PointLight, DirectionalLight, Light, StandardMaterial, Application, BasicMaterial, Entity, Texture } from '../src';
+import { Scene, BUFFER, PointLight, DirectionalLight, Light, StandardMaterial, Application, BasicMaterial, Entity, Texture } from '../src';
 import vert from '../src/graphics/shaders/vertex.vert';
 import frag from '../src/graphics/shaders/fragment.frag';
 import { loadImage } from './utils/util';
@@ -98,13 +98,21 @@ let main = async () => {
 
     let camera = new Camera();
     camera.setPerspective(45, app.canvas.width / app.canvas.height, 1, 1000);
-    // let height = 3;
-    // let width = app.canvas.width / app.canvas.height * height;
-    // camera.setOrtho(-width, width, -height, height, -100, 100);
     camera.setPosition(0, 4, 4);
     camera.lookAt(entity);
 
     app.scene.cameras.push(camera);
+
+    let scene = app.createScene();
+    scene.cameras.push(camera);
+    scene.root.addChild(entity);
+    // scene.render();
+    let f = scene.createFrame();
+    f.render();
+    console.log(f);
+
+    // app.scene.render();
+
 
     app.start();
 

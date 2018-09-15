@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 15th 2018, 2:59:07 pm
+ * Last Modified: Saturday, September 15th 2018, 5:25:21 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -16,11 +16,15 @@ let OFFSCREEN_HEIGHT = 256;
 
 import { RendererPlatform } from './renderer';
 import { Log } from '../util';
+import { Scene } from '../scene/scene';
 export class Frame {
     framebuffer!: WebGLFramebuffer;
     texture!: WebGLTexture;
+    renderer!: RendererPlatform;
     // depthBuffer!: WebGLRenderbuffer;
-    constructor(private renderer: RendererPlatform) { }
+    constructor(private scene: Scene) {
+        this.renderer = scene.app.rendererPlatform;
+    }
     createFramebuffer() {
         const gl = this.renderer.gl;
         this.framebuffer = gl.createFramebuffer() as WebGLFramebuffer;
@@ -80,5 +84,11 @@ export class Frame {
         // tslint:disable-next-line:number-literal-format
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); // Clear the color buffer
+    }
+    render() {
+        this.beforeDraw();
+        console.log(1);
+        this.scene.render();
+        this.afterDraw();
     }
 }

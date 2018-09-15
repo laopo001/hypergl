@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 9th 2018, 9:59:45 pm
+ * Last Modified: Saturday, September 15th 2018, 7:17:27 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -49,6 +49,7 @@ export abstract class Material {
             res.push(obj);
         });
         this.parameters['_' + name] = res;
+        this._dirtyUpdate = true;
     }
     setPointLightArr(name: string, data: PointLight[]) {
         let res: string[][] = [];
@@ -65,6 +66,7 @@ export abstract class Material {
             res.push(obj);
         });
         this.parameters['_' + name] = res;
+        this._dirtyUpdate = true;
     }
 }
 

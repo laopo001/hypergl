@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, September 11th 2018, 12:47:24 am
+ * Last Modified: Saturday, September 15th 2018, 5:39:29 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -21,6 +21,8 @@ import { Entity } from '../ecs/entity';
 import { Color } from '../core/color';
 import { Vec3 } from '../math';
 import { Light, PointLight, DirectionalLight } from '../lights';
+import { Frame } from '../graphics/createFrame';
+import { Log } from '../util';
 export class Scene extends IElement {
     static ambientColor = new Color(0.2, 0.2, 0.2);
     // static ambient = new Vec3(0, -1, -1);
@@ -38,6 +40,7 @@ export class Scene extends IElement {
     readonly cameras: Camera[] = [];
     private _activeCamera!: Camera;
     get activeCamera() {
+        Log.assert(this._activeCamera || this.cameras[0], 'scene 没有 activeCamera');
         return this._activeCamera || this.cameras[0];
     }
     set activeCamera(x) {
@@ -50,6 +53,11 @@ export class Scene extends IElement {
     render() {
         this.root.syncHierarchy();
         renderScence(this);
+    }
+    createFrame() {
+        const f = new Frame(this);
+        f.createFramebuffer();
+        return f;
     }
     get [Symbol.toStringTag]() {
         return 'Scene';
