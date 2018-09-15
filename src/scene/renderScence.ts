@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 9th 2018, 5:43:35 pm
+ * Last Modified: Saturday, September 15th 2018, 10:35:27 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -40,7 +40,7 @@ export function renderScence(scene: Scene) {
         mesh.vertexBuffer.format.elements.forEach(x => {
             attributes[SEMANTICMAP[x.semantic]] = x.semantic;
         });
-        material.setDirectionalLightArr('directionalLightArr', lights.directionalLights);
+        material.setDirectionalLightArr('directionalLightArr', lights.directionalLights, scene.app.rendererPlatform);
         material.setPointLightArr('pointLightArr', lights.pointLights);
         material.updateShader(renderer, attributes);
         let shader = mesh.material.shader as Shader;

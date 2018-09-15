@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 15th 2018, 7:17:27 pm
+ * Last Modified: Sunday, September 16th 2018, 1:19:57 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -33,7 +33,9 @@ export abstract class Material {
     }
     abstract update();
     abstract updateShader(renderer: RendererPlatform, attributes: { [s: string]: SEMANTIC });
-    setDirectionalLightArr(name: string, data: DirectionalLight[]) {
+    setDirectionalLightArr(name: string, data: DirectionalLight[], renderer: RendererPlatform) {
+        // TODO
+        // renderer.programGenerator.getShader('shadow', {}, {})
         let res: string[][] = [];
 
         data.forEach((item, index) => {

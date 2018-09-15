@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, September 7th 2018, 12:51:46 am
+ * Last Modified: Saturday, September 15th 2018, 10:33:07 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,6 +17,8 @@ import basicVert from './shaders/basic.vert';
 import basicFrag from './shaders/basic.frag';
 import phongVert from './shaders/phong.vert';
 import phongFrag from './shaders/phong.frag';
+import shadowVert from './shaders/shadow.vert';
+import shadowFrag from './shaders/shadow.frag';
 import { RendererPlatform } from './renderer';
 import { Shader } from './shader';
 import { SEMANTIC } from '../conf';
@@ -67,6 +69,10 @@ function createShaderDefinition(name: string, renderer: RendererPlatform, option
         case 'PhoneMaterial':
             vertStr = phongVert(options);
             fragStr = phongFrag(options);
+            break;
+        case 'shadow':
+            vertStr = shadowVert(options);
+            fragStr = shadowFrag(options);
             break;
     }
 

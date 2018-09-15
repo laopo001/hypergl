@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 15th 2018, 8:28:48 pm
+ * Last Modified: Saturday, September 15th 2018, 10:09:13 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -23,10 +23,10 @@ import { Mesh } from '../src/mesh/mesh';
 import { Color } from '../src/core/color';
 
 function addLight(app, v) {
-    let light = new PointLight();
+    let light = new DirectionalLight();
     light.setPosition(v);
     // light.color = new Color(0.5, 1, 0.5);
-    app.scene.lights.pointLights.push(light);
+    app.scene.lights.directionalLights.push(light);
     let mesh = Mesh.createBox(app.rendererPlatform);
     let entity = new Entity();
     entity.mesh = mesh;
@@ -103,18 +103,18 @@ let main = async () => {
 
     app.scene.cameras.push(camera);
     // ------------
-    let scene = app.createScene();
-    scene.cameras.push(camera);
-    let light = new PointLight();
-    light.setPosition(0, 2, 0);
-    scene.lights.pointLights.push(light);
-    scene.root.addChild(entity);
-    // scene.render();
-    let f = scene.createFrame();
-    f.render();
+    // let scene = app.createScene();
+    // scene.cameras.push(camera);
+    // let light = new PointLight();
+    // light.setPosition(0, 2, 0);
+    // scene.lights.pointLights.push(light);
+    // scene.root.addChild(entity);
+    // // scene.render();
+    // let f = scene.createFrame();
+    // f.render();
 
-    (entity.mesh.material as StandardMaterial).diffuseTexture = f.getTexture();
-    entity.mesh.material.update();
+    // (entity.mesh.material as StandardMaterial).diffuseTexture = f.getTexture();
+    // entity.mesh.material.update();
 
 
     app.start();

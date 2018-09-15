@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 8th 2018, 8:47:49 pm
+ * Last Modified: Saturday, September 15th 2018, 10:07:20 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -42,7 +42,10 @@ export class Shader {
     checkUniformScope() {
         // tslint:disable-next-line:forin
         for (let x in this.uniformScope) {
-            if (this.uniformScope[x] == null) { return false; }
+            if (this.uniformScope[x] == null) {
+                console.log(x);
+                return false;
+            }
         }
         return true;
     }
