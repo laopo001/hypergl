@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, September 7th 2018, 1:56:09 am
+ * Last Modified: Saturday, September 15th 2018, 12:35:03 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -56,7 +56,7 @@ let main = async () => {
     entity2.setPosition(2, 0, 0);
     app.scene.root.addChild(entity2);
 
-    let camera = new Camera(45, app.canvas.width / app.canvas.height, 1, 1000);
+    let camera = new Camera().setPerspective(45, app.canvas.width / app.canvas.height, 1, 1000);
     camera.setPosition(3, 3, 3);
     camera.lookAt(entity);
 
