@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, September 7th 2018, 12:25:01 am
+ * Last Modified: Saturday, September 15th 2018, 3:25:04 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -19,21 +19,25 @@ import { SEMANTIC, BUFFER } from '../conf';
 import { VertexType, VertexFormat } from '../graphics/vertexFormat';
 import { Nullable, CreateMeshOptions, CreateBoxOptions } from '../types';
 import { RendererPlatform } from '../graphics/renderer';
-import { Vec3 } from '../math';
+import { Vec3, Vec2 } from '../math';
 
 export class Mesh {
-    static defaultMaterial: Material = new BasicMaterial();
-    vertexBuffer!: VertexBuffer;
-    indexBuffer!: IndexBuffer;
-    castShadow = true;
-    receiveShadow = true;
-    private _material = Mesh.defaultMaterial;
     get material() {
         return this._material;
     }
     set material(x) {
         this._material = x;
     }
+    static defaultMaterial: Material = new BasicMaterial();
+    static createBox = createBox;
+    static createPlane = createPlane;
+    // tslint:disable-next-line:member-ordering
+
+    vertexBuffer!: VertexBuffer;
+    indexBuffer!: IndexBuffer;
+    castShadow = true;
+    receiveShadow = true;
+    private _material = Mesh.defaultMaterial;
     constructor() {
         // TODO
     }
@@ -120,8 +124,6 @@ export class Mesh {
         mesh.indexBuffer = indexBuffer;
         return mesh;
     }
-    // tslint:disable-next-line:member-ordering
-    static createBox = createBox;
 }
 
 let primitiveUv1Padding = 4 / 64;
@@ -238,6 +240,73 @@ export function createBox(renderer: RendererPlatform, opts?: CreateBoxOptions) {
         uvs1,
         indices
     };
+
+    return Mesh.createMesh(renderer, options);
+}
+
+export function createPlane(renderer: RendererPlatform, opts?: {
+    halfExtents?: Vec2,
+    widthSegments?: number,
+    lengthSegments?: number
+}) {
+    // Check the supplied options and provide defaults for unspecified ones
+    let he = opts && opts.halfExtents !== undefined ? opts.halfExtents : new Vec2(0.5, 0.5);
+    let ws = opts && opts.widthSegments !== undefined ? opts.widthSegments : 5;
+    let ls = opts && opts.lengthSegments !== undefined ? opts.lengthSegments : 5;
+
+    // Variable declarations
+    // tslint:disable-next-line:one-variable-per-declaration
+    let i, j;
+    // tslint:disable-next-line:one-variable-per-declaration
+    let x, y, z, u, v;
+    let positions: number[] = [];
+    let normals: number[] = [];
+    let uvs: number[] = [];
+    let indices: number[] = [];
+
+    // Generate plane as follows (assigned UVs denoted at corners):
+    // (0,1)x---------x(1,1)
+    //      |         |
+    //      |         |
+    //      |    O--X |length
+    //      |    |    |
+    //      |    Z    |
+    // (0,0)x---------x(1,0)
+    //         width
+    let vcounter = 0;
+
+    for (i = 0; i <= ws; i++) {
+        for (j = 0; j <= ls; j++) {
+            x = -he.x + 2.0 * he.x * i / ws;
+            y = 0.0;
+            z = -(-he.y + 2.0 * he.y * j / ls);
+            u = i / ws;
+            v = j / ls;
+
+            positions.push(x, y, z);
+            normals.push(0.0, 1.0, 0.0);
+            uvs.push(u, v);
+
+            if ((i < ws) && (j < ls)) {
+                indices.push(vcounter + ls + 1, vcounter + 1, vcounter);
+                indices.push(vcounter + ls + 1, vcounter + ls + 2, vcounter + 1);
+            }
+
+            vcounter++;
+        }
+    }
+
+    let options = {
+        positions,
+        normals,
+        uvs,
+        uvs1: uvs, // UV1 = UV0 for plane
+        indices
+    };
+
+    // if (pc.precalculatedTangents) {
+    //     options.tangents = pc.calculateTangents(positions, normals, uvs, indices);
+    // }
 
     return Mesh.createMesh(renderer, options);
 }
