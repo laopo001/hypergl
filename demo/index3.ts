@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, September 11th 2018, 12:58:32 am
+ * Last Modified: Saturday, September 15th 2018, 12:35:02 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -60,12 +60,24 @@ let main = async () => {
     m.colorMap = texture;
     m.update();
     let entity = new Entity();
-
-
     entity.mesh = mesh;
     mesh.material = m;
-
     app.scene.root.addChild(entity);
+
+    (_ => {
+        let mesh = Mesh.createBox(app.rendererPlatform);
+        console.log(mesh);
+        let m = new BasicMaterial();
+        m.color = new Color(0.5, 1, 0.5);
+        // m.colorMap = texture;
+        m.update();
+        let entity = new Entity();
+        entity.setPosition(0, -2, 0);
+        entity.setLocalScale(4, 0.1, 4);
+        entity.mesh = mesh;
+        mesh.material = m;
+        app.scene.root.addChild(entity);
+    })();
 
     let mesh2 = Mesh.createBox(app.rendererPlatform);
     let entity2 = new Entity();
@@ -84,7 +96,11 @@ let main = async () => {
     app.scene.root.addChild(entity2);
 
 
-    let camera = new Camera(45, app.canvas.width / app.canvas.height, 1, 1000);
+    let camera = new Camera();
+    camera.setPerspective(45, app.canvas.width / app.canvas.height, 1, 1000);
+    // let height = 3;
+    // let width = app.canvas.width / app.canvas.height * height;
+    // camera.setOrtho(-width, width, -height, height, -100, 100);
     camera.setPosition(0, 4, 4);
     camera.lookAt(entity);
 
