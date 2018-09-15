@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 15th 2018, 5:25:21 pm
+ * Last Modified: Saturday, September 15th 2018, 8:00:24 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,13 +17,17 @@ let OFFSCREEN_HEIGHT = 256;
 import { RendererPlatform } from './renderer';
 import { Log } from '../util';
 import { Scene } from '../scene/scene';
+import { Texture } from '../texture';
 export class Frame {
     framebuffer!: WebGLFramebuffer;
     texture!: WebGLTexture;
-    renderer!: RendererPlatform;
+    renderer: RendererPlatform;
     // depthBuffer!: WebGLRenderbuffer;
     constructor(private scene: Scene) {
         this.renderer = scene.app.rendererPlatform;
+    }
+    getTexture() {
+        return new Texture(this.texture);
     }
     createFramebuffer() {
         const gl = this.renderer.gl;

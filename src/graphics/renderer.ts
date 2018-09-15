@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 15th 2018, 2:48:37 pm
+ * Last Modified: Saturday, September 15th 2018, 7:46:12 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -191,6 +191,12 @@ export class RendererPlatform {
         gl.clear(gl.COLOR_BUFFER_BIT);
     }
     loadTexture(gl: WebGL2RenderingContext, program: WebGLProgram, name: string, texture: Texture, t = 0) {
+        if (texture.webglTexture) {
+            gl.activeTexture(gl['TEXTURE' + t]);
+            // 向target绑定纹理对象
+            gl.bindTexture(gl.TEXTURE_2D, texture.webglTexture);
+            return;
+        }
         if (texture.source == null) { Log.error('texture 设置 source' + texture); return; }
         let u_Sampler = gl.getUniformLocation(program, name);
         const textureBuffer = gl.createTexture();

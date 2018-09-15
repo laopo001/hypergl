@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 8th 2018, 3:16:06 pm
+ * Last Modified: Saturday, September 15th 2018, 7:37:19 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -31,7 +31,7 @@ export class Texture {
     format = PIXELFORMAT.R8_G8_B8; // gl.RGB
     dataType = Uint8Array;
     flipY = true; // 文理是否需要垂直翻转,默认为false
-    constructor() {
+    constructor(public webglTexture?: WebGLTexture) {
         // TODO
     }
     setSource(source: HTMLVideoElement | HTMLImageElement | HTMLCanvasElement) {

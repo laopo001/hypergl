@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 15th 2018, 5:58:08 pm
+ * Last Modified: Saturday, September 15th 2018, 8:28:48 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -102,16 +102,19 @@ let main = async () => {
     camera.lookAt(entity);
 
     app.scene.cameras.push(camera);
-
+    // ------------
     let scene = app.createScene();
     scene.cameras.push(camera);
+    let light = new PointLight();
+    light.setPosition(0, 2, 0);
+    scene.lights.pointLights.push(light);
     scene.root.addChild(entity);
     // scene.render();
     let f = scene.createFrame();
     f.render();
-    console.log(f);
 
-    // app.scene.render();
+    (entity.mesh.material as StandardMaterial).diffuseTexture = f.getTexture();
+    entity.mesh.material.update();
 
 
     app.start();
