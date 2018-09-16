@@ -1,5 +1,5 @@
 {{#if data.GL2}}{{> gles3.vert}}{{/if}}
-
+attribute vec3 position;
 uniform mat4 lightSpaceMatrix;
 uniform mat4 model;
 
