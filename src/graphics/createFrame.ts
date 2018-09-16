@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 15th 2018, 8:00:24 pm
+ * Last Modified: Monday, September 17th 2018, 12:38:35 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -91,7 +91,6 @@ export class Frame {
     }
     render() {
         this.beforeDraw();
-        console.log(1);
         this.scene.render();
         this.afterDraw();
     }

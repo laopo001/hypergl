@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 15th 2018, 10:35:27 pm
+ * Last Modified: Monday, September 17th 2018, 2:00:14 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,6 +20,8 @@ import { Mesh } from '../mesh/mesh';
 import { Shader } from '../graphics/shader';
 import { SEMANTICMAP, SEMANTIC } from '../conf';
 import { Log } from '../util';
+import { Light, DirectionalLight, PointLight } from '../lights';
+import { Camera } from './camera';
 
 
 
@@ -28,6 +30,9 @@ export function renderScence(scene: Scene) {
     let lights = scene.lights;
     let camera = scene.activeCamera;
 
+    let directionalLightsUniforms = renderDirectionalLightArr('directionalLightArr', lights.directionalLights, scene);
+    let pointLightsUniforms = renderPointLightArr('pointLightArr', lights.pointLights, scene);
+    let LightsUniforms = { ...directionalLightsUniforms, ...pointLightsUniforms };
     let renderer = scene.app.rendererPlatform;
     renderer.initDraw();
     // TODO
@@ -40,11 +45,12 @@ export function renderScence(scene: Scene) {
         mesh.vertexBuffer.format.elements.forEach(x => {
             attributes[SEMANTICMAP[x.semantic]] = x.semantic;
         });
-        material.setDirectionalLightArr('directionalLightArr', lights.directionalLights, scene.app.rendererPlatform);
-        material.setPointLightArr('pointLightArr', lights.pointLights);
+        material.setLights(LightsUniforms);
+        // material.setDirectionalLightArr('directionalLightArr', lights.directionalLights, scene);
+        // material.setPointLightArr('pointLightArr', lights.pointLights);
         material.updateShader(renderer, attributes);
         let shader = mesh.material.shader as Shader;
-        renderer.setShader(shader as Shader);
+        renderer.setShaderProgram(shader as Shader);
 
         shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
         shader.setUniformValue('matrix_model', entity.getWorldTransform().data);
@@ -53,4 +59,73 @@ export function renderScence(scene: Scene) {
         // tslint:disable-next-line:forin
         renderer.draw(entity);
     }
+}
+
+export function rendererShadowMap(scene: Scene, light: Light) {
+    let entitys = scene.layer;
+    let renderer = scene.app.rendererPlatform;
+    let f = scene.createFrame();
+    let camera = new Camera();
+    // camera.setPerspective
+    let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
+    let shader = renderer.programGenerator.getShader('shadow', attributes);
+    shader.setUniformValue('matrix_viewProjection', scene.activeCamera.viewProjectionMatrix.data);
+    shader.setUniformValue('matrix_model', light.getWorldTransform().data);
+    // renderer.initDraw();
+    f.beforeDraw();
+    for (let i = 0; i < entitys.length; i++) {
+        let entity = entitys[i];
+        renderer.setShaderProgram(shader as Shader);
+        renderer.draw(entity);
+    }
+    f.afterDraw();
+    return f.getTexture();
+}
+
+export function renderDirectionalLightArr(name: string, data: DirectionalLight[], scene: Scene) {
+    let uniforms = {};
+    let res: string[][] = [];
+
+    data.forEach((item, index) => {
+        let obj: any = {};
+
+        if (item.castShadows) {
+            let texture = rendererShadowMap(scene, item);
+            setLight(name, 'shadowMap', index, obj, uniforms, texture);
+        }
+        setLight(name, 'position', index, obj, uniforms, item.getPosition().data);
+
+        setLight(name, 'color', index, obj, uniforms, item.color.data);
+
+        setLight(name, 'direction', index, obj, uniforms, item.direction.normalize().data);
+
+
+        res.push(obj);
+    });
+    uniforms['_' + name] = res;
+    return uniforms;
+}
+
+export function renderPointLightArr(name: string, data: PointLight[], scene: Scene) {
+    let res: string[][] = [];
+    let uniforms = {};
+    data.forEach((item, index) => {
+        let obj: any = {};
+
+        setLight(name, 'position', index, obj, uniforms, item.getPosition().data);
+
+        setLight(name, 'color', index, obj, uniforms, item.color.data);
+
+        setLight(name, 'range', index, obj, uniforms, item.range);
+
+        res.push(obj);
+    });
+    uniforms['_' + name] = res;
+    return uniforms;
+}
+
+function setLight(name: string, key: string, index, obj, parameters, value) {
+    let t = name + index + '_' + key;
+    obj[key] = t;
+    parameters[t] = value;
 }

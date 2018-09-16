@@ -8,6 +8,7 @@ uniform vec3 camera_position;
 // uniform vec3 {{this.position}};
 uniform vec4 {{this.color}};
 uniform vec3 {{this.direction}};
+uniform sampler2D {{this.shadowMap}};
 {{/each}}
 // directionalLight end
 // pointLight start
@@ -97,8 +98,21 @@ vec3 CalcPointLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPositi
     } else{
          return color * (1.0f - distance / range);
     }
-  
-    
+}
+
+float ShadowCalculation(vec4 fragPosLightSpace, sampler2D shadowMap)
+{
+    // 执行透视除法
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    // 变换到[0,1]的范围
+    projCoords = projCoords * 0.5 + 0.5;
+    // 取得最近点的深度(使用[0,1]范围下的fragPosLight当坐标)
+    float closestDepth = texture(shadowMap, projCoords.xy).r; 
+    // 取得当前片元在光源视角下的深度
+    float currentDepth = projCoords.z;
+    // 检查当前片元是否在阴影中
+    float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
+    return shadow;
 }
 
 void main(void)

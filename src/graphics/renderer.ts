@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 15th 2018, 7:46:12 pm
+ * Last Modified: Monday, September 17th 2018, 12:25:07 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -149,7 +149,10 @@ export class RendererPlatform {
             gl.MIRRORED_REPEAT
         ];
     }
-    setShader(shader: Shader) {
+    // tslint:disable-next-line:member-ordering
+    currShader!: Shader;
+    setShaderProgram(shader: Shader) {
+        this.currShader = shader;
         if (shader.ready === false) {
             shader.link();
         }
@@ -237,7 +240,7 @@ export class RendererPlatform {
         const material = mesh.material;
         this.setVertexBuffer(mesh.vertexBuffer);
         this.setIndexBuffer(mesh.indexBuffer);
-        const shader = material.shader as Shader;
+        const shader = this.currShader as Shader;
         const samplers = shader.samplers;
         const uniforms = shader.uniforms;
         const attributes = shader.attributes;

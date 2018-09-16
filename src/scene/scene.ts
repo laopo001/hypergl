@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 15th 2018, 5:39:29 pm
+ * Last Modified: Monday, September 17th 2018, 12:48:10 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -54,9 +54,13 @@ export class Scene extends IElement {
         this.root.syncHierarchy();
         renderScence(this);
     }
+    // tslint:disable-next-line:member-ordering
+    _frame?: Frame;
     createFrame() {
+        if (this._frame) { return this._frame; }
         const f = new Frame(this);
         f.createFramebuffer();
+        this._frame = f;
         return f;
     }
     get [Symbol.toStringTag]() {
