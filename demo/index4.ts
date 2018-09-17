@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 15th 2018, 10:09:13 pm
+ * Last Modified: Monday, September 17th 2018, 5:36:57 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -25,6 +25,7 @@ import { Color } from '../src/core/color';
 function addLight(app, v) {
     let light = new DirectionalLight();
     light.setPosition(v);
+    light.direction = new Vec3(0, -1, 1);
     // light.color = new Color(0.5, 1, 0.5);
     app.scene.lights.directionalLights.push(light);
     let mesh = Mesh.createBox(app.rendererPlatform);
@@ -36,7 +37,7 @@ function addLight(app, v) {
     entity.mesh.material = m3;
     entity.setLocalScale(0.2, 0.2, 0.2);
     entity.setPosition(light.getPosition());
-    app.scene.root.addChild(entity);
+    // app.scene.root.addChild(entity);
 }
 
 let main = async () => {
@@ -50,7 +51,7 @@ let main = async () => {
 
     // let light = new DirectionalLight();
     // app.scene.lights.directionalLights.push(light);
-    addLight(app, new Vec3(0, 2, -1));
+    addLight(app, new Vec3(0, 5, 2));
 
 
     let mesh = Mesh.createBox(app.rendererPlatform);
@@ -67,13 +68,13 @@ let main = async () => {
     (_ => {
         let mesh = Mesh.createBox(app.rendererPlatform);
         console.log(mesh);
-        let m = new BasicMaterial();
-        m.color = new Color(0.5, 1, 0.5);
+        let m = new StandardMaterial();
+        m.diffuseColor = new Color(0.5, 1, 0.5);
         // m.colorMap = texture;
         m.update();
         let entity = new Entity();
         entity.setPosition(0, -2, 0);
-        entity.setLocalScale(4, 0.1, 4);
+        entity.setLocalScale(10, 0.1, 10);
         entity.mesh = mesh;
         mesh.material = m;
         app.scene.root.addChild(entity);
@@ -93,12 +94,12 @@ let main = async () => {
 
     // entity2.setLocalScale(1.5, 0.5, 1.5);
     entity2.setPosition(2, 0, 0);
-    app.scene.root.addChild(entity2);
+    // app.scene.root.addChild(entity2);
 
 
     let camera = new Camera();
     camera.setPerspective(45, app.canvas.width / app.canvas.height, 1, 1000);
-    camera.setPosition(0, 4, 4);
+    camera.setPosition(5, 5, 5);
     camera.lookAt(entity);
 
     app.scene.cameras.push(camera);
@@ -120,7 +121,7 @@ let main = async () => {
     app.start();
 
     app.on('update', _ => {
-        entity.rotate(0, 1, 0);
+        // entity.rotate(0, 1, 0);
     });
     // app.rendererPlatform.setViewport(100, 200, 500, 300);
 };

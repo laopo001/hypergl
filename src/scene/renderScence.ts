@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 17th 2018, 2:00:14 am
+ * Last Modified: Monday, September 17th 2018, 5:37:21 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -22,6 +22,7 @@ import { SEMANTICMAP, SEMANTIC } from '../conf';
 import { Log } from '../util';
 import { Light, DirectionalLight, PointLight } from '../lights';
 import { Camera } from './camera';
+import { Vec3 } from '../math';
 
 
 
@@ -66,20 +67,40 @@ export function rendererShadowMap(scene: Scene, light: Light) {
     let renderer = scene.app.rendererPlatform;
     let f = scene.createFrame();
     let camera = new Camera();
+
+    if (light instanceof DirectionalLight) {
+        let height = 50;
+        let width = 1 * height;
+        let z = 1 * height;
+        camera.setOrtho(-width, width, -height, height, -z, z);
+        let v = light.getPosition().sub(new Vec3(0, 0, 0));
+        let up = new Vec3();
+        if (v.z === 0) {
+            up.set(0, 0, -1);
+        } else {
+            up.set(0, 1, -v.y / v.z);
+        }
+        // camera.setPosition(light.getPosition());
+        // camera.lookAt(new Vec3(0, 0, 0), up);
+        // camera.setPosition(0, 0, 0);
+        // console.log(light.direction);
+        camera.lookAt(light.direction, up);
+    }
     // camera.setPerspective
     let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
     let shader = renderer.programGenerator.getShader('shadow', attributes);
-    shader.setUniformValue('matrix_viewProjection', scene.activeCamera.viewProjectionMatrix.data);
-    shader.setUniformValue('matrix_model', light.getWorldTransform().data);
+    shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
+    // shader.setUniformValue('matrix_model', light.getWorldTransform().data);
     // renderer.initDraw();
     f.beforeDraw();
     for (let i = 0; i < entitys.length; i++) {
         let entity = entitys[i];
         renderer.setShaderProgram(shader as Shader);
+        shader.setUniformValue('matrix_model', entity.getWorldTransform().data);
         renderer.draw(entity);
     }
     f.afterDraw();
-    return f.getTexture();
+    return { texture: f.getTexture(), viewProjectionMatrix: camera.viewProjectionMatrix };
 }
 
 export function renderDirectionalLightArr(name: string, data: DirectionalLight[], scene: Scene) {
@@ -88,18 +109,14 @@ export function renderDirectionalLightArr(name: string, data: DirectionalLight[]
 
     data.forEach((item, index) => {
         let obj: any = {};
-
         if (item.castShadows) {
-            let texture = rendererShadowMap(scene, item);
+            let { texture, viewProjectionMatrix } = rendererShadowMap(scene, item);
             setLight(name, 'shadowMap', index, obj, uniforms, texture);
+            setLight(name, 'lightSpaceMatrix', index, obj, uniforms, viewProjectionMatrix.data);
         }
         setLight(name, 'position', index, obj, uniforms, item.getPosition().data);
-
         setLight(name, 'color', index, obj, uniforms, item.color.data);
-
         setLight(name, 'direction', index, obj, uniforms, item.direction.normalize().data);
-
-
         res.push(obj);
     });
     uniforms['_' + name] = res;

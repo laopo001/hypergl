@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 6:03:02 pm
+ * Last Modified: Monday, September 17th 2018, 11:41:46 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -49,13 +49,20 @@ export class SceneNode extends IElement {
     constructor() {
         super();
     }
-    lookAt(target: SceneNode) {
-        // TODO
-        let targetLocation = target.getPosition();
-        let up = target.up;
-        let mat4 = new Mat4().setLookAt(this.getPosition(), targetLocation, up);
-        let quat = new Quat().setFromMat4(mat4);
-        this.setRotation(quat);
+    lookAt(target: Vec3, up: Vec3);
+    lookAt(target: SceneNode);
+    lookAt(target?, up?) {
+        if (target instanceof SceneNode) {
+            let targetLocation = target.getPosition();
+            let up = target.up;
+            let mat4 = new Mat4().setLookAt(this.getPosition(), targetLocation, up);
+            let quat = new Quat().setFromMat4(mat4);
+            this.setRotation(quat);
+        } else {
+            let mat4 = new Mat4().setLookAt(this.getPosition(), target, up);
+            let quat = new Quat().setFromMat4(mat4);
+            this.setRotation(quat);
+        }
     }
     addChild(child: Entity) {
         this.children.push(child);

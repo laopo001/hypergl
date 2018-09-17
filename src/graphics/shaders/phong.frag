@@ -9,6 +9,7 @@ uniform vec3 camera_position;
 uniform vec4 {{this.color}};
 uniform vec3 {{this.direction}};
 uniform sampler2D {{this.shadowMap}};
+uniform mat4 {{this.lightSpaceMatrix}};
 {{/each}}
 // directionalLight end
 // pointLight start
@@ -71,34 +72,6 @@ vec4 getOutSpecularColor() {
     {{/if}}
 }
 {{/if}}
-// 计算方向
-vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor,vec3 lightDirection)
-{
-    vec3 lightDir = normalize(-lightDirection);
-    // 计算漫反射强度
-    float diff = max(dot(normal, lightDir), 0.0);
-    // 计算镜面反射强度
-    vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
-    // 合并各个光照分量
- 
-    // vec3 ambient = ambientColor.xyz * getOutDiffuseColor().xyz;
-    vec3 diffuse  = lightColor * diff * getOutDiffuseColor().xyz;
-    vec3 specular = lightColor * spec * getOutSpecularColor().xyz;
-    return (diffuse + specular);
-}  
-// 计算定点光在确定位置的光照颜色
-vec3 CalcPointLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPosition, float range)
-{
-    vec3 lightDirection = normalize(out_vertex_position - lightPosition);
-    vec3 color = CalcDirLight(normal, viewDir, lightColor, lightDirection);
-    float distance = length(lightPosition - out_vertex_position);
-    if(distance > range){
-        return vec3(0);
-    } else{
-         return color * (1.0f - distance / range);
-    }
-}
 
 float ShadowCalculation(vec4 fragPosLightSpace, sampler2D shadowMap)
 {
@@ -111,9 +84,41 @@ float ShadowCalculation(vec4 fragPosLightSpace, sampler2D shadowMap)
     // 取得当前片元在光源视角下的深度
     float currentDepth = projCoords.z;
     // 检查当前片元是否在阴影中
-    float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
+    float shadow = currentDepth > closestDepth + 0.005 ? 1.0 : 0.0;
     return shadow;
 }
+
+// 计算方向
+vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor,vec3 lightDirection, sampler2D shadowMap, mat4 lightSpaceMatrix)
+{
+    vec3 lightDir = normalize(-lightDirection);
+    // 计算漫反射强度
+    float diff = max(dot(normal, lightDir), 0.0);
+    // 计算镜面反射强度
+    vec3 reflectDir = reflect(-lightDir, normal);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
+    // 合并各个光照分量
+ 
+    // vec3 ambient = ambientColor.xyz * getOutDiffuseColor().xyz;
+    vec3 diffuse  = lightColor * diff * getOutDiffuseColor().xyz;
+    vec3 specular = lightColor * spec * getOutSpecularColor().xyz;
+    float shadow = ShadowCalculation(lightSpaceMatrix * vec4(out_vertex_position, 1.0), shadowMap);    
+    return (diffuse + specular) * (1.0 - shadow);
+}  
+// 计算定点光在确定位置的光照颜色
+vec3 CalcPointLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPosition, float range, sampler2D shadowMap, mat4 lightSpaceMatrix)
+{
+    vec3 lightDirection = normalize(out_vertex_position - lightPosition);
+    vec3 color = CalcDirLight(normal, viewDir, lightColor, lightDirection, shadowMap, lightSpaceMatrix);
+    float distance = length(lightPosition - out_vertex_position);
+    if(distance > range){
+        return vec3(0);
+    } else{
+         return color * (1.0f - distance / range);
+    }
+}
+
+
 
 void main(void)
 {
@@ -125,11 +130,11 @@ void main(void)
     // start
     vec3 result = ambientColor.xyz * getOutDiffuseColor().xyz;
     {{#each uniforms._directionalLightArr}}
-        result += CalcDirLight(norm, viewDir, vec3({{this.color}}), {{this.direction}});
+        result += CalcDirLight(norm, viewDir, vec3({{this.color}}), {{this.direction}}, {{this.shadowMap}}, {{this.lightSpaceMatrix}} );
     {{/each}}
     {{#each uniforms._pointLightArr}}
         // vec3 lightDir = normalize(out_vertex_position - {{this.position}});
-        result += CalcPointLight(norm, viewDir, vec3({{this.color}}), {{this.position}}, {{this.range}} );
+        result += CalcPointLight(norm, viewDir, vec3({{this.color}}), {{this.position}}, {{this.range}}, {{this.shadowMap}}, {{this.lightSpaceMatrix}});
     {{/each}}
     // end
 

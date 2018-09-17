@@ -5,14 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 17th 2018, 12:38:35 am
+ * Last Modified: Monday, September 17th 2018, 5:22:51 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
-let OFFSCREEN_WIDTH = 256;
-let OFFSCREEN_HEIGHT = 256;
+let OFFSCREEN_WIDTH = 1024;
+let OFFSCREEN_HEIGHT = 1024;
 
 import { RendererPlatform } from './renderer';
 import { Log } from '../util';
