@@ -73,7 +73,12 @@ vec4 getOutSpecularColor() {
 }
 {{/if}}
 
-float ShadowCalculation(vec4 fragPosLightSpace, sampler2D shadowMap)
+float unpack(const in vec4 rgbaDepth) {
+    const vec4 bitShift = vec4(1.0, 1.0/256.0, 1.0/(256.0*256.0), 1.0/(256.0*256.0*256.0));
+    return dot(rgbaDepth, bitShift);
+}
+
+float ShadowCalculation(vec4 fragPosLightSpace, sampler2D shadowMap, vec3 lightDirection)
 {
     // 执行透视除法
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
@@ -82,14 +87,25 @@ float ShadowCalculation(vec4 fragPosLightSpace, sampler2D shadowMap)
     // 取得最近点的深度(使用[0,1]范围下的fragPosLight当坐标)
     float closestDepth = texture(shadowMap, projCoords.xy).r; 
     // 取得当前片元在光源视角下的深度
-    float currentDepth = projCoords.z;
+    float currentDepth =  clamp(projCoords.z, 0.0, 1.0);
     // 检查当前片元是否在阴影中
-    float shadow = currentDepth > closestDepth + 0.005 ? 1.0 : 0.0;
+    float bias = max(0.05 * (1.0 - dot(out_normal, -lightDirection)), 0.005);
+    // float shadow = currentDepth > closestDepth + bias ? 1.0 : 0.0float shadow = 0.0;
+    float shadow = 0.0;
+    float texelSize=1.0 / 2048.0;
+    for(float y=-1.0; y <= 1.0; y += 1.0){
+        for(float x=-1.0; x <=1.0; x += 1.0){
+            float rgbaDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
+            shadow += projCoords.z - bias > rgbaDepth ? 1.0 : 0.0;
+        }
+    }
+    shadow/=9.0;
+
     return shadow;
 }
 
 // 计算方向
-vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor,vec3 lightDirection, sampler2D shadowMap, mat4 lightSpaceMatrix)
+vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirection, sampler2D shadowMap, mat4 lightSpaceMatrix)
 {
     vec3 lightDir = normalize(-lightDirection);
     // 计算漫反射强度
@@ -99,10 +115,10 @@ vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor,vec3 lightDirection
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
     // 合并各个光照分量
  
-    // vec3 ambient = ambientColor.xyz * getOutDiffuseColor().xyz;
     vec3 diffuse  = lightColor * diff * getOutDiffuseColor().xyz;
     vec3 specular = lightColor * spec * getOutSpecularColor().xyz;
-    float shadow = ShadowCalculation(lightSpaceMatrix * vec4(out_vertex_position, 1.0), shadowMap);    
+    float shadow = ShadowCalculation(lightSpaceMatrix * vec4(out_vertex_position, 1.0), shadowMap, lightDirection);    
+    // float visibility = min(0.6 + (1.0 - shadow), 1.0);
     return (diffuse + specular) * (1.0 - shadow);
 }  
 // 计算定点光在确定位置的光照颜色

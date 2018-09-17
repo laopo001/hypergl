@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 17th 2018, 5:37:21 pm
+ * Last Modified: Monday, September 17th 2018, 8:49:55 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -69,10 +69,10 @@ export function rendererShadowMap(scene: Scene, light: Light) {
     let camera = new Camera();
 
     if (light instanceof DirectionalLight) {
-        let height = 50;
+        let height = 10;
         let width = 1 * height;
-        let z = 1 * height;
-        camera.setOrtho(-width, width, -height, height, -z, z);
+        let length = 1 * height;
+        camera.setOrtho(-width, width, -height, height, -length, length);
         let v = light.getPosition().sub(new Vec3(0, 0, 0));
         let up = new Vec3();
         if (v.z === 0) {
@@ -85,6 +85,7 @@ export function rendererShadowMap(scene: Scene, light: Light) {
         // camera.setPosition(0, 0, 0);
         // console.log(light.direction);
         camera.lookAt(light.direction, up);
+        camera.setPosition(scene.activeCamera.getPosition());
     }
     // camera.setPerspective
     let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
@@ -92,6 +93,8 @@ export function rendererShadowMap(scene: Scene, light: Light) {
     shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
     // shader.setUniformValue('matrix_model', light.getWorldTransform().data);
     // renderer.initDraw();
+    let gl = scene.app.rendererPlatform.gl;
+    // gl.cullFace(gl.FRONT);
     f.beforeDraw();
     for (let i = 0; i < entitys.length; i++) {
         let entity = entitys[i];
@@ -100,6 +103,7 @@ export function rendererShadowMap(scene: Scene, light: Light) {
         renderer.draw(entity);
     }
     f.afterDraw();
+    // gl.cullFace(gl.BACK);
     return { texture: f.getTexture(), viewProjectionMatrix: camera.viewProjectionMatrix };
 }
 

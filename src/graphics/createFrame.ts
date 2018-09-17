@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 17th 2018, 5:22:51 pm
+ * Last Modified: Monday, September 17th 2018, 7:18:29 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -74,11 +74,6 @@ export class Frame {
         // tslint:disable-next-line:number-literal-format
         gl.clearColor(0.2, 0.2, 0.4, 1.0); // Set clear color (the color is slightly changed)
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);  // Clear FBO
-
-        // drawTexturedCube(gl, gl.program, cube, angle, texture, viewProjMatrixFBO);   // Draw the cube
-        // this.renderer.draw()
-
-
     }
     afterDraw() {
         const gl = this.renderer.gl;
@@ -86,8 +81,8 @@ export class Frame {
         gl.viewport(0, 0, this.renderer.canvas.width, this.renderer.canvas.height);  // Set the size of viewport back to that of <canvas>
 
         // tslint:disable-next-line:number-literal-format
-        gl.clearColor(0.0, 0.0, 0.0, 1.0);
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); // Clear the color buffer
+        // gl.clearColor(0.0, 0.0, 0.0, 1.0);
+        // gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); // Clear the color buffer
     }
     render() {
         this.beforeDraw();

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 17th 2018, 5:36:57 pm
+ * Last Modified: Monday, September 17th 2018, 9:00:20 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -25,7 +25,7 @@ import { Color } from '../src/core/color';
 function addLight(app, v) {
     let light = new DirectionalLight();
     light.setPosition(v);
-    light.direction = new Vec3(0, -1, 1);
+    light.direction = new Vec3(1, -1, 1);
     // light.color = new Color(0.5, 1, 0.5);
     app.scene.lights.directionalLights.push(light);
     let mesh = Mesh.createBox(app.rendererPlatform);
@@ -51,7 +51,7 @@ let main = async () => {
 
     // let light = new DirectionalLight();
     // app.scene.lights.directionalLights.push(light);
-    addLight(app, new Vec3(0, 5, 2));
+    addLight(app, new Vec3(0, 8, 2));
 
 
     let mesh = Mesh.createBox(app.rendererPlatform);
@@ -63,6 +63,7 @@ let main = async () => {
     let entity = new Entity();
     entity.mesh = mesh;
     mesh.material = m;
+
     app.scene.root.addChild(entity);
 
     (_ => {
@@ -73,7 +74,7 @@ let main = async () => {
         // m.colorMap = texture;
         m.update();
         let entity = new Entity();
-        entity.setPosition(0, -2, 0);
+        entity.setPosition(0, -0.55, 0);
         entity.setLocalScale(10, 0.1, 10);
         entity.mesh = mesh;
         mesh.material = m;
@@ -94,12 +95,12 @@ let main = async () => {
 
     // entity2.setLocalScale(1.5, 0.5, 1.5);
     entity2.setPosition(2, 0, 0);
-    // app.scene.root.addChild(entity2);
+    app.scene.root.addChild(entity2);
 
 
     let camera = new Camera();
     camera.setPerspective(45, app.canvas.width / app.canvas.height, 1, 1000);
-    camera.setPosition(5, 5, 5);
+    camera.setPosition(0, 5, 5);
     camera.lookAt(entity);
 
     app.scene.cameras.push(camera);
