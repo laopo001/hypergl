@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 17th 2018, 9:00:20 pm
+ * Last Modified: Tuesday, September 18th 2018, 10:54:22 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -55,7 +55,7 @@ let main = async () => {
 
 
     let mesh = Mesh.createBox(app.rendererPlatform);
-    console.log(mesh);
+    // console.log(mesh);
     let m = new BasicMaterial();
     m.color = new Color(0.5, 1, 0.5);
     m.colorMap = texture;
@@ -68,7 +68,7 @@ let main = async () => {
 
     (_ => {
         let mesh = Mesh.createBox(app.rendererPlatform);
-        console.log(mesh);
+        // console.log(mesh);
         let m = new StandardMaterial();
         m.diffuseColor = new Color(0.5, 1, 0.5);
         // m.colorMap = texture;
@@ -118,13 +118,13 @@ let main = async () => {
     // (entity.mesh.material as StandardMaterial).diffuseTexture = f.getTexture();
     // entity.mesh.material.update();
 
-
+    // app.rendererPlatform.setViewport(100, 200, 500, 300);
     app.start();
 
     app.on('update', _ => {
         // entity.rotate(0, 1, 0);
     });
-    // app.rendererPlatform.setViewport(100, 200, 500, 300);
+
 };
 
 

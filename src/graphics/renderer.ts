@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 17th 2018, 12:25:07 am
+ * Last Modified: Tuesday, September 18th 2018, 10:54:06 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -182,16 +182,19 @@ export class RendererPlatform {
     setColorWrite(writeRed: boolean, writeGreen: boolean, writeBlue: boolean, writeAlpha: boolean) {
         this.gl.colorMask(writeRed, writeGreen, writeBlue, writeAlpha);
     }
+    // tslint:disable-next-line:member-ordering
+    viewport?: number[];
     setViewport(x: number, y: number, w: number, h: number) {
         this.gl.viewport(x, y, w, h);
+        this.viewport = [x, y, w, h];
     }
     initDraw() {
         let [r, g, b, a] = this._clearColor;
         const gl = this.gl;
         gl.enable(gl.DEPTH_TEST);
-        gl.clear(gl.DEPTH_BUFFER_BIT);
+        // gl.clear();
         gl.clearColor(r, g, b, a);
-        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     }
     loadTexture(gl: WebGL2RenderingContext, program: WebGLProgram, name: string, texture: Texture, t = 0) {
         if (texture.webglTexture) {

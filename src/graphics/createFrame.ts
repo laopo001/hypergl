@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 17th 2018, 7:18:29 pm
+ * Last Modified: Tuesday, September 18th 2018, 10:51:39 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -70,7 +70,6 @@ export class Frame {
         const gl = this.renderer.gl;
         gl.bindFramebuffer(gl.FRAMEBUFFER, this.framebuffer);              // Change the drawing destination to FBO
         gl.viewport(0, 0, OFFSCREEN_WIDTH, OFFSCREEN_HEIGHT); // Set a viewport for FBO
-
         // tslint:disable-next-line:number-literal-format
         gl.clearColor(0.2, 0.2, 0.4, 1.0); // Set clear color (the color is slightly changed)
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);  // Clear FBO
@@ -78,8 +77,8 @@ export class Frame {
     afterDraw() {
         const gl = this.renderer.gl;
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);        // Change the drawing destination to color buffer
-        gl.viewport(0, 0, this.renderer.canvas.width, this.renderer.canvas.height);  // Set the size of viewport back to that of <canvas>
-
+        // gl.viewport(0, 0, this.renderer.canvas.width, this.renderer.canvas.height);  // Set the size of viewport back to that of <canvas>
+        this.renderer.setViewport.apply(this.renderer, this.renderer.viewport);
         // tslint:disable-next-line:number-literal-format
         // gl.clearColor(0.0, 0.0, 0.0, 1.0);
         // gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); // Clear the color buffer

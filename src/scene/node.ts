@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 17th 2018, 11:41:46 am
+ * Last Modified: Tuesday, September 18th 2018, 10:23:21 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -64,7 +64,7 @@ export class SceneNode extends IElement {
             this.setRotation(quat);
         }
     }
-    addChild(child: Entity) {
+    addChild(child: SceneNode) {
         this.children.push(child);
         child.parent = this;
         child.scene = this.scene;
