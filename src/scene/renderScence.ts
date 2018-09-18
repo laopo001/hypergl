@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 17th 2018, 8:49:55 pm
+ * Last Modified: Wednesday, September 19th 2018, 1:24:47 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -30,7 +30,7 @@ export function renderScence(scene: Scene) {
     let entitys = scene.layer;
     let lights = scene.lights;
     let camera = scene.activeCamera;
-
+    let cameraViewProjectionMatrix = camera.viewProjectionMatrix;
     let directionalLightsUniforms = renderDirectionalLightArr('directionalLightArr', lights.directionalLights, scene);
     let pointLightsUniforms = renderPointLightArr('pointLightArr', lights.pointLights, scene);
     let LightsUniforms = { ...directionalLightsUniforms, ...pointLightsUniforms };
@@ -53,7 +53,7 @@ export function renderScence(scene: Scene) {
         let shader = mesh.material.shader as Shader;
         renderer.setShaderProgram(shader as Shader);
 
-        shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
+        shader.setUniformValue('matrix_viewProjection', cameraViewProjectionMatrix.data);
         shader.setUniformValue('matrix_model', entity.getWorldTransform().data);
         shader.setUniformValue('matrix_normal', entity.getWorldTransform().clone().invert().transpose().data);
         shader.setUniformValue('camera_position', camera.getPosition().data);
@@ -69,7 +69,7 @@ export function rendererShadowMap(scene: Scene, light: Light) {
     let camera = new Camera();
 
     if (light instanceof DirectionalLight) {
-        let height = 10;
+        let height = 20;
         let width = 1 * height;
         let length = 1 * height;
         camera.setOrtho(-width, width, -height, height, -length, length);
@@ -80,20 +80,16 @@ export function rendererShadowMap(scene: Scene, light: Light) {
         } else {
             up.set(0, 1, -v.y / v.z);
         }
-        // camera.setPosition(light.getPosition());
-        // camera.lookAt(new Vec3(0, 0, 0), up);
         // camera.setPosition(0, 0, 0);
         // console.log(light.direction);
-        camera.lookAt(light.direction, up);
         camera.setPosition(scene.activeCamera.getPosition());
+        camera.lookAt(light.direction.clone().add(scene.activeCamera.getPosition()), up);
     }
-    // camera.setPerspective
     let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
     let shader = renderer.programGenerator.getShader('shadow', attributes);
     shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
-    // shader.setUniformValue('matrix_model', light.getWorldTransform().data);
-    // renderer.initDraw();
-    let gl = scene.app.rendererPlatform.gl;
+
+    // let gl = scene.app.rendererPlatform.gl;
     // gl.cullFace(gl.FRONT);
     f.beforeDraw();
     for (let i = 0; i < entitys.length; i++) {

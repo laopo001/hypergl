@@ -13,7 +13,7 @@ vec4 pack (float depth) {
 }
 
 void main() {       
-     gl_FragColor = vec4(gl_FragCoord.z, 0.0, 0.0, 0.0);      
+     gl_FragColor = pack(gl_FragCoord.z);      
     // gl_FragDepth = gl_FragCoord.z;
     // float depth = gl_FragCoord.z;
     // gl_FragColor = vec4(1.0);

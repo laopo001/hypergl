@@ -4,4 +4,4 @@
 #define varying out
 #define texture2D texture
 #define VERTEXSHADER
-// {{data.name}}
+#define SHADER_NAME {{data.name}}

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, September 18th 2018, 10:54:22 pm
+ * Last Modified: Wednesday, September 19th 2018, 1:58:09 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -37,6 +37,7 @@ function addLight(app, v) {
     entity.mesh.material = m3;
     entity.setLocalScale(0.2, 0.2, 0.2);
     entity.setPosition(light.getPosition());
+    return light;
     // app.scene.root.addChild(entity);
 }
 
@@ -51,20 +52,28 @@ let main = async () => {
 
     // let light = new DirectionalLight();
     // app.scene.lights.directionalLights.push(light);
-    addLight(app, new Vec3(0, 8, 2));
+    let light = addLight(app, new Vec3(0, 8, 2));
+
+    let m2 = new StandardMaterial();
+    m2.diffuseTexture = texture;
+    m2.update();
 
 
     let mesh = Mesh.createBox(app.rendererPlatform);
-    // console.log(mesh);
-    let m = new BasicMaterial();
-    m.color = new Color(0.5, 1, 0.5);
-    m.colorMap = texture;
-    m.update();
     let entity = new Entity();
     entity.mesh = mesh;
-    mesh.material = m;
-
+    mesh.material = m2;
+    entity.name = '123';
     app.scene.root.addChild(entity);
+
+
+    let mesh2 = Mesh.createBox(app.rendererPlatform);
+    let entity2 = new Entity();
+    entity2.setLocalScale(0.5, 0.5, 0.5);
+    mesh2.material = m2;
+    entity2.mesh = mesh2;
+    entity2.setPosition(2, 0, 0);
+    app.scene.root.addChild(entity2);
 
     (_ => {
         let mesh = Mesh.createBox(app.rendererPlatform);
@@ -74,42 +83,23 @@ let main = async () => {
         // m.colorMap = texture;
         m.update();
         let entity = new Entity();
-        entity.setPosition(0, -0.55, 0);
-        entity.setLocalScale(10, 0.1, 10);
+        entity.setPosition(0, -1, 0);
+        entity.setLocalScale(10, 1, 10);
         entity.mesh = mesh;
         mesh.material = m;
         app.scene.root.addChild(entity);
     })();
 
-    let mesh2 = Mesh.createBox(app.rendererPlatform);
-    let entity2 = new Entity();
-    let m2 = new StandardMaterial();
-    // m2.diffuseColor.set(0.5, 0, 0.5);
-    m2.diffuseTexture = texture;
-
-    // m2.specularColor.set(0.5, 0, 0.5);
-    m2.update();
-    mesh2.material = m2;
-    mesh.material = m2;
-    entity2.mesh = mesh2;
-
-    // entity2.setLocalScale(1.5, 0.5, 1.5);
-    entity2.setPosition(2, 0, 0);
-    app.scene.root.addChild(entity2);
-
-
     let camera = new Camera();
     camera.setPerspective(45, app.canvas.width / app.canvas.height, 1, 1000);
-    camera.setPosition(0, 5, 5);
+    camera.setPosition(0, 5, 10);
     camera.lookAt(entity);
 
     app.scene.cameras.push(camera);
     // ------------
     // let scene = app.createScene();
     // scene.cameras.push(camera);
-    // let light = new PointLight();
-    // light.setPosition(0, 2, 0);
-    // scene.lights.pointLights.push(light);
+    // scene.lights.directionalLights.push(light);
     // scene.root.addChild(entity);
     // // scene.render();
     // let f = scene.createFrame();

@@ -15,4 +15,4 @@ out highp vec4 hyper_ragColor;
 #ifdef GL2
 precision highp sampler2DShadow;
 #endif
-// {{data.name}}
+#define SHADER_NAME {{data.name}}

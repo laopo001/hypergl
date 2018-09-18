@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, September 18th 2018, 10:54:06 pm
+ * Last Modified: Wednesday, September 19th 2018, 1:07:47 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -186,6 +186,7 @@ export class RendererPlatform {
     viewport?: number[];
     setViewport(x: number, y: number, w: number, h: number) {
         this.gl.viewport(x, y, w, h);
+        // this.gl.scissor(x, y, w, h);
         this.viewport = [x, y, w, h];
     }
     initDraw() {
@@ -198,14 +199,17 @@ export class RendererPlatform {
     }
     loadTexture(gl: WebGL2RenderingContext, program: WebGLProgram, name: string, texture: Texture, t = 0) {
         if (texture.webglTexture) {
+            let u_Sampler = gl.getUniformLocation(program, name);
             gl.activeTexture(gl['TEXTURE' + t]);
             // 向target绑定纹理对象
             gl.bindTexture(gl.TEXTURE_2D, texture.webglTexture);
+            // gl.generateMipmap(gl.TEXTURE_2D);
+            gl.uniform1i(u_Sampler, t);
             return;
         }
         if (texture.source == null) { Log.error('texture 设置 source' + texture); return; }
         let u_Sampler = gl.getUniformLocation(program, name);
-        const textureBuffer = gl.createTexture();
+        const webglTexture = gl.createTexture();
         if (texture.flipY) {
             // 对纹理图像进行Y轴反转
             gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
@@ -213,7 +217,7 @@ export class RendererPlatform {
         // 开启0号纹理单元
         gl.activeTexture(gl['TEXTURE' + t]);
         // 向target绑定纹理对象
-        gl.bindTexture(gl.TEXTURE_2D, textureBuffer);
+        gl.bindTexture(gl.TEXTURE_2D, webglTexture);
 
         if (texture.isPowerOf2()) {
             gl.generateMipmap(gl.TEXTURE_2D);
@@ -240,7 +244,6 @@ export class RendererPlatform {
         const gl = this.gl;
         const mesh = entity.mesh;
         if (mesh == null) { return; }
-        const material = mesh.material;
         this.setVertexBuffer(mesh.vertexBuffer);
         this.setIndexBuffer(mesh.indexBuffer);
         const shader = this.currShader as Shader;

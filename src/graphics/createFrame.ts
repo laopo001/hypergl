@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, September 18th 2018, 10:51:39 pm
+ * Last Modified: Wednesday, September 19th 2018, 12:35:43 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -68,21 +68,17 @@ export class Frame {
     }
     beforeDraw() {
         const gl = this.renderer.gl;
-        gl.bindFramebuffer(gl.FRAMEBUFFER, this.framebuffer);              // Change the drawing destination to FBO
+        gl.bindFramebuffer(gl.FRAMEBUFFER, this.framebuffer);
         gl.viewport(0, 0, OFFSCREEN_WIDTH, OFFSCREEN_HEIGHT); // Set a viewport for FBO
-        // tslint:disable-next-line:number-literal-format
-        gl.clearColor(0.2, 0.2, 0.4, 1.0); // Set clear color (the color is slightly changed)
+        // this.renderer.setViewport(0, 0, OFFSCREEN_WIDTH, OFFSCREEN_HEIGHT);
+        gl.clearColor(1, 1, 1, 1); // Set clear color (the color is slightly changed)
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);  // Clear FBO
     }
     afterDraw() {
         const gl = this.renderer.gl;
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);        // Change the drawing destination to color buffer
-        // gl.viewport(0, 0, this.renderer.canvas.width, this.renderer.canvas.height);  // Set the size of viewport back to that of <canvas>
         this.renderer.setViewport.apply(this.renderer, this.renderer.viewport);
-        // tslint:disable-next-line:number-literal-format
-        // gl.clearColor(0.0, 0.0, 0.0, 1.0);
-        // gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); // Clear the color buffer
-    }
+     }
     render() {
         this.beforeDraw();
         this.scene.render();
