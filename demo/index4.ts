@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, September 19th 2018, 1:58:09 am
+ * Last Modified: Wednesday, September 19th 2018, 10:37:55 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -52,7 +52,7 @@ let main = async () => {
 
     // let light = new DirectionalLight();
     // app.scene.lights.directionalLights.push(light);
-    let light = addLight(app, new Vec3(0, 8, 2));
+    let light = addLight(app, new Vec3(-8, 8, -8));
 
     let m2 = new StandardMaterial();
     m2.diffuseTexture = texture;
@@ -69,7 +69,7 @@ let main = async () => {
 
     let mesh2 = Mesh.createBox(app.rendererPlatform);
     let entity2 = new Entity();
-    entity2.setLocalScale(0.5, 0.5, 0.5);
+    entity2.setLocalScale(2, 2, 2);
     mesh2.material = m2;
     entity2.mesh = mesh2;
     entity2.setPosition(2, 0, 0);
@@ -112,7 +112,7 @@ let main = async () => {
     app.start();
 
     app.on('update', _ => {
-        // entity.rotate(0, 1, 0);
+        entity.rotate(0, 1, 0);
     });
 
 };

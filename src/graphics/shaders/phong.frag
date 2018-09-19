@@ -90,16 +90,18 @@ float ShadowCalculation(vec4 fragPosLightSpace, sampler2D shadowMap, vec3 lightD
     float currentDepth =  clamp(projCoords.z, 0.0, 1.0);
     // 检查当前片元是否在阴影中
     float bias = max(0.05 * (1.0 - dot(out_normal, -lightDirection)), 0.005);
-    // float shadow = currentDepth > closestDepth + bias ? 1.0 : 0.0float shadow = 0.0;
-    float shadow = 0.0;
-    float texelSize=1.0 / 2048.0;
-    for(float y=-1.0; y <= 1.0; y += 1.0){
-        for(float x=-1.0; x <=1.0; x += 1.0){
-            float rgbaDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
-            shadow += projCoords.z - bias > rgbaDepth ? 1.0 : 0.0;
-        }
-    }
-    shadow/=9.0;
+    float shadow = currentDepth > closestDepth + 0.002 ? 1.0 : 0.0;
+    // float shadow = currentDepth > closestDepth + 0.005 ? 1.0 : 0.0;
+
+    // float shadow = 0.0;
+    // float texelSize=1.0 / 2048.0;
+    // for(float y=-1.0; y <= 1.0; y += 1.0){
+    //     for(float x=-1.0; x <=1.0; x += 1.0){
+    //         float rgbaDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
+    //         shadow += projCoords.z - bias > rgbaDepth ? 1.0 : 0.0;
+    //     }
+    // }
+    // shadow/=9.0;
 
     return shadow;
 }

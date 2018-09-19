@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, September 19th 2018, 1:07:47 am
+ * Last Modified: Thursday, September 20th 2018, 12:31:44 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -148,6 +148,9 @@ export class RendererPlatform {
             gl.CLAMP_TO_EDGE,
             gl.MIRRORED_REPEAT
         ];
+        let [r, g, b, a] = this._clearColor;
+        gl.enable(gl.DEPTH_TEST);
+        gl.clearColor(r, g, b, a);
     }
     // tslint:disable-next-line:member-ordering
     currShader!: Shader;
@@ -170,6 +173,7 @@ export class RendererPlatform {
     private _clearColor = [0, 0, 0, 1];
     setClearColor(r: number, g: number, b: number, a: number) {
         this._clearColor = [r, g, b, a];
+        this.gl.clearColor(r, g, b, a);
     }
     /**
      * 写入帧缓冲区。
@@ -189,13 +193,19 @@ export class RendererPlatform {
         // this.gl.scissor(x, y, w, h);
         this.viewport = [x, y, w, h];
     }
-    initDraw() {
-        let [r, g, b, a] = this._clearColor;
+    clear(color = true, depth = true, stencil = true) {
         const gl = this.gl;
-        gl.enable(gl.DEPTH_TEST);
-        // gl.clear();
+        let bits = 0;
+        if (color === undefined || color) bits |= gl.COLOR_BUFFER_BIT;
+        if (depth === undefined || depth) bits |= gl.DEPTH_BUFFER_BIT;
+        if (stencil === undefined || stencil) bits |= gl.STENCIL_BUFFER_BIT;
+        gl.clear(bits);
+    }
+    initDraw() {
+        const gl = this.gl;
+        let [r, g, b, a] = this._clearColor;
         gl.clearColor(r, g, b, a);
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        this.clear();
     }
     loadTexture(gl: WebGL2RenderingContext, program: WebGLProgram, name: string, texture: Texture, t = 0) {
         if (texture.webglTexture) {

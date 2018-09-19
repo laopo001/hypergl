@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, September 19th 2018, 1:24:47 am
+ * Last Modified: Thursday, September 20th 2018, 12:03:41 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -69,7 +69,7 @@ export function rendererShadowMap(scene: Scene, light: Light) {
     let camera = new Camera();
 
     if (light instanceof DirectionalLight) {
-        let height = 20;
+        let height = 40;
         let width = 1 * height;
         let length = 1 * height;
         camera.setOrtho(-width, width, -height, height, -length, length);
