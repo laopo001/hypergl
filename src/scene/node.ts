@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, September 18th 2018, 10:23:21 pm
+ * Last Modified: Friday, September 21st 2018, 3:27:57 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -68,7 +68,7 @@ export class SceneNode extends IElement {
         this.children.push(child);
         child.parent = this;
         child.scene = this.scene;
-        this.scene.layer.push(child);
+        this.scene.layer.push(child as Entity);
     }
     setPosition(x: Vec3);
     setPosition(x: number, y: number, z: number);

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, September 11th 2018, 12:10:55 am
+ * Last Modified: Friday, September 21st 2018, 3:14:33 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -33,22 +33,22 @@ export class StandardMaterial extends Material {
     }
     update() {
         // this.setParameter('lightPosition', new Vec3(1, 1, 1).data);
-        this.setParameter('ambientColor', this.ambientColor.data);
-        this.setParameter('diffuseColor', this.diffuseColor.data);
+        this.setUniform('ambientColor', this.ambientColor.data);
+        this.setUniform('diffuseColor', this.diffuseColor.data);
         // tslint:disable-next-line:no-unused-expression
-        this.diffuseTexture && this.setParameter('diffuseTexture', this.diffuseTexture);
-        this.setParameter('specularColor', this.specularColor.data);
+        this.diffuseTexture && this.setUniform('diffuseTexture', this.diffuseTexture);
+        this.setUniform('specularColor', this.specularColor.data);
         // tslint:disable-next-line:no-unused-expression
-        this.specularTexture && this.setParameter('specularTexture', this.specularTexture);
-        this.setParameter('shininess', this.shininess);
+        this.specularTexture && this.setUniform('specularTexture', this.specularTexture);
+        this.setUniform('shininess', this.shininess);
         this._dirtyUpdate = true;
     }
     updateShader(renderer: RendererPlatform, attributes: { [s: string]: SEMANTIC }) {
         if (this._dirtyUpdate) {
-            this.shader = renderer.programGenerator.getShader('PhoneMaterial', attributes, this.parameters);
+            this.shader = renderer.programGenerator.getShader('PhoneMaterial', attributes, this.uniforms);
             // tslint:disable-next-line:forin
-            for (let key in this.parameters) {
-                this.shader.setUniformValue(key, this.parameters[key]);
+            for (let key in this.uniforms) {
+                this.shader.setUniformValue(key, this.uniforms[key]);
             }
             this._dirtyUpdate = false;
         }

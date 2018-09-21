@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 17th 2018, 1:27:20 am
+ * Last Modified: Friday, September 21st 2018, 3:14:48 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,23 +20,19 @@ import { Scene } from '../scene/scene';
 import { rendererShadowMap } from '../scene/renderScence';
 
 export abstract class Material {
-    parameters: { [s: string]: any } = {};
+    uniforms: { [s: string]: any } = {};
     shader?: Shader;
     protected _dirtyUpdate = false;
-    setParameter(name: string, data: any) {
-        this.parameters[name] = data;
+    setUniform(name: string, data: any) {
+        this.uniforms[name] = data;
     }
-    getParameter(name: string) {
-        return this.parameters[name];
-    }
-    deleteParameter() {
-        // x
-        delete this.parameters[name];
+    getUniform(name: string) {
+        return this.uniforms[name];
     }
     abstract update();
     abstract updateShader(renderer: RendererPlatform, attributes: { [s: string]: SEMANTIC });
-    setLights(parameters: any) {
-        Object.assign(this.parameters, parameters);
+    setLights(uniforms: any) {
+        Object.assign(this.uniforms, uniforms);
         this._dirtyUpdate = true;
     }
     // setDirectionalLightArr(name: string, data: DirectionalLight[], scene: Scene) {
