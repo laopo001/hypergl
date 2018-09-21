@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, September 21st 2018, 3:14:33 pm
+ * Last Modified: Saturday, September 22nd 2018, 1:05:30 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -44,8 +44,11 @@ export class StandardMaterial extends Material {
         this._dirtyUpdate = true;
     }
     updateShader(renderer: RendererPlatform, attributes: { [s: string]: SEMANTIC }) {
-        if (this._dirtyUpdate) {
+        if (this.shader == null) {
             this.shader = renderer.programGenerator.getShader('PhoneMaterial', attributes, this.uniforms);
+        }
+
+        if (this._dirtyUpdate) {
             // tslint:disable-next-line:forin
             for (let key in this.uniforms) {
                 this.shader.setUniformValue(key, this.uniforms[key]);
