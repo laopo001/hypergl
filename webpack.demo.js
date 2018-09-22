@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 22nd 2018, 1:39:37 am
+ * Last Modified: Sunday, September 23rd 2018, 1:07:43 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,7 +20,7 @@ module.exports = function (env, webpackConfig) {
     return {
         //页面入口文件配置
         entry: {
-            index: `./demo/index5`
+            index: `./demo/index4`
         },
         //入口文件输出配置
         output: {

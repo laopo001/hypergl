@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, September 21st 2018, 3:25:06 pm
+ * Last Modified: Saturday, September 22nd 2018, 9:03:00 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -62,6 +62,15 @@ export class Scene extends IElement {
         f.createFramebuffer();
         this._frame = f;
         return f;
+    }
+    add(child) {
+        if (child instanceof DirectionalLight) {
+            this.lights.directionalLights.push(child);
+        } else if (child instanceof PointLight) {
+            this.lights.pointLights.push(child);
+        } else if (child instanceof Entity) {
+            this.layer.push(child);
+        }
     }
     get [Symbol.toStringTag]() {
         return 'Scene';

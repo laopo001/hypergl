@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, September 21st 2018, 3:27:57 pm
+ * Last Modified: Sunday, September 23rd 2018, 2:35:55 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -16,7 +16,6 @@ import { IElement } from '../core/element';
 import { Vec3, Quat, Mat4, Vec2 } from '../math';
 import { Log } from '../util';
 import { Scene } from './scene';
-import { Entity } from '../ecs/entity';
 
 let scaleCompensatePosTransform = new Mat4();
 let scaleCompensatePos = new Vec3();
@@ -68,7 +67,7 @@ export class SceneNode extends IElement {
         this.children.push(child);
         child.parent = this;
         child.scene = this.scene;
-        this.scene.layer.push(child as Entity);
+        this.scene.add(child);
     }
     setPosition(x: Vec3);
     setPosition(x: number, y: number, z: number);

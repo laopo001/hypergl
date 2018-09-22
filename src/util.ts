@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 6:03:01 pm
+ * Last Modified: Sunday, September 23rd 2018, 2:35:57 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -30,7 +30,7 @@ export namespace Log {
             console.warn(message);
         }
     }
-    export function warn(condition: any, message: string) {
+    export function warn(message: string) {
         console.warn(message);
     }
     export function error(message: string) {

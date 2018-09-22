@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 20th 2018, 12:03:41 am
+ * Last Modified: Sunday, September 23rd 2018, 1:05:20 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -62,13 +62,16 @@ export function renderScence(scene: Scene) {
     }
 }
 
-export function rendererShadowMap(scene: Scene, light: Light) {
-    let entitys = scene.layer;
-    let renderer = scene.app.rendererPlatform;
-    let f = scene.createFrame();
-    let camera = new Camera();
 
-    if (light instanceof DirectionalLight) {
+
+export function renderDirectionalLightArr(name: string, data: DirectionalLight[], scene: Scene) {
+    function rendererShadowMap(scene: Scene, light: DirectionalLight) {
+        let entitys = scene.layer;
+        let renderer = scene.app.rendererPlatform;
+        let f = scene.createFrame();
+        let camera = new Camera();
+
+
         let height = 40;
         let width = 1 * height;
         let length = 1 * height;
@@ -84,26 +87,25 @@ export function rendererShadowMap(scene: Scene, light: Light) {
         // console.log(light.direction);
         camera.setPosition(scene.activeCamera.getPosition());
         camera.lookAt(light.direction.clone().add(scene.activeCamera.getPosition()), up);
-    }
-    let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
-    let shader = renderer.programGenerator.getShader('shadow', attributes);
-    shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
 
-    // let gl = scene.app.rendererPlatform.gl;
-    // gl.cullFace(gl.FRONT);
-    f.beforeDraw();
-    for (let i = 0; i < entitys.length; i++) {
-        let entity = entitys[i];
-        renderer.setShaderProgram(shader as Shader);
-        shader.setUniformValue('matrix_model', entity.getWorldTransform().data);
-        renderer.draw(entity);
-    }
-    f.afterDraw();
-    // gl.cullFace(gl.BACK);
-    return { texture: f.getTexture(), viewProjectionMatrix: camera.viewProjectionMatrix };
-}
+        let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
+        let shader = renderer.programGenerator.getShader('shadow', attributes);
+        shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
 
-export function renderDirectionalLightArr(name: string, data: DirectionalLight[], scene: Scene) {
+        // let gl = scene.app.rendererPlatform.gl;
+        // gl.cullFace(gl.FRONT);
+        f.beforeDraw();
+        for (let i = 0; i < entitys.length; i++) {
+            let entity = entitys[i];
+            renderer.setShaderProgram(shader as Shader);
+            shader.setUniformValue('matrix_model', entity.getWorldTransform().data);
+            renderer.draw(entity);
+        }
+        f.afterDraw();
+        // gl.cullFace(gl.BACK);
+        return { texture: f.getTexture(), viewProjectionMatrix: camera.viewProjectionMatrix };
+    }
+
     let uniforms = {};
     let res: string[][] = [];
 

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 22nd 2018, 7:41:33 pm
+ * Last Modified: Saturday, September 22nd 2018, 9:04:10 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -26,7 +26,7 @@ function addLight(app, v) {
     light.setPosition(v);
     light.direction = new Vec3(1, -1, 1);
     // light.color = new Color(0.5, 1, 0.5);
-    app.scene.lights.directionalLights.push(light);
+    app.scene.root.addChild(light);
     let mesh = Mesh.createBox(app.rendererPlatform);
     let entity = new Entity();
     entity.mesh = mesh;

@@ -14,10 +14,10 @@ Todos:
       ☐ Light.spotLight
     ☐ createFrame 创建帧缓冲区 @started(18-09-15 18:58)
     ☐ 阴影
-    ☐ StandardMaterial
+  Done:
+    ✔ StandardMaterial @done(18-09-22 21:17)
       ✔ StandardMaterial.diffuseColor @started(18-09-07 00:56) @done(18-09-07 12:19) @lasted(11h23m23s)
       ✔ StandardMaterial.specularColor @started(18-09-07 00:56) @done(18-09-07 12:19) @lasted(11h23m23s)
-  Done:
     ✔ shaderMaterial @started(18-09-22 19:12) @done(18-09-22 19:43) @lasted(31m55s)
     ✔ timer @started(18-09-22 19:12) @done(18-09-22 19:43) @lasted(31m58s)
     ✔ 添加appveyor的ci工具，使用karma测试工具，将自动测试chrome和firefox @done(18-09-05 12:21)

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 22nd 2018, 6:29:29 pm
+ * Last Modified: Sunday, September 23rd 2018, 2:36:41 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -31,7 +31,7 @@ test('SceneNode setLocalPosition getLocalPosition', () => {
     let node = new SceneNode();
     let child = new SceneNode();
     let grandson = new SceneNode();
-    node.scene = { layer: [] } as any;
+    node.scene = { layer: [], add: _ => { } } as any;
     node.addChild(child);
     child.addChild(grandson);
     child.setLocalPosition(new Vec3(1, 0, 0));
@@ -45,7 +45,8 @@ test('SceneNode setPosition getPosition', () => {
     let node = new SceneNode();
     let child = new SceneNode();
     let grandson = new SceneNode();
-    node.scene = { layer: [] } as any;
+    // tslint:disable-next-line:no-empty
+    node.scene = { layer: [], add: _ => { } } as any;
     node.addChild(child);
     child.addChild(grandson);
     child.setPosition(new Vec3(1, 0, 0));
