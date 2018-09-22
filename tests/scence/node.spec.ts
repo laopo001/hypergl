@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, September 19th 2018, 11:46:45 pm
+ * Last Modified: Saturday, September 22nd 2018, 6:29:29 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -104,6 +104,5 @@ test('SceneNode setRotation setRotation2', () => {
     camera.setPosition(0, 5, 10);
     camera.lookAt(node1);
 
-    console.log(camera.projectionMatrix.mul(node1.getWorldTransform()));
     expect(1).toEqual(1);
 });

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 6:03:01 pm
+ * Last Modified: Saturday, September 22nd 2018, 6:04:50 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,3 +15,4 @@
 export * from './vertexBuffer';
 export * from './vertexFormat';
 export * from './indexBuffer';
+export * from './shader';

@@ -5,20 +5,21 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 22nd 2018, 2:19:12 am
+ * Last Modified: Saturday, September 22nd 2018, 7:10:30 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Scene, BUFFER, PointLight, DirectionalLight, Light, StandardMaterial, Application, BasicMaterial, Entity, Texture } from '../src';
+import { Scene, Shader, ShaderMaterial, PointLight, DirectionalLight, Light, StandardMaterial, Application, BasicMaterial, Entity, Texture, Config } from '../src';
 
 import { loadImage } from './utils/util';
 import { Mat4, Vec3 } from '../src/math';
 import { Camera } from '../src/scene/camera';
 import { Mesh } from '../src/mesh/mesh';
 import { Color } from '../src/core/color';
+
 
 function addLight(app, v) {
     let light = new DirectionalLight();
@@ -86,11 +87,24 @@ let main = async () => {
     m2.diffuseTexture = texture;
     m2.update();
 
+    let shader = new Shader(app.rendererPlatform, {
+        attributes: {
+            aPosition: Config.SEMANTIC.POSITION,
+            aUv0: Config.SEMANTIC.TEXCOORD0
+        },
+        vshader: vert,
+        fshader: frag
+    });
+    let sm = new ShaderMaterial();
+    sm.shader = shader;
+    sm.setUniform('uTime', 0);
+    sm.setUniform('uDiffuseMap', texture);
+
 
     let mesh = Mesh.createBox(app.rendererPlatform);
     let entity = new Entity();
     entity.mesh = mesh;
-    mesh.material = m2;
+    mesh.material = sm;
     entity.name = '123';
     app.scene.root.addChild(entity);
 
