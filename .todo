@@ -8,8 +8,6 @@ Todos:
     ☐ mesh
     ☐ Entity
     ☐ scene 多光源 @started(18-09-8 11:04)
-    ☐ shaderMaterial @started(18-09-22 19:12)
-    ☐ timer @started(18-09-22 19:12)
     ☐ Light
       ✔ Light.directionalLight @started(18-09-8 11:04) @done(18-09-10 01:06) @lasted(1d14h2m22s)
       ✔ Light.pointLight @started(18-09-8 11:04) @done(18-09-10 01:06) @lasted(1d14h2m26s)
@@ -20,6 +18,8 @@ Todos:
       ✔ StandardMaterial.diffuseColor @started(18-09-07 00:56) @done(18-09-07 12:19) @lasted(11h23m23s)
       ✔ StandardMaterial.specularColor @started(18-09-07 00:56) @done(18-09-07 12:19) @lasted(11h23m23s)
   Done:
+    ✔ shaderMaterial @started(18-09-22 19:12) @done(18-09-22 19:43) @lasted(31m55s)
+    ✔ timer @started(18-09-22 19:12) @done(18-09-22 19:43) @lasted(31m58s)
     ✔ 添加appveyor的ci工具，使用karma测试工具，将自动测试chrome和firefox @done(18-09-05 12:21)
     ✔ 完成 BasicMaterial 的(diffuseTexture)参数 @started(18-09-02 01:08) @done(18-09-04 00:55) @lasted(1d23h47m3s)
     ✔ createBox @done(18-09-03 00:45)

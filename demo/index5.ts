@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 22nd 2018, 7:10:30 pm
+ * Last Modified: Saturday, September 22nd 2018, 7:41:33 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -95,9 +95,10 @@ let main = async () => {
         vshader: vert,
         fshader: frag
     });
+    let time = 0;
     let sm = new ShaderMaterial();
     sm.shader = shader;
-    sm.setUniform('uTime', 0);
+    sm.setUniform('uTime', time);
     sm.setUniform('uDiffuseMap', texture);
 
 
@@ -141,7 +142,9 @@ let main = async () => {
 
     app.start();
 
-    app.on('update', _ => {
+    app.on('update', dt => {
+        time += dt / 10;
+        sm.setUniform('uTime', time);
         entity.rotate(0, 1, 0);
     });
 
