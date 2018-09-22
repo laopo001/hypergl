@@ -8,7 +8,8 @@ Todos:
     ☐ mesh
     ☐ Entity
     ☐ scene 多光源 @started(18-09-8 11:04)
-
+    ☐ shaderMaterial @started(18-09-22 19:12)
+    ☐ timer @started(18-09-22 19:12)
     ☐ Light
       ✔ Light.directionalLight @started(18-09-8 11:04) @done(18-09-10 01:06) @lasted(1d14h2m22s)
       ✔ Light.pointLight @started(18-09-8 11:04) @done(18-09-10 01:06) @lasted(1d14h2m26s)
