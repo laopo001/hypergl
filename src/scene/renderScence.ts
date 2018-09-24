@@ -70,8 +70,6 @@ export function renderDirectionalLightArr(name: string, data: DirectionalLight[]
         let renderer = scene.app.rendererPlatform;
         let f = scene.createFrame();
         let camera = new Camera();
-
-
         let height = 40;
         let width = 1 * height;
         let length = 1 * height;

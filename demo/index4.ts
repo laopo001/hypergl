@@ -25,7 +25,7 @@ import { Color } from '../src/core/color';
 function addLight(app, v) {
     let light = new DirectionalLight();
     light.setPosition(v);
-    light.direction = new Vec3(1, -1, 1);
+    light.direction = new Vec3(-1, -1, 1);
     // light.color = new Color(0.5, 1, 0.5);
     app.scene.lights.directionalLights.push(light);
     let mesh = Mesh.createBox(app.rendererPlatform);
@@ -64,6 +64,7 @@ let main = async () => {
     entity.mesh = mesh;
     mesh.material = m2;
     entity.name = '123';
+    entity.setPosition(-2, 0, 0);
     app.scene.root.addChild(entity);
 
 
