@@ -112,10 +112,10 @@ export class Frame {
         gl.bindTexture(gl.TEXTURE_2D, null);
         gl.bindRenderbuffer(gl.RENDERBUFFER, null);
     }
-    beforeDraw() {
+    beforeDraw(width = OFFSCREEN_WIDTH, height = OFFSCREEN_HEIGHT) {
         const gl = this.renderer.gl;
         gl.bindFramebuffer(gl.FRAMEBUFFER, this.framebuffer);
-        gl.viewport(0, 0, OFFSCREEN_WIDTH, OFFSCREEN_HEIGHT); // Set a viewport for FBO
+        gl.viewport(0, 0, width, height); // Set a viewport for FBO
         // this.renderer.setViewport(0, 0, OFFSCREEN_WIDTH, OFFSCREEN_HEIGHT);
         gl.clearColor(1, 1, 1, 1); // Set clear color (the color is slightly changed)
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);  // Clear FBO
