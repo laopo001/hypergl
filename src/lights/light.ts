@@ -14,10 +14,19 @@
 
 import { SceneNode } from '../scene/node';
 import { Color } from '../core/color';
+import { ShadowUpdateMode } from '../conf';
+
+
 export class Light extends SceneNode {
     color = new Color(1, 1, 1);
     castShadows = true;
+    shadowUpdateMode: ShadowUpdateMode = ShadowUpdateMode.Once;
+    shadowMapWidth = 1024;
+    shadowMapHeight = 1024;
+    shadowBias = 0.005;
+    shadowDarkness = 0.05;
     constructor() {
         super();
     }
+
 }

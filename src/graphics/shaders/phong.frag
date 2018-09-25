@@ -42,6 +42,7 @@ uniform vec3 lightPosition;
 uniform float shininess;
 {{/if}}
 
+uniform float far_plane;
 //////////////
 {{#if attributes.vertex_texCoord0}}
 varying vec2 out_vertex_texCoord0;
@@ -78,7 +79,7 @@ float unpack(const in vec4 rgbaDepth) {
     return dot(rgbaDepth, bitShift);
 }
 
-float ShadowCalculation(vec4 fragPosLightSpace, sampler2D shadowMap, vec3 lightDirection)
+float CalcDirLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, vec3 lightDirection)
 {
     // 执行透视除法
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
@@ -106,6 +107,8 @@ float ShadowCalculation(vec4 fragPosLightSpace, sampler2D shadowMap, vec3 lightD
     return shadow;
 }
 
+
+
 // 计算方向
 vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirection, sampler2D shadowMap, mat4 lightSpaceMatrix)
 {
@@ -119,10 +122,24 @@ vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirectio
  
     vec3 diffuse  = lightColor * diff * getOutDiffuseColor().xyz;
     vec3 specular = lightColor * spec * getOutSpecularColor().xyz;
-    float shadow = ShadowCalculation(lightSpaceMatrix * vec4(out_vertex_position, 1.0), shadowMap, lightDirection);    
+    float shadow = CalcDirLightShadow(lightSpaceMatrix * vec4(out_vertex_position, 1.0), shadowMap, lightDirection);    
     // float visibility = min(0.6 + (1.0 - shadow), 1.0);
     return (diffuse + specular) * (1.0 - shadow);
 }  
+
+
+float CalcPointLightShadow(vec4 fragPosLightSpace, samplerCube shadowMap, vec3 lightPos)
+{
+    vec3 fragToLight = fragPosLightSpace.xyz - lightPos;
+    float closestDepth = unpack( texture(shadowMap, fragToLight) ); 
+    closestDepth *= far_plane;
+    float currentDepth =  length(fragToLight);
+    float bias = 0.005;
+    float shadow = currentDepth -  bias > closestDepth ? 1.0 : 0.0;
+    return shadow;
+}
+
+
 // 计算定点光在确定位置的光照颜色
 vec3 CalcPointLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPosition, float range, sampler2D shadowMap, mat4 lightSpaceMatrix)
 {

@@ -185,3 +185,8 @@ export enum PIXELFORMAT {
     DEPTH,
     DEPTHSTENCIL,
 }
+
+export enum ShadowUpdateMode {
+    Once = 'Once',
+    RealTime = 'RealTime'
+}

@@ -1,8 +1,8 @@
 #version 300 es
 #define GL2
 #define varying in
-out highp vec4 hyper_ragColor;
-#define gl_FragColor hyper_ragColor
+out highp vec4 hyper_fragColor;
+#define gl_FragColor hyper_fragColor
 #define texture2D texture
 #define textureCube texture
 #define texture2DProj textureProj

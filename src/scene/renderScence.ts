@@ -70,7 +70,7 @@ export function renderDirectionalLightArr(name: string, data: DirectionalLight[]
         let renderer = scene.app.rendererPlatform;
         let f = scene.createFrame();
         let camera = new Camera();
-        let height = 40;
+        let height = 15;
         let width = 1 * height;
         let length = 1 * height;
         camera.setOrtho(-width, width, -height, height, -length, length);
@@ -124,6 +124,45 @@ export function renderDirectionalLightArr(name: string, data: DirectionalLight[]
 }
 
 export function renderPointLightArr(name: string, data: PointLight[], scene: Scene) {
+    function rendererShadowMap(scene: Scene, light: PointLight) {
+        // TODO
+        let entitys = scene.layer;
+        let renderer = scene.app.rendererPlatform;
+        let f = scene.createFrame();
+        let camera = new Camera();
+        let height = 40;
+        let width = 1 * height;
+        let length = 1 * height;
+        camera.setOrtho(-width, width, -height, height, -length, length);
+        let v = light.getPosition().sub(new Vec3(0, 0, 0));
+        let up = new Vec3();
+        if (v.z === 0) {
+            up.set(0, 0, -1);
+        } else {
+            up.set(0, 1, -v.y / v.z);
+        }
+        // camera.setPosition(0, 0, 0);
+        // console.log(light.direction);
+        camera.setPosition(scene.activeCamera.getPosition());
+        // camera.lookAt(light.direction.clone().add(scene.activeCamera.getPosition()), up);
+
+        let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
+        let shader = renderer.programGenerator.getShader('shadow', attributes);
+        shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
+
+        // let gl = scene.app.rendererPlatform.gl;
+        // gl.cullFace(gl.FRONT);
+        f.beforeDraw();
+        for (let i = 0; i < entitys.length; i++) {
+            let entity = entitys[i];
+            renderer.setShaderProgram(shader as Shader);
+            shader.setUniformValue('matrix_model', entity.getWorldTransform().data);
+            renderer.draw(entity);
+        }
+        f.afterDraw();
+        // gl.cullFace(gl.BACK);
+        return { texture: f.getTexture(), viewProjectionMatrix: camera.viewProjectionMatrix };
+    }
     let res: string[][] = [];
     let uniforms = {};
     data.forEach((item, index) => {

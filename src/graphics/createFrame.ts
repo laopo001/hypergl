@@ -21,15 +21,25 @@ import { Texture } from '../texture';
 export class Frame {
     framebuffer!: WebGLFramebuffer;
     texture!: WebGLTexture;
+    textureCube!: any;
     renderer: RendererPlatform;
     // depthBuffer!: WebGLRenderbuffer;
-    constructor(private scene: Scene) {
+    constructor(private scene: Scene, public is3d = false) {
         this.renderer = scene.app.rendererPlatform;
     }
     getTexture() {
         return new Texture(this.texture);
     }
     createFramebuffer() {
+        if (this.is3d) {
+            this.createFramebuffer3D();
+        } else {
+            this.createFramebuffer2D();
+        }
+
+
+    }
+    createFramebuffer2D() {
         const gl = this.renderer.gl;
         this.framebuffer = gl.createFramebuffer() as WebGLFramebuffer;
         if (!this.framebuffer) {
@@ -64,7 +74,43 @@ export class Frame {
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
         gl.bindTexture(gl.TEXTURE_2D, null);
         gl.bindRenderbuffer(gl.RENDERBUFFER, null);
+    }
+    createFramebuffer3D() {
+        const gl = this.renderer.gl;
+        this.framebuffer = gl.createFramebuffer() as WebGLFramebuffer;
+        if (!this.framebuffer) {
+            Log.error('Failed to create frame buffer object');
+        }
 
+        this.textureCube = gl.createTexture() as WebGLTexture;
+        if (!this.texture) {
+            Log.error('Failed to create texture object');
+        }
+        gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.textureCube); // Bind the object to target
+        gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X, 0, gl.RGBA, OFFSCREEN_WIDTH, OFFSCREEN_HEIGHT, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        const depthBuffer = gl.createRenderbuffer() as WebGLRenderbuffer;
+        if (!depthBuffer) {
+            Log.error('Failed to create renderbuffer object');
+        }
+        gl.bindRenderbuffer(gl.RENDERBUFFER, depthBuffer); // Bind the object to target
+        gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, OFFSCREEN_WIDTH, OFFSCREEN_HEIGHT);
+
+        // Attach the texture and the renderbuffer object to the FBO
+        gl.bindFramebuffer(gl.FRAMEBUFFER, this.framebuffer);
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.texture, 0);
+        gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, depthBuffer);
+
+        // Check if FBO is configured correctly
+        let e = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+        if (gl.FRAMEBUFFER_COMPLETE !== e) {
+            Log.error('Frame buffer object is incomplete: ' + e.toString());
+        }
+
+        // Unbind the buffer object
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        gl.bindTexture(gl.TEXTURE_2D, null);
+        gl.bindRenderbuffer(gl.RENDERBUFFER, null);
     }
     beforeDraw() {
         const gl = this.renderer.gl;
@@ -78,7 +124,7 @@ export class Frame {
         const gl = this.renderer.gl;
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);        // Change the drawing destination to color buffer
         this.renderer.setViewport.apply(this.renderer, this.renderer.viewport);
-     }
+    }
     render() {
         this.beforeDraw();
         this.scene.render();
