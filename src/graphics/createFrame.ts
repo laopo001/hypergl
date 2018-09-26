@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, September 19th 2018, 9:49:45 pm
+ * Last Modified: Thursday, September 27th 2018, 1:15:07 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -81,7 +81,6 @@ export class Frame {
         if (!this.framebuffer) {
             Log.error('Failed to create frame buffer object');
         }
-
         this.textureCube = gl.createTexture() as WebGLTexture;
         if (!this.texture) {
             Log.error('Failed to create texture object');
@@ -112,8 +111,10 @@ export class Frame {
         gl.bindTexture(gl.TEXTURE_2D, null);
         gl.bindRenderbuffer(gl.RENDERBUFFER, null);
     }
-    beforeDraw(width = OFFSCREEN_WIDTH, height = OFFSCREEN_HEIGHT) {
+    beforeDraw(index?, width = OFFSCREEN_WIDTH, height = OFFSCREEN_HEIGHT) {
         const gl = this.renderer.gl;
+        gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X, 0, gl.RGBA, OFFSCREEN_WIDTH, OFFSCREEN_HEIGHT, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+
         gl.bindFramebuffer(gl.FRAMEBUFFER, this.framebuffer);
         gl.viewport(0, 0, width, height); // Set a viewport for FBO
         // this.renderer.setViewport(0, 0, OFFSCREEN_WIDTH, OFFSCREEN_HEIGHT);

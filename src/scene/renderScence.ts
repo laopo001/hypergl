@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 23rd 2018, 1:05:20 am
+ * Last Modified: Thursday, September 27th 2018, 1:07:04 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -68,7 +68,7 @@ export function renderDirectionalLightArr(name: string, data: DirectionalLight[]
     function rendererShadowMap(scene: Scene, light: DirectionalLight) {
         let entitys = scene.layer;
         let renderer = scene.app.rendererPlatform;
-        let f = scene.createFrame();
+        let f = scene.createFrame(true);
         let camera = new Camera();
         let height = 15;
         let width = 1 * height;
