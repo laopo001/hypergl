@@ -1,5 +1,8 @@
 {{#if data.GL2}}{{> gles3.frag}}{{/if}}
 precision highp float;
+uniform vec3 view_position;
+uniform float light_range;
+varying vec3 out_vertex_position;
 
 vec4 pack (float depth) {
     // 当光源与照射物间距离变远,z值会增大,而1个分量的8位已经不够存储深度值,所以扩充使用4个分量共32位进行存储
@@ -13,6 +16,6 @@ vec4 pack (float depth) {
 }
 
 void main() {       
-   float depth = min(distance(view_position, vPositionW) / light_radius, 0.99999);
+   float depth = min(distance(view_position, out_vertex_position) / light_range, 0.99999);
     gl_FragColor = pack(depth); 
 }

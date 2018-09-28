@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, September 28th 2018, 5:20:03 pm
+ * Last Modified: Friday, September 28th 2018, 11:32:34 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -134,26 +134,30 @@ export function renderPointLightArr(name: string, data: PointLight[], scene: Sce
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(true);
         }
-        let cameras: Camera[] = new Array(6);
-        for (let i = 0; i < cameras.length; i++) {
+        let cameras: Camera[] = [];
+        for (let i = 0; i < 6; i++) {
             let v = new Vec3();
             let a = i % 2;
             let b = Math.floor(i / 2);
             v.data[b] = a === 0 ? 1 : -1;
             let camera = new Camera();
-            camera.setPerspective(90, 1, 0, light.range);
-            camera.lookAt(v, camera.up);
+            camera.setPosition(light.getPosition());
+            camera.setPerspective(90, 1, 1, light.range);
+            camera.lookAt(v.add(light.getPosition()), camera.up);
             cameras.push(camera);
         }
 
 
         for (let i = 0; i < cameras.length; i++) {
             let camera = cameras[i];
-            light.shadowFrame.createFramebuffer3D(i);
+
             let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
-            let shader = renderer.programGenerator.getShader('shadow', attributes);
+            let shader = renderer.programGenerator.getShader('distance', attributes);
             shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
-            light.shadowFrame.beforeDraw();
+            shader.setUniformValue('view_position', camera.getPosition().data);
+            shader.setUniformValue('light_range', light.range);
+            light.shadowFrame.createFramebuffer3D(i);
+            light.shadowFrame.beforeDraw(i);
             for (let i = 0; i < entitys.length; i++) {
                 let entity = entitys[i];
                 renderer.setShaderProgram(shader as Shader);
@@ -169,13 +173,14 @@ export function renderPointLightArr(name: string, data: PointLight[], scene: Sce
     let uniforms = {};
     data.forEach((item, index) => {
         let obj: any = {};
-
+        if (item.castShadows) {
+            let { texture } = rendererShadowMap(scene, item);
+            setLight(name, 'shadowMap', index, obj, uniforms, texture);
+            setLight(name, 'light_range', index, obj, uniforms, item.range);
+        }
         setLight(name, 'position', index, obj, uniforms, item.getPosition().data);
-
         setLight(name, 'color', index, obj, uniforms, item.color.data);
-
         setLight(name, 'range', index, obj, uniforms, item.range);
-
         res.push(obj);
     });
     uniforms['_' + name] = res;

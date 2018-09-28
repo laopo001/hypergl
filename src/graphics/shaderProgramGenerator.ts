@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 15th 2018, 10:33:07 pm
+ * Last Modified: Friday, September 28th 2018, 7:52:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -19,6 +19,8 @@ import phongVert from './shaders/phong.vert';
 import phongFrag from './shaders/phong.frag';
 import shadowVert from './shaders/shadow.vert';
 import shadowFrag from './shaders/shadow.frag';
+import distanceVert from './shaders/distance.vert';
+import distanceFrag from './shaders/distance.frag';
 import { RendererPlatform } from './renderer';
 import { Shader } from './shader';
 import { SEMANTIC } from '../conf';
@@ -73,6 +75,10 @@ function createShaderDefinition(name: string, renderer: RendererPlatform, option
         case 'shadow':
             vertStr = shadowVert(options);
             fragStr = shadowFrag(options);
+            break;
+        case 'distance':
+            vertStr = distanceVert(options);
+            fragStr = distanceFrag(options);
             break;
     }
 
