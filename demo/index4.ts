@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, September 19th 2018, 10:37:55 pm
+ * Last Modified: Friday, September 28th 2018, 4:48:25 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -23,11 +23,10 @@ import { Mesh } from '../src/mesh/mesh';
 import { Color } from '../src/core/color';
 
 function addLight(app, v) {
-    let light = new DirectionalLight();
+    let light = new PointLight();
     light.setPosition(v);
-    light.direction = new Vec3(-1, -1, 1);
     // light.color = new Color(0.5, 1, 0.5);
-    app.scene.lights.directionalLights.push(light);
+    app.scene.lights.pointLights.push(light);
     let mesh = Mesh.createBox(app.rendererPlatform);
     let entity = new Entity();
     entity.mesh = mesh;
@@ -50,9 +49,9 @@ let main = async () => {
         // webgl1:true
     });
 
-    // let light = new DirectionalLight();
-    // app.scene.lights.directionalLights.push(light);
-    let light = addLight(app, new Vec3(-8, 8, -8));
+    let light = new DirectionalLight();
+    app.scene.lights.directionalLights.push(light);
+    addLight(app, new Vec3(-2, 2, 2));
 
     let m2 = new StandardMaterial();
     m2.diffuseTexture = texture;

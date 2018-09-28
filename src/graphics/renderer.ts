@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 20th 2018, 12:31:44 am
+ * Last Modified: Friday, September 28th 2018, 3:48:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -213,7 +213,7 @@ export class RendererPlatform {
             gl.activeTexture(gl['TEXTURE' + t]);
             // 向target绑定纹理对象
             gl.bindTexture(gl.TEXTURE_2D, texture.webglTexture);
-            // gl.generateMipmap(gl.TEXTURE_2D);
+            gl.generateMipmap(gl.TEXTURE_2D);
             gl.uniform1i(u_Sampler, t);
             return;
         }

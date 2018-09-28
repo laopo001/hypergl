@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 27th 2018, 1:06:26 am
+ * Last Modified: Friday, September 28th 2018, 3:49:49 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -64,7 +64,7 @@ export class Scene extends IElement {
         return f;
     }
     createShadowFrame(isCube) {
-        const f = new Frame(this,isCube);
+        const f = new Frame(this, isCube);
         f.createFramebuffer();
         return f;
     }

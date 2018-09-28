@@ -110,7 +110,7 @@ float CalcDirLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, vec3 light
 
 
 // 计算方向
-vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirection, sampler2D shadowMap, mat4 lightSpaceMatrix)
+vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirection)
 {
     vec3 lightDir = normalize(-lightDirection);
     // 计算漫反射强度
@@ -122,10 +122,15 @@ vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirectio
  
     vec3 diffuse  = lightColor * diff * getOutDiffuseColor().xyz;
     vec3 specular = lightColor * spec * getOutSpecularColor().xyz;
-    float shadow = CalcDirLightShadow(lightSpaceMatrix * vec4(out_vertex_position, 1.0), shadowMap, lightDirection);    
-    // float visibility = min(0.6 + (1.0 - shadow), 1.0);
-    return (diffuse + specular) * (1.0 - shadow);
+    return diffuse + specular;
 }  
+
+vec3 CalcDirLightAndShadow(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirection, sampler2D shadowMap, mat4 lightSpaceMatrix)
+{
+    float shadow = CalcDirLightShadow(lightSpaceMatrix * vec4(out_vertex_position, 1.0), shadowMap, lightDirection);    
+    vec3 color = CalcDirLight(normal, viewDir, lightColor, lightDirection);
+    return color * (1.0 - shadow);
+}
 
 
 float CalcPointLightShadow(vec4 fragPosLightSpace, samplerCube shadowMap, vec3 lightPos)
@@ -141,10 +146,10 @@ float CalcPointLightShadow(vec4 fragPosLightSpace, samplerCube shadowMap, vec3 l
 
 
 // 计算定点光在确定位置的光照颜色
-vec3 CalcPointLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPosition, float range, sampler2D shadowMap, mat4 lightSpaceMatrix)
+vec3 CalcPointLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPosition, float range)
 {
     vec3 lightDirection = normalize(out_vertex_position - lightPosition);
-    vec3 color = CalcDirLight(normal, viewDir, lightColor, lightDirection, shadowMap, lightSpaceMatrix);
+    vec3 color = CalcDirLight(normal, viewDir, lightColor, lightDirection);
     float distance = length(lightPosition - out_vertex_position);
     if(distance > range){
         return vec3(0);
@@ -165,11 +170,11 @@ void main(void)
     // start
     vec3 result = ambientColor.xyz * getOutDiffuseColor().xyz;
     {{#each uniforms._directionalLightArr}}
-        result += CalcDirLight(norm, viewDir, vec3({{this.color}}), {{this.direction}}, {{this.shadowMap}}, {{this.lightSpaceMatrix}} );
+    result += CalcDirLightAndShadow(norm, viewDir, vec3({{this.color}}), {{this.direction}}, {{this.shadowMap}}, {{this.lightSpaceMatrix}} );
     {{/each}}
     {{#each uniforms._pointLightArr}}
         // vec3 lightDir = normalize(out_vertex_position - {{this.position}});
-        result += CalcPointLight(norm, viewDir, vec3({{this.color}}), {{this.position}}, {{this.range}}, {{this.shadowMap}}, {{this.lightSpaceMatrix}});
+    result += CalcPointLight(norm, viewDir, vec3({{this.color}}), {{this.position}}, {{this.range}});
     {{/each}}
     // end
 
