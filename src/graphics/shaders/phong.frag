@@ -133,9 +133,9 @@ vec3 CalcDirLightAndShadow(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 ligh
 }
 
 
-float CalcPointLightShadow(vec4 fragPosLightSpace, samplerCube shadowMap, vec3 lightPos)
+float CalcPointLightShadow(samplerCube shadowMap, vec3 lightPos)
 {
-    vec3 fragToLight = fragPosLightSpace.xyz - lightPos;
+    vec3 fragToLight = out_vertex_position - lightPos;
     float closestDepth = unpack( texture(shadowMap, fragToLight) ); 
     closestDepth *= far_plane;
     float currentDepth =  length(fragToLight);
