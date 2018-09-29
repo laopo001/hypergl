@@ -16,6 +16,7 @@ uniform mat4 {{this.lightSpaceMatrix}};
 {{#each uniforms._pointLightArr}}
 uniform vec3 {{this.position}};
 uniform vec4 {{this.color}};
+uniform samplerCube {{this.shadowMap}};
 uniform float {{this.range}};
 {{/each}}
 // pointLight end
@@ -42,7 +43,6 @@ uniform vec3 lightPosition;
 uniform float shininess;
 {{/if}}
 
-uniform float far_plane;
 //////////////
 {{#if attributes.vertex_texCoord0}}
 varying vec2 out_vertex_texCoord0;
@@ -133,11 +133,11 @@ vec3 CalcDirLightAndShadow(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 ligh
 }
 
 
-float CalcPointLightShadow(samplerCube shadowMap, vec3 lightPos)
+float CalcPointLightShadow(samplerCube shadowMap, vec3 lightPos, float range)
 {
     vec3 fragToLight = out_vertex_position - lightPos;
     float closestDepth = unpack( texture(shadowMap, fragToLight) ); 
-    closestDepth *= far_plane;
+    closestDepth *= range;
     float currentDepth =  length(fragToLight);
     float bias = 0.005;
     float shadow = currentDepth -  bias > closestDepth ? 1.0 : 0.0;
@@ -158,7 +158,12 @@ vec3 CalcPointLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPositi
     }
 }
 
-
+vec3 CalcPointLightAndShadow(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPosition, float range, samplerCube shadowMap)
+{
+    float shadow = CalcPointLightShadow(shadowMap, lightPosition, range);    
+    vec3 color = CalcPointLight(normal, viewDir, lightColor, lightPosition, range);
+    return color * (1.0 - shadow);
+}
 
 void main(void)
 {
@@ -174,7 +179,7 @@ void main(void)
     {{/each}}
     {{#each uniforms._pointLightArr}}
         // vec3 lightDir = normalize(out_vertex_position - {{this.position}});
-    result += CalcPointLight(norm, viewDir, vec3({{this.color}}), {{this.position}}, {{this.range}});
+    result += CalcPointLightAndShadow(norm, viewDir, vec3({{this.color}}), {{this.position}}, {{this.range}}, {{this.shadowMap}} );
     {{/each}}
     // end
 

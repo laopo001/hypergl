@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, September 28th 2018, 11:32:34 pm
+ * Last Modified: Saturday, September 29th 2018, 10:18:29 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -176,7 +176,6 @@ export function renderPointLightArr(name: string, data: PointLight[], scene: Sce
         if (item.castShadows) {
             let { texture } = rendererShadowMap(scene, item);
             setLight(name, 'shadowMap', index, obj, uniforms, texture);
-            setLight(name, 'light_range', index, obj, uniforms, item.range);
         }
         setLight(name, 'position', index, obj, uniforms, item.getPosition().data);
         setLight(name, 'color', index, obj, uniforms, item.color.data);

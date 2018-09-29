@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, September 28th 2018, 11:27:57 pm
+ * Last Modified: Saturday, September 29th 2018, 9:48:04 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -51,7 +51,7 @@ let main = async () => {
 
     let light = new DirectionalLight();
     app.scene.lights.directionalLights.push(light);
-    addLight(app, new Vec3(-2, 2, 2));
+    addLight(app, new Vec3(0, 2, 0));
 
     let m2 = new StandardMaterial();
     m2.diffuseTexture = texture;
@@ -112,7 +112,7 @@ let main = async () => {
     app.start();
 
     app.on('update', _ => {
-        entity.rotate(0, 1, 0);
+        // entity.rotate(0, 1, 0);
     });
 
 };
