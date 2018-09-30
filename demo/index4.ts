@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 29th 2018, 9:48:04 pm
+ * Last Modified: Sunday, September 30th 2018, 11:40:13 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -50,7 +50,7 @@ let main = async () => {
     });
 
     let light = new DirectionalLight();
-    app.scene.lights.directionalLights.push(light);
+    // app.scene.lights.directionalLights.push(light);
     addLight(app, new Vec3(0, 2, 0));
 
     let m2 = new StandardMaterial();
@@ -84,7 +84,7 @@ let main = async () => {
         m.update();
         let entity = new Entity();
         entity.setPosition(0, -1, 0);
-        entity.setLocalScale(10, 1, 10);
+        entity.setLocalScale(20, 1, 20);
         entity.mesh = mesh;
         mesh.material = m;
         app.scene.root.addChild(entity);
