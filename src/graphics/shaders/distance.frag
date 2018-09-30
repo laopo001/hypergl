@@ -16,6 +16,6 @@ vec4 pack (float depth) {
 }
 
 void main() {       
-   float depth = min(distance(view_position, out_vertex_position) / light_range, 0.99999);
+    float depth = min(distance(view_position, out_vertex_position) / light_range, 0.99999);
     gl_FragColor = pack(depth); 
 }
