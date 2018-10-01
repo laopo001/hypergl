@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 1st 2018, 12:04:29 am
+ * Last Modified: Monday, October 1st 2018, 9:52:58 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -142,7 +142,7 @@ export function renderPointLightArr(name: string, data: PointLight[], scene: Sce
             v.data[b] = a !== 0 ? 1 : -1;
             let camera = new Camera();
             const near = 1;
-            camera.setPerspective(90, 1, 0.001, light.range);
+            camera.setPerspective(90, 1, 0.5, light.range);
             camera.setPosition(light.getPosition());
             camera.lookAt(v.add(light.getPosition()), camera.up);
             cameras.push(camera);
