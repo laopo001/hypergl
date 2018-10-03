@@ -5,10 +5,10 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 3rd 2018, 9:29:05 pm
+ * Last Modified: Sunday, September 23rd 2018, 2:35:55 am
  * Modified By: dadigua
  * -----
- * Copyright (c) 2018 jiguang
+ * Copyright (c) 2018 dadigua
  */
 
 
@@ -16,7 +16,6 @@ import { IElement } from '../core/element';
 import { Vec3, Quat, Mat4, Vec2 } from '../math';
 import { Log } from '../util';
 import { Scene } from './scene';
-import { Entity } from '../ecs/entity';
 
 let scaleCompensatePosTransform = new Mat4();
 let scaleCompensatePos = new Vec3();
@@ -49,19 +48,26 @@ export class SceneNode extends IElement {
     constructor() {
         super();
     }
-    lookAt(target: SceneNode) {
-        // TODO
-        let targetLocation = target.getPosition();
-        let up = target.up;
-        let mat4 = new Mat4().setLookAt(this.getPosition(), targetLocation, up);
-        let quat = new Quat().setFromMat4(mat4);
-        this.setRotation(quat);
+    lookAt(target: Vec3, up: Vec3);
+    lookAt(target: SceneNode);
+    lookAt(target?, up?) {
+        if (target instanceof SceneNode) {
+            let targetLocation = target.getPosition();
+            let up = target.up;
+            let mat4 = new Mat4().setLookAt(this.getPosition(), targetLocation, up);
+            let quat = new Quat().setFromMat4(mat4);
+            this.setRotation(quat);
+        } else {
+            let mat4 = new Mat4().setLookAt(this.getPosition(), target, up);
+            let quat = new Quat().setFromMat4(mat4);
+            this.setRotation(quat);
+        }
     }
-    addChild(child: Entity) {
+    addChild(child: SceneNode) {
         this.children.push(child);
         child.parent = this;
         child.scene = this.scene;
-        this.scene.layer.push(child);
+        this.scene.add(child);
     }
     setPosition(x: Vec3);
     setPosition(x: number, y: number, z: number);

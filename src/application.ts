@@ -5,22 +5,25 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 2nd 2018, 1:21:14 am
+ * Last Modified: Saturday, September 22nd 2018, 7:39:20 pm
  * Modified By: dadigua
  * -----
- * Copyright (c) 2018 jiguang
+ * Copyright (c) 2018 dadigua
  */
 
 
 import { Scene } from './scene/scene';
 import { RendererPlatform } from './graphics/renderer';
 import { AppOption, FnVoid } from './types';
-import { event } from './core/event';
+import { event, Timer } from './core';
+
+const timer = new Timer();
 export class Application {
     sceneInstances: Scene[] = [];
     activeIndex = 0;
     rendererPlatform: RendererPlatform;
     canvas: HTMLCanvasElement;
+    lastRenderTime = 0;
     get scene() {
         return this.sceneInstances[this.activeIndex];
     }
@@ -29,8 +32,16 @@ export class Application {
         this.rendererPlatform = new RendererPlatform(this.canvas, option);
         this.sceneInstances.push(new Scene(this));
     }
+    createScene() {
+        return new Scene(this);
+    }
     start() {
+        if (!this.rendererPlatform.viewport) {
+            this.rendererPlatform.setViewport(0, 0, this.canvas.width, this.canvas.height);
+        }
+
         this.tick();
+        console.log(this.scene.layer);
     }
     add(scene: Scene) {
         this.sceneInstances.push(scene);
@@ -39,9 +50,10 @@ export class Application {
         event.on(name, cb);
     }
     private tick() {
-        // this.scene.renderer();
-        event.fire('update');
+        timer.start();
         this.scene.render();
+        timer.end();
+        event.fire('update', timer.getDuration());
         window.requestAnimationFrame(this.tick.bind(this));
     }
 

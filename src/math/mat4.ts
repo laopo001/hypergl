@@ -318,7 +318,7 @@ export class Mat4 {
 
 
     setLookAt = (() => {
-        let x:Vec3, y:Vec3, z: Vec3;
+        let x: Vec3, y: Vec3, z: Vec3;
 
         x = new Vec3();
         y = new Vec3();
@@ -398,7 +398,17 @@ export class Mat4 {
         return this.setFrustum(-xmax, xmax, -ymax, ymax, znear, zfar);
     }
 
-
+    /**
+     * 正视投影
+     * @param {number} left
+     * @param {number} right
+     * @param {number} bottom
+     * @param {number} top
+     * @param {number} near
+     * @param {number} far
+     * @returns {this}
+     * @memberof Mat4
+     */
     setOrtho(left: number, right: number, bottom: number, top: number, near: number, far: number): this {
         let r = this.data;
 

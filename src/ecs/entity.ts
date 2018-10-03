@@ -5,10 +5,10 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 3rd 2018, 9:29:05 pm
+ * Last Modified: Friday, September 21st 2018, 3:51:43 pm
  * Modified By: dadigua
  * -----
- * Copyright (c) 2018 jiguang
+ * Copyright (c) 2018 dadigua
  */
 
 
@@ -16,7 +16,12 @@ import { SceneNode } from '../scene/node';
 import { Mesh } from '../mesh/mesh';
 import { Material } from '../material/material';
 import { Shader } from '../graphics/shader';
+let EntityID = 0;
 export class Entity extends SceneNode {
+    EntityID = EntityID++;
     mesh?: Mesh;
     _shader?: Shader;
+    constructor() {
+        super();
+    }
 }

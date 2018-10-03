@@ -7,13 +7,24 @@ Todos:
     ☐ ECS框架 Entity,Component,System 
     ☐ mesh
     ☐ Entity
-    ☐ Light 
-    ☐ StandardMaterial
+    ☐ scene 多光源 @started(18-09-8 11:04)
+    ☐ Light
+      ✔ Light.directionalLight @started(18-09-8 11:04) @done(18-09-10 01:06) @lasted(1d14h2m22s)
+      ✔ Light.pointLight @started(18-09-8 11:04) @done(18-09-10 01:06) @lasted(1d14h2m26s)
+      ☐ Light.spotLight
+    ☐ createFrame 创建帧缓冲区 @started(18-09-15 18:58)
+    ☐ 阴影
   Done:
-    ✔ 完成 BasicMaterial 的(diffuseMap)参数 @started(18-09-02 01:08) @done(18-09-04 00:55) @lasted(1d23h47m3s)
+    ✔ StandardMaterial @done(18-09-22 21:17)
+      ✔ StandardMaterial.diffuseColor @started(18-09-07 00:56) @done(18-09-07 12:19) @lasted(11h23m23s)
+      ✔ StandardMaterial.specularColor @started(18-09-07 00:56) @done(18-09-07 12:19) @lasted(11h23m23s)
+    ✔ shaderMaterial @started(18-09-22 19:12) @done(18-09-22 19:43) @lasted(31m55s)
+    ✔ timer @started(18-09-22 19:12) @done(18-09-22 19:43) @lasted(31m58s)
+    ✔ 添加appveyor的ci工具，使用karma测试工具，将自动测试chrome和firefox @done(18-09-05 12:21)
+    ✔ 完成 BasicMaterial 的(diffuseTexture)参数 @started(18-09-02 01:08) @done(18-09-04 00:55) @lasted(1d23h47m3s)
     ✔ createBox @done(18-09-03 00:45)
     ✔ graph-node @done(18-09-02 01:08)
-    ✔ shaderInput @done(18-09-01 15:42)
+    ✔ shaderInput（现在更名shaderVariable） @done(18-09-01 15:42)
     ✔ renderSecne @done(18-09-01 15:42)
     ✔ 封装camera @started(18-08-21 18:51) @done(18-08-26 18:37) @lasted(4d23h46m37s)
     ✔ mesh.createMesh完成，vertexBuffer.ts添加迭代器 @started(18-08-25 23:53) @done(18-08-26 15:53) @lasted(16h26s)
@@ -30,4 +41,4 @@ Todos:
 
 Archive:
   ✔ 跑起来一个demo，展示一个空间立方体 @started(18-08-17 01:28) @done(18-08-19 00:26) @lasted(1d22h58m40s)
-  ✔ 添加.travis.yml 测试 @started(18-08-16 19:23) @done(18-08-16 20:26) @lasted(1h3m1s)
+  ✔ 添加.travis.yml 使用jest测试工具 @started(18-08-16 19:23) @done(18-08-16 20:26) @lasted(1h3m1s)

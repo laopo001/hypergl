@@ -5,17 +5,17 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, September 4th 2018, 12:29:05 am
+ * Last Modified: Friday, September 21st 2018, 3:26:53 pm
  * Modified By: dadigua
  * -----
- * Copyright (c) 2018 jiguang
+ * Copyright (c) 2018 dadigua
  */
 
 
 import { RendererPlatform } from './renderer';
 import { Log } from '../util';
 import { ShaderVariable } from './shaderVariable';
-import { UNIFORM_TYPE } from '../conf';
+import { UNIFORM_TYPE, SEMANTIC } from '../conf';
 
 let ShaderID = 0;
 export class Shader {
@@ -29,7 +29,7 @@ export class Shader {
     uniformScope: { [s: string]: any; } = {};
     ready = false;
     constructor(private renderer: RendererPlatform, private definition: {
-        attributes: { [s: string]: any };
+        attributes: { [s: string]: SEMANTIC };
         vshader: string;
         fshader: string;
         useTransformFeedback?: boolean;
@@ -42,7 +42,10 @@ export class Shader {
     checkUniformScope() {
         // tslint:disable-next-line:forin
         for (let x in this.uniformScope) {
-            if (this.uniformScope[x] == null) { return false; }
+            if (this.uniformScope[x] == null) {
+                console.log(x);
+                return false;
+            }
         }
         return true;
     }
@@ -67,7 +70,7 @@ export class Shader {
             //         outNames.push('out_' + attr);
             //     }
             // }
-            attrs.keys().forEach(attr => {
+            Object.getOwnPropertyNames(attrs).forEach(attr => {
                 outNames.push('out_' + attr);
             });
             // webgl2缓存
@@ -107,7 +110,8 @@ export class Shader {
             } else {
                 this.uniforms.push(new ShaderVariable(info.name, this.renderer.glTypeToJs[info.type] as UNIFORM_TYPE, location));
             }
-            this.uniformScope[info.name] = null;
+            // tslint:disable-next-line:no-unused-expression
+            !this.uniformScope.hasOwnProperty(info.name) && (this.uniformScope[info.name] = null);
         }
         this.ready = true;
     }
@@ -127,7 +131,9 @@ export function loadShader(gl: WebGLRenderingContext | WebGL2RenderingContext, t
     gl.compileShader(shader);
     const compiled = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
     if (!compiled) {
-        Log.error(`${gl.VERTEX_SHADER === type ? 'VERTEX_SHADER' : 'FRAGMENT_SHADER'}\n` + gl.getShaderInfoLog(shader) as string);
+
+        let str = source.split('\n').map((x, index) => { return (index) + ' ' + x + '\n'; }).join('');
+        Log.error(`${gl.VERTEX_SHADER === type ? 'VERTEX_SHADER' : 'FRAGMENT_SHADER'}\n${gl.getShaderInfoLog(shader) as string}\n${str}`);
         return false;
     }
     return shader;

@@ -5,38 +5,40 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, September 3rd 2018, 9:29:05 pm
+ * Last Modified: Thursday, September 20th 2018, 12:57:26 am
  * Modified By: dadigua
  * -----
- * Copyright (c) 2018 jiguang
+ * Copyright (c) 2018 dadigua
  */
 
 
 import { Vec3, Quat, Mat4 } from '../math';
 import { SceneNode } from './node';
-export class Camera {
-    worldMatrixInverse = new Mat4().setLookAt(new Vec3(0, 0, 0), new Vec3(0, 0, 1), new Vec3(0, 1, 0)).invert();
-    position: Vec3;
-    // quaternion: Quat = new Quat();
-    // scala: Vec3 = new Vec3();
+export class Camera extends SceneNode {
     projectionMatrix = new Mat4();
 
-    constructor(
-        fov: number,			// 相机视野的角度。一般是以Y轴
-        aspect: number,			// 相机的纵横比（宽度除以高度）
-        near: number,			// 相机渲染最近的距离，小于这距离的不会进行渲染
-        far: number			// 相机渲染最远的距离，大于这距离的不会进行渲染
-    ) {
-        // TODO
+    constructor() {
+        super();
+    }
+    /**
+     *
+     *
+     * @param {number} fov 相机视野的角度。一般是以Y轴
+     * @param {number} aspect 相机的纵横比（宽度除以高度）
+     * @param {number} near 相机渲染最近的距离，小于这距离的不会进行渲染
+     * @param {number} far 相机渲染最远的距离，大于这距离的不会进行渲染
+     * @memberof Camera
+     */
+    setPerspective(fov: number, aspect: number, near: number, far: number) {
         this.projectionMatrix.setPerspective(fov, aspect, near, far);
-        this.position = this.worldMatrixInverse.getTranslation();
+        return this;
     }
-    lookAt(target: Vec3) {
-        // TODO
-        this.worldMatrixInverse.setLookAt(this.position, target, new Vec3(0, 1, 0)).invert();
+    setOrtho(left: number, right: number, bottom: number, top: number, near: number, far: number) {
+        this.projectionMatrix.setOrtho(left, right, bottom, top, near, far);
+        return this;
     }
-    get PVMatrix() {
-        return new Mat4().mul(this.projectionMatrix).mul(this.worldMatrixInverse);
+    get viewProjectionMatrix() {
+        return new Mat4().mul2(this.projectionMatrix, this.getWorldTransform().clone().invert());
     }
 
 }

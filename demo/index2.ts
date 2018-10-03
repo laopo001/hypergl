@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, September 4th 2018, 12:40:44 am
+ * Last Modified: Saturday, September 15th 2018, 12:35:03 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -13,7 +13,7 @@
 
 
 
-import { SEMANTIC, BUFFER, VertexBuffer, IndexBuffer, VertexFormat, Application, BasicMaterial, Entity, Texture } from '../src';
+import { SEMANTIC, BUFFER, VertexBuffer, IndexBuffer, StandardMaterial, Application, BasicMaterial, Entity, Texture } from '../src';
 import vert from '../src/graphics/shaders/vertex.vert';
 import frag from '../src/graphics/shaders/fragment.frag';
 import { loadImage } from './utils/util';
@@ -47,16 +47,18 @@ let main = async () => {
 
     let mesh2 = Mesh.createBox(app.rendererPlatform);
     let entity2 = new Entity();
+    let m2 = new StandardMaterial();
+    m2.diffuseColor.set(0.5, 0, 0.5);
+    // mesh.material = m2;
     entity2.mesh = mesh2;
 
     entity2.setLocalScale(1.5, 0.5, 1.5);
-    // entity2.rotate(0, 10, 0);
     entity2.setPosition(2, 0, 0);
     app.scene.root.addChild(entity2);
 
-    let camera = new Camera(45, app.canvas.width / app.canvas.height, 1, 1000);
-
-    camera.worldMatrixInverse = new Mat4().setLookAt(new Vec3(3, 3, 3), new Vec3(0, 0, 0), new Vec3(0, 1, 0)).invert();
+    let camera = new Camera().setPerspective(45, app.canvas.width / app.canvas.height, 1, 1000);
+    camera.setPosition(3, 3, 3);
+    camera.lookAt(entity);
 
     app.scene.cameras.push(camera);
 
@@ -65,7 +67,7 @@ let main = async () => {
     app.on('update', _ => {
         entity.rotate(0, 1, 0);
     });
-
+    // app.rendererPlatform.setViewport(100, 200, 500, 300);
 };
 
 
