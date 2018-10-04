@@ -5,11 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
-<<<<<<< HEAD
- * Last Modified: Monday, October 1st 2018, 9:55:00 am
-=======
- * Last Modified: Monday, October 1st 2018, 9:55:00 am
->>>>>>> ed662f55ea46dd8e6b5b35cfcfdc050bc592a773
+ * Last Modified: Thursday, October 4th 2018, 10:57:04 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
