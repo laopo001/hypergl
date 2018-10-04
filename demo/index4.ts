@@ -6,9 +6,9 @@
  * @summary: short description for the file
  * -----
 <<<<<<< HEAD
- * Last Modified: Monday, October 1st 2018, 9:55:02 am
+ * Last Modified: Friday, October 5th 2018, 12:27:40 am
 =======
- * Last Modified: Monday, October 1st 2018, 9:55:02 am
+ * Last Modified: Friday, October 5th 2018, 12:27:40 am
 >>>>>>> ed662f55ea46dd8e6b5b35cfcfdc050bc592a773
  * Modified By: dadigua
  * -----
@@ -56,7 +56,7 @@ let main = async () => {
 
     let light = new DirectionalLight();
     // app.scene.lights.directionalLights.push(light);
-    addLight(app, new Vec3(0, 1, 0));
+    addLight(app, new Vec3(0, 2, 0));
 
     let m2 = new StandardMaterial();
     m2.diffuseTexture = texture;
@@ -77,7 +77,7 @@ let main = async () => {
     entity2.setLocalScale(2, 2, 2);
     mesh2.material = m2;
     entity2.mesh = mesh2;
-    entity2.setPosition(2, 0, 0);
+    entity2.setPosition(3, 0, 0);
     app.scene.root.addChild(entity2);
 
     (_ => {

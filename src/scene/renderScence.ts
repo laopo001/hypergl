@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, October 4th 2018, 10:57:04 am
+ * Last Modified: Friday, October 5th 2018, 12:26:22 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -138,13 +138,14 @@ export function renderPointLightArr(name: string, data: PointLight[], scene: Sce
         for (let i = 0; i < 6; i++) {
             let v = new Vec3();
             let a = i % 2;
+            let up = i === 2 || i === 3 ? new Vec3(0, 0, 1) : new Vec3(0, 1, 0);
             let b = Math.floor(i / 2);
             v.data[b] = a !== 0 ? 1 : -1;
             let camera = new Camera();
             const near = 1;
             camera.setPerspective(90, 1, 0.5, light.range);
             camera.setPosition(light.getPosition());
-            camera.lookAt(v.add(light.getPosition()), camera.up);
+            camera.lookAt(v.add(light.getPosition()), up);
             cameras.push(camera);
         }
 
