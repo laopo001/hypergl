@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 7th 2018, 11:39:12 am
+ * Last Modified: Monday, October 8th 2018, 12:41:52 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -21,8 +21,8 @@ export class SpotLight extends Light {
     set direction(x) {
         this._direction = x;
     }
-    range = 10;
-    innerConeAngle = 30;
-    outerConeAngle = 35;
+    range = 20;
+    innerConeAngle = 70;
+    outerConeAngle = 75;
     private _direction = new Vec3(0, -1, 0);
 }

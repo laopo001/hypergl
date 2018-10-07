@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 7th 2018, 11:48:04 am
+ * Last Modified: Monday, October 8th 2018, 12:48:13 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,9 +20,9 @@ import { Mesh } from '../mesh/mesh';
 import { Shader } from '../graphics/shader';
 import { SEMANTICMAP, SEMANTIC } from '../conf';
 import { Log } from '../util';
-import { Light, DirectionalLight, PointLight } from '../lights';
+import { Light, DirectionalLight, PointLight, SpotLight } from '../lights';
 import { Camera } from './camera';
-import { Vec3 } from '../math';
+import { Vec3, DEG_TO_RAD } from '../math';
 
 
 
@@ -33,8 +33,8 @@ export function renderScence(scene: Scene) {
     let cameraViewProjectionMatrix = camera.viewProjectionMatrix;
     let directionalLightsUniforms = renderDirectionalLightArr('directionalLightArr', lights.directionalLights, scene);
     let pointLightsUniforms = renderPointLightArr('pointLightArr', lights.pointLights, scene);
-
-    let LightsUniforms = { ...directionalLightsUniforms, ...pointLightsUniforms };
+    let spotLightsUniforms = renderSpotLightArr('spotLightArr', lights.spotLight, scene);
+    let LightsUniforms = { ...directionalLightsUniforms, ...pointLightsUniforms, ...spotLightsUniforms };
     let renderer = scene.app.rendererPlatform;
     renderer.initDraw();
     // TODO
@@ -189,9 +189,65 @@ export function renderPointLightArr(name: string, data: PointLight[], scene: Sce
     return uniforms;
 }
 
+export function renderSpotLightArr(name: string, data: SpotLight[], scene: Scene) {
+    function rendererShadowMap(scene: Scene, light: SpotLight) {
+        let entitys = scene.layer;
+        let renderer = scene.app.rendererPlatform;
+        if (!light.shadowFrame) {
+            light.shadowFrame = scene.createShadowFrame(false);
+        }
+        let camera = new Camera();
+        camera.setPerspective(light.outerConeAngle, 1, 0.5, light.range);
+        camera.lookAt(light.direction, getUp(light.direction));
+        camera.setPosition(light.getPosition());
+
+        let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
+        let shader = renderer.programGenerator.getShader('shadow', attributes);
+        shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
+
+        light.shadowFrame.beforeDraw();
+        for (let i = 0; i < entitys.length; i++) {
+            let entity = entitys[i];
+            renderer.setShaderProgram(shader as Shader);
+            shader.setUniformValue('matrix_model', entity.getWorldTransform().data);
+            renderer.draw(entity);
+        }
+        light.shadowFrame.afterDraw();
+        return { texture: light.shadowFrame.getTexture(), viewProjectionMatrix: camera.viewProjectionMatrix };
+    }
+    let res: string[][] = [];
+    let uniforms = {};
+    data.forEach((item, index) => {
+        let obj: any = {};
+        if (item.castShadows) {
+            let { texture, viewProjectionMatrix } = rendererShadowMap(scene, item);
+            setLight(name, 'shadowMap', index, obj, uniforms, texture);
+            setLight(name, 'lightSpaceMatrix', index, obj, uniforms, viewProjectionMatrix.data);
+        }
+        setLight(name, 'position', index, obj, uniforms, item.getPosition().data);
+        setLight(name, 'direction', index, obj, uniforms, item.direction.normalize().data);
+        setLight(name, 'innerConeAngle', index, obj, uniforms, Math.cos(item.innerConeAngle * DEG_TO_RAD));
+        setLight(name, 'outerConeAngle', index, obj, uniforms, Math.cos(item.outerConeAngle * DEG_TO_RAD));
+        setLight(name, 'color', index, obj, uniforms, item.color.data);
+        setLight(name, 'range', index, obj, uniforms, item.range);
+        res.push(obj);
+    });
+    uniforms['_' + name] = res;
+    return uniforms;
+}
 
 function setLight(name: string, key: string, index, obj, parameters, value) {
     let t = name + index + '_' + key;
     obj[key] = t;
     parameters[t] = value;
+}
+
+function getUp(v: Vec3) {
+    let up = new Vec3();
+    if (v.z === 0) {
+        up.set(0, 0, 1);
+    } else {
+        up.set(0, -v.z / v.y, 1);
+    }
+    return up;
 }

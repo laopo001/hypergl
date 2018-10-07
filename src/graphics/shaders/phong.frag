@@ -20,6 +20,18 @@ uniform samplerCube {{this.shadowMap}};
 uniform float {{this.range}};
 {{/each}}
 // pointLight end
+// pointLight start
+{{#each uniforms._spotLightArr}}
+uniform vec3 {{this.position}};
+uniform vec3 {{this.direction}};
+uniform vec4 {{this.color}};
+uniform sampler2D {{this.shadowMap}};
+uniform float {{this.range}};
+uniform float {{this.innerConeAngle}};
+uniform float {{this.outerConeAngle}};
+uniform mat4 {{this.lightSpaceMatrix}};
+{{/each}}
+// pointLight end
 
 {{#if uniforms.diffuseTexture}}
 uniform sampler2D diffuseTexture;
@@ -79,8 +91,7 @@ float unpack(const in vec4 rgbaDepth) {
     return dot(rgbaDepth, bitShift);
 }
 
-float CalcDirLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, vec3 lightDirection)
-{
+float CalcDirLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, vec3 lightDirection) {
     // 执行透视除法
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
     // 变换到[0,1]的范围
@@ -88,30 +99,26 @@ float CalcDirLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, vec3 light
     // 取得最近点的深度(使用[0,1]范围下的fragPosLight当坐标)
     float closestDepth = unpack( texture(shadowMap, projCoords.xy) ); 
     // 取得当前片元在光源视角下的深度
-    float currentDepth =  clamp(projCoords.z, 0.0, 1.0);
+    float currentDepth = clamp(projCoords.z, 0.0, 1.0);
     // 检查当前片元是否在阴影中
     float bias = max(0.05 * (1.0 - dot(out_normal, -lightDirection)), 0.005);
-    // float shadow = currentDepth > closestDepth + 0.00 ? 1.0 : 0.0;
     // float shadow = currentDepth > closestDepth + 0.005 ? 1.0 : 0.0;
-
     float shadow = 0.0;
-    float texelSize=1.0 / 2048.0;
+    float texelSize = 1.0 / 1024.0;
     for(float y=-1.0; y <= 1.0; y += 1.0){
-        for(float x=-1.0; x <=1.0; x += 1.0){
+        for(float x=-1.0; x <= 1.0; x += 1.0){
             float rgbaDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
             shadow += projCoords.z - bias > rgbaDepth ? 1.0 : 0.0;
         }
     }
     shadow/=9.0;
-
     return shadow;
 }
 
 
 
 // 计算方向
-vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirection)
-{
+vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirection) {
     vec3 lightDir = normalize(-lightDirection);
     // 计算漫反射强度
     float diff = max(dot(normal, lightDir), 0.0);
@@ -119,22 +126,19 @@ vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirectio
     vec3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
     // 合并各个光照分量
- 
     vec3 diffuse  = lightColor * diff * getOutDiffuseColor().xyz;
     vec3 specular = lightColor * spec * getOutSpecularColor().xyz;
     return diffuse + specular;
 }  
 
-vec3 CalcDirLightAndShadow(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirection, sampler2D shadowMap, mat4 lightSpaceMatrix)
-{
+vec3 CalcDirLightAndShadow(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirection, sampler2D shadowMap, mat4 lightSpaceMatrix) {
     float shadow = CalcDirLightShadow(lightSpaceMatrix * vec4(out_vertex_position, 1.0), shadowMap, lightDirection);    
     vec3 color = CalcDirLight(normal, viewDir, lightColor, lightDirection);
     return color * (1.0 - shadow);
 }
 
 
-float CalcPointLightShadow(samplerCube shadowMap, vec3 lightPosition, float range)
-{
+float CalcPointLightShadow(samplerCube shadowMap, vec3 lightPosition, float range) {
     vec3 fragToLight = lightPosition - out_vertex_position;
     float closestDepth = unpack( texture(shadowMap, fragToLight ) ); 
     closestDepth *= range;
@@ -146,8 +150,7 @@ float CalcPointLightShadow(samplerCube shadowMap, vec3 lightPosition, float rang
 
 
 // 计算定点光在确定位置的光照颜色
-vec3 CalcPointLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPosition, float range)
-{
+vec3 CalcPointLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPosition, float range) {
     vec3 lightDirection = normalize(out_vertex_position - lightPosition);
     vec3 color = CalcDirLight(normal, viewDir, lightColor, lightDirection);
     float distance = length(lightPosition - out_vertex_position);
@@ -158,15 +161,23 @@ vec3 CalcPointLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPositi
     }
 }
 
-vec3 CalcPointLightAndShadow(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPosition, float range, samplerCube shadowMap)
-{
+vec3 CalcPointLightAndShadow(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPosition, float range, samplerCube shadowMap) {
     float shadow = CalcPointLightShadow(shadowMap, lightPosition, range);    
     vec3 color = CalcPointLight(normal, viewDir, lightColor, lightPosition, range);
     return color * (1.0 - shadow);
 }
 
-void main(void)
-{
+vec3 CalcSpotLightAndShadow(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPosition, float range, vec3 direction, float innerConeAngle, float outerConeAngle, sampler2D shadowMap, mat4 lightSpaceMatrix) {
+    vec3 lightDirection = normalize(out_vertex_position - lightPosition);
+    float cosAngle = dot(lightDirection, direction);
+    float f = smoothstep(outerConeAngle, innerConeAngle, cosAngle);
+    vec3 color = CalcPointLight(normal, viewDir, lightColor, lightPosition, range) * f;
+    float shadow = CalcDirLightShadow(lightSpaceMatrix * vec4(out_vertex_position, 1.0), shadowMap, lightDirection);    
+    return color  * (1.0 - shadow);
+}
+
+
+void main(void) {
     // vec4 outColor = getOutColor();
 
     vec3 norm = normalize(out_normal);
@@ -179,6 +190,9 @@ void main(void)
     {{/each}}
     {{#each uniforms._pointLightArr}}
     result += CalcPointLightAndShadow(norm, viewDir, vec3({{this.color}}), {{this.position}}, {{this.range}}, {{this.shadowMap}} );
+    {{/each}}
+    {{#each uniforms._spotLightArr}}
+    result += CalcSpotLightAndShadow(norm, viewDir, vec3({{this.color}}), {{this.position}}, {{this.range}}, {{this.direction}}, {{this.innerConeAngle}}, {{this.outerConeAngle}}, {{this.shadowMap}}, {{this.lightSpaceMatrix}});
     {{/each}}
     // end
 

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 7th 2018, 11:42:01 am
+ * Last Modified: Monday, October 8th 2018, 12:26:57 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -97,8 +97,8 @@ let main = async () => {
 
     let camera = new Camera();
     camera.setPerspective(45, app.canvas.width / app.canvas.height, 1, 1000);
-    camera.setPosition(0, 5, 10);
-    camera.lookAt(entity);
+    camera.setPosition(0, 10, 10);
+    camera.lookAt(new Vec3(0, 0, 0), camera.up);
 
     app.scene.cameras.push(camera);
     // ------------

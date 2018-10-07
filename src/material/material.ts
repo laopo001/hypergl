@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, September 21st 2018, 3:14:48 pm
+ * Last Modified: Sunday, October 7th 2018, 12:31:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,7 +17,6 @@ import { SEMANTIC } from '../conf';
 import { Shader } from '../graphics/shader';
 import { Light, PointLight, DirectionalLight } from '../lights';
 import { Scene } from '../scene/scene';
-import { rendererShadowMap } from '../scene/renderScence';
 
 export abstract class Material {
     uniforms: { [s: string]: any } = {};
