@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, September 28th 2018, 3:49:49 pm
+ * Last Modified: Sunday, October 7th 2018, 11:44:05 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,7 +20,7 @@ import { Camera } from './camera';
 import { Entity } from '../ecs/entity';
 import { Color } from '../core/color';
 import { Vec3 } from '../math';
-import { Light, PointLight, DirectionalLight } from '../lights';
+import { Light, PointLight, DirectionalLight, SpotLight } from '../lights';
 import { Frame } from '../graphics/createFrame';
 import { Log } from '../util';
 export class Scene extends IElement {
@@ -30,10 +30,12 @@ export class Scene extends IElement {
     baseMaterial;
     readonly lights: {
         directionalLights: DirectionalLight[],
-        pointLights: PointLight[]
+        pointLights: PointLight[],
+        spotLight: SpotLight[]
     } = {
             directionalLights: [],
-            pointLights: []
+            pointLights: [],
+            spotLight: []
         };
     readonly layer: Entity[] = [];
     root: SceneNode = new SceneNode();
@@ -73,6 +75,8 @@ export class Scene extends IElement {
             this.lights.directionalLights.push(child);
         } else if (child instanceof PointLight) {
             this.lights.pointLights.push(child);
+        } else if (child instanceof SpotLight) {
+            this.lights.spotLight.push(child);
         } else if (child instanceof Entity) {
             this.layer.push(child);
         }

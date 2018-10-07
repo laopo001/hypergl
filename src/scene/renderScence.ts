@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, October 5th 2018, 12:26:22 am
+ * Last Modified: Sunday, October 7th 2018, 11:48:04 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -33,6 +33,7 @@ export function renderScence(scene: Scene) {
     let cameraViewProjectionMatrix = camera.viewProjectionMatrix;
     let directionalLightsUniforms = renderDirectionalLightArr('directionalLightArr', lights.directionalLights, scene);
     let pointLightsUniforms = renderPointLightArr('pointLightArr', lights.pointLights, scene);
+
     let LightsUniforms = { ...directionalLightsUniforms, ...pointLightsUniforms };
     let renderer = scene.app.rendererPlatform;
     renderer.initDraw();
@@ -187,6 +188,7 @@ export function renderPointLightArr(name: string, data: PointLight[], scene: Sce
     uniforms['_' + name] = res;
     return uniforms;
 }
+
 
 function setLight(name: string, key: string, index, obj, parameters, value) {
     let t = name + index + '_' + key;

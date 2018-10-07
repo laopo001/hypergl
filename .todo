@@ -11,10 +11,9 @@ Todos:
     ☐ Light
       ✔ Light.directionalLight @started(18-09-8 11:04) @done(18-09-10 01:06) @lasted(1d14h2m22s)
       ✔ Light.pointLight @started(18-09-8 11:04) @done(18-09-10 01:06) @lasted(1d14h2m26s)
-      ☐ Light.spotLight
-    ☐ createFrame 创建帧缓冲区 @started(18-09-15 18:58)
-    ☐ 阴影
+      ☐ Light.spotLight @started(18-10-07 11:48)
   Done:
+    ✔ createFrame 创建帧缓冲区 @started(18-09-15 18:58)
     ✔ StandardMaterial @done(18-09-22 21:17)
       ✔ StandardMaterial.diffuseColor @started(18-09-07 00:56) @done(18-09-07 12:19) @lasted(11h23m23s)
       ✔ StandardMaterial.specularColor @started(18-09-07 00:56) @done(18-09-07 12:19) @lasted(11h23m23s)

@@ -1,11 +1,11 @@
 /*
  * ProjectName: hypergl
- * FilePath: \demo\index4.ts
- * Created Date: Saturday, September 15th 2018, 3:19:07 pm
+ * FilePath: \demo\index6.ts
+ * Created Date: Sunday, October 7th 2018, 11:12:59 am
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 7th 2018, 11:13:16 am
+ * Last Modified: Sunday, October 7th 2018, 11:42:01 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,7 +13,7 @@
 
 
 
-import { Scene, BUFFER, PointLight, DirectionalLight, Light, StandardMaterial, Application, BasicMaterial, Entity, Texture } from '../src';
+import { Scene, BUFFER, PointLight, DirectionalLight, SpotLight, StandardMaterial, Application, BasicMaterial, Entity, Texture } from '../src';
 import vert from '../src/graphics/shaders/vertex.vert';
 import frag from '../src/graphics/shaders/fragment.frag';
 import { loadImage } from './utils/util';
@@ -52,7 +52,11 @@ let main = async () => {
 
     let light = new DirectionalLight();
     // app.scene.lights.directionalLights.push(light);
-    addLight(app, new Vec3(0, 2, 0));
+    // addLight(app, new Vec3(0, 2, 0));
+    let spotLight = new SpotLight();
+    spotLight.setPosition(0, 2, 0);
+    app.scene.root.addChild(spotLight);
+
 
     let m2 = new StandardMaterial();
     m2.diffuseTexture = texture;
