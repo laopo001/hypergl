@@ -20,7 +20,7 @@ uniform samplerCube {{this.shadowMap}};
 uniform float {{this.range}};
 {{/each}}
 // pointLight end
-// pointLight start
+// soptLight start
 {{#each uniforms._spotLightArr}}
 uniform vec3 {{this.position}};
 uniform vec3 {{this.direction}};
@@ -31,7 +31,7 @@ uniform float {{this.innerConeAngle}};
 uniform float {{this.outerConeAngle}};
 uniform mat4 {{this.lightSpaceMatrix}};
 {{/each}}
-// pointLight end
+// soptLight end
 
 {{#if uniforms.diffuseTexture}}
 uniform sampler2D diffuseTexture;
@@ -111,7 +111,7 @@ float CalcDirLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, vec3 light
             shadow += projCoords.z - bias > rgbaDepth ? 1.0 : 0.0;
         }
     }
-    shadow/=9.0;
+    shadow /= 9.0;
     return shadow;
 }
 
@@ -168,12 +168,13 @@ vec3 CalcPointLightAndShadow(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 li
 }
 
 vec3 CalcSpotLightAndShadow(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPosition, float range, vec3 direction, float innerConeAngle, float outerConeAngle, sampler2D shadowMap, mat4 lightSpaceMatrix) {
-    vec3 lightDirection = normalize(out_vertex_position - lightPosition);
-    float cosAngle = dot(lightDirection, direction);
+    vec3 lightDirection = out_vertex_position - lightPosition;
+    vec3 lightDirectionNorm = normalize(lightDirection);
+    float cosAngle = dot(lightDirectionNorm, direction);
     float f = smoothstep(outerConeAngle, innerConeAngle, cosAngle);
     vec3 color = CalcPointLight(normal, viewDir, lightColor, lightPosition, range) * f;
     float shadow = CalcDirLightShadow(lightSpaceMatrix * vec4(out_vertex_position, 1.0), shadowMap, lightDirection);    
-    return color  * (1.0 - shadow);
+    return color * (1.0 - shadow);
 }
 
 

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 8th 2018, 12:41:52 am
+ * Last Modified: Tuesday, October 9th 2018, 11:24:14 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -23,6 +23,6 @@ export class SpotLight extends Light {
     }
     range = 20;
     innerConeAngle = 70;
-    outerConeAngle = 75;
+    outerConeAngle = 70;
     private _direction = new Vec3(0, -1, 0);
 }

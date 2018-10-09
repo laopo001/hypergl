@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 8th 2018, 12:26:57 am
+ * Last Modified: Tuesday, October 9th 2018, 11:22:54 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -50,7 +50,7 @@ let main = async () => {
         // webgl1:true
     });
 
-    let light = new DirectionalLight();
+    // let light = new DirectionalLight();
     // app.scene.lights.directionalLights.push(light);
     // addLight(app, new Vec3(0, 2, 0));
     let spotLight = new SpotLight();
