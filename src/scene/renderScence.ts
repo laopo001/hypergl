@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 8th 2018, 11:43:32 pm
+ * Last Modified: Wednesday, October 10th 2018, 12:11:23 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -197,7 +197,7 @@ export function renderSpotLightArr(name: string, data: SpotLight[], scene: Scene
             light.shadowFrame = scene.createShadowFrame(false);
         }
         let camera = new Camera();
-        camera.setPerspective(light.outerConeAngle, 1, 0.5, light.range);
+        camera.setPerspective(light.outerConeAngle * 2, 1, 0.5, light.range);
         camera.lookAt(light.direction, getUp(light.direction));
         camera.setPosition(light.getPosition());
 
