@@ -167,12 +167,25 @@ vec3 CalcPointLightAndShadow(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 li
     return color * (1.0 - shadow);
 }
 
+vec3 CalcSpotLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirection, vec3 direction) {
+    vec3 lightDir = normalize(-lightDirection);
+    // 计算漫反射强度
+    float diff = max(dot(normal, lightDir), 0.0);
+    // 计算镜面反射强度
+    vec3 reflectDir = reflect(-lightDir, normal);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
+    // 合并各个光照分量
+    vec3 diffuse  = lightColor * diff * getOutDiffuseColor().xyz;
+    vec3 specular = lightColor * spec * getOutSpecularColor().xyz;
+    return diffuse + specular;
+}  
+
 vec3 CalcSpotLightAndShadow(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPosition, float range, vec3 direction, float innerConeAngle, float outerConeAngle, sampler2D shadowMap, mat4 lightSpaceMatrix) {
     vec3 lightDirection = out_vertex_position - lightPosition;
     vec3 lightDirectionNorm = normalize(lightDirection);
     float cosAngle = dot(lightDirectionNorm, direction);
     float f = smoothstep(outerConeAngle, innerConeAngle, cosAngle);
-    vec3 color = CalcPointLight(normal, viewDir, lightColor, lightPosition, range) * f;
+    vec3 color = CalcPointLight(normal, viewDir, lightColor, lightPosition, range) * f ;
     float shadow = CalcDirLightShadow(lightSpaceMatrix * vec4(out_vertex_position, 1.0), shadowMap, lightDirection);    
     return color * (1.0 - shadow);
 }
