@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, October 10th 2018, 12:11:23 am
+ * Last Modified: Thursday, October 11th 2018, 1:58:32 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -117,6 +117,7 @@ export function renderDirectionalLightArr(name: string, data: DirectionalLight[]
             let { texture, viewProjectionMatrix } = rendererShadowMap(scene, item);
             setLight(name, 'shadowMap', index, obj, uniforms, texture);
             setLight(name, 'lightSpaceMatrix', index, obj, uniforms, viewProjectionMatrix.data);
+            setLight(name, 'castShadows', index, obj, uniforms, item.castShadows);
         }
         setLight(name, 'position', index, obj, uniforms, item.getPosition().data);
         setLight(name, 'color', index, obj, uniforms, item.color.data);
@@ -179,6 +180,7 @@ export function renderPointLightArr(name: string, data: PointLight[], scene: Sce
         if (item.castShadows) {
             let { texture } = rendererShadowMap(scene, item);
             setLight(name, 'shadowMap', index, obj, uniforms, texture);
+            setLight(name, 'castShadows', index, obj, uniforms, item.castShadows);
         }
         setLight(name, 'position', index, obj, uniforms, item.getPosition().data);
         setLight(name, 'color', index, obj, uniforms, item.color.data);
@@ -223,6 +225,7 @@ export function renderSpotLightArr(name: string, data: SpotLight[], scene: Scene
             let { texture, viewProjectionMatrix } = rendererShadowMap(scene, item);
             setLight(name, 'shadowMap', index, obj, uniforms, texture);
             setLight(name, 'lightSpaceMatrix', index, obj, uniforms, viewProjectionMatrix.data);
+            setLight(name, 'castShadows', index, obj, uniforms, item.castShadows);
         }
         setLight(name, 'position', index, obj, uniforms, item.getPosition().data);
         setLight(name, 'direction', index, obj, uniforms, item.direction.normalize().data);

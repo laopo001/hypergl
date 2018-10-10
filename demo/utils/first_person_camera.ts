@@ -5,20 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, October 10th 2018, 10:26:54 pm
+ * Last Modified: Thursday, October 11th 2018, 1:29:08 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
-import { Entity, math } from '../../src';
-export abstract class Script<Inputs> {
-    entity!: Entity;
-    constructor(public props: Inputs) {
-    }
-    abstract initialize();
-    abstract update(dt: number);
-}
+import { math, Script } from '../../src';
+
 interface FirstPersonCameraInputs {
     speed: number;
 }
@@ -40,9 +34,17 @@ export class FirstPersonCamera extends Script<FirstPersonCameraInputs> {
         let x = 0, y = 0;
         // tslint:disable-next-line:no-non-null-assertion
         document.getElementById('canvas')!.addEventListener('mousemove', (event) => {
-            this.ex -= event.movementY / 5;
-            this.ex = math.clamp(this.ex, -90, 90);
-            this.ey -= event.movementX / 5;
+            if (this.app.isPointerLocked) {
+                this.ex -= event.movementY / 5;
+                this.ex = math.clamp(this.ex, -90, 90);
+                this.ey -= event.movementX / 5;
+            }
+        }, false);
+        // tslint:disable-next-line:no-non-null-assertion
+        document.getElementById('canvas')!.addEventListener('mousedown', (event) => {
+            if (!this.app.isPointerLocked) {
+                this.app.setRequestPointerLock();
+            }
         }, false);
         document.addEventListener('keydown', (event) => {
             if (event.key === 'w') {
@@ -76,15 +78,15 @@ export class FirstPersonCamera extends Script<FirstPersonCameraInputs> {
     update(dt) {
         this.entity.setLocalEulerAngles(this.ex, this.ey, 0);
         if (this.forwards) {
-            this.entity.translateLocal(0, 0, -this.props.speed * dt);
+            this.entity.translateLocal(0, 0, -this.inputs.speed * dt);
         } else if (this.backwards) {
-            this.entity.translateLocal(0, 0, this.props.speed * dt);
+            this.entity.translateLocal(0, 0, this.inputs.speed * dt);
         }
 
         if (this.left) {
-            this.entity.translateLocal(-this.props.speed * dt, 0, 0);
+            this.entity.translateLocal(-this.inputs.speed * dt, 0, 0);
         } else if (this.right) {
-            this.entity.translateLocal(this.props.speed * dt, 0, 0);
+            this.entity.translateLocal(this.inputs.speed * dt, 0, 0);
         }
     }
 }

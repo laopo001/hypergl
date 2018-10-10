@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 6:03:01 pm
+ * Last Modified: Thursday, October 11th 2018, 1:28:19 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,3 +13,4 @@
 
 
 export * from './entity';
+export * from './components/script';

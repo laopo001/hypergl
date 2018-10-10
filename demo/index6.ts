@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, October 10th 2018, 10:44:47 pm
+ * Last Modified: Thursday, October 11th 2018, 2:06:52 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -24,6 +24,7 @@ import { Color } from '../src/core/color';
 function addLight(app, v) {
     let light = new PointLight();
     light.setPosition(v);
+    // light.castShadows = false;
     // light.range = 20;
     // light.color = new Color(0.5, 1, 0.5);
     app.scene.lights.pointLights.push(light);
@@ -49,11 +50,13 @@ let main = async () => {
         // webgl1:true
     });
 
-    // let light = new DirectionalLight();
+    let light = new DirectionalLight();
+    light.castShadows = true;
     // app.scene.lights.directionalLights.push(light);
     // addLight(app, new Vec3(0, 2, 0));
     let spotLight = new SpotLight();
     spotLight.setPosition(0, 2, 0);
+    spotLight.castShadows = false;
     app.scene.root.addChild(spotLight);
 
 
@@ -101,7 +104,7 @@ let main = async () => {
 
     app.scene.cameras.push(camera);
 
-    let script = new FirstPersonCamera(FirstPersonCamera.defaultInputs);
+    let script = new FirstPersonCamera(FirstPersonCamera.defaultInputs, app);
     (script as any).entity = camera;
     script.initialize();
     // ------------
