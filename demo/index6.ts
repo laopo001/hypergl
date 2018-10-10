@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, October 9th 2018, 11:22:54 pm
+ * Last Modified: Wednesday, October 10th 2018, 10:44:47 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,8 +14,7 @@
 
 
 import { Scene, BUFFER, PointLight, DirectionalLight, SpotLight, StandardMaterial, Application, BasicMaterial, Entity, Texture } from '../src';
-import vert from '../src/graphics/shaders/vertex.vert';
-import frag from '../src/graphics/shaders/fragment.frag';
+import { FirstPersonCamera } from './utils/first_person_camera';
 import { loadImage } from './utils/util';
 import { Mat4, Vec3 } from '../src/math';
 import { Camera } from '../src/scene/camera';
@@ -97,10 +96,14 @@ let main = async () => {
 
     let camera = new Camera();
     camera.setPerspective(45, app.canvas.width / app.canvas.height, 1, 1000);
-    camera.setPosition(0, 10, 10);
+    camera.setPosition(-2, 5, 10);
     camera.lookAt(new Vec3(0, 0, 0), camera.up);
 
     app.scene.cameras.push(camera);
+
+    let script = new FirstPersonCamera(FirstPersonCamera.defaultInputs);
+    (script as any).entity = camera;
+    script.initialize();
     // ------------
     // let scene = app.createScene();
     // scene.cameras.push(camera);
@@ -116,7 +119,8 @@ let main = async () => {
     // app.rendererPlatform.setViewport(100, 200, 500, 300);
     app.start();
 
-    app.on('update', _ => {
+    app.on('update', dt => {
+        script.update(dt);
         // entity.rotate(0, 1, 0);
     });
 

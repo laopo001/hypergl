@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 23rd 2018, 2:35:55 am
+ * Last Modified: Wednesday, October 10th 2018, 10:07:38 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -241,6 +241,22 @@ export class SceneNode extends IElement {
         }
 
         this.localRotation.mul(quaternion);
+
+        if (!this._dirtyLocal) {
+            this._dirtify(true);
+        }
+    }
+    translateLocal(x: Vec3);
+    translateLocal(x: number, y: number, z: number);
+    translateLocal(x?, y?, z?) {
+        let translation: Vec3;
+        if (x instanceof Vec3) {
+            translation = x.clone();
+        } else {
+            translation = new Vec3(x, y, z);
+        }
+        this.localRotation.transformVector(translation, translation);
+        this.localPosition.add(translation);
 
         if (!this._dirtyLocal) {
             this._dirtify(true);

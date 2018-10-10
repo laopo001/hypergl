@@ -5,13 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, September 28th 2018, 4:30:19 pm
+ * Last Modified: Wednesday, October 10th 2018, 9:46:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 import * as Config from './conf';
-
+import * as math from './math';
+// export * from './math';
 export * from './conf';
 export * from './core/timer';
 export * from './application';
@@ -22,4 +23,4 @@ export * from './ecs';
 export * from './texture';
 export * from './lights';
 
-export { Config };
+export { Config, math };

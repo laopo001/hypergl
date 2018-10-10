@@ -102,16 +102,17 @@ float CalcDirLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, vec3 light
     float currentDepth = clamp(projCoords.z, 0.0, 1.0);
     // 检查当前片元是否在阴影中
     float bias = max(0.05 * (1.0 - dot(out_normal, -lightDirection)), 0.005);
-    // float shadow = currentDepth > closestDepth + 0.005 ? 1.0 : 0.0;
-    float shadow = 0.0;
-    float texelSize = 1.0 / 1024.0;
-    for(float y=-1.0; y <= 1.0; y += 1.0){
-        for(float x=-1.0; x <= 1.0; x += 1.0){
-            float rgbaDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
-            shadow += projCoords.z - bias > rgbaDepth ? 1.0 : 0.0;
-        }
-    }
-    shadow /= 9.0;
+    // float bias = 0.005;
+    float shadow = currentDepth > closestDepth + 0.005 ? 1.0 : 0.0;
+    // float shadow = 0.0;
+    // float texelSize = 1.0 / 1024.0;
+    // for(float y=-1.0; y <= 1.0; y += 1.0){
+    //     for(float x=-1.0; x <= 1.0; x += 1.0){
+    //         float rgbaDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
+    //         shadow += projCoords.z - bias > rgbaDepth ? 1.0 : 0.0;
+    //     }
+    // }
+    // shadow /= 9.0;
     return shadow;
 }
 
@@ -185,7 +186,7 @@ vec3 CalcSpotLightAndShadow(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lig
     vec3 lightDirectionNorm = normalize(lightDirection);
     float cosAngle = dot(lightDirectionNorm, direction);
     float f = smoothstep(outerConeAngle, innerConeAngle, cosAngle);
-    vec3 color = CalcPointLight(normal, viewDir, lightColor, lightPosition, range) * f ;
+    vec3 color = CalcPointLight(normal, viewDir, lightColor, lightPosition, range) * f;
     float shadow = CalcDirLightShadow(lightSpaceMatrix * vec4(out_vertex_position, 1.0), shadowMap, lightDirection);    
     return color * (1.0 - shadow);
 }
