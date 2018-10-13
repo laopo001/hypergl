@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, October 10th 2018, 10:07:38 pm
+ * Last Modified: Sunday, October 14th 2018, 1:31:10 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -264,7 +264,7 @@ export class SceneNode extends IElement {
     }
     // 更新此节点及其所有后代的世界转换矩阵。
     syncHierarchy() {
-        if (!this.enable) {
+        if (!this.enabled) {
             return;
         }
         if (this._dirtyLocal || this._dirtyWorld) {

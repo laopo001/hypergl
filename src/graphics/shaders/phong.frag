@@ -2,7 +2,7 @@
 precision highp float;
 
 uniform vec3 camera_position;
-
+uniform float opacity;
 // directionalLight start
 {{#each uniforms._directionalLightArr}}
 uniform vec4 {{this.color}};
@@ -249,8 +249,7 @@ void main(void) {
     // end
 
     // result = ambient + diffuse + specular;
-    gl_FragColor = vec4(result, 1.0);
-    // gl_FragColor = vec4(diffuse, 1.0);
+    gl_FragColor = vec4(result, opacity);
 
 }
 

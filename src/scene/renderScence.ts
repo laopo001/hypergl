@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 14th 2018, 12:51:19 am
+ * Last Modified: Sunday, October 14th 2018, 2:26:06 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -27,7 +27,7 @@ import { Vec3, DEG_TO_RAD } from '../math';
 
 
 export function renderScence(scene: Scene) {
-    let entitys = scene.layer;
+    let entitys = scene.opacityLayers.concat(scene.layers);
     let lights = scene.lights;
     let camera = scene.activeCamera;
     let cameraViewProjectionMatrix = camera.viewProjectionMatrix;
@@ -36,8 +36,10 @@ export function renderScence(scene: Scene) {
     let spotLightsUniforms = renderSpotLightArr('spotLightArr', lights.spotLight, scene);
     let LightsUniforms: any = { ...directionalLightsUniforms, ...pointLightsUniforms, ...spotLightsUniforms };
     let renderer = scene.app.rendererPlatform;
-    renderer.initDraw();
-    const temp: Light[] = [];
+
+    renderer.initDraw(true);
+    let temp: Light[] = [];
+    renderer.enableBLEND();
     for (let i = 0; i < entitys.length; i++) {
         let entity = entitys[i];
         if (!entity.enabled || !entity.mesh) {
@@ -64,13 +66,11 @@ export function renderScence(scene: Scene) {
             });
         }
         material.setLights(LightsUniforms);
-
         // material.setDirectionalLightArr('directionalLightArr', lights.directionalLights, scene);
         // material.setPointLightArr('pointLightArr', lights.pointLights);
         material.updateShader(renderer, attributes);
         let shader = mesh.material.shader as Shader;
-        renderer.setShaderProgram(shader as Shader);
-
+        renderer.setShaderProgram(shader);
         shader.setUniformValue('matrix_viewProjection', cameraViewProjectionMatrix.data);
         shader.setUniformValue('matrix_model', entity.getWorldTransform().data);
         shader.setUniformValue('matrix_normal', entity.getWorldTransform().clone().invert().transpose().data);
@@ -81,15 +81,17 @@ export function renderScence(scene: Scene) {
             temp.forEach(item => {
                 item.castShadows = true;
             });
+            temp = [];
         }
     }
+    renderer.disableBLEND();
 }
 
 
 
 export function renderDirectionalLightArr(name: string, data: DirectionalLight[], scene: Scene) {
     function rendererShadowMap(scene: Scene, light: DirectionalLight) {
-        let entitys = scene.layer;
+        let entitys = scene.opacityLayers.concat(scene.layers);
         let renderer = scene.app.rendererPlatform;
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(false);
@@ -156,7 +158,7 @@ export function renderDirectionalLightArr(name: string, data: DirectionalLight[]
 export function renderPointLightArr(name: string, data: PointLight[], scene: Scene) {
     function rendererShadowMap(scene: Scene, light: PointLight) {
         // TODO
-        let entitys = scene.layer;
+        let entitys = scene.opacityLayers.concat(scene.layers);
         let renderer = scene.app.rendererPlatform;
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(true);
@@ -220,7 +222,7 @@ export function renderPointLightArr(name: string, data: PointLight[], scene: Sce
 
 export function renderSpotLightArr(name: string, data: SpotLight[], scene: Scene) {
     function rendererShadowMap(scene: Scene, light: SpotLight) {
-        let entitys = scene.layer;
+        let entitys = scene.opacityLayers.concat(scene.layers);
         let renderer = scene.app.rendererPlatform;
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(false);

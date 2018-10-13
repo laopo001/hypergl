@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, October 11th 2018, 1:24:04 am
+ * Last Modified: Sunday, October 14th 2018, 1:44:18 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -45,7 +45,6 @@ export class Application {
         }
 
         this.tick();
-        console.log(this.scene.layer);
     }
     add(scene: Scene) {
         this.sceneInstances.push(scene);

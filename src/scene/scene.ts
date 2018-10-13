@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 7th 2018, 11:44:05 am
+ * Last Modified: Sunday, October 14th 2018, 1:48:44 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -23,6 +23,7 @@ import { Vec3 } from '../math';
 import { Light, PointLight, DirectionalLight, SpotLight } from '../lights';
 import { Frame } from '../graphics/createFrame';
 import { Log } from '../util';
+import { Mesh } from '../mesh/mesh';
 export class Scene extends IElement {
     static ambientColor = new Color(0.2, 0.2, 0.2);
     // static ambient = new Vec3(0, -1, -1);
@@ -37,7 +38,8 @@ export class Scene extends IElement {
             pointLights: [],
             spotLight: []
         };
-    readonly layer: Entity[] = [];
+    readonly layers: Entity[] = [];
+    readonly opacityLayers: Entity[] = [];
     root: SceneNode = new SceneNode();
     readonly cameras: Camera[] = [];
     private _activeCamera!: Camera;
@@ -54,6 +56,10 @@ export class Scene extends IElement {
     }
     render() {
         this.root.syncHierarchy();
+        this.opacityLayers.sort((a, b) => {
+            return new Vec3().sub2(a.getPosition(), this.activeCamera.getPosition()).length() -
+                new Vec3().sub2(b.getPosition(), this.activeCamera.getPosition()).length();
+        });
         renderScence(this);
     }
     // tslint:disable-next-line:member-ordering
@@ -78,7 +84,11 @@ export class Scene extends IElement {
         } else if (child instanceof SpotLight) {
             this.lights.spotLight.push(child);
         } else if (child instanceof Entity) {
-            this.layer.push(child);
+            if (child.mesh && child.mesh.material.opacity < 1) {
+                this.opacityLayers.push(child);
+            } else {
+                this.layers.push(child);
+            }
         }
     }
     get [Symbol.toStringTag]() {

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 14th 2018, 12:53:45 am
+ * Last Modified: Sunday, October 14th 2018, 2:18:56 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -59,24 +59,29 @@ let main = async () => {
     app.scene.root.addChild(spotLight);
 
 
-    let m2 = new StandardMaterial();
-    m2.diffuseTexture = texture;
-    m2.update();
+    let material = new StandardMaterial();
+    material.diffuseColor = new Color(0, 0, 0);
+    material.opacity = 0.5;
+    material.update();
+
+    let material2 = new StandardMaterial();
+    material2.diffuseTexture = texture;
+    material2.update();
 
 
     let mesh = Mesh.createBox(app.rendererPlatform);
     let entity = new Entity();
     entity.mesh = mesh;
-    mesh.material = m2;
+    mesh.material = material;
     entity.name = '123';
-    entity.setPosition(-2, 0, 0);
+    entity.setPosition(1.5, 1, 2);
     app.scene.root.addChild(entity);
 
 
     let mesh2 = Mesh.createBox(app.rendererPlatform);
     let entity2 = new Entity();
     entity2.setLocalScale(2, 2, 2);
-    mesh2.material = m2;
+    mesh2.material = material2;
     entity2.mesh = mesh2;
     entity2.setPosition(3, 0, 0);
     app.scene.root.addChild(entity2);

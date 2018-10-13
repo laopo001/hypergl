@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 30th 2018, 10:07:30 pm
+ * Last Modified: Sunday, October 14th 2018, 2:26:08 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -201,7 +201,7 @@ export class RendererPlatform {
         if (stencil === undefined || stencil) bits |= gl.STENCIL_BUFFER_BIT;
         gl.clear(bits);
     }
-    initDraw() {
+    initDraw(blend = false) {
         const gl = this.gl;
         let [r, g, b, a] = this._clearColor;
         gl.clearColor(r, g, b, a);
@@ -277,7 +277,6 @@ export class RendererPlatform {
         const uniforms = shader.uniforms;
         const attributes = shader.attributes;
         const format = mesh.vertexBuffer.format;
-
         for (let i = 0; i < attributes.length; i++) {
             let attrbute = attributes[i];
             let element;
@@ -316,5 +315,14 @@ export class RendererPlatform {
             mesh.indexBuffer.drawFormat,
             0
         );
+    }
+    enableBLEND() {
+        let gl = this.gl;
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    }
+    disableBLEND() {
+        let gl = this.gl;
+        gl.disable(gl.BLEND);
     }
 }
