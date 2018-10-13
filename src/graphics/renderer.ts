@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 14th 2018, 2:26:08 am
+ * Last Modified: Sunday, October 14th 2018, 2:50:59 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -22,6 +22,7 @@ import { VertexBuffer } from './vertexBuffer';
 import { Entity } from '../ecs';
 import { Texture } from '../texture';
 import { ShaderVariable } from './shaderVariable';
+import { FACE } from '../material/material';
 export type Platform = 'webgl' | 'webgl2';
 export class RendererPlatform {
     get gl() {
@@ -308,7 +309,12 @@ export class RendererPlatform {
             let value = shader.uniformScope[sampler.name] as Texture;
             this.loadTexture(gl, shader.program as WebGLProgram, sampler.name, value, i);
         }
-
+        if (mesh.material.cullFace === FACE.NONE) {
+            gl.disable(gl.CULL_FACE);
+        } else {
+            gl.enable(gl.CULL_FACE);
+            gl.cullFace(gl[mesh.material.cullFace]);
+        }
         gl.drawElements(
             gl.TRIANGLES,
             mesh.indexBuffer.length,
@@ -320,6 +326,7 @@ export class RendererPlatform {
         let gl = this.gl;
         gl.enable(gl.BLEND);
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+        // gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
     }
     disableBLEND() {
         let gl = this.gl;

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 14th 2018, 1:28:03 am
+ * Last Modified: Sunday, October 14th 2018, 2:51:49 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -18,10 +18,17 @@ import { Shader } from '../graphics/shader';
 import { Light, PointLight, DirectionalLight } from '../lights';
 import { Scene } from '../scene/scene';
 
+export enum FACE {
+    BACK = 'BACK',
+    FRONT = 'FRONT',
+    NONE= 'NONE',
+}
+
 export abstract class Material {
     uniforms: { [s: string]: any } = {};
     shader?: Shader;
     opacity = 1;
+    cullFace = FACE.BACK;
     protected _dirtyUpdate = false;
     setUniform(name: string, data: any) {
         this.uniforms[name] = data;
