@@ -5,21 +5,18 @@ uniform vec3 camera_position;
 
 // directionalLight start
 {{#each uniforms._directionalLightArr}}
-// uniform vec3 {{this.position}};
 uniform vec4 {{this.color}};
 uniform vec3 {{this.direction}};
 uniform sampler2D {{this.shadowMap}};
 uniform mat4 {{this.lightSpaceMatrix}};
-uniform bool {{this.castShadows}};
 {{/each}}
 // directionalLight end
 // pointLight start
 {{#each uniforms._pointLightArr}}
 uniform vec3 {{this.position}};
 uniform vec4 {{this.color}};
-uniform samplerCube {{this.shadowMap}};
 uniform float {{this.range}};
-uniform bool {{this.castShadows}};
+uniform samplerCube {{this.shadowMap}};
 {{/each}}
 // pointLight end
 // soptLight start
@@ -27,12 +24,11 @@ uniform bool {{this.castShadows}};
 uniform vec3 {{this.position}};
 uniform vec3 {{this.direction}};
 uniform vec4 {{this.color}};
-uniform sampler2D {{this.shadowMap}};
 uniform float {{this.range}};
 uniform float {{this.innerConeAngle}};
 uniform float {{this.outerConeAngle}};
+uniform sampler2D {{this.shadowMap}};
 uniform mat4 {{this.lightSpaceMatrix}};
-uniform bool {{this.castShadows}};
 {{/each}}
 // soptLight end
 

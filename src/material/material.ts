@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 7th 2018, 12:31:08 pm
+ * Last Modified: Sunday, October 14th 2018, 12:31:29 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -34,51 +34,5 @@ export abstract class Material {
         Object.assign(this.uniforms, uniforms);
         this._dirtyUpdate = true;
     }
-    // setDirectionalLightArr(name: string, data: DirectionalLight[], scene: Scene) {
-    //     // TODO
-    //     // renderer.programGenerator. .getShader('shadow', {}, {});
-    //     let res: string[][] = [];
 
-    //     data.forEach((item, index) => {
-    //         let obj: any = {};
-
-    //         if (item.castShadows) {
-    //             // let texture = rendererShadowMap(scene, item);
-    //             // setLight(name, 'shadowMap', index, obj, this.parameters, texture);
-    //         }
-    //         setLight(name, 'position', index, obj, this.parameters, item.getPosition().data);
-
-    //         setLight(name, 'color', index, obj, this.parameters, item.color.data);
-
-    //         setLight(name, 'direction', index, obj, this.parameters, item.direction.normalize().data);
-
-
-    //         res.push(obj);
-    //     });
-    //     this.parameters['_' + name] = res;
-    //     this._dirtyUpdate = true;
-    // }
-    // setPointLightArr(name: string, data: PointLight[]) {
-    //     let res: string[][] = [];
-
-    //     data.forEach((item, index) => {
-    //         let obj: any = {};
-
-    //         setLight(name, 'position', index, obj, this.parameters, item.getPosition().data);
-
-    //         setLight(name, 'color', index, obj, this.parameters, item.color.data);
-
-    //         setLight(name, 'range', index, obj, this.parameters, item.range);
-
-    //         res.push(obj);
-    //     });
-    //     this.parameters['_' + name] = res;
-    //     this._dirtyUpdate = true;
-    // }
 }
-
-// function setLight(name: string, key: string, index, obj, parameters, value) {
-//     let t = name + index + '_' + key;
-//     obj[key] = t;
-//     parameters[t] = value;
-// }

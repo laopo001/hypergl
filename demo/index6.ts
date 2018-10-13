@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, October 11th 2018, 2:06:52 am
+ * Last Modified: Sunday, October 14th 2018, 12:53:45 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -56,7 +56,6 @@ let main = async () => {
     // addLight(app, new Vec3(0, 2, 0));
     let spotLight = new SpotLight();
     spotLight.setPosition(0, 2, 0);
-    spotLight.castShadows = false;
     app.scene.root.addChild(spotLight);
 
 
@@ -94,6 +93,7 @@ let main = async () => {
         entity.setLocalScale(20, 1, 20);
         entity.mesh = mesh;
         mesh.material = m;
+        // mesh.receiveShadow = false;
         app.scene.root.addChild(entity);
     })();
 

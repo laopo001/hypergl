@@ -5,18 +5,11 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, October 11th 2018, 1:28:47 am
+ * Last Modified: Saturday, October 13th 2018, 11:56:25 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Entity, Application } from '../../../';
-export abstract class Script<Inputs> {
-    entity!: Entity;
-    constructor(public inputs: Inputs, public app: Application) {
-    }
-    abstract initialize();
-    abstract update(dt: number);
-}
+export * from './script';

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, October 13th 2018, 11:01:53 pm
+ * Last Modified: Sunday, October 14th 2018, 12:10:21 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,12 +17,13 @@ import { Mesh } from '../mesh/mesh';
 import { Material } from '../material/material';
 import { Component } from './component';
 import { Shader } from '../graphics/shader';
+import { Log } from '../util';
 let EntityID = 0;
 export class Entity extends SceneNode {
-    enable = true;
     EntityID = EntityID++;
     mesh?: Mesh;
     _shader?: Shader;
+    private _enabled = true;
     constructor() {
         super();
     }
@@ -31,6 +32,9 @@ export class Entity extends SceneNode {
         // TODO
     }
     get<T>(name: string): T {
+        if (this[name] == null) {
+            Log.error(name + ' not add component');
+        }
         return this[name];
     }
     removeComponent(component: Component<any> | string) {

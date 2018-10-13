@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, October 10th 2018, 12:11:33 am
+ * Last Modified: Sunday, October 14th 2018, 12:50:51 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,6 +13,7 @@
 
 import { Light } from './light';
 import { Vec3 } from '../math';
+import { Color } from '../core';
 export class SpotLight extends Light {
     get direction() {
         // this.getWorldTransform().getY(this._direction);

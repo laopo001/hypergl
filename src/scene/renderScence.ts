@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, October 11th 2018, 1:58:32 am
+ * Last Modified: Sunday, October 14th 2018, 12:51:19 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -34,20 +34,37 @@ export function renderScence(scene: Scene) {
     let directionalLightsUniforms = renderDirectionalLightArr('directionalLightArr', lights.directionalLights, scene);
     let pointLightsUniforms = renderPointLightArr('pointLightArr', lights.pointLights, scene);
     let spotLightsUniforms = renderSpotLightArr('spotLightArr', lights.spotLight, scene);
-    let LightsUniforms = { ...directionalLightsUniforms, ...pointLightsUniforms, ...spotLightsUniforms };
+    let LightsUniforms: any = { ...directionalLightsUniforms, ...pointLightsUniforms, ...spotLightsUniforms };
     let renderer = scene.app.rendererPlatform;
     renderer.initDraw();
-    // TODO
+    const temp: Light[] = [];
     for (let i = 0; i < entitys.length; i++) {
         let entity = entitys[i];
+        if (!entity.enabled || !entity.mesh) {
+            continue;
+        }
         const mesh = entity.mesh;
-        if (mesh == null) { return; }
         const material = mesh.material;
         let attributes: { [s: string]: SEMANTIC } = {};
         mesh.vertexBuffer.format.elements.forEach(x => {
             attributes[SEMANTICMAP[x.semantic]] = x.semantic;
         });
+        if (!entity.mesh.receiveShadow) {
+            LightsUniforms._directionalLightArr.forEach(item => {
+                item.castShadows = false;
+                temp.push(item);
+            });
+            LightsUniforms._pointLightArr.forEach(item => {
+                item.castShadows = false;
+                temp.push(item);
+            });
+            LightsUniforms._spotLightArr.forEach(item => {
+                item.castShadows = false;
+                temp.push(item);
+            });
+        }
         material.setLights(LightsUniforms);
+
         // material.setDirectionalLightArr('directionalLightArr', lights.directionalLights, scene);
         // material.setPointLightArr('pointLightArr', lights.pointLights);
         material.updateShader(renderer, attributes);
@@ -60,6 +77,11 @@ export function renderScence(scene: Scene) {
         shader.setUniformValue('camera_position', camera.getPosition().data);
         // tslint:disable-next-line:forin
         renderer.draw(entity);
+        if (!entity.mesh.receiveShadow) {
+            temp.forEach(item => {
+                item.castShadows = true;
+            });
+        }
     }
 }
 
@@ -99,6 +121,9 @@ export function renderDirectionalLightArr(name: string, data: DirectionalLight[]
         light.shadowFrame.beforeDraw();
         for (let i = 0; i < entitys.length; i++) {
             let entity = entitys[i];
+            if (!entity.enabled || !entity.mesh || !entity.mesh.castShadow) {
+                continue;
+            }
             renderer.setShaderProgram(shader as Shader);
             shader.setUniformValue('matrix_model', entity.getWorldTransform().data);
             renderer.draw(entity);
@@ -154,7 +179,6 @@ export function renderPointLightArr(name: string, data: PointLight[], scene: Sce
 
         for (let i = 0; i < cameras.length; i++) {
             let camera = cameras[i];
-
             let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
             let shader = renderer.programGenerator.getShader('distance', attributes);
             shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
@@ -164,6 +188,9 @@ export function renderPointLightArr(name: string, data: PointLight[], scene: Sce
             light.shadowFrame.beforeDraw(i);
             for (let i = 0; i < entitys.length; i++) {
                 let entity = entitys[i];
+                if (!entity.enabled || !entity.mesh || !entity.mesh.castShadow) {
+                    continue;
+                }
                 renderer.setShaderProgram(shader as Shader);
                 shader.setUniformValue('matrix_model', entity.getWorldTransform().data);
                 renderer.draw(entity);
@@ -210,6 +237,9 @@ export function renderSpotLightArr(name: string, data: SpotLight[], scene: Scene
         light.shadowFrame.beforeDraw();
         for (let i = 0; i < entitys.length; i++) {
             let entity = entitys[i];
+            if (!entity.enabled || !entity.mesh || !entity.mesh.castShadow) {
+                continue;
+            }
             renderer.setShaderProgram(shader as Shader);
             shader.setUniformValue('matrix_model', entity.getWorldTransform().data);
             renderer.draw(entity);

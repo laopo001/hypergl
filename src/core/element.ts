@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 6:03:01 pm
+ * Last Modified: Sunday, October 14th 2018, 12:10:21 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -23,5 +23,5 @@ export class IElement {
     uuid = generateUUID();
     name: Nullable<string> = null;
     tag: Nullable<string> = null;
-    enable = true;
+    enabled = true;
 }

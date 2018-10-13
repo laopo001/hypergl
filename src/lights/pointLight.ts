@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, September 11th 2018, 12:29:14 am
+ * Last Modified: Sunday, October 14th 2018, 12:50:51 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,6 +13,7 @@
 
 
 import { Light } from './light';
+import { Color } from '../core';
 export class PointLight extends Light {
     range = 10;
 }
