@@ -7,8 +7,10 @@ Todos:
     ☐ 重构代码
     ☐ ECS框架 Entity,Component,System 
     ☐ Mesh加载模型
+
   Done:
-    ✔ 颜色混合 @done(18-10-14 12:30)
+    ✔ opacityMap @started(18-10-15 01:21) @done(18-10-15 01:50) @lasted(29m56s)
+    ✔ 颜色混合opacity @done(18-10-14 12:30)
     ✔ directionalLight, pointLight, spotLight 阴影生成 @done(18-10-10 00:14)
     ✔ scene 多光源 @started(18-09-8 11:04) @done(18-10-08 23:42) @lasted(4w2d12h38m21s)
     ✔ Light @done(18-10-08 23:42)

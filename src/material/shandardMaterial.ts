@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 14th 2018, 1:57:35 am
+ * Last Modified: Sunday, October 14th 2018, 10:42:22 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -23,9 +23,10 @@ import { Vec3 } from '../math';
 export class StandardMaterial extends Material {
     ambientColor = Scene.ambientColor;
     diffuseColor = new Color(1, 1, 1);
-    diffuseTexture?: Texture;
+    diffuseMap?: Texture;
     specularColor = new Color(0.3, 0.3, 0.3);
-    specularTexture?: Texture;
+    specularMap?: Texture;
+    opacityMap?: Texture;
     shininess = 64;
     constructor() {
         super();
@@ -36,12 +37,14 @@ export class StandardMaterial extends Material {
         this.setUniform('ambientColor', this.ambientColor.data);
         this.setUniform('diffuseColor', this.diffuseColor.data);
         // tslint:disable-next-line:no-unused-expression
-        this.diffuseTexture && this.setUniform('diffuseTexture', this.diffuseTexture);
+        this.diffuseMap && this.setUniform('diffuseTexture', this.diffuseMap);
         this.setUniform('specularColor', this.specularColor.data);
         // tslint:disable-next-line:no-unused-expression
-        this.specularTexture && this.setUniform('specularTexture', this.specularTexture);
+        this.specularMap && this.setUniform('specularTexture', this.specularMap);
         this.setUniform('shininess', this.shininess);
         this.setUniform('opacity', this.opacity);
+        // tslint:disable-next-line:no-unused-expression
+        this.opacityMap && this.setUniform('opacityTexture', this.opacityMap);
         this._dirtyUpdate = true;
     }
     updateShader(renderer: RendererPlatform, attributes: { [s: string]: SEMANTIC }) {

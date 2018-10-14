@@ -3,6 +3,7 @@ precision highp float;
 
 uniform vec3 camera_position;
 uniform float opacity;
+uniform sampler2D opacityTexture;
 // directionalLight start
 {{#each uniforms._directionalLightArr}}
 uniform vec4 {{this.color}};
@@ -71,19 +72,26 @@ vec4 getOutColor() {
 {{else}}
 vec4 getOutDiffuseColor() {
     {{#if uniforms.diffuseTexture}}
-    return texture2D(diffuseTexture,out_vertex_texCoord0);
+    return texture2D(diffuseTexture, out_vertex_texCoord0);
     {{else}}
     return diffuseColor;
     {{/if}}
 }
 vec4 getOutSpecularColor() {
     {{#if uniforms.specularTexture}}
-    return texture2D(specularTexture,out_vertex_texCoord0);
+    return texture2D(specularTexture, out_vertex_texCoord0);
     {{else}}
     return specularColor;
     {{/if}}
 }
 {{/if}}
+float getOutOpacityColor() {
+    {{#if uniforms.opacityTexture}}
+    return texture2D(opacityTexture, out_vertex_texCoord0).r;
+    {{else}}
+    return opacity;
+    {{/if}}
+}
 
 float unpack(const in vec4 rgbaDepth) {
     const vec4 bitShift = vec4(1.0, 1.0/256.0, 1.0/(256.0*256.0), 1.0/(256.0*256.0*256.0));
@@ -249,7 +257,7 @@ void main(void) {
     // end
 
     // result = ambient + diffuse + specular;
-    gl_FragColor = vec4(result, opacity);
+    gl_FragColor = vec4(result, getOutOpacityColor());
 
 }
 

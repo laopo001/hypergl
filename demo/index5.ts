@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 22nd 2018, 9:04:10 pm
+ * Last Modified: Sunday, October 14th 2018, 10:35:23 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -84,7 +84,7 @@ let main = async () => {
     let light = addLight(app, new Vec3(-8, 8, -8));
 
     let m2 = new StandardMaterial();
-    m2.diffuseTexture = texture;
+    m2.diffuseMap = texture;
     m2.update();
 
     let shader = new Shader(app.rendererPlatform, {

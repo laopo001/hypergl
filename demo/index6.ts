@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 14th 2018, 11:43:46 am
+ * Last Modified: Monday, October 15th 2018, 1:50:12 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -46,6 +46,10 @@ let main = async () => {
     let img = await loadImage('assets/images/IMG_0485.JPG');
     texture.setSource(img);
 
+    let texture2 = new Texture();
+    let img2 = await loadImage('assets/images/flare-2.png');
+    texture2.setSource(img2);
+
     const app = new Application(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
@@ -61,11 +65,12 @@ let main = async () => {
 
     let material = new StandardMaterial();
     material.diffuseColor = new Color(1, 0, 0);
-    material.opacity = 0.5;
+    // material.opacity = 0.5;
+    material.opacityMap = texture2;
     material.update();
 
     let material2 = new StandardMaterial();
-    material2.diffuseTexture = texture;
+    material2.diffuseMap = texture;
     material2.update();
 
 
