@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 14th 2018, 2:26:06 am
+ * Last Modified: Sunday, October 14th 2018, 12:09:17 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -27,7 +27,7 @@ import { Vec3, DEG_TO_RAD } from '../math';
 
 
 export function renderScence(scene: Scene) {
-    let entitys = scene.opacityLayers.concat(scene.layers);
+    let entitys = scene.layers.concat(scene.opacityLayers);
     let lights = scene.lights;
     let camera = scene.activeCamera;
     let cameraViewProjectionMatrix = camera.viewProjectionMatrix;
@@ -91,7 +91,7 @@ export function renderScence(scene: Scene) {
 
 export function renderDirectionalLightArr(name: string, data: DirectionalLight[], scene: Scene) {
     function rendererShadowMap(scene: Scene, light: DirectionalLight) {
-        let entitys = scene.opacityLayers.concat(scene.layers);
+        let entitys = scene.layers.concat(scene.opacityLayers);
         let renderer = scene.app.rendererPlatform;
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(false);
@@ -158,7 +158,7 @@ export function renderDirectionalLightArr(name: string, data: DirectionalLight[]
 export function renderPointLightArr(name: string, data: PointLight[], scene: Scene) {
     function rendererShadowMap(scene: Scene, light: PointLight) {
         // TODO
-        let entitys = scene.opacityLayers.concat(scene.layers);
+        let entitys = scene.layers.concat(scene.opacityLayers);
         let renderer = scene.app.rendererPlatform;
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(true);
@@ -222,7 +222,7 @@ export function renderPointLightArr(name: string, data: PointLight[], scene: Sce
 
 export function renderSpotLightArr(name: string, data: SpotLight[], scene: Scene) {
     function rendererShadowMap(scene: Scene, light: SpotLight) {
-        let entitys = scene.opacityLayers.concat(scene.layers);
+        let entitys = scene.layers.concat(scene.opacityLayers);
         let renderer = scene.app.rendererPlatform;
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(false);

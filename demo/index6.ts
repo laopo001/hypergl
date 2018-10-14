@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 14th 2018, 2:51:59 am
+ * Last Modified: Sunday, October 14th 2018, 11:43:46 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -60,7 +60,7 @@ let main = async () => {
 
 
     let material = new StandardMaterial();
-    material.diffuseColor = new Color(0, 0, 0);
+    material.diffuseColor = new Color(1, 0, 0);
     material.opacity = 0.5;
     material.update();
 

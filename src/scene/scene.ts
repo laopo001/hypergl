@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 14th 2018, 1:48:44 am
+ * Last Modified: Sunday, October 14th 2018, 12:10:47 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -57,8 +57,8 @@ export class Scene extends IElement {
     render() {
         this.root.syncHierarchy();
         this.opacityLayers.sort((a, b) => {
-            return new Vec3().sub2(a.getPosition(), this.activeCamera.getPosition()).length() -
-                new Vec3().sub2(b.getPosition(), this.activeCamera.getPosition()).length();
+            return new Vec3().sub2(b.getPosition(), this.activeCamera.getPosition()).length() -
+                new Vec3().sub2(a.getPosition(), this.activeCamera.getPosition()).length();
         });
         renderScence(this);
     }
