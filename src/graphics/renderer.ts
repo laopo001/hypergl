@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 15th 2018, 12:48:04 am
+ * Last Modified: Wednesday, October 17th 2018, 1:19:19 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -151,6 +151,8 @@ export class RendererPlatform {
         ];
         let [r, g, b, a] = this._clearColor;
         gl.enable(gl.DEPTH_TEST);
+        gl.enable(gl.POLYGON_OFFSET_FILL);
+        gl.polygonOffset(2, 2);
         gl.clearColor(r, g, b, a);
     }
     // tslint:disable-next-line:member-ordering

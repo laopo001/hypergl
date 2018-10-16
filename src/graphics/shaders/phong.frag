@@ -126,33 +126,33 @@ float CalcDirLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, vec3 light
     bool frustumTest = all( frustumTestVec );
     float shadow = 1.0;
     if(frustumTest) {
-        // 取得当前片元在光源视角下的深度
-        float currentDepth = clamp(projCoords.z, 0.0, 1.0);
         // 检查当前片元是否在阴影中
-        float bias = max(0.05 * (1.0 - dot(out_normal, -lightDirection)), 0.005);
+        float bias = 0.001;
+        // 取得当前片元在光源视角下的深度
+        float currentDepth = projCoords.z - bias;
         // 取得最近点的深度(使用[0,1]范围下的fragPosLight当坐标)
-        float closestDepth = unpack( texture(shadowMap, projCoords.xy) ); 
-        // float bias = 0.005;
-        shadow = currentDepth > closestDepth + bias ? 1.0 : 0.0;
+        // float closestDepth = unpack( texture(shadowMap, projCoords.xy) ); 
+        // shadow = currentDepth > closestDepth + bias ? 1.0 : 0.0;
         float shadowRadius = 1.0;
-        vec2 shadowMapSize = vec2(1024.0,1024.0);
+        vec2 shadowMapSize = vec2(1024.0, 1024.0);
         vec2 texelSize = vec2( 1.0 ) / shadowMapSize;
         float dx0 = - texelSize.x * shadowRadius;
         float dy0 = - texelSize.y * shadowRadius;
         float dx1 = + texelSize.x * shadowRadius;
         float dy1 = + texelSize.y * shadowRadius;
-
-        // float shadow = 0.0;
-        // float texelSize = 1.0 / 1024.0;
-        // for(float y=-1.0; y <= 1.0; y += 1.0){
-        //     for(float x=-1.0; x <= 1.0; x += 1.0){
-        //         float rgbaDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
-        //         shadow += projCoords.z - bias > rgbaDepth ? 1.0 : 0.0;
-        //     }
-        // }
-        // shadow /= 9.0;
+        shadow = (
+            texture2DCompare( shadowMap, projCoords.xy + vec2( dx0, dy0 ), currentDepth) +
+            texture2DCompare( shadowMap, projCoords.xy + vec2( 0.0, dy0 ), currentDepth ) +
+            texture2DCompare( shadowMap, projCoords.xy + vec2( dx1, dy0 ), currentDepth ) +
+            texture2DCompare( shadowMap, projCoords.xy + vec2( dx0, 0.0 ), currentDepth ) +
+            texture2DCompare( shadowMap, projCoords.xy, currentDepth ) +
+            texture2DCompare( shadowMap, projCoords.xy + vec2( dx1, 0.0 ), currentDepth ) +
+            texture2DCompare( shadowMap, projCoords.xy + vec2( dx0, dy1 ), currentDepth ) +
+            texture2DCompare( shadowMap, projCoords.xy + vec2( 0.0, dy1 ), currentDepth ) +
+            texture2DCompare( shadowMap, projCoords.xy + vec2( dx1, dy1 ), currentDepth )
+        ) * ( 1.0 / 9.0 );
     }
-    return shadow;
+    return 1.0 - shadow;
 }
 
 

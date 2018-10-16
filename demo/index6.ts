@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 15th 2018, 1:50:12 am
+ * Last Modified: Wednesday, October 17th 2018, 12:34:42 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -56,11 +56,11 @@ let main = async () => {
 
     let light = new DirectionalLight();
     light.castShadows = true;
-    // app.scene.lights.directionalLights.push(light);
+    app.scene.root.addChild(light);
     // addLight(app, new Vec3(0, 2, 0));
     let spotLight = new SpotLight();
     spotLight.setPosition(0, 2, 0);
-    app.scene.root.addChild(spotLight);
+    // app.scene.root.addChild(spotLight);
 
 
     let material = new StandardMaterial();

@@ -12,6 +12,24 @@ vec4 pack (float depth) {
     return rgbaDepth;
 }
 
+const float PackUpscale = 256. / 255.;
+const float UnpackDownscale = 255. / 256.;
+const vec3 PackFactors = vec3( 256. * 256. * 256., 256. * 256., 256. );
+const vec4 UnpackFactors = UnpackDownscale / vec4( PackFactors, 1. );
+const float ShiftRight8 = 1. / 256.;
+vec4 packDepthToRGBA( const in float v ) {
+    vec4 r = vec4( fract( v * PackFactors ), v );
+    r.yzw -= r.xyz * ShiftRight8;
+    return r * PackUpscale;
+}
+float unpackRGBAToDepth( const in vec4 v ) {
+    return dot( v, UnpackFactors );
+}
+
 void main() {       
-    gl_FragColor = pack(gl_FragCoord.z);      
+    float depth = gl_FragCoord.z;
+    float minValue = 2.3374370500153186e-10;
+    vec2 polygonOffset = vec2(2, 2);
+    depth += polygonOffset.x * max(abs(dFdx(depth)), abs(dFdy(depth))) + minValue * polygonOffset.y;
+    gl_FragColor = pack(depth);      
 }
