@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, October 17th 2018, 12:52:52 am
+ * Last Modified: Thursday, October 18th 2018, 9:44:21 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -66,8 +66,6 @@ export function renderScence(scene: Scene) {
             });
         }
         material.setLights(LightsUniforms);
-        // material.setDirectionalLightArr('directionalLightArr', lights.directionalLights, scene);
-        // material.setPointLightArr('pointLightArr', lights.pointLights);
         material.updateShader(renderer, attributes);
         let shader = mesh.material.shader as Shader;
         renderer.setShaderProgram(shader);
@@ -98,21 +96,13 @@ export function renderDirectionalLightArr(name: string, data: DirectionalLight[]
         }
 
         let camera = new Camera();
-        let height = 20;
+        let height = 50;
         let width = 1 * height;
         let length = 1 * height;
         camera.setOrtho(-width, width, -height, height, -length, length);
-        // let v = light.getPosition().sub(new Vec3(0, 0, 0));
-        // let up = new Vec3();
-        // if (v.z === 0) {
-        //     up.set(0, 0, -1);
-        // } else {
-        //     up.set(0, 1, -v.y / v.z);
-        // }
-        // camera.setPosition(0, 0, 0);
-        // console.log(light.direction);
-        // camera.setPosition(scene.activeCamera.getPosition());
         camera.lookAt(light.direction, camera.up);
+        // camera.lookAt(light.direction, getUp(light.direction));
+        camera.setPosition(light.getPosition());
 
         let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
         let shader = renderer.programGenerator.getShader('shadow', attributes);
@@ -177,7 +167,6 @@ export function renderPointLightArr(name: string, data: PointLight[], scene: Sce
             camera.lookAt(v.add(light.getPosition()), up);
             cameras.push(camera);
         }
-
 
         for (let i = 0; i < cameras.length; i++) {
             let camera = cameras[i];

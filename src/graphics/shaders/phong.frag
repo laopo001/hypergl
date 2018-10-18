@@ -93,9 +93,24 @@ float getOutOpacityColor() {
     {{/if}}
 }
 
+const float PackUpscale = 256. / 255.;
+const float UnpackDownscale = 255. / 256.;
+const vec3 PackFactors = vec3( 256. * 256. * 256., 256. * 256., 256. );
+const vec4 UnpackFactors = UnpackDownscale / vec4( PackFactors, 1. );
+const float ShiftRight8 = 1. / 256.;
+vec4 packDepthToRGBA( const in float v ) {
+    vec4 r = vec4( fract( v * PackFactors ), v );
+    r.yzw -= r.xyz * ShiftRight8;
+    return r * PackUpscale;
+}
+float unpackRGBAToDepth( const in vec4 v ) {
+    return dot( v, UnpackFactors );
+}
+
 float unpack(const in vec4 rgbaDepth) {
-    const vec4 bitShift = vec4(1.0, 1.0/256.0, 1.0/(256.0*256.0), 1.0/(256.0*256.0*256.0));
+    const vec4 bitShift = vec4(1.0 / (256.0 * 256.0 * 256.0), 1.0 / (256.0 * 256.0), 1.0 / 256.0, 1.0);
     return dot(rgbaDepth, bitShift);
+    // return unpackRGBAToDepth(rgbaDepth);
 }
 float texture2DCompare( sampler2D depths, vec2 uv, float compare ) {
     return step( compare, unpack( texture2D( depths, uv ) ) );
