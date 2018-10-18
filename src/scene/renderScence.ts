@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, October 17th 2018, 12:52:52 am
+ * Last Modified: Thursday, October 18th 2018, 11:04:56 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -154,6 +154,48 @@ export function renderDirectionalLightArr(name: string, data: DirectionalLight[]
     uniforms['_' + name] = res;
     return uniforms;
 }
+function createCubeCamera(cameras: Camera[], light: PointLight) {
+    let camera = new Camera();
+    const near = 0.1;
+    let position = new Vec3(1, 0, 0);
+    let up = new Vec3(0, - 1, 0);
+    camera.setPerspective(90, 1, near, light.range);
+    camera.lookAt(position.add(light.getPosition()), up);
+    cameras.push(camera);
+
+    position = new Vec3(-1, 0, 0);
+    up = new Vec3(0, - 1, 0);
+    camera.setPerspective(90, 1, near, light.range);
+    camera.lookAt(position.add(light.getPosition()), up);
+    cameras.push(camera);
+
+    position = new Vec3(0, 1, 0);
+    up = new Vec3(0, 0, 1);
+    camera.setPerspective(90, 1, near, light.range);
+    camera.lookAt(position.add(light.getPosition()), up);
+    cameras.push(camera);
+
+    position = new Vec3(0, - 1, 0);
+    up = new Vec3(0, 0, 1);
+    camera.setPerspective(90, 1, near, light.range);
+    camera.lookAt(position.add(light.getPosition()), up);
+    cameras.push(camera);
+
+    position = new Vec3(0, 0, 1);
+    up = new Vec3(0, - 1, 0);
+    camera.setPerspective(90, 1, near, light.range);
+    camera.lookAt(position.add(light.getPosition()), up);
+    cameras.push(camera);
+
+    position = new Vec3(0, 0, -1);
+    up = new Vec3(0, - 1, 0);
+    camera.setPerspective(90, 1, near, light.range);
+    camera.lookAt(position.add(light.getPosition()), up);
+    cameras.push(camera);
+    return cameras;
+}
+
+
 
 export function renderPointLightArr(name: string, data: PointLight[], scene: Scene) {
     function rendererShadowMap(scene: Scene, light: PointLight) {
@@ -164,17 +206,29 @@ export function renderPointLightArr(name: string, data: PointLight[], scene: Sce
             light.shadowFrame = scene.createShadowFrame(true);
         }
         let cameras: Camera[] = [];
+        // cameras = createCubeCamera(cameras, light);
+
         for (let i = 0; i < 6; i++) {
             let v = new Vec3();
             let a = i % 2;
-            let up = i === 2 || i === 3 ? new Vec3(0, 0, 1) : new Vec3(0, 1, 0);
+            let up;
+            switch (i) {
+                case 0: up = new Vec3(0, -1, 0); break;
+                case 1: up = new Vec3(0, -1, 0); break;
+                case 2: up = new Vec3(0, 0, 1); break;
+                case 3: up = new Vec3(0, 0, -1); break;
+                case 4: up = new Vec3(0, -1, 0); break;
+                case 5: up = new Vec3(0, -1, 0); break;
+            }
+
+            // let up = i === 2 || i === 3 ? new Vec3(0, 0, 1) : new Vec3(0, 1, 0);
             let b = Math.floor(i / 2);
-            v.data[b] = a !== 0 ? 1 : -1;
+            v.data[b] = a === 0 ? 1 : -1;
             let camera = new Camera();
-            const near = 1;
-            camera.setPerspective(90, 1, 0.5, light.range);
+            const near = 0.5;
+            camera.lookAt(v, up);
             camera.setPosition(light.getPosition());
-            camera.lookAt(v.add(light.getPosition()), up);
+            camera.setPerspective(90, 1, near, light.range);
             cameras.push(camera);
         }
 

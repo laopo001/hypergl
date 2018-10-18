@@ -180,7 +180,7 @@ vec3 CalcDirLightAndShadow(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 ligh
 
 float CalcPointLightShadow(samplerCube shadowMap, vec3 lightPosition, float range) {
     vec3 fragToLight = lightPosition - out_vertex_position;
-    float closestDepth = unpack( texture(shadowMap, fragToLight ) ); 
+    float closestDepth = unpack( texture(shadowMap, -fragToLight ) ); 
     closestDepth *= range;
     float currentDepth =  length(fragToLight);
     float bias = 0.05;

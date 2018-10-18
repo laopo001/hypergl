@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, October 17th 2018, 12:34:42 am
+ * Last Modified: Thursday, October 18th 2018, 11:02:43 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -54,10 +54,11 @@ let main = async () => {
         // webgl1:true
     });
 
-    let light = new DirectionalLight();
-    light.castShadows = true;
-    app.scene.root.addChild(light);
-    // addLight(app, new Vec3(0, 2, 0));
+    let dirlight = new DirectionalLight();
+    dirlight.castShadows = true;
+    // dirlight.direction = new Vec3(0, -1, 1);
+    // app.scene.root.addChild(dirlight);
+    addLight(app, new Vec3(0, 2, 0));
     let spotLight = new SpotLight();
     spotLight.setPosition(0, 2, 0);
     // app.scene.root.addChild(spotLight);
@@ -66,7 +67,7 @@ let main = async () => {
     let material = new StandardMaterial();
     material.diffuseColor = new Color(1, 0, 0);
     // material.opacity = 0.5;
-    material.opacityMap = texture2;
+    // material.opacityMap = texture2;
     material.update();
 
     let material2 = new StandardMaterial();
@@ -80,6 +81,7 @@ let main = async () => {
     mesh.material = material;
     entity.name = '123';
     entity.setPosition(1.5, 1, 2);
+    // entity.setPosition(-2, 0, 0);
     app.scene.root.addChild(entity);
 
 
