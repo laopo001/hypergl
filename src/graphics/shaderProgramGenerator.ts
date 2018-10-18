@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, September 28th 2018, 7:52:08 pm
+ * Last Modified: Thursday, October 18th 2018, 11:19:56 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,8 +17,8 @@ import basicVert from './shaders/basic.vert';
 import basicFrag from './shaders/basic.frag';
 import phongVert from './shaders/phong.vert';
 import phongFrag from './shaders/phong.frag';
-import shadowVert from './shaders/shadow.vert';
-import shadowFrag from './shaders/shadow.frag';
+import depthVert from './shaders/depth.vert';
+import depthFrag from './shaders/depth.frag';
 import distanceVert from './shaders/distance.vert';
 import distanceFrag from './shaders/distance.frag';
 import { RendererPlatform } from './renderer';
@@ -72,9 +72,9 @@ function createShaderDefinition(name: string, renderer: RendererPlatform, option
             vertStr = phongVert(options);
             fragStr = phongFrag(options);
             break;
-        case 'shadow':
-            vertStr = shadowVert(options);
-            fragStr = shadowFrag(options);
+        case 'depth':
+            vertStr = depthVert(options);
+            fragStr = depthFrag(options);
             break;
         case 'distance':
             vertStr = distanceVert(options);

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 14th 2018, 12:10:21 am
+ * Last Modified: Thursday, October 18th 2018, 11:56:15 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -22,6 +22,7 @@ let EntityID = 0;
 export class Entity extends SceneNode {
     EntityID = EntityID++;
     mesh?: Mesh;
+    boundingBox: any;
     _shader?: Shader;
     private _enabled = true;
     constructor() {

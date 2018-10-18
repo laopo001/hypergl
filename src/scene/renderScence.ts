@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, October 18th 2018, 11:04:56 pm
+ * Last Modified: Thursday, October 18th 2018, 11:41:18 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -27,7 +27,7 @@ import { Vec3, DEG_TO_RAD } from '../math';
 
 
 export function renderScence(scene: Scene) {
-    let entitys = scene.layers.concat(scene.opacityLayers);
+    let entitys = scene.renderLayers;
     let lights = scene.lights;
     let camera = scene.activeCamera;
     let cameraViewProjectionMatrix = camera.viewProjectionMatrix;
@@ -91,7 +91,7 @@ export function renderScence(scene: Scene) {
 
 export function renderDirectionalLightArr(name: string, data: DirectionalLight[], scene: Scene) {
     function rendererShadowMap(scene: Scene, light: DirectionalLight) {
-        let entitys = scene.layers.concat(scene.opacityLayers);
+        let entitys = scene.renderLayers;
         let renderer = scene.app.rendererPlatform;
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(false);
@@ -115,7 +115,7 @@ export function renderDirectionalLightArr(name: string, data: DirectionalLight[]
         camera.lookAt(light.direction, camera.up);
 
         let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
-        let shader = renderer.programGenerator.getShader('shadow', attributes);
+        let shader = renderer.programGenerator.getShader('depth', attributes);
         shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
 
         // let gl = scene.app.rendererPlatform.gl;
@@ -200,13 +200,12 @@ function createCubeCamera(cameras: Camera[], light: PointLight) {
 export function renderPointLightArr(name: string, data: PointLight[], scene: Scene) {
     function rendererShadowMap(scene: Scene, light: PointLight) {
         // TODO
-        let entitys = scene.layers.concat(scene.opacityLayers);
+        let entitys = scene.renderLayers;
         let renderer = scene.app.rendererPlatform;
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(true);
         }
         let cameras: Camera[] = [];
-        // cameras = createCubeCamera(cameras, light);
 
         for (let i = 0; i < 6; i++) {
             let v = new Vec3();
@@ -220,12 +219,10 @@ export function renderPointLightArr(name: string, data: PointLight[], scene: Sce
                 case 4: up = new Vec3(0, -1, 0); break;
                 case 5: up = new Vec3(0, -1, 0); break;
             }
-
-            // let up = i === 2 || i === 3 ? new Vec3(0, 0, 1) : new Vec3(0, 1, 0);
             let b = Math.floor(i / 2);
             v.data[b] = a === 0 ? 1 : -1;
             let camera = new Camera();
-            const near = 0.5;
+            const near = 0.1;
             camera.lookAt(v, up);
             camera.setPosition(light.getPosition());
             camera.setPerspective(90, 1, near, light.range);
@@ -276,7 +273,7 @@ export function renderPointLightArr(name: string, data: PointLight[], scene: Sce
 
 export function renderSpotLightArr(name: string, data: SpotLight[], scene: Scene) {
     function rendererShadowMap(scene: Scene, light: SpotLight) {
-        let entitys = scene.layers.concat(scene.opacityLayers);
+        let entitys = scene.renderLayers;
         let renderer = scene.app.rendererPlatform;
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(false);
@@ -287,7 +284,7 @@ export function renderSpotLightArr(name: string, data: SpotLight[], scene: Scene
         camera.setPosition(light.getPosition());
 
         let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
-        let shader = renderer.programGenerator.getShader('shadow', attributes);
+        let shader = renderer.programGenerator.getShader('depth', attributes);
         shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
 
         light.shadowFrame.beforeDraw();

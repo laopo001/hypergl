@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, October 17th 2018, 1:19:19 am
+ * Last Modified: Thursday, October 18th 2018, 11:24:20 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -329,7 +329,6 @@ export class RendererPlatform {
         let gl = this.gl;
         gl.enable(gl.BLEND);
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-        // gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
     }
     disableBLEND() {
         let gl = this.gl;

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 15th 2018, 1:50:41 am
+ * Last Modified: Thursday, October 18th 2018, 11:40:48 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -41,6 +41,9 @@ export class Scene extends IElement {
         };
     readonly layers: Entity[] = [];
     readonly opacityLayers: Entity[] = [];
+    get renderLayers() {
+        return this.layers.concat(this.opacityLayers);
+    }
     root: SceneNode = new SceneNode();
     readonly cameras: Camera[] = [];
     private _activeCamera!: Camera;
