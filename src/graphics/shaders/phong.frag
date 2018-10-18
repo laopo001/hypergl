@@ -93,12 +93,27 @@ float getOutOpacityColor() {
     {{/if}}
 }
 
-float unpack(const in vec4 rgbaDepth) {
-    const vec4 bitShift = vec4(1.0, 1.0/256.0, 1.0/(256.0*256.0), 1.0/(256.0*256.0*256.0));
-    return dot(rgbaDepth, bitShift);
+// float unpack(const in vec4 rgbaDepth) {
+//     const vec4 bitShift = vec4(1.0, 1.0/256.0, 1.0/(256.0*256.0), 1.0/(256.0*256.0*256.0));
+//     return dot(rgbaDepth, bitShift);
+// }
+
+const float PackUpscale = 256. / 255.;
+const float UnpackDownscale = 255. / 256.;
+const vec3 PackFactors = vec3( 256. * 256. * 256., 256. * 256., 256. );
+const vec4 UnpackFactors = UnpackDownscale / vec4( PackFactors, 1. );
+const float ShiftRight8 = 1. / 256.;
+vec4 packDepthToRGBA( const in float v ) {
+    vec4 r = vec4( fract( v * PackFactors ), v );
+    r.yzw -= r.xyz * ShiftRight8;
+    return r * PackUpscale;
 }
+float unpackRGBAToDepth( const in vec4 v ) {
+    return dot( v, UnpackFactors );
+}
+
 float texture2DCompare( sampler2D depths, vec2 uv, float compare ) {
-    return step( compare, unpack( texture2D( depths, uv ) ) );
+    return step( compare, unpackRGBAToDepth( texture2D( depths, uv ) ) );
 }
 float texture2DShadowLerp( sampler2D depths, vec2 size, vec2 uv, float compare ) {
     const vec2 offset = vec2( 0.0, 1.0 );
@@ -131,7 +146,7 @@ float CalcDirLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, vec3 light
         // 取得当前片元在光源视角下的深度
         float currentDepth = projCoords.z - bias;
         // 取得最近点的深度(使用[0,1]范围下的fragPosLight当坐标)
-        // float closestDepth = unpack( texture(shadowMap, projCoords.xy) ); 
+        // float closestDepth = unpackRGBAToDepth( texture(shadowMap, projCoords.xy) ); 
         // shadow = currentDepth > closestDepth + bias ? 1.0 : 0.0;
         float shadowRadius = 1.0;
         vec2 shadowMapSize = vec2(1024.0, 1024.0);
@@ -180,7 +195,7 @@ vec3 CalcDirLightAndShadow(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 ligh
 
 float CalcPointLightShadow(samplerCube shadowMap, vec3 lightPosition, float range) {
     vec3 fragToLight = lightPosition - out_vertex_position;
-    float closestDepth = unpack( texture(shadowMap, -fragToLight ) ); 
+    float closestDepth = unpackRGBAToDepth( texture(shadowMap, -fragToLight ) ); 
     closestDepth *= range;
     float currentDepth =  length(fragToLight);
     float bias = 0.05;
