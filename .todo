@@ -7,7 +7,7 @@ Todos:
     ☐ 重构代码
     ☐ ECS框架 Entity,Component,System 
     ☐ Mesh加载模型
-
+    ☐ PCF阴影 @started(18-10-17 23:29)
   Done:
     ✔ opacityMap @started(18-10-15 01:21) @done(18-10-15 01:50) @lasted(29m56s)
     ✔ 颜色混合opacity @done(18-10-14 12:30)
