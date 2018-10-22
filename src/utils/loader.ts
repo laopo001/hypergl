@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, October 23rd 2018, 1:22:16 am
+ * Last Modified: Tuesday, October 23rd 2018, 1:28:07 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,6 +20,7 @@ function resolveObjModel(res: string) {
         positions: [],
         normals: [],
         indices: [],
+        uvs: []
     };
     let arr = res.split('\n');
     for (let i = 0; i < arr.length; i++) {
