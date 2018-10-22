@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 30th 2018, 11:52:33 pm
+ * Last Modified: Monday, October 22nd 2018, 8:25:39 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,7 +15,7 @@ let OFFSCREEN_WIDTH = 1024;
 let OFFSCREEN_HEIGHT = 1024;
 
 import { RendererPlatform } from './renderer';
-import { Log } from '../util';
+import { Log } from '../utils/util';
 import { Scene } from '../scene/scene';
 import { Texture } from '../texture';
 export class Frame {

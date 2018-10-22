@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 22nd 2018, 1:14:36 am
+ * Last Modified: Monday, October 22nd 2018, 8:25:39 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,7 +15,7 @@
 import { Material } from './material';
 import { SEMANTIC } from '../conf';
 import { RendererPlatform } from '../graphics/renderer';
-import { Log } from '../util';
+import { Log } from '../utils/util';
 
 export class ShaderMaterial extends Material {
     update() {

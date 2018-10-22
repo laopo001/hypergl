@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, October 18th 2018, 11:56:15 pm
+ * Last Modified: Monday, October 22nd 2018, 8:25:39 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,7 +17,7 @@ import { Mesh } from '../mesh/mesh';
 import { Material } from '../material/material';
 import { Component } from './component';
 import { Shader } from '../graphics/shader';
-import { Log } from '../util';
+import { Log } from '../utils/util';
 let EntityID = 0;
 export class Entity extends SceneNode {
     EntityID = EntityID++;

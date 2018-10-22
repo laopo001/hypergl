@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, October 18th 2018, 11:41:18 pm
+ * Last Modified: Monday, October 22nd 2018, 8:25:39 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -19,7 +19,7 @@ import { Scene } from './scene';
 import { Mesh } from '../mesh/mesh';
 import { Shader } from '../graphics/shader';
 import { SEMANTICMAP, SEMANTIC } from '../conf';
-import { Log } from '../util';
+import { Log } from '../utils/util';
 import { Light, DirectionalLight, PointLight, SpotLight } from '../lights';
 import { Camera } from './camera';
 import { Vec3, DEG_TO_RAD } from '../math';

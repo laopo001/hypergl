@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, October 18th 2018, 11:40:48 pm
+ * Last Modified: Monday, October 22nd 2018, 8:25:39 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -22,7 +22,7 @@ import { Color } from '../core/color';
 import { Vec3 } from '../math';
 import { Light, PointLight, DirectionalLight, SpotLight } from '../lights';
 import { Frame } from '../graphics/createFrame';
-import { Log } from '../util';
+import { Log } from '../utils/util';
 import { Mesh } from '../mesh/mesh';
 import { StandardMaterial } from '../material';
 export class Scene extends IElement {
