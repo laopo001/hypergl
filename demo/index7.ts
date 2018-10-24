@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, October 23rd 2018, 1:01:34 am
+ * Last Modified: Wednesday, October 24th 2018, 9:03:46 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -42,7 +42,6 @@ function addLight(app, v) {
 }
 
 let main = async () => {
-    let model = await util.loaderObjModel('./assets/models/male02.obj');
 
     let texture = new Texture();
     let img = await loadImage('assets/images/IMG_0485.JPG');
@@ -55,6 +54,9 @@ let main = async () => {
     const app = new Application(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
+
+    let model = await app.loaderObjModel('./assets/models/male02.obj');
+    console.log(model);
 
     let dirlight = new DirectionalLight();
     dirlight.castShadows = true;
@@ -79,11 +81,11 @@ let main = async () => {
 
     let mesh = Mesh.createBox(app.rendererPlatform);
     let entity = new Entity();
-    entity.mesh = mesh;
+    entity.mesh = model;
     mesh.material = material;
     entity.name = '123';
     entity.setPosition(1.5, 1, 2);
-    // entity.setPosition(-2, 0, 0);
+    entity.setLocalScale(0.01, 0.01, 0.01);
     app.scene.root.addChild(entity);
 
 

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 14th 2018, 1:44:18 am
+ * Last Modified: Wednesday, October 24th 2018, 8:59:03 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -16,18 +16,26 @@ import { Scene } from './scene/scene';
 import { RendererPlatform } from './graphics/renderer';
 import { AppOption, FnVoid } from './types';
 import { event, Timer } from './core';
+import { loaderObjModel } from './utils';
+import { Mesh } from './mesh/mesh';
 
 const timer = new Timer();
 export class Application {
+    get scene() {
+        return this.sceneInstances[this.activeIndex];
+    }
+    get isPointerLocked() {
+        return this._isPointerLock;
+    }
+    get [Symbol.toStringTag]() {
+        return 'Application';
+    }
     sceneInstances: Scene[] = [];
     activeIndex = 0;
     rendererPlatform: RendererPlatform;
     canvas: HTMLCanvasElement;
     lastRenderTime = 0;
     _isPointerLock = false;
-    get scene() {
-        return this.sceneInstances[this.activeIndex];
-    }
     constructor(canvas: HTMLCanvasElement, option?: AppOption) {
         this.canvas = canvas;
         this.rendererPlatform = new RendererPlatform(this.canvas, option);
@@ -56,8 +64,9 @@ export class Application {
         // this._isPointerLock = true;
         this.canvas.requestPointerLock();
     }
-    get isPointerLocked() {
-        return this._isPointerLock;
+    async loaderObjModel(url: string) {
+        let options = await loaderObjModel(url);
+        return Mesh.createMesh(this.rendererPlatform, options);
     }
 
     private tick() {
@@ -70,8 +79,5 @@ export class Application {
 
     private complete() {
         // appendCanvas(this.canvas);
-    }
-    get [Symbol.toStringTag]() {
-        return 'Application';
     }
 }
