@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, October 24th 2018, 9:01:35 pm
+ * Last Modified: Thursday, October 25th 2018, 1:33:11 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -29,29 +29,37 @@ function resolveObjModel(res: string) {
     for (let i = 0; i < arr.length; i++) {
         let item = arr[i];
         let vec = item.split(' ');
-        if (item.startsWith('v')) {
+        if (item.startsWith('v ')) {
             let arr = vec.map(x => parseFloat(x));
-            vertex.push(arr[1], arr[2], arr[3]);
+            // vertex.push(arr[1], arr[2], arr[3]);
+            options.positions.push(arr[1], arr[2], arr[3]);
         }
-        if (item.startsWith('vn')) {
+        if (item.startsWith('vn ')) {
             let arr = vec.map(x => parseFloat(x));
-            normals.push(arr[1], arr[2], arr[3]);
+            // normals.push(arr[1], arr[2], arr[3]);
+            // tslint:disable-next-line:no-non-null-assertion
+            // options.normals!.push(arr[1], arr[2], arr[3]);
         }
-        if (item.startsWith('vt')) {
+        if (item.startsWith('vt ')) {
             let arr = vec.map(x => parseFloat(x));
-            uvs.push(arr[1], arr[2]);
+            // tslint:disable-next-line:no-non-null-assertion
+            options.uvs!.push(arr[1], arr[2]);
         }
-        if (item.startsWith('f')) {
+        if (item.startsWith('f ')) {
             for (let i = 1; i < vec.length; i++) {
                 let face = vec[i];
                 let indexs = face.split('/').map(x => parseFloat(x));
-                (options.positions).push(vertex[indexs[0]] - 1);
-                (options.normals as number[]).push(normals[indexs[1]] - 1);
-                (options.uvs as number[]).push(uvs[indexs[2]] - 1);
+
                 (options.indices).push(indexs[0] - 1);
             }
             // (options.uvs as number[]).push(vec[1], vec[2]);
         }
+    }
+    if ((options.normals as number[]).length === 0 || isNaN((options.normals as number[])[0])) {
+        delete options.normals;
+    }
+    if ((options.uvs as number[]).length === 0) {
+        delete options.uvs;
     }
     console.log(options);
     return options;

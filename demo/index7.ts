@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, October 24th 2018, 9:03:46 pm
+ * Last Modified: Thursday, October 25th 2018, 1:34:14 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -64,7 +64,7 @@ let main = async () => {
     app.scene.root.addChild(dirlight);
     // addLight(app, new Vec3(0, 2, 0));
     let spotLight = new SpotLight();
-    spotLight.setPosition(0, 2, 0);
+    spotLight.setPosition(0, 5, 0);
     // app.scene.root.addChild(spotLight);
 
 
