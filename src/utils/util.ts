@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 23rd 2018, 2:35:57 am
+ * Last Modified: Thursday, October 25th 2018, 6:24:47 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -42,4 +42,12 @@ export namespace Log {
     export function debug(message: any) {
         console.debug(message);
     }
+}
+
+
+export function saveClosure(obj: any) {
+    // tslint:disable-next-line:only-arrow-functions
+    return function () {
+        return obj;
+    };
 }
