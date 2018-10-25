@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, October 25th 2018, 1:33:11 am
+ * Last Modified: Thursday, October 25th 2018, 9:10:48 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -38,7 +38,7 @@ function resolveObjModel(res: string) {
             let arr = vec.map(x => parseFloat(x));
             // normals.push(arr[1], arr[2], arr[3]);
             // tslint:disable-next-line:no-non-null-assertion
-            // options.normals!.push(arr[1], arr[2], arr[3]);
+            options.normals!.push(arr[1], arr[2], arr[3]);
         }
         if (item.startsWith('vt ')) {
             let arr = vec.map(x => parseFloat(x));
