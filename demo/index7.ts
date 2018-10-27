@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, October 26th 2018, 1:06:43 am
+ * Last Modified: Saturday, October 27th 2018, 11:26:04 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -79,14 +79,6 @@ let main = async () => {
     material2.update();
 
 
-    let mesh2 = Mesh.createBox(app.rendererPlatform);
-    let entity2 = new Entity();
-    entity2.setLocalScale(2, 2, 2);
-    mesh2.material = material2;
-    entity2.mesh = mesh2;
-    entity2.setPosition(3, 0, 0);
-    app.scene.root.addChild(entity2);
-
     let mesh = Mesh.createBox(app.rendererPlatform);
     console.log(model, mesh);
     let entity = new Entity();
@@ -97,6 +89,14 @@ let main = async () => {
     entity.setLocalScale(0.01, 0.01, 0.01);
     app.scene.root.addChild(entity);
 
+
+    let mesh2 = Mesh.createBox(app.rendererPlatform);
+    let entity2 = new Entity();
+    entity2.setLocalScale(2, 2, 2);
+    mesh2.material = material2;
+    entity2.mesh = mesh2;
+    entity2.setPosition(3, 0, 0);
+    app.scene.root.addChild(entity2);
 
 
     (_ => {
