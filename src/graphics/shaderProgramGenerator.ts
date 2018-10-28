@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, October 18th 2018, 11:19:56 pm
+ * Last Modified: Sunday, October 28th 2018, 11:14:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -45,6 +45,7 @@ export class ShaderProgramGenerator {
         if (!shader) {
             let shaderDefinition = createShaderDefinition(name, this.renderer, options);
             shader = this._cache[key] = new Shader(this.renderer, shaderDefinition);
+            console.log(shader);
         }
         return shader;
     }

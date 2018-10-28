@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, October 27th 2018, 11:26:04 pm
+ * Last Modified: Sunday, October 28th 2018, 11:15:58 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -61,7 +61,7 @@ let main = async () => {
     let dirlight = new DirectionalLight();
     dirlight.castShadows = true;
     // dirlight.direction = new Vec3(0, -1, 1);
-    app.scene.root.addChild(dirlight);
+    // app.scene.root.addChild(dirlight);
     // addLight(app, new Vec3(0, 2, 0));
     let spotLight = new SpotLight();
     spotLight.setPosition(0, 5, 0);
@@ -89,7 +89,6 @@ let main = async () => {
     entity.setLocalScale(0.01, 0.01, 0.01);
     app.scene.root.addChild(entity);
 
-
     let mesh2 = Mesh.createBox(app.rendererPlatform);
     let entity2 = new Entity();
     entity2.setLocalScale(2, 2, 2);
@@ -97,6 +96,7 @@ let main = async () => {
     entity2.mesh = mesh2;
     entity2.setPosition(3, 0, 0);
     app.scene.root.addChild(entity2);
+
 
 
     (_ => {
