@@ -7,7 +7,7 @@ import { Vec3 } from '../math';
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 6:03:02 pm
+ * Last Modified: Monday, October 29th 2018, 1:38:01 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -30,7 +30,7 @@ export interface Obj<T> { [s: string]: Undefined<T> }
 export interface CreateMeshOptions {
     positions: number[];
     normals?: number[]; // 法线
-    indices: number[];
+    indices?: number[];
     tangents?: number[]; //
     colors?: number[];
     uvs?: number[];
