@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 29th 2018, 1:41:40 am
+ * Last Modified: Tuesday, October 30th 2018, 1:16:17 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -237,7 +237,7 @@ export function createBox(renderer: RendererPlatform, opts?: CreateBoxOptions) {
         positions,
         normals,
         uvs,
-        uvs1,
+        // uvs1,
         indices
     };
     return Mesh.createMesh(renderer, options);

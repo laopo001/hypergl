@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 29th 2018, 11:12:08 pm
+ * Last Modified: Tuesday, October 30th 2018, 12:45:22 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -97,9 +97,9 @@ function resolveObjModel(res: string) {
     if ((options.normals as number[]).length === 0 || isNaN((options.normals as number[])[0])) {
         delete options.normals;
     }
-    if ((options.uvs as number[]).length === 0) {
-        delete options.uvs;
-    }
+    // if ((options.uvs as number[]).length === 0) {
+    //     delete options.uvs;
+    // }
     if ((options.indices as number[]).length === 0) {
         delete options.indices;
     }
