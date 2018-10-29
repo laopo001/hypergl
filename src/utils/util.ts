@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, October 25th 2018, 6:24:47 pm
+ * Last Modified: Monday, October 29th 2018, 12:00:26 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -49,5 +49,19 @@ export function saveClosure(obj: any) {
     // tslint:disable-next-line:only-arrow-functions
     return function () {
         return obj;
+    };
+}
+
+export function createClosure() {
+    let save;
+    // tslint:disable-next-line:only-arrow-functions
+    return function saveClosure(obj: any) {
+        if (save === undefined) {
+            save = obj;
+        }
+        // tslint:disable-next-line:only-arrow-functions
+        return function getClosure() {
+            return save;
+        };
     };
 }
