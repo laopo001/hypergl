@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 29th 2018, 1:52:54 am
+ * Last Modified: Monday, October 29th 2018, 11:22:42 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -55,7 +55,7 @@ let main = async () => {
         // webgl1:true
     });
 
-    let model = await app.loaderObjModel('./assets/models/monkey.obj');
+    let model = await app.loaderObjModel('./assets/models/box.obj');
 
 
     let dirlight = new DirectionalLight();

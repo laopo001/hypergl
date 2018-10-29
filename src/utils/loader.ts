@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 29th 2018, 1:55:53 am
+ * Last Modified: Monday, October 29th 2018, 11:12:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -47,23 +47,51 @@ function resolveObjModel(res: string) {
             uvs.push(arr[1], arr[2]);
         }
         if (item.startsWith('f ')) {
-            for (let i = 1; i < vec.length; i++) {
-                let face = vec[i];
-                let indexs = face.split('/').map(x => parseInt(x, 10));
-                options.positions = options.positions.concat(positions[indexs[0] - 1]);
+            if (vec.length === 4) {
+                for (let i = 1; i < vec.length; i++) {
+                    let face = vec[i];
+                    let indexs = face.split('/').map(x => parseInt(x, 10) - 1);
 
-                if (indexs[1]) {
-                    // tslint:disable-next-line:no-non-null-assertion
-                    options.normals = options.normals!.concat(normals[indexs[1] - 1]);
-                }
-                if (indexs[2]) {
-                    // tslint:disable-next-line:no-non-null-assertion
-                    options.uvs = options.uvs!.concat(uvs[indexs[2] - 1]);
-                }
+                    options.positions.push(
+                        positions[(indexs[0]) * 3 + 0],
+                        positions[(indexs[0]) * 3 + 1],
+                        positions[(indexs[0]) * 3 + 2]
+                    );
 
-                // (options.indices).push(indexs[0] - 1);
+                    if (indexs[1] && indexs[1] * 3 < uvs.length) {
+                        // tslint:disable-next-line:no-non-null-assertion
+                        options.uvs!.push(
+                            uvs[(indexs[1]) * 3 + 0],
+                            uvs[(indexs[1]) * 3 + 1],
+                        );
+                    }
+                    if (indexs[2] && indexs[2] * 3 < normals.length) {
+                        // tslint:disable-next-line:no-non-null-assertion
+                        options.normals!.push(
+                            normals[(indexs[2]) * 3 + 0],
+                            normals[(indexs[2]) * 3 + 1],
+                            normals[(indexs[2]) * 3 + 2]
+                        );
+                    }
+                }
             }
-            // (options.uvs as number[]).push(vec[1], vec[2]);
+            if (vec.length === 5) {
+                let order = [1, 2, 3, 3, 4, 1];
+                for (let o = 0; o < order.length; o++) {
+                    let p = order[o];
+                    let face = vec[p];
+                    let indexs = face.split('/').map(x => parseInt(x, 10) - 1);
+                    options.positions.push(positions[indexs[0] * 3], positions[indexs[0] * 3 + 1], positions[indexs[0] * 3 + 2]); // expand uvs from indices
+                    if (indexs[1] * 2 < uvs.length) {
+                        // tslint:disable-next-line:no-non-null-assertion
+                        options.uvs!.push(uvs[indexs[1] * 2], uvs[indexs[1] * 2 + 1]);
+                    } // expand uvs from indices
+                    if (indexs[2] * 3 < normals.length) {
+                        // tslint:disable-next-line:no-non-null-assertion
+                        options.normals!.push(normals[indexs[2] * 3], normals[indexs[2] * 3 + 1], normals[indexs[2] * 3 + 2]);
+                    } // expand normals from indices
+                }
+            }
         }
     }
     if ((options.normals as number[]).length === 0 || isNaN((options.normals as number[])[0])) {
