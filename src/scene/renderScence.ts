@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 22nd 2018, 8:25:39 pm
+ * Last Modified: Monday, October 29th 2018, 12:38:59 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -31,13 +31,15 @@ export function renderScence(scene: Scene) {
     let lights = scene.lights;
     let camera = scene.activeCamera;
     let cameraViewProjectionMatrix = camera.viewProjectionMatrix;
+
+    let renderer = scene.app.rendererPlatform;
+    renderer.initDraw(true);
+
     let directionalLightsUniforms = renderDirectionalLightArr('directionalLightArr', lights.directionalLights, scene);
     let pointLightsUniforms = renderPointLightArr('pointLightArr', lights.pointLights, scene);
     let spotLightsUniforms = renderSpotLightArr('spotLightArr', lights.spotLight, scene);
     let LightsUniforms: any = { ...directionalLightsUniforms, ...pointLightsUniforms, ...spotLightsUniforms };
-    let renderer = scene.app.rendererPlatform;
 
-    renderer.initDraw(true);
     let temp: Light[] = [];
     renderer.enableBLEND();
     for (let i = 0; i < entitys.length; i++) {

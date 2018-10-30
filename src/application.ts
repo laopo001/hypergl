@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, October 24th 2018, 8:59:03 pm
+ * Last Modified: Thursday, October 25th 2018, 9:20:04 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -51,8 +51,9 @@ export class Application {
         if (!this.rendererPlatform.viewport) {
             this.rendererPlatform.setViewport(0, 0, this.canvas.width, this.canvas.height);
         }
-
+        console.log(this.scene.renderLayers);
         this.tick();
+
     }
     add(scene: Scene) {
         this.sceneInstances.push(scene);

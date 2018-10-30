@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, October 25th 2018, 7:15:31 pm
+ * Last Modified: Tuesday, October 30th 2018, 1:22:53 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -78,11 +78,12 @@ let main = async () => {
     material2.diffuseMap = texture;
     material2.update();
 
+
     let mesh = Mesh.createBox(app.rendererPlatform);
     console.log(model, mesh);
     let entity = new Entity();
     entity.mesh = model;
-    mesh.material = material;
+    entity.mesh.material = material;
     entity.name = '123';
     entity.setPosition(1.5, 1, 2);
     entity.setLocalScale(0.01, 0.01, 0.01);

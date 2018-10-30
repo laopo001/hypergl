@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 15th 2018, 3:25:04 pm
+ * Last Modified: Tuesday, October 30th 2018, 1:16:17 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -34,7 +34,7 @@ export class Mesh {
     // tslint:disable-next-line:member-ordering
 
     vertexBuffer!: VertexBuffer;
-    indexBuffer!: IndexBuffer;
+    indexBuffer?: IndexBuffer;
     castShadow = true;
     receiveShadow = true;
     private _material = Mesh.defaultMaterial;
@@ -46,7 +46,7 @@ export class Mesh {
         // Check the supplied options and provide defaults for unspecified ones
         let positions = opts.positions;
         let normals = opts && opts.normals !== undefined ? opts.normals : null;
-        let indices = opts.indices;
+        let indices = opts.indices !== undefined ? opts.indices : undefined;
         let tangents = opts && opts.tangents !== undefined ? opts.tangents : null;
         let colors = opts && opts.colors !== undefined ? opts.colors : null;
         let uvs = opts && opts.uvs !== undefined ? opts.uvs : null;
@@ -115,7 +115,7 @@ export class Mesh {
         vertexBuffer.bind();
 
         // Create the index buffer
-        let indexBuffer = new IndexBuffer(renderer, Uint16Array, BUFFER.STATIC, indices);
+        let indexBuffer = indices && new IndexBuffer(renderer, Uint16Array, BUFFER.STATIC, indices);
         // let aabb = new BoundingBox();
         // aabb.compute(positions);
 
@@ -237,10 +237,9 @@ export function createBox(renderer: RendererPlatform, opts?: CreateBoxOptions) {
         positions,
         normals,
         uvs,
-        uvs1,
+        // uvs1,
         indices
     };
-
     return Mesh.createMesh(renderer, options);
 }
 

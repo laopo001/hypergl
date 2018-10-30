@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 22nd 2018, 8:25:39 pm
+ * Last Modified: Monday, October 29th 2018, 11:49:38 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,7 +15,7 @@
 import { Log } from '../utils/util';
 import { UNIFORM_TYPE, FILTER } from '../conf';
 import { ShaderProgramGenerator } from './shaderProgramGenerator';
-import { Undefined, FnVoid, AppOption } from '../types';
+import { Undefined, FnVoid, AppOption, Nullable } from '../types';
 import { Shader } from './shader';
 import { IndexBuffer } from './indexBuffer';
 import { VertexBuffer } from './vertexBuffer';
@@ -23,6 +23,7 @@ import { Entity } from '../ecs';
 import { Texture } from '../texture';
 import { ShaderVariable } from './shaderVariable';
 import { FACE } from '../material/material';
+import { VertexAttribData } from './vertexFormat';
 export type Platform = 'webgl' | 'webgl2';
 export class RendererPlatform {
     get gl() {
@@ -275,7 +276,10 @@ export class RendererPlatform {
         const mesh = entity.mesh;
         if (mesh == null) { return; }
         this.setVertexBuffer(mesh.vertexBuffer);
-        this.setIndexBuffer(mesh.indexBuffer);
+        if (mesh.indexBuffer) {
+            this.setIndexBuffer(mesh.indexBuffer);
+        }
+
         const shader = this.currShader as Shader;
         const samplers = shader.samplers;
         const uniforms = shader.uniforms;
@@ -283,7 +287,7 @@ export class RendererPlatform {
         const format = mesh.vertexBuffer.format;
         for (let i = 0; i < attributes.length; i++) {
             let attrbute = attributes[i];
-            let element;
+            let element: Undefined<VertexAttribData>;
             if (attrbute.element) {
                 element = attrbute.element;
             } else {
@@ -318,12 +322,19 @@ export class RendererPlatform {
             gl.enable(gl.CULL_FACE);
             gl.cullFace(gl[mesh.material.cullFace]);
         }
-        gl.drawElements(
-            gl.TRIANGLES,
-            mesh.indexBuffer.length,
-            mesh.indexBuffer.drawFormat,
-            0
-        );
+
+        if (mesh.indexBuffer) {
+            gl.drawElements(
+                gl.TRIANGLES,
+                mesh.indexBuffer.length,
+                mesh.indexBuffer.drawFormat,
+                0
+            );
+        } else {
+            gl.drawArrays(gl.TRIANGLES, 0, mesh.vertexBuffer.numVertices);
+        }
+
+
     }
     enableBLEND() {
         let gl = this.gl;
