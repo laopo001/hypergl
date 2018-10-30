@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, October 30th 2018, 6:25:38 pm
+ * Last Modified: Wednesday, October 31st 2018, 12:55:45 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -55,9 +55,8 @@ let main = async () => {
         // webgl1:true
     });
 
-    let model = await app.loaderObjModel('./assets/models/monkey.obj');
-
-
+    let model = await app.loaderObjModel('./assets/models/test/untitled.obj');
+    let mtl = await util.loaderMtlModel('./assets/models/test/untitled.mtl');
     let dirlight = new DirectionalLight();
     dirlight.castShadows = true;
     // dirlight.direction = new Vec3(0, -1, 1);
@@ -69,10 +68,12 @@ let main = async () => {
 
 
     let material = new StandardMaterial();
-    material.diffuseColor = new Color(1, 0, 0);
-    // material.opacity = 0.5;
+    material.diffuseColor = new Color(0.5, 0, 0);
+    material.opacity = 0.5;
     // material.opacityMap = texture2;
     material.update();
+
+
 
     let material2 = new StandardMaterial();
     material2.diffuseMap = texture;
@@ -80,10 +81,9 @@ let main = async () => {
 
 
     let mesh = Mesh.createBox(app.rendererPlatform);
-    console.log(model, mesh);
     let entity = new Entity();
     entity.mesh = model;
-    entity.mesh.material = material;
+    entity.mesh.material = mtl;
     entity.name = '123';
     entity.setPosition(1.5, 1, 2);
     // entity.setLocalScale(0.01, 0.01, 0.01);
