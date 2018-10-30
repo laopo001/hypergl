@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, September 7th 2018, 12:58:49 am
+ * Last Modified: Tuesday, October 30th 2018, 1:41:52 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -189,4 +189,14 @@ export enum PIXELFORMAT {
 export enum ShadowUpdateMode {
     Once = 'Once',
     RealTime = 'RealTime'
+}
+
+export enum DrawMode {
+    POINTS,
+    LINES,
+    LINE_LOOP,
+    LINE_STRIP,
+    TRIANGLES,
+    TRIANGLE_STRIP,
+    TRIANGLE_FAN,
 }

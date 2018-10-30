@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 29th 2018, 11:49:38 pm
+ * Last Modified: Tuesday, October 30th 2018, 1:47:13 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -31,9 +31,10 @@ export class RendererPlatform {
     }
     glFilter!: number[];
     glAddress!: number[];
+    glDrawMode!: number[];
     platform!: Platform;
     AttrbuteType: { [s: string]: number } = {};
-    glTypeToJs: { [s: string]: Undefined<UNIFORM_TYPE> } = {};
+    glTypeToJs: { [s: string]: UNIFORM_TYPE } = {};
     uniformFunction: { [s: string]: FnVoid; } = {};
     programGenerator = new ShaderProgramGenerator(this);
     private webgl!: WebGLRenderingContext;
@@ -149,6 +150,15 @@ export class RendererPlatform {
             gl.REPEAT,
             gl.CLAMP_TO_EDGE,
             gl.MIRRORED_REPEAT
+        ];
+        this.glDrawMode = [
+            gl.POINTS,
+            gl.LINES,
+            gl.LINE_LOOP,
+            gl.LINE_STRIP,
+            gl.TRIANGLES,
+            gl.TRIANGLE_STRIP,
+            gl.TRIANGLE_FAN,
         ];
         let [r, g, b, a] = this._clearColor;
         gl.enable(gl.DEPTH_TEST);
@@ -325,13 +335,17 @@ export class RendererPlatform {
 
         if (mesh.indexBuffer) {
             gl.drawElements(
-                gl.TRIANGLES,
+                this.glDrawMode[mesh.mode],
+                // gl.TRIANGLES,
                 mesh.indexBuffer.length,
                 mesh.indexBuffer.drawFormat,
                 0
             );
         } else {
-            gl.drawArrays(gl.TRIANGLES, 0, mesh.vertexBuffer.numVertices);
+            gl.drawArrays(
+                this.glDrawMode[mesh.mode],
+                // gl.TRIANGLES,
+                0, mesh.vertexBuffer.numVertices);
         }
 
 

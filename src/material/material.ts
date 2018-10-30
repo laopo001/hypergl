@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 14th 2018, 2:51:49 am
+ * Last Modified: Tuesday, October 30th 2018, 2:50:16 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,11 +17,12 @@ import { SEMANTIC } from '../conf';
 import { Shader } from '../graphics/shader';
 import { Light, PointLight, DirectionalLight } from '../lights';
 import { Scene } from '../scene/scene';
+import { Mesh } from '../mesh/mesh';
 
 export enum FACE {
     BACK = 'BACK',
     FRONT = 'FRONT',
-    NONE= 'NONE',
+    NONE = 'NONE',
 }
 
 export abstract class Material {
@@ -29,6 +30,7 @@ export abstract class Material {
     shader?: Shader;
     opacity = 1;
     cullFace = FACE.BACK;
+    meshs: Mesh[] = [];
     protected _dirtyUpdate = false;
     setUniform(name: string, data: any) {
         this.uniforms[name] = data;

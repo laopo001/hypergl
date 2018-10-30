@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, October 30th 2018, 1:16:17 am
+ * Last Modified: Tuesday, October 30th 2018, 2:53:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,11 +15,12 @@
 import { VertexBuffer } from '../graphics/vertexBuffer';
 import { IndexBuffer } from '../graphics/indexBuffer';
 import { BasicMaterial, Material } from '../material';
-import { SEMANTIC, BUFFER } from '../conf';
+import { SEMANTIC, BUFFER, DrawMode } from '../conf';
 import { VertexType, VertexFormat } from '../graphics/vertexFormat';
 import { Nullable, CreateMeshOptions, CreateBoxOptions } from '../types';
 import { RendererPlatform } from '../graphics/renderer';
 import { Vec3, Vec2 } from '../math';
+import { BoundingBox } from '../shape/boundingBox';
 
 export class Mesh {
     get material() {
@@ -27,15 +28,19 @@ export class Mesh {
     }
     set material(x) {
         this._material = x;
+        if (!this._material.meshs.includes(this)) {
+            this._material.meshs.push(this);
+        }
     }
     static defaultMaterial: Material = new BasicMaterial();
     static createBox = createBox;
     static createPlane = createPlane;
+    mode = DrawMode.TRIANGLES; // 默认绘制模式 为 三角形
     // tslint:disable-next-line:member-ordering
-
     vertexBuffer!: VertexBuffer;
     indexBuffer?: IndexBuffer;
     castShadow = true;
+    aabb!: BoundingBox;
     receiveShadow = true;
     private _material = Mesh.defaultMaterial;
     constructor() {
@@ -120,6 +125,7 @@ export class Mesh {
         // aabb.compute(positions);
 
         let mesh = new Mesh();
+        mesh.aabb = BoundingBox.compute(positions);
         mesh.vertexBuffer = vertexBuffer;
         mesh.indexBuffer = indexBuffer;
         return mesh;
