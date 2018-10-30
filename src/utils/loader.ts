@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, October 30th 2018, 12:45:22 am
+ * Last Modified: Tuesday, October 30th 2018, 11:17:24 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -49,8 +49,8 @@ function resolveObjModel(res: string) {
         if (item.startsWith('f ')) {
             if (vec.length === 4) {
                 for (let i = 1; i < vec.length; i++) {
-                    let face = vec[i];
-                    let indexs = face.split('/').map(x => parseInt(x, 10) - 1);
+                    let vertex = vec[i];
+                    let indexs = vertex.split('/').map(x => parseInt(x, 10) - 1);
 
                     options.positions.push(
                         positions[(indexs[0]) * 3 + 0],
@@ -78,9 +78,9 @@ function resolveObjModel(res: string) {
             if (vec.length === 5) {
                 let order = [1, 2, 3, 3, 4, 1];
                 for (let o = 0; o < order.length; o++) {
-                    let p = order[o];
-                    let face = vec[p];
-                    let indexs = face.split('/').map(x => parseInt(x, 10) - 1);
+                    let index = order[o];
+                    let vertex = vec[index];
+                    let indexs = vertex.split('/').map(x => parseInt(x, 10) - 1);
                     options.positions.push(positions[indexs[0] * 3], positions[indexs[0] * 3 + 1], positions[indexs[0] * 3 + 2]); // expand uvs from indices
                     if (indexs[1] * 2 < uvs.length) {
                         // tslint:disable-next-line:no-non-null-assertion

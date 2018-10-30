@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, October 30th 2018, 1:22:53 am
+ * Last Modified: Tuesday, October 30th 2018, 11:20:14 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -55,7 +55,7 @@ let main = async () => {
         // webgl1:true
     });
 
-    let model = await app.loaderObjModel('./assets/models/male02.obj');
+    let model = await app.loaderObjModel('./assets/models/box.obj');
 
 
     let dirlight = new DirectionalLight();
@@ -86,8 +86,8 @@ let main = async () => {
     entity.mesh.material = material;
     entity.name = '123';
     entity.setPosition(1.5, 1, 2);
-    entity.setLocalScale(0.01, 0.01, 0.01);
-
+    // entity.setLocalScale(0.01, 0.01, 0.01);
+    app.scene.root.addChild(entity);
 
     let mesh2 = Mesh.createBox(app.rendererPlatform);
     let entity2 = new Entity();
@@ -97,7 +97,7 @@ let main = async () => {
     entity2.setPosition(3, 0, 0);
     app.scene.root.addChild(entity2);
 
-    app.scene.root.addChild(entity);
+
 
     (_ => {
         let mesh = Mesh.createBox(app.rendererPlatform);
