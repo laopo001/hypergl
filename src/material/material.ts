@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, October 30th 2018, 2:50:16 pm
+ * Last Modified: Tuesday, October 30th 2018, 3:25:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -28,7 +28,7 @@ export enum FACE {
 export abstract class Material {
     uniforms: { [s: string]: any } = {};
     shader?: Shader;
-    opacity = 1;
+
     cullFace = FACE.BACK;
     meshs: Mesh[] = [];
     protected _dirtyUpdate = false;

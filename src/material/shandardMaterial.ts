@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 14th 2018, 10:42:22 pm
+ * Last Modified: Tuesday, October 30th 2018, 3:30:54 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -18,16 +18,37 @@ import { Texture } from '../texture';
 import { Material } from './material';
 import { RendererPlatform } from '../graphics/renderer';
 import { SEMANTIC } from '../conf';
+import { event } from '../core';
 import { Vec3 } from '../math';
+import { Undefined } from '../types';
 
 export class StandardMaterial extends Material {
+    public get opacityMap(): Undefined<Texture> {
+        return this._opacityMap;
+    }
+    public set opacityMap(value: Undefined<Texture>) {
+        if (value != null) {
+            event.fire('opacityChange', this);
+        }
+        this._opacityMap = value;
+    }
+    get opacity() {
+        return this._opacity;
+    }
+    set opacity(value) {
+        if (value < 1) {
+            event.fire('opacityChange', this);
+        }
+        this._opacity = value;
+    }
     ambientColor = Scene.ambientColor;
     diffuseColor = new Color(1, 1, 1);
     diffuseMap?: Texture;
     specularColor = new Color(0.3, 0.3, 0.3);
     specularMap?: Texture;
-    opacityMap?: Texture;
     shininess = 64;
+    private _opacity = 1;
+    private _opacityMap?: Texture;
     constructor() {
         super();
         this.update();

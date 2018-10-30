@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, October 30th 2018, 2:53:08 pm
+ * Last Modified: Tuesday, October 30th 2018, 3:10:46 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -27,10 +27,16 @@ export class Mesh {
         return this._material;
     }
     set material(x) {
-        this._material = x;
-        if (!this._material.meshs.includes(this)) {
-            this._material.meshs.push(this);
+        if (!x.meshs.includes(this)) {
+            x.meshs.push(this);
         }
+        if (this._material) {
+            let index = this._material.meshs.indexOf(this);
+            if (index > -1) {
+                this._material.meshs.splice(index, 1);
+            }
+        }
+        this._material = x;
     }
     static defaultMaterial: Material = new BasicMaterial();
     static createBox = createBox;
@@ -42,8 +48,10 @@ export class Mesh {
     castShadow = true;
     aabb!: BoundingBox;
     receiveShadow = true;
-    private _material = Mesh.defaultMaterial;
+    private _material!: Material;
+    // private _material = Mesh.defaultMaterial;
     constructor() {
+        this.material = Mesh.defaultMaterial;
         // TODO
     }
     // tslint:disable-next-line:cyclomatic-complexity
