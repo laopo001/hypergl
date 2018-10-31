@@ -5,17 +5,18 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, October 31st 2018, 4:15:11 pm
+ * Last Modified: Wednesday, October 31st 2018, 6:47:17 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Mesh, Application, Entity, BasicMaterial } from '../src';
-import { GltfLoader } from 'gltf-loader-ts';
+import { Mesh, Application, Entity, BasicMaterial, DirectionalLight } from '../src';
+import { GltfLoader, GlTf } from 'gltf-loader-ts';
 import { Color } from '../src/core';
-import { GlTf } from '../node_modules/gltf-loader-ts/lib/gltf';
+import { Camera } from '../src/scene/camera';
+import { Mat4, Vec3 } from '../src/math';
 
 export const GLTF_COMPONENT_TYPE_ARRAYS: { [index: number]: any } = {
     5120: Int8Array,
@@ -51,27 +52,38 @@ async function main() {
             let model = gltf.meshes[i];
             for (let j = 0; j < model.primitives.length; j++) {
                 const mesh = model.primitives[j];
-                let positions = await asset.accessorData(mesh.attributes.POSITION).then(to.bind(null, gltf, mesh.attributes.POSITION)) as any;
-                console.log(asset, positions.byteLength);
-                // let normals = await asset.accessorData(mesh.attributes.NORMAL).then(to.bind(null, gltf, mesh.attributes.POSITION)) as any;
-                // let uvs = await asset.accessorData(mesh.attributes.TEXCOORD_0).then(to.bind(null, gltf, mesh.attributes.POSITION)) as any;
-                // let indices;
-                // if (typeof mesh.indices === 'number') {
-                //     indices = await asset.accessorData(mesh.indices).then(to.bind(null, gltf, mesh.attributes.POSITION));
-                // }
-                // let m = Mesh.createMesh(app.rendererPlatform, {
-                //     positions, normals, uvs, indices
-                // });
-                // let e = new Entity();
-                // e.mesh = m;
-                // (e.mesh.material as BasicMaterial).color = new Color(1, 0, 0);
-                // app.scene.root.addChild(e);
+                let positions = await asset.accessorData<any>(mesh.attributes.POSITION);
+
+                let normals = await asset.accessorData<any>(mesh.attributes.NORMAL);
+                let uvs = await asset.accessorData<any>(mesh.attributes.TEXCOORD_0);
+                let indices;
+                if (typeof mesh.indices === 'number') {
+                    indices = await asset.accessorData<any>(mesh.indices);
+                }
+                let m = Mesh.createMesh(app.rendererPlatform, {
+                    positions, normals, uvs, indices
+                });
+                let e = new Entity();
+                e.setLocalScale(0.01, 0.01, 0.01);
+                e.mesh = m;
+                (e.mesh.material as BasicMaterial).color = new Color(1, 1, 1);
+                app.scene.root.addChild(e);
                 // console.warn(positions, normals, uvs, indices);
             }
         }
     }
+    let dirlight = new DirectionalLight();
+    dirlight.castShadows = true;
+    // dirlight.direction = new Vec3(0, -1, 1);
+    app.scene.root.addChild(dirlight);
 
-    // app.start();
+    let camera = new Camera();
+    camera.setPerspective(45, app.canvas.width / app.canvas.height, 1, 1000);
+    camera.setPosition(-2, 5, 10);
+    camera.lookAt(new Vec3(0, 0, 0), camera.up);
+
+    app.scene.cameras.push(camera);
+    app.start();
     // console.log(gltf, data, image, Mesh);
 }
 

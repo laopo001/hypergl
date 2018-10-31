@@ -63,14 +63,13 @@
     "test:karma": "webpack --colors && gulp replaceTests && karma start && rm -r _temp"
   },
   "pre-commit": [
-    "lint",
-    "test"
+    "lint"
   ],
   "engines": {
     "node": ">= 0.6.12"
   },
   "dependencies": {
-    "gltf-loader-ts": "^0.3.1",
-    "whatwg-fetch": "^3.0.0"
+    "whatwg-fetch": "^3.0.0",
+    "gltf-loader-ts": "./src/third_party/gltf-loader-ts"
   }
 }
