@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 22nd 2018, 11:37:50 pm
+ * Last Modified: Wednesday, October 31st 2018, 12:26:50 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -23,5 +23,5 @@ export * from './material';
 export * from './ecs';
 export * from './texture';
 export * from './lights';
-
+export * from './mesh/mesh';
 export { Config, math, util };
