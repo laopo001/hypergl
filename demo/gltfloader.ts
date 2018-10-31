@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, October 31st 2018, 6:47:17 pm
+ * Last Modified: Thursday, November 1st 2018, 12:41:01 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -42,7 +42,7 @@ async function main() {
     let loader = new GltfLoader();
     let uri = './assets/models/Duck.gltf';
     let asset = await loader.load(uri, (e) => {
-        console.log(e);
+        // console.log(e);
     });
     let gltf = asset.gltf;
     // let data = await asset.accessorData(0); // fetches BoxTextured0.bin
@@ -66,6 +66,7 @@ async function main() {
                 let e = new Entity();
                 e.setLocalScale(0.01, 0.01, 0.01);
                 e.mesh = m;
+                e.mesh.mode = mesh.mode as any;
                 (e.mesh.material as BasicMaterial).color = new Color(1, 1, 1);
                 app.scene.root.addChild(e);
                 // console.warn(positions, normals, uvs, indices);

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, October 31st 2018, 5:59:20 pm
+ * Last Modified: Thursday, November 1st 2018, 12:48:28 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -39,7 +39,8 @@ export class IndexBuffer {
                 this.buffer = data;
                 this.length = length || new (dataType as any)(data).length;
             } else {
-                this.buffer = (data as any).buffer;
+                console.log((data as any).byteLength, (data as any).byteOffset);
+                this.buffer = (dataType as any).from(data).buffer;
                 this.length = (data as any).length;
             }
 

@@ -6,6 +6,7 @@ Todos:
   new: 
     ☐ 重构代码
     ☐ ECS框架 Entity,Component,System 
+    ☐ gltf2.0 @started(18-11-01 00:49)
     ☐ 解析加载mtl材质 @started(18-10-30 11:22)
     ✔ 解析加载obj模型 @done(18-10-30 11:20)
     ☐ PCF阴影 @started(18-10-17 23:29)
