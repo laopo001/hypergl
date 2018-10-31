@@ -1,0 +1,3 @@
+[submodule "src/gltf-loader-ts"]
+	path = src/gltf-loader-ts
+	url = git@github.com:laopo001/gltf-loader-ts.git
