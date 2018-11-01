@@ -474,5 +474,10 @@
       "check-preblock"
     ]
   },
-  "defaultSeverity": "warning"
+  "defaultSeverity": "warning",
+  "linterOptions": {
+    "exclude": [
+      "src/third_party"
+    ]
+  }
 }

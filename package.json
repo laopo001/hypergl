@@ -58,12 +58,13 @@
   "scripts": {
     "start": "webpack --config webpack.demo.js --colors --watch",
     "build": "webpack --colors",
-    "lint": "node node_modules/tslint/bin/tslint -c tslint.json 'src/**/*.ts'",
+    "lint": "node node_modules/tslint/bin/tslint -c tslint.json src/**/*.ts --exclude src/third_party",
     "test": "jest",
     "test:karma": "webpack --colors && gulp replaceTests && karma start && rm -r _temp"
   },
   "pre-commit": [
-    "lint"
+    "lint",
+    "test"
   ],
   "engines": {
     "node": ">= 0.6.12"
