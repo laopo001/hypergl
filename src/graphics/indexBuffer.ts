@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 1st 2018, 12:48:28 am
+ * Last Modified: Thursday, November 1st 2018, 11:35:13 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -16,13 +16,13 @@ import { RendererPlatform } from './renderer';
 import { TypeArray, TypeArrayConstructor } from '../types';
 import { BUFFER } from '../conf';
 export class IndexBuffer {
-    buffer!: ArrayBuffer;
+    buffer!: ArrayBuffer | TypeArray;
     bufferId?: WebGLBuffer;
     length = 0;
     drawFormat!: number;
     constructor(renderer: RendererPlatform, dataType: TypeArrayConstructor, usage: BUFFER, data: ArrayBuffer, length?: number)
     constructor(renderer: RendererPlatform, dataType: TypeArrayConstructor, usage: BUFFER, data: Array<number>)
-    constructor(private renderer: RendererPlatform, private dataType: TypeArrayConstructor, private usage: BUFFER = BUFFER.STATIC, data: Array<number> | ArrayBuffer, length?: number) {
+    constructor(private renderer: RendererPlatform, private dataType: TypeArrayConstructor, private usage: BUFFER = BUFFER.STATIC, data: Array<number> | ArrayBuffer | TypeArray, length?: number) {
         const gl = renderer.gl;
         if (dataType === Uint8Array) {
             this.drawFormat = gl.UNSIGNED_BYTE;
@@ -35,14 +35,14 @@ export class IndexBuffer {
             this.buffer = new (dataType as any)(data).buffer;
             this.length = data.length;
         } else {
-            if (data instanceof ArrayBuffer) {
-                this.buffer = data;
-                this.length = length || new (dataType as any)(data).length;
-            } else {
-                console.log((data as any).byteLength, (data as any).byteOffset);
-                this.buffer = (dataType as any).from(data).buffer;
-                this.length = (data as any).length;
-            }
+            // if (data instanceof ArrayBuffer) {
+            this.buffer = data;
+            this.length = length || new (dataType as any)(data).length;
+            // } else {
+            //     console.log((data as any).byteLength, (data as any).byteOffset);
+            //     this.buffer = (dataType as any).from(data).buffer;
+            //     this.length = (data as any).length;
+            // }
 
         }
         this.bind();

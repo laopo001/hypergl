@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 1st 2018, 12:41:01 am
+ * Last Modified: Thursday, November 1st 2018, 11:47:06 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -40,7 +40,7 @@ async function main() {
 
 
     let loader = new GltfLoader();
-    let uri = './assets/models/Duck.gltf';
+    let uri = './assets/models/Duck.glb';
     let asset = await loader.load(uri, (e) => {
         // console.log(e);
     });
