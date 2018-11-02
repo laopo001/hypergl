@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, October 30th 2018, 3:31:12 pm
+ * Last Modified: Friday, November 2nd 2018, 3:07:55 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -58,7 +58,7 @@ export class Scene extends IElement {
         super();
         this.root.scene = this;
         event.on('opacityChange', (e) => {
-            console.log(123);
+            console.log('opacityChange');
         });
     }
     render() {
