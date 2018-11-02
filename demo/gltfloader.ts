@@ -5,14 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 2nd 2018, 4:39:06 pm
+ * Last Modified: Friday, November 2nd 2018, 5:49:56 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Mesh, Application, Entity, BasicMaterial, DirectionalLight } from '../src';
+import { Mesh, Application, Entity, BasicMaterial, DirectionalLight, util } from '../src';
 import { GltfLoader, GlTf } from 'gltf-loader-ts';
 import { Color } from '../src/core';
 import { Camera } from '../src/scene/camera';
@@ -22,42 +22,48 @@ async function main() {
     const app = new Application(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
-
-
-    let loader = new GltfLoader();
     let uri = './assets/models/Duck.glb';
-    let asset = await loader.load(uri, (e) => {
-        // console.log(e);
-    });
-    let gltf = asset.gltf;
-    // let data = await asset.accessorData(0); // fetches BoxTextured0.bin
-    // let image = await asset.imageData.get(0); // fetches CesiumLogoFlat.png
-    if (gltf.meshes) {
-        for (let i = 0; i < gltf.meshes.length; i++) {
-            let model = gltf.meshes[i];
-            for (let j = 0; j < model.primitives.length; j++) {
-                const mesh = model.primitives[j];
-                let positions = await asset.accessorData<any>(mesh.attributes.POSITION);
+    let loader = new util.GltfAssetLoader(uri);
+    let m = await loader.loadMesh(0);
+    let e = new Entity();
+    e.setLocalScale(0.01, 0.01, 0.01);
+    e.mesh = m;
+    app.scene.root.addChild(e);
 
-                let normals = await asset.accessorData<any>(mesh.attributes.NORMAL);
-                let uvs = await asset.accessorData<any>(mesh.attributes.TEXCOORD_0);
-                let indices;
-                if (typeof mesh.indices === 'number') {
-                    indices = await asset.accessorData<any>(mesh.indices);
-                }
-                let m = Mesh.createMesh({
-                    positions, normals, uvs, indices
-                });
-                let e = new Entity();
-                e.setLocalScale(0.01, 0.01, 0.01);
-                e.mesh = m;
-                e.mesh.mode = mesh.mode as any;
-                (e.mesh.material as BasicMaterial).color = new Color(1, 1, 1);
-                app.scene.root.addChild(e);
-                // console.warn(positions, normals, uvs, indices);
-            }
-        }
-    }
+    // let loader = new GltfLoader();
+    // let uri = './assets/models/Duck.glb';
+    // let asset = await loader.load(uri, (e) => {
+    //     // console.log(e);
+    // });
+    // let gltf = asset.gltf;
+    // // let data = await asset.accessorData(0); // fetches BoxTextured0.bin
+    // // let image = await asset.imageData.get(0); // fetches CesiumLogoFlat.png
+    // if (gltf.meshes) {
+    //     for (let i = 0; i < gltf.meshes.length; i++) {
+    //         let model = gltf.meshes[i];
+    //         for (let j = 0; j < model.primitives.length; j++) {
+    //             const mesh = model.primitives[j];
+    //             let positions = await asset.accessorData<any>(mesh.attributes.POSITION);
+
+    //             let normals = await asset.accessorData<any>(mesh.attributes.NORMAL);
+    //             let uvs = await asset.accessorData<any>(mesh.attributes.TEXCOORD_0);
+    //             let indices;
+    //             if (typeof mesh.indices === 'number') {
+    //                 indices = await asset.accessorData<any>(mesh.indices);
+    //             }
+    //             let m = Mesh.createMesh({
+    //                 positions, normals, uvs, indices
+    //             });
+    //             let e = new Entity();
+    //             e.setLocalScale(0.01, 0.01, 0.01);
+    //             e.mesh = m;
+    //             e.mesh.mode = mesh.mode as any;
+    //             (e.mesh.material as BasicMaterial).color = new Color(1, 1, 1);
+    //             app.scene.root.addChild(e);
+    //             // console.warn(positions, normals, uvs, indices);
+    //         }
+    //     }
+    // }
     let dirlight = new DirectionalLight();
     dirlight.castShadows = true;
     // dirlight.direction = new Vec3(0, -1, 1);

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 2nd 2018, 12:19:22 pm
+ * Last Modified: Friday, November 2nd 2018, 5:57:01 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -41,6 +41,7 @@ export class Mesh {
     static defaultMaterial: Material = new BasicMaterial();
     static createBox = createBox;
     static createPlane = createPlane;
+    name?: string;
     mode = DrawMode.TRIANGLES; // 默认绘制模式 为 三角形
     // tslint:disable-next-line:member-ordering
     vertexBuffer!: VertexBuffer;

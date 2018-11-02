@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, October 30th 2018, 3:30:54 pm
+ * Last Modified: Friday, November 2nd 2018, 5:41:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -41,6 +41,7 @@ export class StandardMaterial extends Material {
         }
         this._opacity = value;
     }
+    name?: string;
     ambientColor = Scene.ambientColor;
     diffuseColor = new Color(1, 1, 1);
     diffuseMap?: Texture;
