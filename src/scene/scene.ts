@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 2nd 2018, 3:07:55 pm
+ * Last Modified: Friday, November 2nd 2018, 4:33:56 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -95,6 +95,13 @@ export class Scene extends IElement {
                 this.opacityLayers.push(child);
             } else {
                 this.layers.push(child);
+            }
+            if (child.children.length > 0) {
+                for (let i = 0; i < child.children.length; i++) {
+                    const element = child.children[i];
+                    element.scene = this;
+                    this.add(element);
+                }
             }
         }
     }

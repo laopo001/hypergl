@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 22nd 2018, 8:25:39 pm
+ * Last Modified: Friday, November 2nd 2018, 4:32:54 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -66,6 +66,7 @@ export class SceneNode extends IElement {
     addChild(child: SceneNode) {
         this.children.push(child);
         child.parent = this;
+
         child.scene = this.scene;
         this.scene.add(child);
     }

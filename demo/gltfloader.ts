@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 2nd 2018, 12:12:10 pm
+ * Last Modified: Friday, November 2nd 2018, 4:39:06 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,21 +17,6 @@ import { GltfLoader, GlTf } from 'gltf-loader-ts';
 import { Color } from '../src/core';
 import { Camera } from '../src/scene/camera';
 import { Mat4, Vec3 } from '../src/math';
-
-export const GLTF_COMPONENT_TYPE_ARRAYS: { [index: number]: any } = {
-    5120: Int8Array,
-    5121: Uint8Array,
-    5122: Int16Array,
-    5123: Uint16Array,
-    5125: Uint32Array,
-    5126: Float32Array,
-};
-
-function to(gltf: GlTf, id: number, uint8: Uint8Array) {
-    // tslint:disable-next-line:no-non-null-assertion
-    let dataView = GLTF_COMPONENT_TYPE_ARRAYS[gltf.accessors![id].componentType];
-    return new dataView(uint8.buffer);
-}
 
 async function main() {
     const app = new Application(document.getElementById('canvas') as HTMLCanvasElement, {
