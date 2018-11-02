@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 14th 2018, 10:35:23 pm
+ * Last Modified: Friday, November 2nd 2018, 12:19:22 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -59,7 +59,7 @@ let main = async () => {
     m2.update();
 
 
-    let mesh = Mesh.createBox(app.rendererPlatform);
+    let mesh = Mesh.createBox();
     let entity = new Entity();
     entity.mesh = mesh;
     mesh.material = m2;
@@ -68,7 +68,7 @@ let main = async () => {
     app.scene.root.addChild(entity);
 
 
-    let mesh2 = Mesh.createBox(app.rendererPlatform);
+    let mesh2 = Mesh.createBox();
     let entity2 = new Entity();
     entity2.setLocalScale(2, 2, 2);
     mesh2.material = m2;
@@ -77,7 +77,7 @@ let main = async () => {
     app.scene.root.addChild(entity2);
 
     (_ => {
-        let mesh = Mesh.createBox(app.rendererPlatform);
+        let mesh = Mesh.createBox();
         // console.log(mesh);
         let m = new StandardMaterial();
         m.diffuseColor = new Color(0.5, 1, 0.5);

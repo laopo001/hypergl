@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 14th 2018, 10:35:23 pm
+ * Last Modified: Friday, November 2nd 2018, 12:19:22 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -27,7 +27,7 @@ function addLight(app, v) {
     light.setPosition(v);
     // light.color = new Color(0.5, 1, 0.5);
     app.scene.lights.pointLights.push(light);
-    let mesh = Mesh.createBox(app.rendererPlatform);
+    let mesh = Mesh.createBox();
     let entity = new Entity();
     entity.mesh = mesh;
     let m3 = new BasicMaterial();
@@ -53,7 +53,7 @@ let main = async () => {
     addLight(app, new Vec3(0, 2, -1));
 
 
-    let mesh = Mesh.createBox(app.rendererPlatform);
+    let mesh = Mesh.createBox();
     console.log(mesh);
     let m = new BasicMaterial();
     m.color = new Color(0.5, 1, 0.5);
@@ -65,7 +65,7 @@ let main = async () => {
     app.scene.root.addChild(entity);
 
     (_ => {
-        let mesh = Mesh.createBox(app.rendererPlatform);
+        let mesh = Mesh.createBox();
         console.log(mesh);
         let m = new BasicMaterial();
         m.color = new Color(0.5, 1, 0.5);
@@ -79,7 +79,7 @@ let main = async () => {
         app.scene.root.addChild(entity);
     })();
 
-    let mesh2 = Mesh.createBox(app.rendererPlatform);
+    let mesh2 = Mesh.createBox();
     let entity2 = new Entity();
     let m2 = new StandardMaterial();
     // m2.diffuseColor.set(0.5, 0, 0.5);

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 6:03:02 pm
+ * Last Modified: Friday, November 2nd 2018, 12:11:54 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -22,44 +22,48 @@ export class VertexBuffer {
     bufferId?: WebGLBuffer;
     numBytes!: number;
     // constructor(renderer: RendererPlatform, format: VertexFormat, usage: BUFFER, data: ArrayBuffer, numVertices: number)
-    constructor(private renderer: RendererPlatform, public format: VertexFormat, public numVertices: number, private usage: BUFFER = BUFFER.STATIC, data?: ArrayBuffer) {
+    constructor(public format: VertexFormat, public numVertices: number, private usage: BUFFER = BUFFER.STATIC, data?: ArrayBuffer) {
         let stride = this.format.stride;
         this.numBytes = stride * numVertices;
         if (data) {
             this.buffer = data;
-            this.bind();
+            // this.bind();
 
         } else {
             this.buffer = new ArrayBuffer(this.numBytes);
         }
         this.numVertices = numVertices;
     }
-    bind() {
-        let gl = this.renderer.gl;
-        if (!this.bufferId) {
+    bind(renderer: RendererPlatform) {
+        let gl = renderer.gl;
+        if (this.bufferId) {
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.bufferId);
+
+        } else {
             this.bufferId = gl.createBuffer() as WebGLBuffer;
-        }
-        let glUsage;
-        switch (this.usage) {
-            case BUFFER.STATIC:
-                glUsage = gl.STATIC_DRAW;
-                break;
-            case BUFFER.DYNAMIC:
-                glUsage = gl.DYNAMIC_DRAW;
-                break;
-            case BUFFER.STREAM:
-                glUsage = gl.STREAM_DRAW;
-                break;
-            case BUFFER.GPUDYNAMIC:
-                if (this.renderer.platform === 'webgl2') {
-                    glUsage = gl.DYNAMIC_COPY;
-                } else {
+            let glUsage;
+            switch (this.usage) {
+                case BUFFER.STATIC:
                     glUsage = gl.STATIC_DRAW;
-                }
-                break;
+                    break;
+                case BUFFER.DYNAMIC:
+                    glUsage = gl.DYNAMIC_DRAW;
+                    break;
+                case BUFFER.STREAM:
+                    glUsage = gl.STREAM_DRAW;
+                    break;
+                case BUFFER.GPUDYNAMIC:
+                    if (renderer.platform === 'webgl2') {
+                        glUsage = gl.DYNAMIC_COPY;
+                    } else {
+                        glUsage = gl.STATIC_DRAW;
+                    }
+                    break;
+            }
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.bufferId);
+            gl.bufferData(gl.ARRAY_BUFFER, this.buffer, glUsage);
         }
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.bufferId);
-        gl.bufferData(gl.ARRAY_BUFFER, this.buffer, glUsage);
+
     }
     toIterator() {
         return new Iterator(this);

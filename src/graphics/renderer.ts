@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, October 30th 2018, 1:47:13 pm
+ * Last Modified: Friday, November 2nd 2018, 12:11:07 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -176,12 +176,14 @@ export class RendererPlatform {
         this.gl.useProgram(shader.program as WebGLProgram);
     }
     setVertexBuffer(vertexBuffer: VertexBuffer) {
-        const gl = this.gl;
-        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer.bufferId as WebGLBuffer);
+        // const gl = this.gl;
+        // gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer.bufferId as WebGLBuffer);
+        vertexBuffer.bind(this);
     }
     setIndexBuffer(indexBuffer: IndexBuffer) {
-        const gl = this.gl;
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer.bufferId as WebGLBuffer);
+        // const gl = this.gl;
+        // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer.bufferId as WebGLBuffer);
+        indexBuffer.bind(this);
     }
     // tslint:disable-next-line:member-ordering
     private _clearColor = [0, 0, 0, 1];
@@ -334,11 +336,19 @@ export class RendererPlatform {
         }
 
         if (mesh.indexBuffer) {
+            let drawFormat;
+            if (mesh.indexBuffer.dataType === Uint8Array) {
+                drawFormat = gl.UNSIGNED_BYTE;
+            } else if (mesh.indexBuffer.dataType === Uint16Array) {
+                drawFormat = gl.UNSIGNED_SHORT;
+            } else if (mesh.indexBuffer.dataType === Uint32Array) {
+                drawFormat = gl.UNSIGNED_INT;
+            }
             gl.drawElements(
                 this.glDrawMode[mesh.mode],
                 // gl.TRIANGLES,
                 mesh.indexBuffer.length,
-                mesh.indexBuffer.drawFormat,
+                drawFormat,
                 0
             );
         } else {

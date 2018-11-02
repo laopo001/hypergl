@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, October 25th 2018, 9:20:04 pm
+ * Last Modified: Friday, November 2nd 2018, 12:20:10 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -32,13 +32,13 @@ export class Application {
     }
     sceneInstances: Scene[] = [];
     activeIndex = 0;
-    rendererPlatform: RendererPlatform;
+    renderer: RendererPlatform;
     canvas: HTMLCanvasElement;
     lastRenderTime = 0;
     _isPointerLock = false;
     constructor(canvas: HTMLCanvasElement, option?: AppOption) {
         this.canvas = canvas;
-        this.rendererPlatform = new RendererPlatform(this.canvas, option);
+        this.renderer = new RendererPlatform(this.canvas, option);
         this.sceneInstances.push(new Scene(this));
         document.addEventListener('pointerlockchange', e => {
             this._isPointerLock = !this._isPointerLock;
@@ -48,8 +48,8 @@ export class Application {
         return new Scene(this);
     }
     start() {
-        if (!this.rendererPlatform.viewport) {
-            this.rendererPlatform.setViewport(0, 0, this.canvas.width, this.canvas.height);
+        if (!this.renderer.viewport) {
+            this.renderer.setViewport(0, 0, this.canvas.width, this.canvas.height);
         }
         console.log(this.scene.renderLayers);
         this.tick();
@@ -67,7 +67,7 @@ export class Application {
     }
     async loaderObjModel(url: string) {
         let options = await loaderObjModel(url);
-        return Mesh.createMesh(this.rendererPlatform, options);
+        return Mesh.createMesh(options);
     }
 
     private tick() {

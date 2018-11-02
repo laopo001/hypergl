@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, October 30th 2018, 3:10:46 pm
+ * Last Modified: Friday, November 2nd 2018, 12:19:22 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -55,7 +55,7 @@ export class Mesh {
         // TODO
     }
     // tslint:disable-next-line:cyclomatic-complexity
-    static createMesh(renderer: RendererPlatform, opts: CreateMeshOptions) {
+    static createMesh(opts: CreateMeshOptions) {
         // Check the supplied options and provide defaults for unspecified ones
         let positions = opts.positions;
         let normals = opts && opts.normals !== undefined ? opts.normals : null;
@@ -96,7 +96,7 @@ export class Mesh {
 
         // Create the vertex buffer
         let numVertices = positions.length / 3;
-        let vertexBuffer = new VertexBuffer(renderer, vertexFormat, numVertices);
+        let vertexBuffer = new VertexBuffer(vertexFormat, numVertices);
         let iterator = vertexBuffer.toIterator();
 
         for (let i = 0; i < numVertices; i++) {
@@ -125,10 +125,10 @@ export class Mesh {
             }
             iterator.next();
         }
-        vertexBuffer.bind();
+        // vertexBuffer.bind();
 
         // Create the index buffer
-        let indexBuffer = indices && new IndexBuffer(renderer, Uint16Array, BUFFER.STATIC, indices);
+        let indexBuffer = indices && new IndexBuffer(Uint16Array, BUFFER.STATIC, indices);
         // let aabb = new BoundingBox();
         // aabb.compute(positions);
 
@@ -144,7 +144,7 @@ let primitiveUv1Padding = 4 / 64;
 let primitiveUv1PaddingScale = 1 - primitiveUv1Padding * 2;
 
 
-export function createBox(renderer: RendererPlatform, opts?: CreateBoxOptions) {
+export function createBox(opts?: CreateBoxOptions) {
     // Check the supplied options and provide defaults for unspecified ones
     let he = opts && opts.halfExtents !== undefined ? opts.halfExtents : new Vec3(0.5, 0.5, 0.5);
     let ws = opts && opts.widthSegments !== undefined ? opts.widthSegments : 1;
@@ -254,10 +254,10 @@ export function createBox(renderer: RendererPlatform, opts?: CreateBoxOptions) {
         // uvs1,
         indices
     };
-    return Mesh.createMesh(renderer, options);
+    return Mesh.createMesh(options);
 }
 
-export function createPlane(renderer: RendererPlatform, opts?: {
+export function createPlane(opts?: {
     halfExtents?: Vec2,
     widthSegments?: number,
     lengthSegments?: number
@@ -321,5 +321,5 @@ export function createPlane(renderer: RendererPlatform, opts?: {
     //     options.tangents = pc.calculateTangents(positions, normals, uvs, indices);
     // }
 
-    return Mesh.createMesh(renderer, options);
+    return Mesh.createMesh(options);
 }

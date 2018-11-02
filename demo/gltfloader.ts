@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 1st 2018, 11:47:06 pm
+ * Last Modified: Friday, November 2nd 2018, 12:12:10 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -60,7 +60,7 @@ async function main() {
                 if (typeof mesh.indices === 'number') {
                     indices = await asset.accessorData<any>(mesh.indices);
                 }
-                let m = Mesh.createMesh(app.rendererPlatform, {
+                let m = Mesh.createMesh({
                     positions, normals, uvs, indices
                 });
                 let e = new Entity();

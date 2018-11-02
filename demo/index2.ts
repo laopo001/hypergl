@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 15th 2018, 12:35:03 pm
+ * Last Modified: Friday, November 2nd 2018, 12:19:22 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 jiguang
@@ -33,7 +33,7 @@ let main = async () => {
     });
 
 
-    let mesh = Mesh.createBox(app.rendererPlatform);
+    let mesh = Mesh.createBox();
     console.log(mesh);
     let m = new BasicMaterial();
     m.color = new Color(0.5, 1, 0.5);
@@ -45,7 +45,7 @@ let main = async () => {
 
     app.scene.root.addChild(entity);
 
-    let mesh2 = Mesh.createBox(app.rendererPlatform);
+    let mesh2 = Mesh.createBox();
     let entity2 = new Entity();
     let m2 = new StandardMaterial();
     m2.diffuseColor.set(0.5, 0, 0.5);

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, October 30th 2018, 1:49:47 pm
+ * Last Modified: Friday, November 2nd 2018, 12:19:07 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -28,7 +28,7 @@ function addLight(app, v) {
     // light.range = 20;
     // light.color = new Color(0.5, 1, 0.5);
     app.scene.lights.pointLights.push(light);
-    let mesh = Mesh.createBox(app.rendererPlatform);
+    let mesh = Mesh.createBox();
     let entity = new Entity();
     entity.mesh = mesh;
     let m3 = new BasicMaterial();
@@ -79,17 +79,17 @@ let main = async () => {
     material2.update();
 
 
-    let mesh = Mesh.createBox(app.rendererPlatform);
+    let mesh = Mesh.createBox();
     console.log(model, mesh);
     let entity = new Entity();
     entity.mesh = model;
-    entity.mesh.material = material;
+    entity.mesh!.material = material;
     entity.name = '123';
     entity.setPosition(1.5, 1, 2);
     // entity.setLocalScale(0.01, 0.01, 0.01);
     app.scene.root.addChild(entity);
 
-    let mesh2 = Mesh.createBox(app.rendererPlatform);
+    let mesh2 = Mesh.createBox();
     let entity2 = new Entity();
     entity2.setLocalScale(2, 2, 2);
     mesh2.material = material2;
@@ -100,7 +100,7 @@ let main = async () => {
 
 
     (_ => {
-        let mesh = Mesh.createBox(app.rendererPlatform);
+        let mesh = Mesh.createBox();
         // console.log(mesh);
         let m = new StandardMaterial();
         m.diffuseColor = new Color(0.5, 1, 0.5);

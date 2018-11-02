@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 22nd 2018, 8:25:39 pm
+ * Last Modified: Friday, November 2nd 2018, 12:20:10 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -28,7 +28,7 @@ export class Frame {
     renderBuffer!: WebGLRenderbuffer;
     // depthBuffer!: WebGLRenderbuffer;
     constructor(private scene: Scene, public is3d = false) {
-        this.renderer = scene.app.rendererPlatform;
+        this.renderer = scene.app.renderer;
     }
     getTexture() {
         if (this.is3d) {

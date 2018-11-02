@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 29th 2018, 12:38:59 am
+ * Last Modified: Friday, November 2nd 2018, 12:20:10 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -32,7 +32,7 @@ export function renderScence(scene: Scene) {
     let camera = scene.activeCamera;
     let cameraViewProjectionMatrix = camera.viewProjectionMatrix;
 
-    let renderer = scene.app.rendererPlatform;
+    let renderer = scene.app.renderer;
     renderer.initDraw(true);
 
     let directionalLightsUniforms = renderDirectionalLightArr('directionalLightArr', lights.directionalLights, scene);
@@ -94,7 +94,7 @@ export function renderScence(scene: Scene) {
 export function renderDirectionalLightArr(name: string, data: DirectionalLight[], scene: Scene) {
     function rendererShadowMap(scene: Scene, light: DirectionalLight) {
         let entitys = scene.renderLayers;
-        let renderer = scene.app.rendererPlatform;
+        let renderer = scene.app.renderer;
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(false);
         }
@@ -203,7 +203,7 @@ export function renderPointLightArr(name: string, data: PointLight[], scene: Sce
     function rendererShadowMap(scene: Scene, light: PointLight) {
         // TODO
         let entitys = scene.renderLayers;
-        let renderer = scene.app.rendererPlatform;
+        let renderer = scene.app.renderer;
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(true);
         }
@@ -276,7 +276,7 @@ export function renderPointLightArr(name: string, data: PointLight[], scene: Sce
 export function renderSpotLightArr(name: string, data: SpotLight[], scene: Scene) {
     function rendererShadowMap(scene: Scene, light: SpotLight) {
         let entitys = scene.renderLayers;
-        let renderer = scene.app.rendererPlatform;
+        let renderer = scene.app.renderer;
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(false);
         }
