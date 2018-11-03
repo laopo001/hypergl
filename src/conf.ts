@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, October 30th 2018, 1:41:52 pm
+ * Last Modified: Saturday, November 3rd 2018, 11:24:35 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -141,7 +141,7 @@ export enum FILTER {
     NEAREST_MIPMAP_LINEAR,
 }
 
-export enum ADDRESS {
+export enum WRAP {
     /**
      * 仅使用小数部分忽略纹理坐标的整数部分
      */

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 2nd 2018, 7:00:20 pm
+ * Last Modified: Saturday, November 3rd 2018, 11:28:59 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -18,8 +18,24 @@ import { Mesh } from '../../mesh';
 import { StandardMaterial } from '../../material';
 import { Color } from '../../core';
 import { Texture } from '../../texture';
+import { FILTER, WRAP } from '../../conf';
 
 let loader = new GltfLoader();
+
+let gltf_filter = {
+    9728: FILTER.NEAREST,
+    9729: FILTER.LINEAR,
+    9984: FILTER.NEAREST_MIPMAP_NEAREST,
+    9985: FILTER.LINEAR_MIPMAP_NEAREST,
+    9986: FILTER.NEAREST_MIPMAP_LINEAR,
+    9987: FILTER.LINEAR_MIPMAP_LINEAR,
+};
+
+let gltf_wrap = {
+    33071: WRAP.CLAMP_TO_EDGE,
+    33648: WRAP.MIRRORED_REPEAT,
+    10497: WRAP.REPEAT
+};
 
 export class GltfAssetLoader {
     assets!: Promise<GltfAsset>;
@@ -76,9 +92,7 @@ export class GltfAssetLoader {
                 }
                 let texture = material.pbrMetallicRoughness.baseColorTexture;
                 if (texture) {
-                    let t = new Texture();
-                    let img = await this.loadTexture(texture.index);
-                    t.setSource(img);
+                    let t = await this.loadTexture(texture.index);
                     standardmaterial.diffuseMap = t;
                 }
             }
@@ -93,6 +107,23 @@ export class GltfAssetLoader {
     }
     async loadTexture(index: number) {
         let assets = await this.assets;
-        return assets.imageData.get(index);
+        let { gltf } = assets;
+        let textureData = gltf.textures![index];
+        let texture = new Texture();
+        let img = await assets.imageData.get(textureData.source!);
+        let samplerData = gltf.samplers![textureData.sampler!];
+        texture.magFilter = gltf_filter[samplerData.magFilter!];
+        texture.minFilter = gltf_filter[samplerData.minFilter!];
+
+        texture.wrapU = gltf_wrap[samplerData.wrapT!];
+        texture.wrapV = gltf_wrap[samplerData.wrapS!];
+        texture.flipY = false;
+        texture.setSource(img);
+        return texture;
+    }
+    private async loadSampler(index: number) {
+        let assets = await this.assets;
+        let { gltf } = assets;
+        return gltf.samplers![index];
     }
 }
