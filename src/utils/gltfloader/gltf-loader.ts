@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 3rd 2018, 11:28:59 pm
+ * Last Modified: Sunday, November 4th 2018, 6:16:31 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -59,7 +59,10 @@ export class GltfAssetLoader {
                 let positions = await assets.accessorData<any>(mesh.attributes.POSITION);
 
                 let normals = await assets.accessorData<any>(mesh.attributes.NORMAL);
-                let uvs = await assets.accessorData<any>(mesh.attributes.TEXCOORD_0);
+                let uvs;
+                if (typeof mesh.attributes.TEXCOORD_0 === 'number') {
+                    uvs = await assets.accessorData<any>(mesh.attributes.TEXCOORD_0);
+                }
                 let indices;
                 if (typeof mesh.indices === 'number') {
                     indices = await assets.accessorData<any>(mesh.indices);
