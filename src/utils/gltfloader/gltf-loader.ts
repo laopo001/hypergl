@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, November 4th 2018, 11:49:08 pm
+ * Last Modified: Monday, November 5th 2018, 12:28:29 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,6 +20,7 @@ import { Color } from '../../core';
 import { Texture } from '../../texture';
 import { FILTER, WRAP } from '../../conf';
 import { Camera } from '../../scene/camera';
+import { Entity } from '../../ecs';
 
 let loader = new GltfLoader();
 
@@ -47,7 +48,7 @@ export class GltfAssetLoader {
         });
     }
 
-    async  loadSence(index?: number) {
+    async loadSenceRoot(index?: number) {
         let assets = await this.assets;
         let { gltf } = assets;
         if (!index) {
@@ -56,10 +57,53 @@ export class GltfAssetLoader {
         }
         Log.assert(gltf.scene != null, `${this.url}的gltf没有meshs属性`);
         let sceneData = gltf.scenes![index!];
-
+        let entity = new Entity();
+        for (let i = 0; i < sceneData.nodes!.length; i++) {
+            const nodeIndex = sceneData.nodes![i];
+            let entityChild = await this.resolveSenceNode(nodeIndex);
+            entity.addChild(entityChild);
+        }
+        return entity;
     }
-    resolveSenceNode() {
-        //
+    async resolveSenceNode(index: number) {
+        let assets = await this.assets;
+        let { gltf } = assets;
+        let nodeData = gltf.nodes![index];
+        let entity = new Entity();
+        if (typeof nodeData.mesh === 'number') {
+            let mesh = await this.loadMesh(nodeData.mesh);
+            entity.mesh = mesh;
+        }
+        if (typeof nodeData.camera === 'number') {
+            let camera = await this.loadCamera(nodeData.camera);
+            console.warn('gltf create camera');
+            entity = camera as any;
+            //
+        }
+        if (nodeData.translation) {
+            let [x, y, z] = nodeData.translation;
+            entity.setLocalScale(x, y, z);
+        }
+        if (nodeData.scale) {
+            let [x, y, z] = nodeData.scale;
+            entity.setLocalScale(x, y, z);
+        }
+        if (nodeData.rotation) {
+            let [x, y, z, w] = nodeData.rotation;
+            entity.setRotation(x, y, z, w);
+        }
+        if (nodeData.matrix) {
+            entity.worldTransform.set(nodeData.matrix as any);
+        }
+        if (nodeData.children) {
+            for (let i = 0; i < nodeData.children.length; i++) {
+                const index = nodeData.children[i];
+                let entityChild = await this.resolveSenceNode(index);
+                entity.addChild(entityChild);
+            }
+
+        }
+        return entity;
     }
     async loadMesh(index: number) {
         let assets = await this.assets;

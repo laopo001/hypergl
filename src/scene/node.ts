@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 2nd 2018, 4:32:54 pm
+ * Last Modified: Monday, November 5th 2018, 12:30:23 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -66,9 +66,10 @@ export class SceneNode extends IElement {
     addChild(child: SceneNode) {
         this.children.push(child);
         child.parent = this;
-
-        child.scene = this.scene;
-        this.scene.add(child);
+        if (this.scene) {
+            child.scene = this.scene;
+            this.scene.add(child);
+        }
     }
     setPosition(x: Vec3);
     setPosition(x: number, y: number, z: number);
@@ -153,8 +154,6 @@ export class SceneNode extends IElement {
     getLocalPosition() {
         return this.localPosition;
     }
-
-
     setRotation(x: Quat);
     setRotation(x: number, y: number, z: number, w: number);
     setRotation(x?, y?, z?, w?) {
@@ -262,6 +261,14 @@ export class SceneNode extends IElement {
         if (!this._dirtyLocal) {
             this._dirtify(true);
         }
+    }
+
+    getLocalTransform() {
+        if (this._dirtyLocal) {
+            this.localTransform.setTRS(this.localPosition, this.localRotation, this.localScale);
+            this._dirtyLocal = false;
+        }
+        return this.localTransform;
     }
     // 更新此节点及其所有后代的世界转换矩阵。
     syncHierarchy() {

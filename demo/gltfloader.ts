@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, November 4th 2018, 6:16:14 pm
+ * Last Modified: Monday, November 5th 2018, 1:10:59 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -22,13 +22,11 @@ async function main() {
     const app = new Application(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
-    let uri = './assets/models/BoxAnimated.gltf';
+    let uri = './assets/models/Duck.gltf';
     let loader = new util.GltfAssetLoader(uri);
-    let m = await loader.loadMesh(0);
-    let e = new Entity();
-    // e.setLocalScale(0.01, 0.01, 0.01);
-    e.mesh = m;
-    app.scene.root.addChild(e);
+    let root = await loader.loadSenceRoot();
+    console.log(root.children[0].children[0].getPosition());
+    app.scene.root.addChild(root);
 
     let dirlight = new DirectionalLight();
     dirlight.castShadows = true;
@@ -39,8 +37,12 @@ async function main() {
     camera.setPerspective(45, app.canvas.width / app.canvas.height, 1, 1000);
     camera.setPosition(-2, 5, 10);
     camera.lookAt(new Vec3(0, 0, 0), camera.up);
+    // app.scene.cameras.push(camera);
 
-    app.scene.cameras.push(camera);
+    // console.log(
+    //     app.scene.activeCamera.getPosition()
+    // );
+
     app.start();
     // console.log(gltf, data, image, Mesh);
 }

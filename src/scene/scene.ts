@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 2nd 2018, 4:33:56 pm
+ * Last Modified: Monday, November 5th 2018, 12:53:20 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -103,6 +103,8 @@ export class Scene extends IElement {
                     this.add(element);
                 }
             }
+        } else if (child  instanceof Camera) {
+            this.cameras.push(child);
         }
     }
     get [Symbol.toStringTag]() {
