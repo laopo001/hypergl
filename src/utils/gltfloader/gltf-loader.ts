@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, November 4th 2018, 6:16:31 pm
+ * Last Modified: Sunday, November 4th 2018, 11:49:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -19,6 +19,7 @@ import { StandardMaterial } from '../../material';
 import { Color } from '../../core';
 import { Texture } from '../../texture';
 import { FILTER, WRAP } from '../../conf';
+import { Camera } from '../../scene/camera';
 
 let loader = new GltfLoader();
 
@@ -46,7 +47,18 @@ export class GltfAssetLoader {
         });
     }
 
-    loadSence(index: number) {
+    async  loadSence(index?: number) {
+        let assets = await this.assets;
+        let { gltf } = assets;
+        if (!index) {
+            // tslint:disable-next-line:no-parameter-reassignment
+            index = gltf.scene;
+        }
+        Log.assert(gltf.scene != null, `${this.url}的gltf没有meshs属性`);
+        let sceneData = gltf.scenes![index!];
+
+    }
+    resolveSenceNode() {
         //
     }
     async loadMesh(index: number) {
@@ -105,8 +117,31 @@ export class GltfAssetLoader {
         standardmaterial.update();
         return standardmaterial;
     }
-    loadCamera(index: number) {
-        //
+    async loadCamera(index: number) {
+        let assets = await this.assets;
+        let { gltf } = assets;
+        let camera = new Camera();
+        if (gltf.cameras) {
+            let cameraData = gltf.cameras[index];
+            switch (cameraData.type) {
+                case 'perspective':
+                    {
+                        let { aspectRatio, zfar, znear, yfov } = cameraData.perspective!;
+                        camera.setPerspective(yfov, aspectRatio!, znear, zfar!);
+                    }
+                    break;
+                case 'orthographic':
+                    {
+                        let { xmag, ymag, zfar, znear } = cameraData.orthographic!;
+                        camera.setOrtho(-xmag, xmag, -ymag, ymag, znear, zfar);
+                        break;
+                    }
+            }
+
+        } else {
+            Log.error(`${this.url}的gltf没有cameras属性`);
+        }
+        return camera;
     }
     async loadTexture(index: number) {
         let assets = await this.assets;
