@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 5th 2018, 12:30:23 am
+ * Last Modified: Monday, November 5th 2018, 2:41:25 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -47,6 +47,10 @@ export class SceneNode extends IElement {
 
     constructor() {
         super();
+    }
+    setDirty() {
+        this._dirtyLocal = true;
+        // this._dirtyWorld = true;
     }
     lookAt(target: Vec3, up: Vec3);
     lookAt(target: SceneNode);
@@ -360,7 +364,8 @@ export class SceneNode extends IElement {
      * @returns
      * @memberof INode
      */
-    private _dirtify(local?: boolean) {
+    // tslint:disable-next-line:member-ordering
+    _dirtify(local?: boolean) {
         if ((!local || (local && this._dirtyLocal)) && this._dirtyWorld) {
             return;
         }

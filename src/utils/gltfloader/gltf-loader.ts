@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 5th 2018, 12:28:29 am
+ * Last Modified: Monday, November 5th 2018, 5:53:07 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -21,6 +21,7 @@ import { Texture } from '../../texture';
 import { FILTER, WRAP } from '../../conf';
 import { Camera } from '../../scene/camera';
 import { Entity } from '../../ecs';
+import { Mat4 } from '../../math';
 
 let loader = new GltfLoader();
 
@@ -82,7 +83,7 @@ export class GltfAssetLoader {
         }
         if (nodeData.translation) {
             let [x, y, z] = nodeData.translation;
-            entity.setLocalScale(x, y, z);
+            entity.setLocalPosition(x, y, z);
         }
         if (nodeData.scale) {
             let [x, y, z] = nodeData.scale;
@@ -92,8 +93,17 @@ export class GltfAssetLoader {
             let [x, y, z, w] = nodeData.rotation;
             entity.setRotation(x, y, z, w);
         }
+
         if (nodeData.matrix) {
-            entity.worldTransform.set(nodeData.matrix as any);
+            let mat = new Mat4();
+            mat.set(nodeData.matrix as any);
+
+            entity.setLocalPosition(mat.getTranslation());
+            entity.setLocalEulerAngles(mat.getEulerAngles());
+            entity.setLocalScale(mat.getScale());
+
+            // entity.worldTransform.set(nodeData.matrix as any);
+
         }
         if (nodeData.children) {
             for (let i = 0; i < nodeData.children.length; i++) {

@@ -881,7 +881,7 @@ export class Mat4 {
     getEulerAngles = (() => {
         let scale = new Vec3();
 
-        return (eulers: Vec3): Vec3 => {
+        return (eulers?: Vec3): Vec3 => {
             let x, y, z, sx, sy, sz, m, halfPi;
 
             eulers = (eulers === undefined) ? new Vec3() : eulers;
