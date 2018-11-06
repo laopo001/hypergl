@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 5th 2018, 5:52:16 pm
+ * Last Modified: Tuesday, November 6th 2018, 12:28:06 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -28,7 +28,7 @@ async function main() {
     let root = await loader.loadSenceRoot();
     let duck = root.children[0].children[0];
     // console.log(root.children[0].children[1].getPosition().clone(), root.children[0].children[1].getLocalScale().clone());
-    duck.setLocalScale(1, 1, 1);
+    // duck.setLocalScale(1, 1, 1);
     app.scene.root.addChild(root);
 
     let dirlight = new DirectionalLight();
@@ -36,9 +36,21 @@ async function main() {
     // dirlight.direction = new Vec3(0, -1, 1);
     app.scene.root.addChild(dirlight);
 
+    let c = root.children[0].children[1];
+
+
+    // let camera = new Camera();
+    // camera.setPerspective(45, app.canvas.width / app.canvas.height, 1, 10000);
+    // // camera.projectionMatrix = (c as any).projectionMatrix;
+    // camera.setPosition(c.getPosition());
+    // camera.lookAt(new Vec3(0, 0, 0), camera.up);
+    // // app.scene.activeCamera = camera;
+    // app.scene.cameras.push(camera);
+
     let script = new FirstPersonCamera(FirstPersonCamera.defaultInputs, app);
-    (script as any).entity = root.children[0].children[1];
+    (script as any).entity = c;
     script.initialize();
+
 
     // console.log(
     //     app.scene.activeCamera.getPosition()
@@ -46,7 +58,7 @@ async function main() {
 
     app.start();
     app.on('update', dt => {
-        script.update(dt);
+        // script.update(dt);
     });
 
 }

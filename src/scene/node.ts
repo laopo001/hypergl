@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 5th 2018, 2:41:25 pm
+ * Last Modified: Tuesday, November 6th 2018, 10:36:13 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -39,18 +39,14 @@ export class SceneNode extends IElement {
     rotation = new Quat(0, 0, 0, 1);
     eulerAngles = new Vec3(0, 0, 0);
     worldTransform = new Mat4();
-    dirtyNormal = true;
     scaleCompensation = false;
-    private _dirtyLocal = false;
-    private _dirtyWorld = false;
+    private _dirtyNormal = true;
+    private _dirtyLocal = true;
+    private _dirtyWorld = true;
     private _up = new Vec3();
 
     constructor() {
         super();
-    }
-    setDirty() {
-        this._dirtyLocal = true;
-        // this._dirtyWorld = true;
     }
     lookAt(target: Vec3, up: Vec3);
     lookAt(target: SceneNode);
@@ -383,7 +379,7 @@ export class SceneNode extends IElement {
                 this.children[i]._dirtify();
             }
         }
-        this.dirtyNormal = true;
+        this._dirtyNormal = true;
         // this._aabbVer++;
         // TODO
     }

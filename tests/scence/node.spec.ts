@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 5th 2018, 5:13:36 pm
+ * Last Modified: Tuesday, November 6th 2018, 10:44:38 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -97,14 +97,15 @@ test('SceneNode setRotation setRotation2', () => {
 });
 
 
-// test('SceneNode setLocalScale', () => {
-//     let node1 = new SceneNode();
-//     let node2 = new SceneNode();
+test('SceneNode setLocalScale', () => {
+    let node1 = new SceneNode();
+    let node2 = new SceneNode();
 
-//     node1.setLocalScale(new Vec3(0.01, 0.01, 0.01));
-//     node2.setPosition(10, 10, 10);
-//     node1.addChild(node2);
-//     expect(node2.getPosition().data).toEqual(new Vec3(0.01, 0.01, 0.01).data);
+    node1.setLocalScale(new Vec3(0.01, 0.01, 0.01));
+    node1.setPosition(100, 100, 100);
 
-// });
+    node1.addChild(node2);
+    expect(node2.getPosition().data).toEqual(new Vec3(100, 100, 100).data);
+
+});
 

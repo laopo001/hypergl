@@ -14,7 +14,7 @@
 import { Mesh } from '../../src/mesh/mesh';
 
 describe('none', () => {
-    it('(Mesh createMesh', () => {
+    it('Mesh createMesh', () => {
         expect(Mesh.createMesh).toBeDefined();
     });
 });

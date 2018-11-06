@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 5th 2018, 5:53:07 pm
+ * Last Modified: Tuesday, November 6th 2018, 12:24:36 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -21,7 +21,7 @@ import { Texture } from '../../texture';
 import { FILTER, WRAP } from '../../conf';
 import { Camera } from '../../scene/camera';
 import { Entity } from '../../ecs';
-import { Mat4 } from '../../math';
+import { Mat4, Quat, RAD_TO_DEG } from '../../math';
 
 let loader = new GltfLoader();
 
@@ -96,11 +96,13 @@ export class GltfAssetLoader {
 
         if (nodeData.matrix) {
             let mat = new Mat4();
+            let quat = new Quat();
             mat.set(nodeData.matrix as any);
+            quat.setFromMat4(mat);
 
-            entity.setLocalPosition(mat.getTranslation());
-            entity.setLocalEulerAngles(mat.getEulerAngles());
             entity.setLocalScale(mat.getScale());
+            entity.setRotation(quat);
+            entity.setLocalPosition(mat.getTranslation());
 
             // entity.worldTransform.set(nodeData.matrix as any);
 
@@ -181,7 +183,7 @@ export class GltfAssetLoader {
                 case 'perspective':
                     {
                         let { aspectRatio, zfar, znear, yfov } = cameraData.perspective!;
-                        camera.setPerspective(yfov, aspectRatio!, znear, zfar!);
+                        camera.setPerspective(yfov * RAD_TO_DEG, aspectRatio!, znear, zfar!);
                     }
                     break;
                 case 'orthographic':
