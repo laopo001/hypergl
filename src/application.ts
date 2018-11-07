@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 2nd 2018, 12:20:10 pm
+ * Last Modified: Wednesday, November 7th 2018, 11:53:55 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -27,9 +27,6 @@ export class Application {
     get isPointerLocked() {
         return this._isPointerLock;
     }
-    get [Symbol.toStringTag]() {
-        return 'Application';
-    }
     sceneInstances: Scene[] = [];
     activeIndex = 0;
     renderer: RendererPlatform;
@@ -39,13 +36,10 @@ export class Application {
     constructor(canvas: HTMLCanvasElement, option?: AppOption) {
         this.canvas = canvas;
         this.renderer = new RendererPlatform(this.canvas, option);
-        this.sceneInstances.push(new Scene(this));
+        this.addScene(new Scene());
         document.addEventListener('pointerlockchange', e => {
             this._isPointerLock = !this._isPointerLock;
         }, false);
-    }
-    createScene() {
-        return new Scene(this);
     }
     start() {
         if (!this.renderer.viewport) {
@@ -53,10 +47,13 @@ export class Application {
         }
         console.log(this.scene.renderLayers);
         this.tick();
-
     }
-    add(scene: Scene) {
+    addScene(scene: Scene) {
         this.sceneInstances.push(scene);
+        scene.app = this;
+    }
+    setScene(index) {
+
     }
     on(name: string, cb: FnVoid) {
         event.on(name, cb);
@@ -80,5 +77,8 @@ export class Application {
 
     private complete() {
         // appendCanvas(this.canvas);
+    }
+    get [Symbol.toStringTag]() {
+        return 'Application';
     }
 }

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 5th 2018, 12:53:20 am
+ * Last Modified: Wednesday, November 7th 2018, 11:40:14 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -40,6 +40,7 @@ export class Scene extends IElement {
         };
     readonly layers: Entity[] = [];
     readonly opacityLayers: Entity[] = [];
+    app!: Application;
     get renderLayers() {
         return this.layers.concat(this.opacityLayers);
     }
@@ -54,7 +55,7 @@ export class Scene extends IElement {
         this._activeCamera = x;
     }
     private materials: Material[] = [];
-    constructor(public app: Application) {
+    constructor() {
         super();
         this.root.scene = this;
         event.on('opacityChange', (e) => {
@@ -103,7 +104,7 @@ export class Scene extends IElement {
                     this.add(element);
                 }
             }
-        } else if (child  instanceof Camera) {
+        } else if (child instanceof Camera) {
             this.cameras.push(child);
         }
     }

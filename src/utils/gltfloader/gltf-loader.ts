@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 7th 2018, 11:08:31 pm
+ * Last Modified: Wednesday, November 7th 2018, 11:54:02 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -51,7 +51,7 @@ export class GltfAssetLoader {
     }
     async loadSence(index = 0, app: Application) {
         let assets = await this.assets;
-        let scene = new Scene(app);
+        let scene = new Scene();
         let root = await this.loadSenceRoot(index);
         scene.root.addChild(root);
         return scene;
