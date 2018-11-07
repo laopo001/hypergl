@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, November 6th 2018, 12:24:36 pm
+ * Last Modified: Wednesday, November 7th 2018, 11:08:31 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -22,6 +22,7 @@ import { FILTER, WRAP } from '../../conf';
 import { Camera } from '../../scene/camera';
 import { Entity } from '../../ecs';
 import { Mat4, Quat, RAD_TO_DEG } from '../../math';
+import { Scene } from '../../scene/scene';
 
 let loader = new GltfLoader();
 
@@ -47,6 +48,13 @@ export class GltfAssetLoader {
         this.assets = loader.load(this.url, (e) => {
             // console.log(e);
         });
+    }
+    async loadSence(index = 0, app: Application) {
+        let assets = await this.assets;
+        let scene = new Scene(app);
+        let root = await this.loadSenceRoot(index);
+        scene.root.addChild(root);
+        return scene;
     }
 
     async loadSenceRoot(index?: number) {
