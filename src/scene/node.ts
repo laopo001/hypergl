@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, November 6th 2018, 10:36:13 am
+ * Last Modified: Thursday, November 8th 2018, 12:58:32 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -41,8 +41,8 @@ export class SceneNode extends IElement {
     worldTransform = new Mat4();
     scaleCompensation = false;
     private _dirtyNormal = true;
-    private _dirtyLocal = true;
-    private _dirtyWorld = true;
+    private _dirtyLocal = false;
+    private _dirtyWorld = false;
     private _up = new Vec3();
 
     constructor() {

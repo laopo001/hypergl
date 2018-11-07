@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 7th 2018, 11:54:02 pm
+ * Last Modified: Thursday, November 8th 2018, 1:01:22 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -49,7 +49,7 @@ export class GltfAssetLoader {
             // console.log(e);
         });
     }
-    async loadSence(index = 0, app: Application) {
+    async loadSence(index = 0) {
         let assets = await this.assets;
         let scene = new Scene();
         let root = await this.loadSenceRoot(index);
@@ -110,6 +110,7 @@ export class GltfAssetLoader {
 
             entity.setLocalScale(mat.getScale());
             entity.setRotation(quat);
+            // entity.setLocalEulerAngles(mat.getEulerAngles());
             entity.setLocalPosition(mat.getTranslation());
 
             // entity.worldTransform.set(nodeData.matrix as any);

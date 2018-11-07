@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 7th 2018, 11:53:55 pm
+ * Last Modified: Thursday, November 8th 2018, 12:04:35 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -49,11 +49,12 @@ export class Application {
         this.tick();
     }
     addScene(scene: Scene) {
-        this.sceneInstances.push(scene);
+        let i = this.sceneInstances.push(scene);
         scene.app = this;
+        return i;
     }
-    setScene(index) {
-
+    setScene(index: number) {
+        this.activeIndex = index;
     }
     on(name: string, cb: FnVoid) {
         event.on(name, cb);
