@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, October 11th 2018, 1:29:08 am
+ * Last Modified: Friday, November 9th 2018, 9:39:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -22,6 +22,7 @@ export class FirstPersonCamera extends Script<FirstPersonCameraInputs> {
     };
     ex!: number;
     ey!: number;
+    ez!: number;
     forwards = false;
     backwards = false;
     left = false;
@@ -30,6 +31,7 @@ export class FirstPersonCamera extends Script<FirstPersonCameraInputs> {
         let eulers = this.entity.getLocalEulerAngles();
         this.ex = eulers.x;
         this.ey = eulers.y;
+        this.ez = eulers.z;
         // tslint:disable-next-line:one-variable-per-declaration
         let x = 0, y = 0;
         // tslint:disable-next-line:no-non-null-assertion
@@ -76,7 +78,8 @@ export class FirstPersonCamera extends Script<FirstPersonCameraInputs> {
         }, false);
     }
     update(dt) {
-        this.entity.setLocalEulerAngles(this.ex, this.ey, 0);
+        this.entity.setLocalEulerAngles(this.ex, this.ey, this.ez);
+
         if (this.forwards) {
             this.entity.translateLocal(0, 0, -this.inputs.speed * dt);
         } else if (this.backwards) {

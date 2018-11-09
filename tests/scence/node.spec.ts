@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 8th 2018, 1:11:06 am
+ * Last Modified: Friday, November 9th 2018, 8:37:36 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -31,7 +31,11 @@ test('SceneNode setLocalPosition getLocalPosition', () => {
     let node = new SceneNode();
     let child = new SceneNode();
     let grandson = new SceneNode();
-    node.scene = { layer: [], add: _ => { } } as any;
+    node.scene = {
+        layer: [], add: _ => {
+            //
+        }
+    } as any;
     node.addChild(child);
     child.addChild(grandson);
     child.setLocalPosition(new Vec3(1, 0, 0));
@@ -97,15 +101,16 @@ test('SceneNode setRotation setRotation2', () => {
 });
 
 
-// test('SceneNode setLocalScale', () => {
-//     let node1 = new SceneNode();
-//     let node2 = new SceneNode();
+test('SceneNode setLocalScale', () => {
+    let node1 = new SceneNode();
+    let node2 = new SceneNode();
 
-//     node1.setLocalScale(new Vec3(0.01, 0.01, 0.01));
-//     node1.setPosition(100, 100, 100);
+    // node1.setLocalScale(new Vec3(0.01, 0.01, 0.01));
+    node1.setPosition(100, 100, 100);
+    node1.addChild(node2);
 
-//     node1.addChild(node2);
-//     expect(node2.getPosition().data).toEqual(new Vec3(100, 100, 100).data);
 
-// });
+    expect(node2.getPosition().data).toEqual(new Vec3(100, 100, 100).data);
+
+});
 

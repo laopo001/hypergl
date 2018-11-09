@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 8th 2018, 1:01:22 am
+ * Last Modified: Friday, November 9th 2018, 9:40:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -85,7 +85,7 @@ export class GltfAssetLoader {
         }
         if (typeof nodeData.camera === 'number') {
             let camera = await this.loadCamera(nodeData.camera);
-            console.warn('gltf create camera');
+            // console.warn('gltf create camera');
             entity = camera as any;
             //
         }

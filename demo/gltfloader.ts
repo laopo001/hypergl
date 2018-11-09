@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 8th 2018, 12:58:19 am
+ * Last Modified: Friday, November 9th 2018, 9:35:19 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -58,7 +58,7 @@ async function main() {
 
     app.start();
     app.on('update', dt => {
-        // script.update(dt);
+        script.update(dt);
     });
 
 }

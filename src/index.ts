@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 2nd 2018, 2:11:19 pm
+ * Last Modified: Friday, November 9th 2018, 8:55:43 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,7 +17,7 @@ import * as util from './utils';
 export * from './conf';
 export * from './core/timer';
 export * from './application';
-export * from './scene/scene';
+export * from './scene';
 export * from './graphics';
 export * from './material';
 export * from './ecs';
