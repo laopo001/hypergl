@@ -5,19 +5,23 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 9th 2018, 8:55:57 pm
+ * Last Modified: Saturday, November 10th 2018, 12:31:30 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { SceneNode } from '../src';
-let node1 = new SceneNode();
-let node2 = new SceneNode();
+import {  Application, Entity } from '../src';
 
-// node1.setLocalScale(new Vec3(0.01, 0.01, 0.01));
-node1.setPosition(100, 100, 100);
-node1.addChild(node2);
+async function main() {
+    const app = new Application(document.getElementById('canvas') as HTMLCanvasElement, {
+        // webgl1:true
+    });
+    let entity = new Entity();
+    entity.addComponent('camera', {
 
-console.log(node2.getPosition());
+    });
+}
+
+main();

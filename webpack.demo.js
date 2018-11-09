@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 9th 2018, 9:34:55 pm
+ * Last Modified: Friday, November 9th 2018, 11:59:13 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,7 +20,7 @@ module.exports = function (env, webpackConfig) {
     return {
         //页面入口文件配置
         entry: {
-            index: `./demo/gltfloader`
+            index: `./demo/index8`
         },
         //入口文件输出配置
         output: {

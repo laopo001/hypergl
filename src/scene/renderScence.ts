@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 2nd 2018, 12:20:10 pm
+ * Last Modified: Friday, November 9th 2018, 11:25:49 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -30,7 +30,6 @@ export function renderScence(scene: Scene) {
     let entitys = scene.renderLayers;
     let lights = scene.lights;
     let camera = scene.activeCamera;
-    let cameraViewProjectionMatrix = camera.viewProjectionMatrix;
 
     let renderer = scene.app.renderer;
     renderer.initDraw(true);
@@ -73,7 +72,7 @@ export function renderScence(scene: Scene) {
         material.updateShader(renderer, attributes);
         let shader = mesh.material.shader as Shader;
         renderer.setShaderProgram(shader);
-        shader.setUniformValue('matrix_viewProjection', cameraViewProjectionMatrix.data);
+        shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
         shader.setUniformValue('matrix_model', entity.getWorldTransform().data);
         shader.setUniformValue('matrix_normal', entity.getWorldTransform().clone().invert().transpose().data);
         shader.setUniformValue('camera_position', camera.getPosition().data);
