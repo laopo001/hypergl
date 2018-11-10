@@ -5,14 +5,13 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 9th 2018, 9:40:08 pm
+ * Last Modified: Saturday, November 10th 2018, 7:46:06 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 import { GltfLoader, GltfAsset } from 'gltf-loader-ts';
-import { Application } from '../../application';
 import { Log } from '../util';
 import { Mesh } from '../../mesh';
 import { StandardMaterial } from '../../material';
@@ -112,9 +111,7 @@ export class GltfAssetLoader {
             entity.setRotation(quat);
             // entity.setLocalEulerAngles(mat.getEulerAngles());
             entity.setLocalPosition(mat.getTranslation());
-
             // entity.worldTransform.set(nodeData.matrix as any);
-
         }
         if (nodeData.children) {
             for (let i = 0; i < nodeData.children.length; i++) {

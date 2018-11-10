@@ -5,15 +5,15 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, October 31st 2018, 12:16:20 pm
+ * Last Modified: Saturday, November 10th 2018, 9:07:34 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
-import { fetch } from 'whatwg-fetch';
-import { Mesh } from '../mesh/mesh';
+import { fetch } from 'isomorphic-fetch';
 import { CreateMeshOptions } from '../types';
+import { Mesh } from '../mesh/mesh';
 
 function resolveObjModel(res: string) {
     let options: CreateMeshOptions = {
@@ -103,8 +103,7 @@ function resolveObjModel(res: string) {
     if ((options.indices as number[]).length === 0) {
         delete options.indices;
     }
-    console.log(options);
-    return options;
+    return Mesh.createMesh(options);
 }
 export async function loaderObjModel<T>(url: T) {
     return fetch(url).then(res => res.text()).then(resolveObjModel);

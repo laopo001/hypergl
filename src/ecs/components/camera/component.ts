@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 10th 2018, 12:51:22 am
+ * Last Modified: Saturday, November 10th 2018, 9:04:18 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,10 +13,26 @@
 
 
 import { Entity, Camera } from '../../..';
-import { Camera as CameraInputs } from 'gltf-loader-ts';
 import { Component } from '../../component';
 import { Log } from '../../../utils/util';
 
+export interface CameraInputs {
+    type: 'perspective' | 'orthographic'
+    orthographic?: {
+        left: number;
+        right: number;
+        bottom: number;
+        top: number;
+        near: number;
+        far: number;
+    };
+    perspective?: {
+        fov: number;
+        aspectRatio: number;
+        near: number;
+        far: number;
+    }
+}
 
 export class CameraComponent extends Component<CameraInputs> {
     entity!: Entity;
@@ -27,13 +43,13 @@ export class CameraComponent extends Component<CameraInputs> {
         let camera = new Camera();
         switch (this.inputs.type) {
             case 'perspective': {
-                let { aspectRatio, zfar, znear, yfov } = this.inputs.perspective!;
-                camera.setPerspective(yfov, aspectRatio!, znear, zfar!);
+                let { fov, aspectRatio, far, near } = this.inputs.perspective!;
+                camera.setPerspective(fov, aspectRatio, near, far);
                 break;
             }
             case 'orthographic': {
-                let { xmag, ymag, zfar, znear } = this.inputs.orthographic!;
-                camera.setOrtho(-xmag, xmag, -ymag, ymag, znear, zfar);
+                let { left, right, bottom, top, near, far } = this.inputs.orthographic!;
+                camera.setOrtho(left, right, bottom, top, near, far);
                 break;
             }
             default: Log.error(`${this.inputs.type} not match`);

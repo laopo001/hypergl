@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 8th 2018, 12:04:35 am
+ * Last Modified: Saturday, November 10th 2018, 9:07:06 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -16,9 +16,9 @@ import { Scene } from './scene/scene';
 import { RendererPlatform } from './graphics/renderer';
 import { AppOption, FnVoid } from './types';
 import { event, Timer } from './core';
-import { loaderObjModel } from './utils';
 import { Mesh } from './mesh/mesh';
 
+let app;
 const timer = new Timer();
 export class Application {
     get scene() {
@@ -26,6 +26,9 @@ export class Application {
     }
     get isPointerLocked() {
         return this._isPointerLock;
+    }
+    get [Symbol.toStringTag]() {
+        return 'Application';
     }
     sceneInstances: Scene[] = [];
     activeIndex = 0;
@@ -40,6 +43,10 @@ export class Application {
         document.addEventListener('pointerlockchange', e => {
             this._isPointerLock = !this._isPointerLock;
         }, false);
+        app = this;
+    }
+    static getApp(): Application {
+        return app;
     }
     start() {
         if (!this.renderer.viewport) {
@@ -63,10 +70,6 @@ export class Application {
         // this._isPointerLock = true;
         this.canvas.requestPointerLock();
     }
-    async loaderObjModel(url: string) {
-        let options = await loaderObjModel(url);
-        return Mesh.createMesh(options);
-    }
 
     private tick() {
         timer.start();
@@ -78,8 +81,5 @@ export class Application {
 
     private complete() {
         // appendCanvas(this.canvas);
-    }
-    get [Symbol.toStringTag]() {
-        return 'Application';
     }
 }

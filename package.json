@@ -70,7 +70,7 @@
     "node": ">= 0.6.12"
   },
   "dependencies": {
-    "whatwg-fetch": "^3.0.0",
-    "gltf-loader-ts": "./src/third_party/gltf-loader-ts"
+    "gltf-loader-ts": "./src/third_party/gltf-loader-ts",
+    "isomorphic-fetch": "^2.2.1"
   }
 }

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 10th 2018, 12:57:25 am
+ * Last Modified: Saturday, November 10th 2018, 7:03:40 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,13 +14,19 @@
 
 import { SceneNode } from '../scene/node';
 import { Mesh, Model } from '../mesh';
-import { CameraComponent } from './components/camera';
+import { CameraComponent, CameraInputs } from './components/camera';
 import { Component } from './component';
 import { Shader } from '../graphics/shader';
 import { Log } from '../utils/util';
 import { Camera } from '../scene/camera';
 import { Light } from '../lights';
+import { Application } from '../application';
 let EntityID = 0;
+
+interface ComponentInputs {
+    'camera': CameraInputs
+}
+
 export class Entity extends SceneNode {
     EntityID = EntityID++;
     mesh?: Mesh;
@@ -30,12 +36,12 @@ export class Entity extends SceneNode {
     boundingBox: any;
     componentList: Component<any>[] = [];
     private _enabled = true;
-
     constructor() {
         super();
     }
-    addComponent(component: string, options: any) {
-        //TODO
+    addComponent<K extends keyof ComponentInputs>(name: K, options: ComponentInputs[K]) {
+        let camera = new CameraComponent(options, Application.getApp());
+        this[name] = camera.initialize();
     }
     // addComponent(component: Component<any>) {
     //     this[component.name] = component;

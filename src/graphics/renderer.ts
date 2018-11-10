@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 2nd 2018, 12:11:07 pm
+ * Last Modified: Saturday, November 10th 2018, 9:01:54 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -19,7 +19,7 @@ import { Undefined, FnVoid, AppOption, Nullable } from '../types';
 import { Shader } from './shader';
 import { IndexBuffer } from './indexBuffer';
 import { VertexBuffer } from './vertexBuffer';
-import { Entity } from '../ecs';
+import { Entity } from '../ecs/entity';
 import { Texture } from '../texture';
 import { ShaderVariable } from './shaderVariable';
 import { FACE } from '../material/material';

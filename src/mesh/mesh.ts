@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 5th 2018, 5:03:38 pm
+ * Last Modified: Saturday, November 10th 2018, 8:54:48 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,8 +17,7 @@ import { IndexBuffer } from '../graphics/indexBuffer';
 import { BasicMaterial, Material } from '../material';
 import { SEMANTIC, BUFFER, DrawMode } from '../conf';
 import { VertexType, VertexFormat } from '../graphics/vertexFormat';
-import { Nullable, CreateMeshOptions, CreateBoxOptions } from '../types';
-import { RendererPlatform } from '../graphics/renderer';
+import { CreateMeshOptions, CreateBoxOptions } from '../types';
 import { Vec3, Vec2 } from '../math';
 import { BoundingBox } from '../shape/boundingBox';
 

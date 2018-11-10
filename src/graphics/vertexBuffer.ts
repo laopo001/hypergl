@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 2nd 2018, 12:11:54 pm
+ * Last Modified: Saturday, November 10th 2018, 7:13:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,7 +13,7 @@
 
 
 
-import { TypeArray, Obj } from '../types';
+import { TypeArray } from '../types';
 import { VertexFormat } from './vertexFormat';
 import { BUFFER } from '../conf';
 import { RendererPlatform } from './renderer';
