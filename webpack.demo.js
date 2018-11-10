@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 9th 2018, 11:59:13 pm
+ * Last Modified: Saturday, November 10th 2018, 9:21:07 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -76,7 +76,6 @@ module.exports = function (env, webpackConfig) {
         resolve: {
             extensions: ['.ts', '.tsx', '.js'],
             alias: {
-                // 'handlebars': 'handlebars/dist/handlebars.js',
                 'gltf-loader-ts': path.resolve(__dirname, `./src/third_party/gltf-loader-ts/source`)
             }
         },

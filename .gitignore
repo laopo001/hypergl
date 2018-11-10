@@ -12,3 +12,4 @@ build/
 _temp/
 yarn.lock
 src/third_party/gltf-loader-ts
+coverage/

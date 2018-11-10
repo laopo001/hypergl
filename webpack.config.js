@@ -62,7 +62,7 @@ module.exports = function (env, webpackConfig) {
         resolve: {
             extensions: ['.ts', '.tsx', '.js'],
             alias: {
-                'handlebars': 'handlebars/dist/handlebars.js'
+                'gltf-loader-ts': path.resolve(__dirname, `./src/third_party/gltf-loader-ts/source`)
             }
         },
         externals: [],
