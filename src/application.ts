@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 10th 2018, 9:07:06 pm
+ * Last Modified: Sunday, November 11th 2018, 12:24:59 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,6 +17,7 @@ import { RendererPlatform } from './graphics/renderer';
 import { AppOption, FnVoid } from './types';
 import { event, Timer } from './core';
 import { Mesh } from './mesh/mesh';
+import { SystemRegistry } from './ecs/system-register';
 
 let app;
 const timer = new Timer();
@@ -30,6 +31,7 @@ export class Application {
     get [Symbol.toStringTag]() {
         return 'Application';
     }
+    systems: SystemRegistry;
     sceneInstances: Scene[] = [];
     activeIndex = 0;
     renderer: RendererPlatform;
@@ -40,6 +42,9 @@ export class Application {
         this.canvas = canvas;
         this.renderer = new RendererPlatform(this.canvas, option);
         this.addScene(new Scene());
+        this.systems = new SystemRegistry();
+        // this.systems.add()
+
         document.addEventListener('pointerlockchange', e => {
             this._isPointerLock = !this._isPointerLock;
         }, false);
