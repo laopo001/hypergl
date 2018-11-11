@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, November 11th 2018, 7:17:12 pm
+ * Last Modified: Monday, November 12th 2018, 1:09:30 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -18,18 +18,18 @@ export class SystemRegistry {
     [s: string]: any;
     list: ComponentSystem[] = [];
     add(system: ComponentSystem) {
-        if (this[system.id]) {
-            throw new Error(`ComponentSystem ${system.id} already registered`);
+        if (this[system.name]) {
+            throw new Error(`ComponentSystem ${system.name} already registered`);
         }
-        this[system.id] = system;
+        this[system.name] = system;
         this.list.push(system);
     }
     remove(system: ComponentSystem) {
-        if (!this[system.id]) {
-            throw new Error(`ComponentSystem ${system.id} not registered`);
+        if (!this[system.name]) {
+            throw new Error(`ComponentSystem ${system.name} not registered`);
         }
-        delete this[system.id];
-        const index = this.list.indexOf(this[system.id]);
+        delete this[system.name];
+        const index = this.list.indexOf(this[system.name]);
         if (index !== -1) {
             this.list.splice(index, 1);
         }
