@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 14th 2018, 10:34:09 pm
+ * Last Modified: Sunday, November 11th 2018, 6:12:51 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,10 +14,10 @@
 
 import { Entity, Application } from '..';
 export abstract class Component<Inputs> {
-    name!: string;
+    abstract name: string;
     system: any;
     entity!: Entity;
-    constructor(public inputs: Inputs, public app: Application) {
+    constructor(public inputs: Inputs) {
     }
 
 }

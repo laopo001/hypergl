@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, November 11th 2018, 12:22:23 pm
+ * Last Modified: Sunday, November 11th 2018, 7:17:12 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,6 +13,7 @@
 
 
 import { ComponentSystem } from './system';
+
 export class SystemRegistry {
     [s: string]: any;
     list: ComponentSystem[] = [];
@@ -33,4 +34,5 @@ export class SystemRegistry {
             this.list.splice(index, 1);
         }
     }
+
 }

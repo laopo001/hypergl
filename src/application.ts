@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, November 11th 2018, 12:24:59 pm
+ * Last Modified: Sunday, November 11th 2018, 6:24:57 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -18,6 +18,7 @@ import { AppOption, FnVoid } from './types';
 import { event, Timer } from './core';
 import { Mesh } from './mesh/mesh';
 import { SystemRegistry } from './ecs/system-register';
+import { CameraComponentSystem } from './ecs/components/camera/system';
 
 let app;
 const timer = new Timer();
@@ -43,6 +44,7 @@ export class Application {
         this.renderer = new RendererPlatform(this.canvas, option);
         this.addScene(new Scene());
         this.systems = new SystemRegistry();
+        this.systems.add(new CameraComponentSystem());
         // this.systems.add()
 
         document.addEventListener('pointerlockchange', e => {

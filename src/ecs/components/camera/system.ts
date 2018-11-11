@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, November 11th 2018, 12:41:14 pm
+ * Last Modified: Sunday, November 11th 2018, 7:20:07 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,10 +13,12 @@
 
 
 import { ComponentSystem } from '../../system';
-import { Camera } from '../../../scene/camera';
+import { CameraComponent } from './component';
 
 export class CameraComponentSystem extends ComponentSystem {
-    cameras: Camera[] = [];
+    componentConstructor = CameraComponent;
+    name = 'camera';
+    cameras: CameraComponent[] = [];
     addCamera(camera) {
         this.cameras.push(camera);
     }

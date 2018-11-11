@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 10th 2018, 9:04:18 pm
+ * Last Modified: Sunday, November 11th 2018, 7:54:37 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -34,12 +34,22 @@ export interface CameraInputs {
     }
 }
 
-export class CameraComponent extends Component<CameraInputs> {
-    entity!: Entity;
-    constructor(inputs, app) {
-        super(inputs, app);
+export const cameraData: CameraInputs = {
+    type: 'perspective',
+    perspective: {
+        fov: 90,
+        aspectRatio: 1,
+        near: 1,
+        far: 10000
     }
-    initialize() {
+};
+
+export class CameraComponent extends Component<CameraInputs> {
+    name = 'camera';
+    entity!: Entity;
+    camera: Camera;
+    constructor(inputs = cameraData) {
+        super(inputs);
         let camera = new Camera();
         switch (this.inputs.type) {
             case 'perspective': {
@@ -55,6 +65,7 @@ export class CameraComponent extends Component<CameraInputs> {
             default: Log.error(`${this.inputs.type} not match`);
                 break;
         }
-        return camera;
+        this.camera = camera;
     }
+
 }
