@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 7th 2018, 11:40:14 pm
+ * Last Modified: Tuesday, November 13th 2018, 10:04:47 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -24,6 +24,8 @@ import { Log } from '../utils/util';
 import { Mesh } from '../mesh/mesh';
 import { StandardMaterial, Material } from '../material';
 import { event, IElement } from '../core';
+import { SystemRegistry } from '../ecs/system-register';
+import { CameraComponentSystem } from '../ecs/components/camera/system';
 export class Scene extends IElement {
     static ambientColor = new Color(0.2, 0.2, 0.2);
     // static ambient = new Vec3(0, -1, -1);
@@ -46,6 +48,7 @@ export class Scene extends IElement {
     }
     root: SceneNode = new SceneNode();
     readonly cameras: Camera[] = [];
+    systems: SystemRegistry;
     private _activeCamera!: Camera;
     get activeCamera() {
         Log.assert(this._activeCamera || this.cameras[0], 'scene 没有 activeCamera');
@@ -61,6 +64,8 @@ export class Scene extends IElement {
         event.on('opacityChange', (e) => {
             console.log('opacityChange');
         });
+        this.systems = new SystemRegistry();
+        this.systems.add(new CameraComponentSystem());
     }
     render() {
         this.root.syncHierarchy();

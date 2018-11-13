@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, November 11th 2018, 6:24:57 pm
+ * Last Modified: Tuesday, November 13th 2018, 10:05:14 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -32,7 +32,6 @@ export class Application {
     get [Symbol.toStringTag]() {
         return 'Application';
     }
-    systems: SystemRegistry;
     sceneInstances: Scene[] = [];
     activeIndex = 0;
     renderer: RendererPlatform;
@@ -43,8 +42,6 @@ export class Application {
         this.canvas = canvas;
         this.renderer = new RendererPlatform(this.canvas, option);
         this.addScene(new Scene());
-        this.systems = new SystemRegistry();
-        this.systems.add(new CameraComponentSystem());
         // this.systems.add()
 
         document.addEventListener('pointerlockchange', e => {

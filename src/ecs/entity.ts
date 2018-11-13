@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, November 11th 2018, 7:17:12 pm
+ * Last Modified: Tuesday, November 13th 2018, 10:06:11 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -46,7 +46,7 @@ export class Entity extends SceneNode {
     addComponent<K extends keyof ComponentInputs>(name: K, options: ComponentInputs[K]) {
         // let camera = new CameraComponent(options);
         // this[name] = camera.initialize();
-        const system = this.app.systems[name] as ComponentSystem;
+        const system = this.app.scene.systems[name] as ComponentSystem;
         system.addComponent(this, options);
     }
     // addComponent(component: Component<any>) {
