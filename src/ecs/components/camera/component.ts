@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 12th 2018, 1:08:12 am
+ * Last Modified: Wednesday, November 14th 2018, 10:20:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -48,9 +48,9 @@ export const cameraData: CameraInputs = {
 
 export class CameraComponent extends Component<CameraInputs> {
     name = 'camera';
-    camera: Camera;
+    instance: Camera;
     get projectionMatrix() {
-        return this.camera.projectionMatrix;
+        return this.instance.projectionMatrix;
     }
     get viewProjectionMatrix() {
         return new Mat4().mul2(this.projectionMatrix, this.entity.getWorldTransform().clone().invert());
@@ -72,14 +72,14 @@ export class CameraComponent extends Component<CameraInputs> {
             default: Log.error(`${this.inputs.type} not match`);
                 break;
         }
-        this.camera = camera;
+        this.instance = camera;
     }
     setPerspective(fov: number, aspect: number, near: number, far: number) {
-        this.camera.projectionMatrix.setPerspective(fov, aspect, near, far);
+        this.instance.projectionMatrix.setPerspective(fov, aspect, near, far);
         return this;
     }
     setOrtho(left: number, right: number, bottom: number, top: number, near: number, far: number) {
-        this.camera.projectionMatrix.setOrtho(left, right, bottom, top, near, far);
+        this.instance.projectionMatrix.setOrtho(left, right, bottom, top, near, far);
         return this;
     }
     initialize(entity: Entity, system: ComponentSystem) {

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 2nd 2018, 2:31:57 pm
+ * Last Modified: Wednesday, November 14th 2018, 10:45:55 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -24,8 +24,8 @@ export class ModelComponent extends Component<ModelInputs> {
     entity!: Entity;
     name = 'model';
     resolved?: Promise<Model>;
-    constructor(inputs, app) {
-        super(inputs, app);
+    constructor(inputs) {
+        super(inputs);
     }
     initialize() {
         let model = new Model();
