@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 14th 2018, 8:56:25 pm
+ * Last Modified: Thursday, November 15th 2018, 12:02:14 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -27,6 +27,9 @@ async function main() {
             near: 1,
             far: 10000
         }
+    });
+    entity.addComponent('light', {
+        type: 'directional',
     });
     console.log(entity, app);
 

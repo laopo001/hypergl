@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, November 13th 2018, 10:04:47 pm
+ * Last Modified: Wednesday, November 14th 2018, 11:59:43 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -26,6 +26,7 @@ import { StandardMaterial, Material } from '../material';
 import { event, IElement } from '../core';
 import { SystemRegistry } from '../ecs/system-register';
 import { CameraComponentSystem } from '../ecs/components/camera/system';
+import { LightComponentSystem } from '../ecs/components/light/system';
 export class Scene extends IElement {
     static ambientColor = new Color(0.2, 0.2, 0.2);
     // static ambient = new Vec3(0, -1, -1);
@@ -66,6 +67,7 @@ export class Scene extends IElement {
         });
         this.systems = new SystemRegistry();
         this.systems.add(new CameraComponentSystem());
+        this.systems.add(new LightComponentSystem());
     }
     render() {
         this.root.syncHierarchy();
