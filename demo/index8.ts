@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 15th 2018, 12:02:14 am
+ * Last Modified: Friday, November 16th 2018, 9:34:55 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -32,7 +32,6 @@ async function main() {
         type: 'directional',
     });
     console.log(entity, app);
-
 }
 
 main();

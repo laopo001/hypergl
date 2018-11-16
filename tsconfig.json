@@ -33,7 +33,9 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
     "paths": {
-      "gltf-loader-ts": ["./src/third_party/gltf-loader-ts/source"]
+      "gltf-loader-ts": [
+        "./src/third_party/gltf-loader-ts/source"
+      ]
     }
   },
   "include": [
