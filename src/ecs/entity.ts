@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 15th 2018, 12:01:36 am
+ * Last Modified: Saturday, November 17th 2018, 6:52:05 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -49,7 +49,7 @@ export class Entity extends SceneNode {
         // let camera = new CameraComponent(options);
         // this[name] = camera.initialize();
         const system = this.app.scene.systems[name] as ComponentSystem;
-        system.addComponent(this, options);
+        return system.addComponent(this, options);
     }
     // addComponent(component: Component<any>) {
     //     this[component.name] = component;

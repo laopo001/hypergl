@@ -7,7 +7,7 @@ import { Vec3 } from '../math';
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 29th 2018, 1:38:01 am
+ * Last Modified: Saturday, November 17th 2018, 7:03:26 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -37,6 +37,12 @@ export interface CreateMeshOptions {
     uvs1?: number[];
     blendIndices?: number[];
     blendWeights?: string[];
+}
+
+export type Constructor<T> = new (...args) => T;
+
+export interface Constructor2<T> {
+    new(...args): T;
 }
 
 

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 12th 2018, 1:09:39 am
+ * Last Modified: Saturday, November 17th 2018, 7:03:31 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,6 +15,7 @@
 import { Application } from '../application';
 import { Entity } from './entity';
 import { Component } from './component';
+import { Constructor } from 'src/types';
 let id = 0;
 export abstract class ComponentSystem {
     app!: Application;
@@ -22,7 +23,7 @@ export abstract class ComponentSystem {
         [s: string]: Component<{}>;
     } = {};
     abstract name: string;
-    abstract componentConstructor: any;
+    abstract componentConstructor: Constructor<Component<{}>>;
     entitys: Entity[] = [];
     addComponent(entity: Entity, componentData: any) {
         const component = new this.componentConstructor(componentData) as Component<{}>;
@@ -31,6 +32,7 @@ export abstract class ComponentSystem {
         // component.system = this;
         this.map[entity.uuid] = component;
         entity[this.name] = component;
+        return component;
     }
     removeComponent() {
         // TODO

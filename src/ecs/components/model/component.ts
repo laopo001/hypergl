@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 14th 2018, 10:45:55 pm
+ * Last Modified: Saturday, November 17th 2018, 8:25:41 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -23,7 +23,6 @@ interface ModelInputs {
 export class ModelComponent extends Component<ModelInputs> {
     entity!: Entity;
     name = 'model';
-    resolved?: Promise<Model>;
     constructor(inputs) {
         super(inputs);
     }
