@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 17th 2018, 6:52:05 pm
+ * Last Modified: Monday, November 19th 2018, 12:33:37 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -16,6 +16,7 @@ import { SceneNode } from '../scene/node';
 import { Mesh, Model } from '../mesh';
 import { CameraComponent, CameraInputs } from './components/camera';
 import { LightComponent, LigthInputs } from './components/light';
+import { ModelInputs } from './components/model';
 import { Component } from './component';
 import { Shader } from '../graphics/shader';
 import { Log } from '../utils/util';
@@ -28,6 +29,7 @@ let EntityID = 0;
 export interface ComponentInputs {
     'camera': CameraInputs,
     'light': LigthInputs,
+    'model': ModelInputs,
 }
 
 export type componentName = keyof ComponentInputs;

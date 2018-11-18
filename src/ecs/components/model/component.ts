@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 17th 2018, 8:25:41 pm
+ * Last Modified: Monday, November 19th 2018, 12:33:44 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,7 +15,7 @@
 import { Entity, Application, Model, math, Mesh } from '../../..';
 import { Component } from '../../component';
 
-interface ModelInputs {
+export interface ModelInputs {
     type: 'box' | 'plane' | 'model',
     model?: Model;
     options?: any;
