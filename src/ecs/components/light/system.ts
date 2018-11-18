@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 17th 2018, 10:28:34 pm
+ * Last Modified: Sunday, November 18th 2018, 8:43:48 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -18,15 +18,15 @@ import { LightComponent } from './component';
 export class LightComponentSystem extends ComponentSystem {
     componentConstructor = LightComponent;
     name = 'light';
-    components: LightComponent[] = [];
-    addLight(camera) {
-        this.components.push(camera);
-    }
+    // components: LightComponent[] = [];
+    // addLight(camera) {
+    //     this.components.push(camera);
+    // }
 
-    removeLight(camera) {
-        let index = this.components.indexOf(camera);
-        if (index >= 0) {
-            this.components.splice(index, 1);
-        }
-    }
+    // removeLight(camera) {
+    //     let index = this.components.indexOf(camera);
+    //     if (index >= 0) {
+    //         this.components.splice(index, 1);
+    //     }
+    // }
 }

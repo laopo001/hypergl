@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 14th 2018, 11:58:50 pm
+ * Last Modified: Sunday, November 18th 2018, 8:43:48 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -88,7 +88,6 @@ export class LightComponent extends Component<LigthInputs> {
     initialize(entity: Entity, system: ComponentSystem) {
         this.entity = entity;
         this.system = system;
-        this.system.addLight(this);
     }
 
 }

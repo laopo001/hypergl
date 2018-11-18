@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 14th 2018, 10:20:08 pm
+ * Last Modified: Sunday, November 18th 2018, 8:43:48 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -85,6 +85,5 @@ export class CameraComponent extends Component<CameraInputs> {
     initialize(entity: Entity, system: ComponentSystem) {
         this.entity = entity;
         this.system = system;
-        this.system.addCamera(this);
     }
 }

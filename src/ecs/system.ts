@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 17th 2018, 7:03:31 pm
+ * Last Modified: Sunday, November 18th 2018, 8:43:48 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -23,18 +23,21 @@ export abstract class ComponentSystem {
         [s: string]: Component<{}>;
     } = {};
     abstract name: string;
+    components: Component<{}>[] = [];
     abstract componentConstructor: Constructor<Component<{}>>;
     entitys: Entity[] = [];
     addComponent(entity: Entity, componentData: any) {
         const component = new this.componentConstructor(componentData) as Component<{}>;
         component.initialize(entity, this);
-        // component.entity = entity;
-        // component.system = this;
         this.map[entity.uuid] = component;
         entity[this.name] = component;
+        this.components.push(component);
         return component;
     }
-    removeComponent() {
-        // TODO
+    removeComponent(component) {
+        let index = this.components.indexOf(component);
+        if (index >= 0) {
+            this.components.splice(index, 1);
+        }
     }
 }
