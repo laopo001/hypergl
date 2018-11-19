@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 17th 2018, 10:27:17 pm
+ * Last Modified: Monday, November 19th 2018, 9:13:51 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,7 +14,7 @@
 import { ComponentSystem } from '../../system';
 import { ModelComponent } from './component';
 
-export class ModelSystem extends ComponentSystem {
+export class ModelComponentSystem extends ComponentSystem {
     name = 'model';
     componentConstructor = ModelComponent;
 
