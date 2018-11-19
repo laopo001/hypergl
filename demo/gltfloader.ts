@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 9th 2018, 9:35:19 pm
+ * Last Modified: Monday, November 19th 2018, 11:30:06 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -47,7 +47,7 @@ async function main() {
     // // app.scene.activeCamera = camera;
     // app.scene.cameras.push(camera);
 
-    let script = new FirstPersonCamera(FirstPersonCamera.defaultInputs, app);
+    let script = new FirstPersonCamera(FirstPersonCamera.defaultInputs);
     (script as any).entity = c;
     script.initialize();
 

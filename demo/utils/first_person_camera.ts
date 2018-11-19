@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 9th 2018, 9:39:08 pm
+ * Last Modified: Monday, November 19th 2018, 1:47:27 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,13 +13,14 @@
 
 import { math, Script } from '../../src';
 
-interface FirstPersonCameraInputs {
+export interface FirstPersonCameraInputs {
     speed: number;
 }
 export class FirstPersonCamera extends Script<FirstPersonCameraInputs> {
     static defaultInputs = {
-        speed: 0.1
+        speed: 1
     };
+    app;
     ex!: number;
     ey!: number;
     ez!: number;

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 19th 2018, 12:33:37 am
+ * Last Modified: Monday, November 19th 2018, 2:56:26 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -16,6 +16,7 @@ import { SceneNode } from '../scene/node';
 import { Mesh, Model } from '../mesh';
 import { CameraComponent, CameraInputs } from './components/camera';
 import { LightComponent, LigthInputs } from './components/light';
+import { ScriptInputs, Script } from './components/script';
 import { ModelInputs } from './components/model';
 import { Component } from './component';
 import { Shader } from '../graphics/shader';
@@ -24,12 +25,14 @@ import { Camera } from '../scene/camera';
 import { Light } from '../lights';
 import { Application } from '../application';
 import { ComponentSystem } from './system';
+import { Constructor } from '../types';
 let EntityID = 0;
 
 export interface ComponentInputs {
     'camera': CameraInputs,
     'light': LigthInputs,
     'model': ModelInputs,
+    'script': ScriptInputs,
 }
 
 export type componentName = keyof ComponentInputs;
@@ -42,21 +45,17 @@ export class Entity extends SceneNode {
     light?: Light;
     boundingBox: any;
     app = Application.getApp();
-    componentList: Component<any>[] = [];
     private _enabled = true;
     constructor() {
         super();
     }
-    addComponent<K extends keyof ComponentInputs>(name: K, options: ComponentInputs[K]) {
-        // let camera = new CameraComponent(options);
-        // this[name] = camera.initialize();
+    addComponent<K extends keyof ComponentInputs, T>(name: K, options: ComponentInputs[K]) {
         const system = this.app.scene.systems[name] as ComponentSystem;
-        return system.addComponent(this, options);
+        Log.assert(system != null, name + ' system not register');
+        let component = system.addComponent(this, options);
+        this[name as string] = component;
+        return component;
     }
-    // addComponent(component: Component<any>) {
-    //     this[component.name] = component;
-    //     this.componentList.push(component);
-    // }
     get<T>(name: string): T {
         if (this[name] == null) {
             Log.error(name + ' not add component');

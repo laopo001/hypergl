@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, November 18th 2018, 8:43:48 pm
+ * Last Modified: Monday, November 19th 2018, 2:23:34 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -30,7 +30,6 @@ export abstract class ComponentSystem {
         const component = new this.componentConstructor(componentData) as Component<{}>;
         component.initialize(entity, this);
         this.map[entity.uuid] = component;
-        entity[this.name] = component;
         this.components.push(component);
         return component;
     }

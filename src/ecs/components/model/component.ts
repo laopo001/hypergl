@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 19th 2018, 12:33:44 am
+ * Last Modified: Monday, November 19th 2018, 11:29:28 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,6 +14,7 @@
 
 import { Entity, Application, Model, math, Mesh } from '../../..';
 import { Component } from '../../component';
+import { ComponentSystem } from '../../system';
 
 export interface ModelInputs {
     type: 'box' | 'plane' | 'model',
@@ -22,11 +23,10 @@ export interface ModelInputs {
 }
 export class ModelComponent extends Component<ModelInputs> {
     entity!: Entity;
+    instance: Model;
     name = 'model';
     constructor(inputs) {
         super(inputs);
-    }
-    initialize() {
         let model = new Model();
         let mesh: Mesh;
         switch (this.inputs.type) {
@@ -41,6 +41,10 @@ export class ModelComponent extends Component<ModelInputs> {
                 break;
         }
         model.meshs.push(mesh!);
-        return model;
+        this.instance = model;
+    }
+    initialize(entity: Entity, system: ComponentSystem) {
+        this.entity = entity;
+        this.system = system;
     }
 }

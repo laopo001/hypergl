@@ -5,14 +5,16 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 16th 2018, 9:34:55 pm
+ * Last Modified: Monday, November 19th 2018, 5:39:56 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Application, Entity } from '../src';
+import { Application, Entity, Script } from '../src';
+import { FirstPersonCamera } from './utils/first_person_camera';
+
 
 async function main() {
     const app = new Application(document.getElementById('canvas') as HTMLCanvasElement, {
@@ -31,6 +33,8 @@ async function main() {
     entity.addComponent('light', {
         type: 'directional',
     });
+
+    entity.addComponent('script', new FirstPersonCamera());
     console.log(entity, app);
 }
 
