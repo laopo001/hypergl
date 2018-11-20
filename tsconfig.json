@@ -45,6 +45,13 @@
   ],
   "exclude": [
     "node_modules",
-    "src/third_party/gltf-loader-ts"
+    "src/third_party/gltf-loader-ts",
+    "demo/gltfloader.ts",
+    "demo/index2.ts",
+    "demo/index3.ts",
+    "demo/index4.ts",
+    "demo/index5.ts",
+    "demo/index6.ts",
+    "demo/index7.ts"
   ]
 }

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 19th 2018, 11:30:18 am
+ * Last Modified: Wednesday, November 21st 2018, 12:54:26 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -121,7 +121,7 @@ let main = async () => {
     camera.setPosition(-2, 5, 10);
     camera.lookAt(new Vec3(0, 0, 0), camera.up);
 
-    app.scene.cameras.push(camera);
+    // app.scene.cameras.push(camera);
 
     let script = new FirstPersonCamera(FirstPersonCamera.defaultInputs);
     (script as any).entity = camera;

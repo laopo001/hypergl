@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, November 20th 2018, 11:24:46 pm
+ * Last Modified: Wednesday, November 21st 2018, 12:55:58 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -44,14 +44,11 @@ export class Scene extends IElement {
             pointLights: [],
             spotLight: []
         };
-    readonly layers: Entity[] = [];
-    readonly opacityLayers: Entity[] = [];
+
     app!: Application;
-    get renderLayers() {
-        return this.layers.concat(this.opacityLayers);
-    }
+
     root: SceneNode = new SceneNode();
-    readonly cameras: Camera[] = [];
+    // readonly cameras: Camera[] = [];
     systems: SystemRegistry;
     private _activeCamera!: CameraComponent;
     get activeCamera() {
@@ -77,10 +74,7 @@ export class Scene extends IElement {
     }
     render() {
         this.root.syncHierarchy();
-        this.opacityLayers.sort((a, b) => {
-            return new Vec3().sub2(b.getPosition(), this.activeCamera.getPosition()).length() -
-                new Vec3().sub2(a.getPosition(), this.activeCamera.getPosition()).length();
-        });
+
         renderScence(this);
     }
     // tslint:disable-next-line:member-ordering
@@ -105,11 +99,6 @@ export class Scene extends IElement {
         } else if (child instanceof SpotLight) {
             this.lights.spotLight.push(child);
         } else if (child instanceof Entity) {
-            if (child.mesh && (child.mesh.material instanceof StandardMaterial && child.mesh.material.opacity < 1 || (child.mesh.material as StandardMaterial).opacityMap)) {
-                this.opacityLayers.push(child);
-            } else {
-                this.layers.push(child);
-            }
             if (child.children.length > 0) {
                 for (let i = 0; i < child.children.length; i++) {
                     const element = child.children[i];
@@ -117,8 +106,6 @@ export class Scene extends IElement {
                     this.add(element);
                 }
             }
-        } else if (child instanceof Camera) {
-            this.cameras.push(child);
         }
     }
     get [Symbol.toStringTag]() {

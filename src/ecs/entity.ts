@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, November 20th 2018, 11:58:38 pm
+ * Last Modified: Wednesday, November 21st 2018, 12:49:37 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -41,7 +41,7 @@ export class Entity extends SceneNode {
     EntityID = EntityID++;
     mesh?: Mesh;
     model?: ModelComponent;
-    camera?: Camera;
+    camera?: CameraComponent;
     light?: Light;
     boundingBox: any;
     app = Application.getApp();
@@ -61,9 +61,6 @@ export class Entity extends SceneNode {
             Log.error(name + ' not add component');
         }
         return this[name];
-    }
-    registerComponent(component) {
-        //
     }
 
     removeComponent(component: Component<any> | string) {
