@@ -5,16 +5,17 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 19th 2018, 9:52:09 pm
+ * Last Modified: Wednesday, November 21st 2018, 12:36:31 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Application, Entity, Script } from '../src';
+import { Application, Entity, Script, StandardMaterial } from '../src';
 import { FirstPersonCamera } from './utils/first_person_camera';
 import { Vec3 } from '../src/math';
+import { Color } from 'src/core';
 
 
 async function main() {
@@ -27,7 +28,7 @@ async function main() {
         type: 'perspective',
         perspective: {
             fov: 90,
-            aspectRatio: 1,
+            aspectRatio: app.canvas.width / app.canvas.height,
             near: 1,
             far: 10000
         }
@@ -47,7 +48,12 @@ async function main() {
     box.addComponent('model', {
         type: 'box'
     });
+    let material = new StandardMaterial();
+    material.diffuseColor.set(1, 0, 1);
+    material.update();
+    box.model!.material = material;
     app.scene.root.addChild(box);
+    app.start();
 }
 
 main();

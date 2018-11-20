@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 10th 2018, 8:54:48 pm
+ * Last Modified: Wednesday, November 21st 2018, 12:01:34 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -48,7 +48,7 @@ export class Mesh {
     castShadow = true;
     aabb!: BoundingBox;
     receiveShadow = true;
-    private _material!: Material;
+    _material!: Material;
     // private _material = Mesh.defaultMaterial;
     constructor() {
         this.material = Mesh.defaultMaterial;

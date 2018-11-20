@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 19th 2018, 2:56:26 pm
+ * Last Modified: Tuesday, November 20th 2018, 11:58:38 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,7 +17,7 @@ import { Mesh, Model } from '../mesh';
 import { CameraComponent, CameraInputs } from './components/camera';
 import { LightComponent, LigthInputs } from './components/light';
 import { ScriptInputs, Script } from './components/script';
-import { ModelInputs } from './components/model';
+import { ModelInputs, ModelComponent } from './components/model';
 import { Component } from './component';
 import { Shader } from '../graphics/shader';
 import { Log } from '../utils/util';
@@ -40,7 +40,7 @@ export type componentName = keyof ComponentInputs;
 export class Entity extends SceneNode {
     EntityID = EntityID++;
     mesh?: Mesh;
-    model?: Model;
+    model?: ModelComponent;
     camera?: Camera;
     light?: Light;
     boundingBox: any;

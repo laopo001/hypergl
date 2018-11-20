@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, November 13th 2018, 10:05:14 pm
+ * Last Modified: Wednesday, November 21st 2018, 12:34:05 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -56,7 +56,7 @@ export class Application {
         if (!this.renderer.viewport) {
             this.renderer.setViewport(0, 0, this.canvas.width, this.canvas.height);
         }
-        console.log(this.scene.renderLayers);
+        // console.log(this.scene.renderLayers);
         this.tick();
     }
     addScene(scene: Scene) {
@@ -72,12 +72,14 @@ export class Application {
     }
     setRequestPointerLock() {
         // this._isPointerLock = true;
-        this.canvas.requestPointerLock();
+        (this.canvas as any).requestPointerLock();
     }
 
     private tick() {
         timer.start();
+        event.fire('beforeRender');
         this.scene.render();
+        event.fire('afterRender');
         timer.end();
         event.fire('update', timer.getDuration());
         window.requestAnimationFrame(this.tick.bind(this));

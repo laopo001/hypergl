@@ -5,29 +5,38 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, November 20th 2018, 7:08:21 pm
+ * Last Modified: Wednesday, November 21st 2018, 12:01:20 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Entity, Application, Model, math, Mesh } from '../../..';
+import { Entity, Application, Model, math, Mesh, Material } from '../../..';
 import { Component } from '../../component';
 import { ComponentSystem } from '../../system';
 
 export interface ModelInputs {
     type: 'box' | 'plane' | 'model',
-    model?: Model;
+    mesh?: Mesh;
     options?: any;
 }
 export class ModelComponent extends Component<ModelInputs> {
     entity!: Entity;
-    instance: Model;
+    instance: Mesh;
+    public get material(): Material {
+        return this.instance._material;
+    }
+    public set material(v: Material) {
+        this.instance._material = v;
+    }
+    get mesh() {
+        return this.instance;
+    }
     name = 'model';
     constructor(inputs) {
         super(inputs);
-        let model = new Model();
+        // let model = new Model();
         let mesh: Mesh;
         switch (this.inputs.type) {
             case 'box':
@@ -37,11 +46,11 @@ export class ModelComponent extends Component<ModelInputs> {
                 mesh = Mesh.createPlane(this.inputs.options);
                 break;
             case 'model':
-                model = this.inputs.model as Model;
+                mesh = this.inputs.mesh as Mesh;
                 break;
         }
-        model.meshs.push(mesh!);
-        this.instance = model;
+        // model.meshs.push(mesh!);
+        this.instance = mesh!;
     }
     initialize(entity: Entity, system: ComponentSystem) {
         this.entity = entity;

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 10th 2018, 9:01:54 pm
+ * Last Modified: Tuesday, November 20th 2018, 11:37:12 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -24,6 +24,7 @@ import { Texture } from '../texture';
 import { ShaderVariable } from './shaderVariable';
 import { FACE } from '../material/material';
 import { VertexAttribData } from './vertexFormat';
+import { ModelComponent } from 'src/ecs/components/model';
 export type Platform = 'webgl' | 'webgl2';
 export class RendererPlatform {
     get gl() {
@@ -283,7 +284,7 @@ export class RendererPlatform {
         gl.uniform1i(u_Sampler, t);
 
     }
-    draw(entity: Entity) {
+    draw(entity: ModelComponent) {
         const gl = this.gl;
         const mesh = entity.mesh;
         if (mesh == null) { return; }

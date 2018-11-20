@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 19th 2018, 2:59:43 pm
+ * Last Modified: Tuesday, November 20th 2018, 11:37:12 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -32,4 +32,10 @@ export abstract class Component<Inputs> {
     constructor(public inputs: Inputs) {
     }
     abstract initialize(entity: Entity, system: ComponentSystem);
+    getPosition() {
+        return this.entity.getPosition();
+    }
+    getWorldTransform() {
+        return this.entity.getWorldTransform();
+    }
 }

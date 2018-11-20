@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 9th 2018, 9:27:45 pm
+ * Last Modified: Wednesday, November 21st 2018, 12:07:58 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -68,7 +68,7 @@ export class SceneNode extends IElement {
         child.parent = this;
         if (this.scene) {
             child.scene = this.scene;
-            this.scene.add(child);
+            // this.scene.add(child);
         }
         if (!this.enabled) {
             child.enabled = false;

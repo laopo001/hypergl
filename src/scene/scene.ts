@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, November 20th 2018, 7:08:21 pm
+ * Last Modified: Tuesday, November 20th 2018, 11:24:46 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -29,6 +29,7 @@ import { CameraComponentSystem } from '../ecs/components/camera/system';
 import { LightComponentSystem } from '../ecs/components/light/system';
 import { ScriptComponentSystem } from '../ecs/components/script/system';
 import { ModelComponentSystem } from '../ecs/components/model/system';
+import { CameraComponent } from 'src/ecs/components/camera';
 export class Scene extends IElement {
     static ambientColor = new Color(0.2, 0.2, 0.2);
     // static ambient = new Vec3(0, -1, -1);
@@ -52,7 +53,7 @@ export class Scene extends IElement {
     root: SceneNode = new SceneNode();
     readonly cameras: Camera[] = [];
     systems: SystemRegistry;
-    private _activeCamera!: Camera;
+    private _activeCamera!: CameraComponent;
     get activeCamera() {
         let defaultCamera = this.systems.camera!.components[0];
         Log.assert(this._activeCamera || defaultCamera, 'scene 没有 activeCamera');

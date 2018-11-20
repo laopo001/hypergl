@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 19th 2018, 2:23:34 pm
+ * Last Modified: Tuesday, November 20th 2018, 11:18:10 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -18,7 +18,9 @@ import { Component } from './component';
 import { Constructor } from 'src/types';
 let id = 0;
 export abstract class ComponentSystem {
-    app!: Application;
+    get app() {
+        return Application.getApp();
+    }
     map: {
         [s: string]: Component<{}>;
     } = {};

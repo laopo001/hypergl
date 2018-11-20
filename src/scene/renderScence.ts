@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 9th 2018, 11:25:49 pm
+ * Last Modified: Tuesday, November 20th 2018, 11:37:07 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -27,7 +27,7 @@ import { Vec3, DEG_TO_RAD } from '../math';
 
 
 export function renderScence(scene: Scene) {
-    let entitys = scene.renderLayers;
+    let modelComponent = scene.systems.model!.renderLayers;
     let lights = scene.lights;
     let camera = scene.activeCamera;
 
@@ -41,8 +41,8 @@ export function renderScence(scene: Scene) {
 
     let temp: Light[] = [];
     renderer.enableBLEND();
-    for (let i = 0; i < entitys.length; i++) {
-        let entity = entitys[i];
+    for (let i = 0; i < modelComponent.length; i++) {
+        let entity = modelComponent[i];
         if (!entity.enabled || !entity.mesh) {
             continue;
         }
@@ -92,7 +92,7 @@ export function renderScence(scene: Scene) {
 
 export function renderDirectionalLightArr(name: string, data: DirectionalLight[], scene: Scene) {
     function rendererShadowMap(scene: Scene, light: DirectionalLight) {
-        let entitys = scene.renderLayers;
+        let entitys = scene.systems.model!.renderLayers;
         let renderer = scene.app.renderer;
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(false);
@@ -200,8 +200,7 @@ function createCubeCamera(cameras: Camera[], light: PointLight) {
 
 export function renderPointLightArr(name: string, data: PointLight[], scene: Scene) {
     function rendererShadowMap(scene: Scene, light: PointLight) {
-        // TODO
-        let entitys = scene.renderLayers;
+        let entitys = scene.systems.model!.renderLayers;
         let renderer = scene.app.renderer;
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(true);
@@ -274,7 +273,7 @@ export function renderPointLightArr(name: string, data: PointLight[], scene: Sce
 
 export function renderSpotLightArr(name: string, data: SpotLight[], scene: Scene) {
     function rendererShadowMap(scene: Scene, light: SpotLight) {
-        let entitys = scene.renderLayers;
+        let entitys = scene.systems.model!.renderLayers;
         let renderer = scene.app.renderer;
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(false);
