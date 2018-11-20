@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 19th 2018, 9:14:11 pm
+ * Last Modified: Tuesday, November 20th 2018, 7:08:21 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -54,8 +54,9 @@ export class Scene extends IElement {
     systems: SystemRegistry;
     private _activeCamera!: Camera;
     get activeCamera() {
-        Log.assert(this._activeCamera || this.cameras[0], 'scene 没有 activeCamera');
-        return this._activeCamera || this.cameras[0];
+        let defaultCamera = this.systems.camera!.components[0];
+        Log.assert(this._activeCamera || defaultCamera, 'scene 没有 activeCamera');
+        return this._activeCamera || defaultCamera;
     }
     set activeCamera(x) {
         this._activeCamera = x;

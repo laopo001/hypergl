@@ -7,7 +7,7 @@ import { Vec3 } from '../math';
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 17th 2018, 7:03:26 pm
+ * Last Modified: Tuesday, November 20th 2018, 6:01:55 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -41,10 +41,11 @@ export interface CreateMeshOptions {
 
 export type Constructor<T> = new (...args) => T;
 
-export interface Constructor2<T> {
-    new(...args): T;
-}
+// export interface Constructor2<T> {
+//     new(...args): T;
+// }
 
+export declare type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 export interface CreateBoxOptions {
     halfExtents?: Vec3;
@@ -52,3 +53,4 @@ export interface CreateBoxOptions {
     lengthSegments?: number;
     heightSegments?: number;
 }
+
