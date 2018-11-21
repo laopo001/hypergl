@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 21st 2018, 12:01:34 am
+ * Last Modified: Thursday, November 22nd 2018, 1:04:25 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,7 +14,7 @@
 
 import { VertexBuffer } from '../graphics/vertexBuffer';
 import { IndexBuffer } from '../graphics/indexBuffer';
-import { BasicMaterial, Material } from '../material';
+import { StandardMaterial } from '../material';
 import { SEMANTIC, BUFFER, DrawMode } from '../conf';
 import { VertexType, VertexFormat } from '../graphics/vertexFormat';
 import { CreateMeshOptions, CreateBoxOptions } from '../types';
@@ -37,7 +37,7 @@ export class Mesh {
         }
         this._material = x;
     }
-    static defaultMaterial: Material = new BasicMaterial();
+    static defaultMaterial: StandardMaterial = new StandardMaterial();
     static createBox = createBox;
     static createPlane = createPlane;
     name?: string;
@@ -48,7 +48,7 @@ export class Mesh {
     castShadow = true;
     aabb!: BoundingBox;
     receiveShadow = true;
-    _material!: Material;
+    _material!: StandardMaterial;
     // private _material = Mesh.defaultMaterial;
     constructor() {
         this.material = Mesh.defaultMaterial;
@@ -313,7 +313,7 @@ export function createPlane(opts?: {
         positions,
         normals,
         uvs,
-        uvs1: uvs, // UV1 = UV0 for plane
+        // uvs1: uvs, // UV1 = UV0 for plane
         indices
     };
 

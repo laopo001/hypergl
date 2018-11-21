@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, November 20th 2018, 11:37:12 pm
+ * Last Modified: Thursday, November 22nd 2018, 1:01:23 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,7 +13,7 @@
 
 
 import { Log } from '../utils/util';
-import { UNIFORM_TYPE, FILTER } from '../conf';
+import { UNIFORM_TYPE, FILTER, FACE } from '../conf';
 import { ShaderProgramGenerator } from './shaderProgramGenerator';
 import { Undefined, FnVoid, AppOption, Nullable } from '../types';
 import { Shader } from './shader';
@@ -22,7 +22,6 @@ import { VertexBuffer } from './vertexBuffer';
 import { Entity } from '../ecs/entity';
 import { Texture } from '../texture';
 import { ShaderVariable } from './shaderVariable';
-import { FACE } from '../material/material';
 import { VertexAttribData } from './vertexFormat';
 import { ModelComponent } from 'src/ecs/components/model';
 export type Platform = 'webgl' | 'webgl2';
@@ -355,7 +354,6 @@ export class RendererPlatform {
         } else {
             gl.drawArrays(
                 this.glDrawMode[mesh.mode],
-                // gl.TRIANGLES,
                 0, mesh.vertexBuffer.numVertices);
         }
 

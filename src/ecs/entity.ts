@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 21st 2018, 7:35:50 pm
+ * Last Modified: Thursday, November 22nd 2018, 12:50:08 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -54,14 +54,14 @@ export class Entity extends SceneNode {
         super();
         this.name = name;
     }
-    addComponent<K extends keyof ComponentInputs, T>(name: K, options: ComponentInputs[K]) {
+    addComponent<K extends keyof ComponentInputs>(name: K, options: ComponentInputs[K]) {
         const system = this.app.scene.systems[name] as ComponentSystem;
         Log.assert(system != null, name + ' system not register');
         let component = system.addComponent(this, options);
         this[name as string] = component;
         return component;
     }
-    addComponents<K extends keyof ComponentInputs, T>(arr: Array<{ name: K, options: ComponentInputs[K] }>) {
+    addComponents<K extends keyof ComponentInputs>(arr: Array<{ name: K, options: ComponentInputs[K] }>) {
         return arr.map(item => {
             if (this[item.name as any]) {
                 return;

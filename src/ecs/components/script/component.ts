@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 21st 2018, 5:26:08 pm
+ * Last Modified: Wednesday, November 21st 2018, 10:58:13 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -28,7 +28,7 @@ export class ScriptComponent extends Component<ScriptInputs> {
         super(inputs);
         this.instance = this.inputs;
         this.instance.forEach(script => {
-            if (script.inputs === null) {
+            if (script.inputs === undefined) {
                 script.inputs = (script.constructor as any).defaultInputs;
             }
         });

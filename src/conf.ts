@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 3rd 2018, 11:24:35 pm
+ * Last Modified: Thursday, November 22nd 2018, 1:01:23 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -199,4 +199,10 @@ export enum DrawMode {
     TRIANGLES,
     TRIANGLE_STRIP,
     TRIANGLE_FAN,
+}
+
+export enum FACE {
+    BACK = 'BACK',
+    FRONT = 'FRONT',
+    NONE = 'NONE',
 }

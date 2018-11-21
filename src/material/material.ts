@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, October 30th 2018, 3:25:08 pm
+ * Last Modified: Thursday, November 22nd 2018, 12:59:50 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,17 +13,12 @@
 
 
 import { RendererPlatform } from '../graphics/renderer';
-import { SEMANTIC } from '../conf';
+import { SEMANTIC, FACE } from '../conf';
 import { Shader } from '../graphics/shader';
 import { Light, PointLight, DirectionalLight } from '../lights';
 import { Scene } from '../scene/scene';
 import { Mesh } from '../mesh/mesh';
 
-export enum FACE {
-    BACK = 'BACK',
-    FRONT = 'FRONT',
-    NONE = 'NONE',
-}
 
 export abstract class Material {
     uniforms: { [s: string]: any } = {};

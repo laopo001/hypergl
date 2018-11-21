@@ -5,14 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 21st 2018, 12:01:20 am
+ * Last Modified: Thursday, November 22nd 2018, 12:35:34 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Entity, Application, Model, math, Mesh, Material } from '../../..';
+import { Entity, Application, Model, math, Mesh, StandardMaterial } from '../../..';
 import { Component } from '../../component';
 import { ComponentSystem } from '../../system';
 
@@ -24,10 +24,10 @@ export interface ModelInputs {
 export class ModelComponent extends Component<ModelInputs> {
     entity!: Entity;
     instance: Mesh;
-    public get material(): Material {
+    public get material(): StandardMaterial {
         return this.instance._material;
     }
-    public set material(v: Material) {
+    public set material(v: StandardMaterial) {
         this.instance._material = v;
     }
     get mesh() {

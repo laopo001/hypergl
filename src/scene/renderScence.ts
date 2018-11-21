@@ -5,15 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 21st 2018, 7:36:38 pm
+ * Last Modified: Thursday, November 22nd 2018, 12:22:43 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { SceneNode } from './node';
-import { Entity } from '../ecs/entity';
+import { Entity, LightComponent } from '../ecs';
 import { BasicMaterial } from '../material/basicMaterial';
 import { Scene } from './scene';
 import { Mesh } from '../mesh/mesh';
@@ -90,9 +89,9 @@ export function renderScence(scene: Scene) {
 
 
 
-export function renderDirectionalLightArr(name: string, data: DirectionalLight[], scene: Scene) {
-    function rendererShadowMap(scene: Scene, light: DirectionalLight) {
-        let entitys = scene.systems.model!.renderLayers;
+export function renderDirectionalLightArr(name: string, data: LightComponent<DirectionalLight>[], scene: Scene) {
+    function rendererShadowMap(scene: Scene, light: LightComponent<DirectionalLight>) {
+        let modelComponents = scene.systems.model!.renderLayers;
         let renderer = scene.app.renderer;
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(false);
@@ -122,14 +121,14 @@ export function renderDirectionalLightArr(name: string, data: DirectionalLight[]
         // let gl = scene.app.rendererPlatform.gl;
         // gl.cullFace(gl.FRONT);
         light.shadowFrame.beforeDraw();
-        for (let i = 0; i < entitys.length; i++) {
-            let entity = entitys[i];
-            if (!entity.enabled || !entity.mesh || !entity.mesh.castShadow) {
+        for (let i = 0; i < modelComponents.length; i++) {
+            let modelComponent = modelComponents[i];
+            if (!modelComponent.enabled || !modelComponent.mesh || !modelComponent.mesh.castShadow) {
                 continue;
             }
             renderer.setShaderProgram(shader as Shader);
-            shader.setUniformValue('matrix_model', entity.getWorldTransform().data);
-            renderer.draw(entity);
+            shader.setUniformValue('matrix_model', modelComponent.getWorldTransform().data);
+            renderer.draw(modelComponent);
         }
         light.shadowFrame.afterDraw();
         // gl.cullFace(gl.BACK);
@@ -155,52 +154,10 @@ export function renderDirectionalLightArr(name: string, data: DirectionalLight[]
     uniforms['_' + name] = res;
     return uniforms;
 }
-function createCubeCamera(cameras: Camera[], light: PointLight) {
-    let camera = new Camera();
-    const near = 0.1;
-    let position = new Vec3(1, 0, 0);
-    let up = new Vec3(0, - 1, 0);
-    camera.setPerspective(90, 1, near, light.range);
-    camera.lookAt(position.add(light.getPosition()), up);
-    cameras.push(camera);
 
-    position = new Vec3(-1, 0, 0);
-    up = new Vec3(0, - 1, 0);
-    camera.setPerspective(90, 1, near, light.range);
-    camera.lookAt(position.add(light.getPosition()), up);
-    cameras.push(camera);
-
-    position = new Vec3(0, 1, 0);
-    up = new Vec3(0, 0, 1);
-    camera.setPerspective(90, 1, near, light.range);
-    camera.lookAt(position.add(light.getPosition()), up);
-    cameras.push(camera);
-
-    position = new Vec3(0, - 1, 0);
-    up = new Vec3(0, 0, 1);
-    camera.setPerspective(90, 1, near, light.range);
-    camera.lookAt(position.add(light.getPosition()), up);
-    cameras.push(camera);
-
-    position = new Vec3(0, 0, 1);
-    up = new Vec3(0, - 1, 0);
-    camera.setPerspective(90, 1, near, light.range);
-    camera.lookAt(position.add(light.getPosition()), up);
-    cameras.push(camera);
-
-    position = new Vec3(0, 0, -1);
-    up = new Vec3(0, - 1, 0);
-    camera.setPerspective(90, 1, near, light.range);
-    camera.lookAt(position.add(light.getPosition()), up);
-    cameras.push(camera);
-    return cameras;
-}
-
-
-
-export function renderPointLightArr(name: string, data: PointLight[], scene: Scene) {
-    function rendererShadowMap(scene: Scene, light: PointLight) {
-        let entitys = scene.systems.model!.renderLayers;
+export function renderPointLightArr(name: string, data: LightComponent<PointLight>[], scene: Scene) {
+    function rendererShadowMap(scene: Scene, light: LightComponent<PointLight>) {
+        let modelComponents = scene.systems.model!.renderLayers;
         let renderer = scene.app.renderer;
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(true);
@@ -239,14 +196,14 @@ export function renderPointLightArr(name: string, data: PointLight[], scene: Sce
             shader.setUniformValue('light_range', light.range);
             light.shadowFrame.createFramebuffer3D(i);
             light.shadowFrame.beforeDraw(i);
-            for (let i = 0; i < entitys.length; i++) {
-                let entity = entitys[i];
-                if (!entity.enabled || !entity.mesh || !entity.mesh.castShadow) {
+            for (let i = 0; i < modelComponents.length; i++) {
+                let modelComponent = modelComponents[i];
+                if (!modelComponent.enabled || !modelComponent.mesh || !modelComponent.mesh.castShadow) {
                     continue;
                 }
                 renderer.setShaderProgram(shader as Shader);
-                shader.setUniformValue('matrix_model', entity.getWorldTransform().data);
-                renderer.draw(entity);
+                shader.setUniformValue('matrix_model', modelComponent.getWorldTransform().data);
+                renderer.draw(modelComponent);
             }
             light.shadowFrame.afterDraw();
         }
@@ -271,9 +228,9 @@ export function renderPointLightArr(name: string, data: PointLight[], scene: Sce
     return uniforms;
 }
 
-export function renderSpotLightArr(name: string, data: SpotLight[], scene: Scene) {
-    function rendererShadowMap(scene: Scene, light: SpotLight) {
-        let entitys = scene.systems.model!.renderLayers;
+export function renderSpotLightArr(name: string, data: LightComponent<SpotLight>[], scene: Scene) {
+    function rendererShadowMap(scene: Scene, light: LightComponent<SpotLight>) {
+        let modelComponents = scene.systems.model!.renderLayers;
         let renderer = scene.app.renderer;
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(false);
@@ -288,14 +245,14 @@ export function renderSpotLightArr(name: string, data: SpotLight[], scene: Scene
         shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
 
         light.shadowFrame.beforeDraw();
-        for (let i = 0; i < entitys.length; i++) {
-            let entity = entitys[i];
-            if (!entity.enabled || !entity.mesh || !entity.mesh.castShadow) {
+        for (let i = 0; i < modelComponents.length; i++) {
+            let modelComponent = modelComponents[i];
+            if (!modelComponent.enabled || !modelComponent.mesh || !modelComponent.mesh.castShadow) {
                 continue;
             }
             renderer.setShaderProgram(shader as Shader);
-            shader.setUniformValue('matrix_model', entity.getWorldTransform().data);
-            renderer.draw(entity);
+            shader.setUniformValue('matrix_model', modelComponent.getWorldTransform().data);
+            renderer.draw(modelComponent);
         }
         light.shadowFrame.afterDraw();
         return { texture: light.shadowFrame.getTexture(), viewProjectionMatrix: camera.viewProjectionMatrix };
