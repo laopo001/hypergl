@@ -5,14 +5,13 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 21st 2018, 5:52:45 pm
+ * Last Modified: Wednesday, November 21st 2018, 7:35:50 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { SceneNode } from '../scene/node';
 import { Mesh, Model } from '../mesh';
 import { CameraComponent, CameraInputs } from './components/camera';
 import { LightComponent, LigthInputs } from './components/light';
@@ -25,6 +24,7 @@ import { Camera } from '../scene/camera';
 import { Light } from '../lights';
 import { Application } from '../application';
 import { ComponentSystem } from './system';
+import { Scene, SceneNode } from '../scene';
 import { Constructor } from '../types';
 let EntityID = 0;
 
@@ -39,16 +39,20 @@ export type componentName = keyof ComponentInputs;
 
 export class Entity extends SceneNode {
     EntityID = EntityID++;
-    mesh!: Mesh;
+    mesh?: Mesh;
     model!: ModelComponent;
     camera!: CameraComponent;
     light!: LightComponent;
     script!: ScriptComponent;
     boundingBox: any;
     app = Application.getApp();
-    // private enabled = true;
-    constructor() {
+    enabled = false;
+    scene!: Scene;
+    parent?: Entity;
+    readonly children: Entity[] = [];
+    constructor(name?: string) {
         super();
+        this.name = name;
     }
     addComponent<K extends keyof ComponentInputs, T>(name: K, options: ComponentInputs[K]) {
         const system = this.app.scene.systems[name] as ComponentSystem;
@@ -74,5 +78,16 @@ export class Entity extends SceneNode {
 
     removeComponent(component: Component<any> | string) {
         // TODO
+    }
+    addChild(child: Entity) {
+        super.addChild(child);
+        child.parent = this;
+        if (this.scene) {
+            child.scene = this.scene;
+            this.scene.add(child);
+        }
+        if (!this.enabled) {
+            child.enabled = false;
+        }
     }
 }

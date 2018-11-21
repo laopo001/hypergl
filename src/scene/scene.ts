@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 21st 2018, 12:55:58 am
+ * Last Modified: Wednesday, November 21st 2018, 7:39:36 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -30,7 +30,7 @@ import { LightComponentSystem } from '../ecs/components/light/system';
 import { ScriptComponentSystem } from '../ecs/components/script/system';
 import { ModelComponentSystem } from '../ecs/components/model/system';
 import { CameraComponent } from 'src/ecs/components/camera';
-export class Scene extends IElement {
+export class Scene {
     static ambientColor = new Color(0.2, 0.2, 0.2);
     // static ambient = new Vec3(0, -1, -1);
     fog;
@@ -46,8 +46,9 @@ export class Scene extends IElement {
         };
 
     app!: Application;
+    entitys: Entity[] = [];
 
-    root: SceneNode = new SceneNode();
+    root: Entity = new Entity('root');
     // readonly cameras: Camera[] = [];
     systems: SystemRegistry;
     private _activeCamera!: CameraComponent;
@@ -61,8 +62,9 @@ export class Scene extends IElement {
     }
     private materials: Material[] = [];
     constructor() {
-        super();
+        // super();
         this.root.scene = this;
+        this.root.enabled = true;
         event.on('opacityChange', (e) => {
             console.log('opacityChange');
         });
@@ -91,22 +93,16 @@ export class Scene extends IElement {
         f.createFramebuffer();
         return f;
     }
-    add(child) {
-        if (child instanceof DirectionalLight) {
-            this.lights.directionalLights.push(child);
-        } else if (child instanceof PointLight) {
-            this.lights.pointLights.push(child);
-        } else if (child instanceof SpotLight) {
-            this.lights.spotLight.push(child);
-        } else if (child instanceof Entity) {
-            if (child.children.length > 0) {
-                for (let i = 0; i < child.children.length; i++) {
-                    const element = child.children[i];
-                    element.scene = this;
-                    this.add(element);
-                }
+    add(child: Entity) {
+        if (child.children.length > 0) {
+            for (let i = 0; i < child.children.length; i++) {
+                const element = child.children[i];
+                element.scene = this;
+                this.add(element);
             }
         }
+        this.entitys.push(child);
+        child.enabled = true;
     }
     get [Symbol.toStringTag]() {
         return 'Scene';

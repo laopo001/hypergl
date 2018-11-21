@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, November 20th 2018, 11:37:07 pm
+ * Last Modified: Wednesday, November 21st 2018, 7:36:38 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -27,8 +27,8 @@ import { Vec3, DEG_TO_RAD } from '../math';
 
 
 export function renderScence(scene: Scene) {
-    let modelComponent = scene.systems.model!.renderLayers;
-    let lights = scene.lights;
+    let modelComponents = scene.systems.model!.renderLayers;
+    let lights = scene.systems.light!;
     let camera = scene.activeCamera;
 
     let renderer = scene.app.renderer;
@@ -41,18 +41,18 @@ export function renderScence(scene: Scene) {
 
     let temp: Light[] = [];
     renderer.enableBLEND();
-    for (let i = 0; i < modelComponent.length; i++) {
-        let entity = modelComponent[i];
-        if (!entity.enabled || !entity.mesh) {
+    for (let i = 0; i < modelComponents.length; i++) {
+        let model = modelComponents[i];
+        if (!model.enabled || !model.mesh) {
             continue;
         }
-        const mesh = entity.mesh;
+        const mesh = model.mesh;
         const material = mesh.material;
         let attributes: { [s: string]: SEMANTIC } = {};
         mesh.vertexBuffer.format.elements.forEach(x => {
             attributes[SEMANTICMAP[x.semantic]] = x.semantic;
         });
-        if (!entity.mesh.receiveShadow) {
+        if (!model.mesh.receiveShadow) {
             LightsUniforms._directionalLightArr.forEach(item => {
                 item.castShadows = false;
                 temp.push(item);
@@ -73,12 +73,12 @@ export function renderScence(scene: Scene) {
         let shader = mesh.material.shader as Shader;
         renderer.setShaderProgram(shader);
         shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
-        shader.setUniformValue('matrix_model', entity.getWorldTransform().data);
-        shader.setUniformValue('matrix_normal', entity.getWorldTransform().clone().invert().transpose().data);
+        shader.setUniformValue('matrix_model', model.getWorldTransform().data);
+        shader.setUniformValue('matrix_normal', model.getWorldTransform().clone().invert().transpose().data);
         shader.setUniformValue('camera_position', camera.getPosition().data);
         // tslint:disable-next-line:forin
-        renderer.draw(entity);
-        if (!entity.mesh.receiveShadow) {
+        renderer.draw(model);
+        if (!model.mesh.receiveShadow) {
             temp.forEach(item => {
                 item.castShadows = true;
             });

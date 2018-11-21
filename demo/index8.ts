@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 21st 2018, 5:46:53 pm
+ * Last Modified: Wednesday, November 21st 2018, 7:14:59 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -23,7 +23,7 @@ async function main() {
         // webgl1:true
     });
     console.log(app);
-    let camera = new Entity();
+    let camera = new Entity('camera');
     camera.addComponent('camera', {
         type: 'perspective',
         perspective: {
@@ -38,13 +38,13 @@ async function main() {
     camera.addComponent('script', [new FirstPersonCamera()]);
     app.scene.root.addChild(camera);
 
-    let light = new Entity();
+    let light = new Entity('light');
     light.addComponent('light', {
         type: 'directional',
     });
     app.scene.root.addChild(light);
 
-    let box = new Entity();
+    let box = new Entity('box');
     box.addComponent('model', {
         type: 'box'
     });

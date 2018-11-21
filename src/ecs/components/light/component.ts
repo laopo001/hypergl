@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, November 18th 2018, 8:43:48 pm
+ * Last Modified: Wednesday, November 21st 2018, 7:08:25 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -55,20 +55,14 @@ export class LightComponent extends Component<LigthInputs> {
         switch (this.inputs.type) {
             case 'directional': {
                 light = new DirectionalLight();
-                // setValue(light, 'direction', this.inputs.direction);
                 break;
             }
             case 'point': {
                 light = new PointLight();
-                // setValue(light, 'range', this.inputs.range);
                 break;
             }
             case 'spot': {
                 light = new SpotLight();
-                // setValue(light, 'direction', this.inputs.direction);
-                // setValue(light, 'range', this.inputs.range);
-                // setValue(light, 'innerConeAngle', this.inputs.innerConeAngle);
-                // setValue(light, 'outerConeAngle', this.inputs.outerConeAngle);
                 break;
             }
             default: Log.error(`${this.inputs.type} not match`);
