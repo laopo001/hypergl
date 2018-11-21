@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 21st 2018, 12:26:21 am
+ * Last Modified: Wednesday, November 21st 2018, 5:21:15 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -22,7 +22,9 @@ export class ScriptComponentSystem extends ComponentSystem {
     addComponent(entity: Entity, componentData: any) {
         let component = super.addComponent(entity, componentData) as ScriptComponent;
         this.app.on('update', (e) => {
-            component.instance.update(e);
+            component.instance.forEach(script => {
+                script.update(e);
+            });
         });
         return component;
     }

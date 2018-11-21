@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, November 20th 2018, 11:23:20 pm
+ * Last Modified: Wednesday, November 21st 2018, 5:48:24 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,10 +20,10 @@ import { Vec3 } from '../../../math/vec3';
 export class ModelComponentSystem extends ComponentSystem {
     name = 'model';
     componentConstructor = ModelComponent;
-    layers: ModelComponent[] = [];
+    normalLayers: ModelComponent[] = [];
     opacityLayers: ModelComponent[] = [];
     get renderLayers() {
-        return this.layers.concat(this.opacityLayers);
+        return this.normalLayers.concat(this.opacityLayers);
     }
     addComponent(entity: Entity, componentData: any) {
         let component = super.addComponent(entity, componentData) as ModelComponent;
@@ -32,7 +32,7 @@ export class ModelComponentSystem extends ComponentSystem {
         if (item.material instanceof StandardMaterial && item.material.opacity < 1 && item.material.opacityMap) {
             this.opacityLayers.push(component);
         } else {
-            this.layers.push(component);
+            this.normalLayers.push(component);
         }
 
         this.app.on('beforeRender', () => {
@@ -41,7 +41,7 @@ export class ModelComponentSystem extends ComponentSystem {
                     new Vec3().sub2(a.getPosition(), this.app.scene.activeCamera.getPosition()).length();
             });
         });
-        console.warn(component);
+        // console.warn(component);
         return component;
     }
 }

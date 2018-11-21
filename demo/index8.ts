@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 21st 2018, 12:36:31 am
+ * Last Modified: Wednesday, November 21st 2018, 5:46:53 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -35,7 +35,7 @@ async function main() {
     });
     camera.setPosition(-2, 5, 10);
     camera.lookAt(new Vec3(0, 0, 0), camera.up);
-    camera.addComponent('script', new FirstPersonCamera());
+    camera.addComponent('script', [new FirstPersonCamera()]);
     app.scene.root.addChild(camera);
 
     let light = new Entity();
@@ -48,6 +48,7 @@ async function main() {
     box.addComponent('model', {
         type: 'box'
     });
+
     let material = new StandardMaterial();
     material.diffuseColor.set(1, 0, 1);
     material.update();

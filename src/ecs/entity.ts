@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 21st 2018, 12:49:37 am
+ * Last Modified: Wednesday, November 21st 2018, 5:52:45 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -16,7 +16,7 @@ import { SceneNode } from '../scene/node';
 import { Mesh, Model } from '../mesh';
 import { CameraComponent, CameraInputs } from './components/camera';
 import { LightComponent, LigthInputs } from './components/light';
-import { ScriptInputs, Script } from './components/script';
+import { ScriptInputs, Script, ScriptComponent } from './components/script';
 import { ModelInputs, ModelComponent } from './components/model';
 import { Component } from './component';
 import { Shader } from '../graphics/shader';
@@ -39,13 +39,14 @@ export type componentName = keyof ComponentInputs;
 
 export class Entity extends SceneNode {
     EntityID = EntityID++;
-    mesh?: Mesh;
-    model?: ModelComponent;
-    camera?: CameraComponent;
-    light?: Light;
+    mesh!: Mesh;
+    model!: ModelComponent;
+    camera!: CameraComponent;
+    light!: LightComponent;
+    script!: ScriptComponent;
     boundingBox: any;
     app = Application.getApp();
-    private _enabled = true;
+    // private enabled = true;
     constructor() {
         super();
     }
@@ -56,7 +57,15 @@ export class Entity extends SceneNode {
         this[name as string] = component;
         return component;
     }
-    get<T>(name: string): T {
+    addComponents<K extends keyof ComponentInputs, T>(arr: Array<{ name: K, options: ComponentInputs[K] }>) {
+        return arr.map(item => {
+            if (this[item.name as any]) {
+                return;
+            }
+            return this.addComponent(item.name, item.options);
+        });
+    }
+    get<T extends keyof Entity>(name: T): Pick<Entity, T> {
         if (this[name] == null) {
             Log.error(name + ' not add component');
         }
