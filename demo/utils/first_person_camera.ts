@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 19th 2018, 1:47:27 pm
+ * Last Modified: Thursday, November 22nd 2018, 1:10:47 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,7 +20,6 @@ export class FirstPersonCamera extends Script<FirstPersonCameraInputs> {
     static defaultInputs = {
         speed: 1
     };
-    app;
     ex!: number;
     ey!: number;
     ez!: number;

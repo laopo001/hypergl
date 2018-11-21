@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 22nd 2018, 1:03:34 am
+ * Last Modified: Thursday, November 22nd 2018, 1:10:45 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,6 +14,7 @@
 
 import { Application, Entity, Script, StandardMaterial, Config } from '../src';
 import { FirstPersonCamera } from './utils/first_person_camera';
+import { Rotate } from './utils/rotate';
 import { Vec3 } from '../src/math';
 import { Color } from '../src/core';
 
@@ -66,6 +67,7 @@ async function main() {
     });
     box2.setLocalPosition(1, 0, 0);
     temp.addChild(box2);
+    temp.addComponent('script', [new Rotate()]);
 
     box.model!.material = material;
     app.scene.root.addChild(temp);
