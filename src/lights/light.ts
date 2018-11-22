@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 22nd 2018, 12:11:52 pm
+ * Last Modified: Thursday, November 22nd 2018, 4:27:11 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -22,7 +22,7 @@ export class Light {
     color = new Color(1, 1, 1);
     castShadows = true;
     shadowFrame?: Frame;
-    shadowUpdateMode: ShadowUpdateMode = ShadowUpdateMode.Once;
+    shadowUpdateMode: ShadowUpdateMode = ShadowUpdateMode.RealTime;
     shadowMapWidth = 1024;
     shadowMapHeight = 1024;
     shadowBias = 0.005;

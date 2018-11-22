@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 22nd 2018, 11:16:53 am
+ * Last Modified: Thursday, November 22nd 2018, 3:14:13 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -67,7 +67,7 @@ async function main() {
     });
     box2.setLocalPosition(1, 0, 0);
     temp.addChild(box2);
-    temp.addComponent('script', [new Rotate()]);
+    temp.addComponent('script', [new Rotate({ speed: 2 })]);
 
     box.model!.material = material;
     app.scene.root.addChild(temp);
