@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 22nd 2018, 3:14:13 pm
+ * Last Modified: Thursday, November 22nd 2018, 7:58:43 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -29,56 +29,53 @@ async function main() {
     material.update();
 
 
-    let camera = new Entity('camera');
-    camera.addComponent('camera', {
-        type: 'perspective',
-        perspective: {
-            fov: 90,
-            aspectRatio: app.canvas.width / app.canvas.height,
-            near: 1,
-            far: 10000
-        }
-    });
-    camera.setPosition(-2, 5, 10);
-    camera.lookAt(new Vec3(0, 0, 0), camera.up);
-    camera.addComponent('script', [new FirstPersonCamera({ speed: 0.5 })]);
+    let camera = new Entity('camera')
+        .addComponent('camera', {
+            type: 'perspective',
+            perspective: {
+                fov: 90,
+                aspectRatio: app.canvas.width / app.canvas.height,
+                near: 1,
+                far: 10000
+            }
+        })
+        .setPosition(-2, 5, 10).lookAt(new Vec3(0, 0, 0))
+        .addComponent('script', [new FirstPersonCamera({ speed: 0.5 })]);
     app.scene.root.addChild(camera);
 
-    let light = new Entity('light');
-    light.addComponent('light', {
-        type: 'directional',
-        castShadows: true
-    });
-    light.setPosition(0, 2, 0);
+    let light = new Entity('light')
+        .addComponent('light', {
+            type: 'directional',
+            castShadows: true
+        })
+        .setPosition(0, 2, 0);
     app.scene.root.addChild(light);
 
+
+    let box = new Entity('box')
+        .addComponent('model', {
+            type: 'box'
+        })
+        .setLocalPosition(-1, 0, 0);
+
+    let box2 = new Entity('box2')
+        .addComponent('model', {
+            type: 'box'
+        }).setLocalPosition(1, 0, 0);
+
     let temp = new Entity('temp');
-
-    let box = new Entity('box');
-    box.addComponent('model', {
-        type: 'box'
-    });
-    box.setLocalPosition(-1, 0, 0);
-    temp.addChild(box);
-
-    let box2 = new Entity('box2');
-    box2.addComponent('model', {
-        type: 'box'
-    });
-    box2.setLocalPosition(1, 0, 0);
-    temp.addChild(box2);
+    temp.addChild(box).addChild(box2);
     temp.addComponent('script', [new Rotate({ speed: 2 })]);
 
     box.model!.material = material;
     app.scene.root.addChild(temp);
 
-    let plane = new Entity('plane');
-    plane.addComponent('model', {
-        type: 'plane'
-    });
+    let plane = new Entity('plane')
+        .addComponent('model', {
+            type: 'plane'
+        })
+        .setPosition(0, -2, 0).setLocalScale(10, 1, 10);
 
-    plane.setPosition(0, -2, 0);
-    plane.setLocalScale(10, 1, 10);
     app.scene.root.addChild(plane);
 
     app.start();

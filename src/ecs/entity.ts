@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 22nd 2018, 12:09:54 pm
+ * Last Modified: Thursday, November 22nd 2018, 7:57:14 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -26,6 +26,7 @@ import { Application } from '../application';
 import { ComponentSystem } from './system';
 import { Scene, SceneNode } from '../scene';
 import { Constructor } from '../types';
+import { Vec3 } from '../math';
 let EntityID = 0;
 
 export interface ComponentInputs {
@@ -67,15 +68,16 @@ export class Entity extends SceneNode {
         Log.assert(system != null, name + ' system not register');
         let component = system.addComponent(this, options);
         this[name as string] = component;
-        return component;
+        return this;
     }
     addComponents<K extends keyof ComponentInputs>(arr: Array<{ name: K, options: ComponentInputs[K] }>) {
-        return arr.map(item => {
+        arr.map(item => {
             if (this[item.name as any]) {
                 return;
             }
             return this.addComponent(item.name, item.options);
         });
+        return this;
     }
     get<T extends keyof Entity>(name: T): Pick<Entity, T> {
         if (this[name] == null) {
@@ -94,6 +96,7 @@ export class Entity extends SceneNode {
         if (!this.enabled) {
             child.enabled = false;
         }
+        return this;
     }
     findByName(name: string) {
         if (this.name === name) {
