@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 22nd 2018, 12:50:08 am
+ * Last Modified: Thursday, November 22nd 2018, 12:09:54 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -45,14 +45,22 @@ export class Entity extends SceneNode {
     light!: LightComponent;
     script!: ScriptComponent;
     boundingBox: any;
-    app = Application.getApp();
+    get app() {
+        return Application.getApp();
+    }
     enabled = false;
-    scene!: Scene;
     parent?: Entity;
     readonly children: Entity[] = [];
-    constructor(name?: string) {
+    constructor(name?: string)
+    constructor(options?: { name?: string, tag: string[] })
+    constructor(name?) {
         super();
-        this.name = name;
+        if (typeof name === 'string') {
+            this.name = name;
+        } else {
+            this.name = name.name;
+            this.tag = name.options;
+        }
     }
     addComponent<K extends keyof ComponentInputs>(name: K, options: ComponentInputs[K]) {
         const system = this.app.scene.systems[name] as ComponentSystem;
@@ -82,12 +90,25 @@ export class Entity extends SceneNode {
     addChild(child: Entity) {
         super.addChild(child);
         child.parent = this;
-        if (this.scene) {
-            child.scene = this.scene;
-            this.scene.add(child);
-        }
+        this.app.scene.add(child);
         if (!this.enabled) {
             child.enabled = false;
         }
+    }
+    findByName(name: string) {
+        if (this.name === name) {
+            return this;
+        }
+        for (let i = 0; i < this.children.length; i++) {
+            const child = this.children[i];
+            let t = child.findByName(name);
+            if (t) {
+                return t;
+            }
+        }
+    }
+
+    findByTag(name: string[]) {
+        //
     }
 }

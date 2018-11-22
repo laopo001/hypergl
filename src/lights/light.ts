@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 14th 2018, 12:51:02 am
+ * Last Modified: Thursday, November 22nd 2018, 12:11:52 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -18,7 +18,7 @@ import { ShadowUpdateMode } from '../conf';
 import { Frame } from '../graphics/createFrame';
 
 
-export class Light extends SceneNode {
+export class Light {
     color = new Color(1, 1, 1);
     castShadows = true;
     shadowFrame?: Frame;
@@ -28,7 +28,7 @@ export class Light extends SceneNode {
     shadowBias = 0.005;
     shadowDarkness = 0.05;
     constructor() {
-        super();
+        // super();
     }
 
 }

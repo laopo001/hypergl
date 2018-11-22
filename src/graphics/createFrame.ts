@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 2nd 2018, 12:20:10 pm
+ * Last Modified: Thursday, November 22nd 2018, 12:22:34 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -156,7 +156,7 @@ export class Frame {
     afterDraw() {
         const gl = this.renderer.gl;
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);        // Change the drawing destination to color buffer
-        this.renderer.setViewport.apply(this.renderer, this.renderer.viewport);
+        this.renderer.setViewport.apply(this.renderer, this.renderer.viewport as [number, number, number, number]);
     }
     render() {
         this.beforeDraw();

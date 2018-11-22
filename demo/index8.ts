@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 22nd 2018, 1:10:45 am
+ * Last Modified: Thursday, November 22nd 2018, 11:16:53 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -80,6 +80,7 @@ async function main() {
     plane.setPosition(0, -2, 0);
     plane.setLocalScale(10, 1, 10);
     app.scene.root.addChild(plane);
+
     app.start();
 }
 

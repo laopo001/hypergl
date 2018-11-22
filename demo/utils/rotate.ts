@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 22nd 2018, 1:11:57 am
+ * Last Modified: Thursday, November 22nd 2018, 11:01:59 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,10 +14,10 @@
 
 import { math, Script } from '../../src';
 
-export interface FirstPersonCameraInputs {
+export interface RotateInputs {
     speed: number;
 }
-export class Rotate extends Script<FirstPersonCameraInputs> {
+export class Rotate extends Script<RotateInputs> {
     static defaultInputs = {
         speed: 1
     };

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 22nd 2018, 12:22:43 am
+ * Last Modified: Thursday, November 22nd 2018, 12:12:49 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -102,16 +102,6 @@ export function renderDirectionalLightArr(name: string, data: LightComponent<Dir
         let width = 1 * height;
         let length = 1 * height;
         camera.setOrtho(-width, width, -height, height, -length, length);
-        // let v = light.getPosition().sub(new Vec3(0, 0, 0));
-        // let up = new Vec3();
-        // if (v.z === 0) {
-        //     up.set(0, 0, -1);
-        // } else {
-        //     up.set(0, 1, -v.y / v.z);
-        // }
-        // camera.setPosition(0, 0, 0);
-        // console.log(light.direction);
-        // camera.setPosition(scene.activeCamera.getPosition());
         camera.lookAt(light.direction, camera.up);
 
         let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
@@ -131,7 +121,6 @@ export function renderDirectionalLightArr(name: string, data: LightComponent<Dir
             renderer.draw(modelComponent);
         }
         light.shadowFrame.afterDraw();
-        // gl.cullFace(gl.BACK);
         return { texture: light.shadowFrame.getTexture(), viewProjectionMatrix: camera.viewProjectionMatrix };
     }
 
@@ -163,7 +152,6 @@ export function renderPointLightArr(name: string, data: LightComponent<PointLigh
             light.shadowFrame = scene.createShadowFrame(true);
         }
         let cameras: Camera[] = [];
-
         for (let i = 0; i < 6; i++) {
             let v = new Vec3();
             let a = i % 2;

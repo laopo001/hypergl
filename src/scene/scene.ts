@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 21st 2018, 7:39:36 pm
+ * Last Modified: Thursday, November 22nd 2018, 10:56:46 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -62,8 +62,6 @@ export class Scene {
     }
     private materials: Material[] = [];
     constructor() {
-        // super();
-        this.root.scene = this;
         this.root.enabled = true;
         event.on('opacityChange', (e) => {
             console.log('opacityChange');
@@ -97,7 +95,6 @@ export class Scene {
         if (child.children.length > 0) {
             for (let i = 0; i < child.children.length; i++) {
                 const element = child.children[i];
-                element.scene = this;
                 this.add(element);
             }
         }
