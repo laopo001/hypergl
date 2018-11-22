@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 21st 2018, 10:44:41 pm
+ * Last Modified: Thursday, November 22nd 2018, 8:27:19 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -34,19 +34,10 @@ export interface LigthInputs {
     outerConeAngle?: number;
 }
 
-function setValue(obj, key, value) {
-    if (value !== undefined) {
-        obj[key] = value;
-    }
-}
+
 
 export class LightComponent<T extends Light = Light> extends Component<LigthInputs> {
-    public get direction(): Vec3 {
-        return (this.instance as any).direction;
-    }
-    public set direction(v: Vec3) {
-        (this.instance as any).direction = v;
-    }
+
     name = 'light';
     instance!: T;
     constructor(inputs) {
@@ -84,6 +75,12 @@ export class LightComponent<T extends Light = Light> extends Component<LigthInpu
         this.entity = entity;
         this.system = system;
     }
+    get direction(): Vec3 {
+        return (this.instance as any).direction;
+    }
+    set direction(v: Vec3) {
+        (this.instance as any).direction = v;
+    }
     get castShadows() {
         return this.instance.castShadows;
     }
@@ -98,6 +95,18 @@ export class LightComponent<T extends Light = Light> extends Component<LigthInpu
     }
     get range(): number {
         return (this.instance as any).range;
+    }
+    get shadowMapWidth() {
+        return this.instance.shadowMapWidth;
+    }
+    set shadowMapWidth(v) {
+        this.instance.shadowMapWidth = v;
+    }
+    get shadowMapHeight() {
+        return this.instance.shadowMapHeight;
+    }
+    set shadowMapHeight(v) {
+        this.instance.shadowMapHeight = v;
     }
     get outerConeAngle(): number {
         return (this.instance as any).outerConeAngle;

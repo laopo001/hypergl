@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 22nd 2018, 12:12:49 pm
+ * Last Modified: Thursday, November 22nd 2018, 8:15:05 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -183,7 +183,7 @@ export function renderPointLightArr(name: string, data: LightComponent<PointLigh
             shader.setUniformValue('view_position', camera.getPosition().data);
             shader.setUniformValue('light_range', light.range);
             light.shadowFrame.createFramebuffer3D(i);
-            light.shadowFrame.beforeDraw(i);
+            light.shadowFrame.beforeDraw(i, light.shadowMapWidth, light.shadowMapHeight);
             for (let i = 0; i < modelComponents.length; i++) {
                 let modelComponent = modelComponents[i];
                 if (!modelComponent.enabled || !modelComponent.mesh || !modelComponent.mesh.castShadow) {
