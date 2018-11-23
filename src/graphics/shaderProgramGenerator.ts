@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 29th 2018, 12:25:09 am
+ * Last Modified: Saturday, November 24th 2018, 1:17:08 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -57,7 +57,7 @@ function generateKey(options) {
     for (let x in options.uniforms) {
         str += x + ',';
     }
-    return JSON.stringify(options.attributes) + JSON.stringify(options.data) + str;
+    return JSON.stringify(options.attributes) + str;
 }
 
 function createShaderDefinition(name: string, renderer: RendererPlatform, options) {

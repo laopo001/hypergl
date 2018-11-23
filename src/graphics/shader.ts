@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 28th 2018, 11:13:12 pm
+ * Last Modified: Saturday, November 24th 2018, 1:17:08 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -36,8 +36,11 @@ export class Shader {
     }) {
         this.compile();
     }
-    setUniformValue(name, value) {
+    setUniformValue(name: string, value) {
         this.uniformScope[name] = value;
+    }
+    getUniformValue(name: string) {
+        return this.uniformScope[name];
     }
     checkUniformScope() {
         // tslint:disable-next-line:forin
@@ -120,20 +123,20 @@ export class Shader {
 
 export function createProgram(gl: WebGLRenderingContext | WebGL2RenderingContext, vertexShader: WebGLShader, fragmentShader: WebGLShader) {
     const program = gl.createProgram();
-    gl.attachShader(program, vertexShader);
-    gl.attachShader(program, fragmentShader);
+    gl.attachShader(program!, vertexShader);
+    gl.attachShader(program!, fragmentShader);
     return program;
 }
 
 export function loadShader(gl: WebGLRenderingContext | WebGL2RenderingContext, type: number, source: string) {
     const shader = gl.createShader(type);
-    gl.shaderSource(shader, source);
-    gl.compileShader(shader);
-    const compiled = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+    gl.shaderSource(shader!, source);
+    gl.compileShader(shader!);
+    const compiled = gl.getShaderParameter(shader!, gl.COMPILE_STATUS);
     if (!compiled) {
 
         let str = source.split('\n').map((x, index) => { return (index) + ' ' + x + '\n'; }).join('');
-        Log.error(`${gl.VERTEX_SHADER === type ? 'VERTEX_SHADER' : 'FRAGMENT_SHADER'}\n${gl.getShaderInfoLog(shader) as string}\n${str}`);
+        Log.error(`${gl.VERTEX_SHADER === type ? 'VERTEX_SHADER' : 'FRAGMENT_SHADER'}\n${gl.getShaderInfoLog(shader!) as string}\n${str}`);
         return false;
     }
     return shader;

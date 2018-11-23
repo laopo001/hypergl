@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 22nd 2018, 1:01:23 am
+ * Last Modified: Saturday, November 24th 2018, 1:00:25 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -292,7 +292,7 @@ export class RendererPlatform {
             this.setIndexBuffer(mesh.indexBuffer);
         }
 
-        const shader = this.currShader as Shader;
+        const shader = this.currShader;
         const samplers = shader.samplers;
         const uniforms = shader.uniforms;
         const attributes = shader.attributes;
@@ -320,12 +320,12 @@ export class RendererPlatform {
         Log.assert(shader.checkUniformScope() === true, 'UniformScopValue not set', shader.uniformScope);
         for (let i = 0; i < uniforms.length; i++) {
             let uniform = uniforms[i];
-            this.uniformFunction[uniform.type](uniform, shader.uniformScope[uniform.name]);
+            this.uniformFunction[uniform.type](uniform, shader.getUniformValue(uniform.name));
         }
 
         for (let i = 0; i < samplers.length; i++) {
             let sampler = samplers[i];
-            let value = shader.uniformScope[sampler.name] as Texture;
+            let value = shader.getUniformValue(sampler.name) as Texture;
             this.loadTexture(gl, shader.program as WebGLProgram, sampler.name, value, i);
         }
         if (mesh.material.cullFace === FACE.NONE) {
@@ -346,7 +346,6 @@ export class RendererPlatform {
             }
             gl.drawElements(
                 this.glDrawMode[mesh.mode],
-                // gl.TRIANGLES,
                 mesh.indexBuffer.length,
                 drawFormat,
                 0

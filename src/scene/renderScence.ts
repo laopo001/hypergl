@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 22nd 2018, 8:15:05 pm
+ * Last Modified: Saturday, November 24th 2018, 12:27:20 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -68,7 +68,7 @@ export function renderScence(scene: Scene) {
         material.setLights(LightsUniforms);
         // material.setDirectionalLightArr('directionalLightArr', lights.directionalLights, scene);
         // material.setPointLightArr('pointLightArr', lights.pointLights);
-        material.updateShader(renderer, attributes);
+        material.updateShader(attributes);
         let shader = mesh.material.shader as Shader;
         renderer.setShaderProgram(shader);
         shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);

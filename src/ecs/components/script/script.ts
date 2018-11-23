@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 22nd 2018, 11:00:57 am
+ * Last Modified: Saturday, November 24th 2018, 1:52:42 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -16,14 +16,14 @@ import { Entity, Application } from '../../..';
 import { Component } from '../../component';
 import { Constructor } from '../../../types';
 export abstract class Script<Inputs> {
-    static defaultInputs = {};
+    static defaultInputs: any = {};
     get app() {
         return Application.getApp();
     }
     entity!: Entity;
     inputs!: Inputs;
-    constructor(inputs?: Inputs) {
-        // console.log(Script);
+    constructor(inputs: Inputs) {
+        this.inputs = inputs!;
     }
     static default() {
         return new (this as any)(this.defaultInputs);

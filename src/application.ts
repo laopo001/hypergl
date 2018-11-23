@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 21st 2018, 12:34:05 am
+ * Last Modified: Saturday, November 24th 2018, 2:04:03 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -76,12 +76,12 @@ export class Application {
     }
 
     private tick() {
-        timer.start();
         event.fire('beforeRender');
+        timer.start();
         this.scene.render();
-        event.fire('afterRender');
         timer.end();
         event.fire('update', timer.getDuration());
+        event.fire('afterRender');
         window.requestAnimationFrame(this.tick.bind(this));
     }
 

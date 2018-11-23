@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 22nd 2018, 12:35:34 am
+ * Last Modified: Saturday, November 24th 2018, 2:24:21 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -25,10 +25,19 @@ export class ModelComponent extends Component<ModelInputs> {
     entity!: Entity;
     instance: Mesh;
     public get material(): StandardMaterial {
-        return this.instance._material;
+        return this.instance.material;
     }
-    public set material(v: StandardMaterial) {
-        this.instance._material = v;
+    public set material(x: StandardMaterial) {
+        if (!x.meshs.includes(this)) {
+            x.meshs.push(this);
+        }
+        if (this.material) {
+            let index = this.material.meshs.indexOf(this);
+            if (index > -1) {
+                this.material.meshs.splice(index, 1);
+            }
+        }
+        this.instance.material = x;
     }
     get mesh() {
         return this.instance;

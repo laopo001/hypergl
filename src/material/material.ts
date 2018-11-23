@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 22nd 2018, 12:59:50 am
+ * Last Modified: Saturday, November 24th 2018, 2:24:16 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,18 +15,23 @@
 import { RendererPlatform } from '../graphics/renderer';
 import { SEMANTIC, FACE } from '../conf';
 import { Shader } from '../graphics/shader';
-import { Light, PointLight, DirectionalLight } from '../lights';
-import { Scene } from '../scene/scene';
 import { Mesh } from '../mesh/mesh';
+import { Application } from '../application';
+import { ModelComponent } from '../ecs/components/model';
 
 
 export abstract class Material {
+    get app() {
+        return Application.getApp();
+    }
     uniforms: { [s: string]: any } = {};
     shader?: Shader;
-
     cullFace = FACE.BACK;
-    meshs: Mesh[] = [];
-    protected _dirtyUpdate = false;
+    meshs: ModelComponent[] = [];
+    // protected _dirtyUpdate = false;
+    constructor(public name?: string) {
+
+    }
     setUniform(name: string, data: any) {
         this.uniforms[name] = data;
     }
@@ -34,10 +39,9 @@ export abstract class Material {
         return this.uniforms[name];
     }
     abstract update();
-    abstract updateShader(renderer: RendererPlatform, attributes: { [s: string]: SEMANTIC });
+    abstract updateShader(attributes: { [s: string]: SEMANTIC });
     setLights(uniforms: any) {
         Object.assign(this.uniforms, uniforms);
-        this._dirtyUpdate = true;
     }
 
 }

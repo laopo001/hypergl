@@ -129,8 +129,8 @@ float texture2DShadowLerp( sampler2D depths, vec2 size, vec2 uv, float compare )
     float c = mix( a, b, f.x );
     return c;
 }
-
-float CalcDirLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, vec3 lightDirection) {
+// DirLight or SpotLight
+float CalcLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap) {
     // 执行透视除法
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
       // 变换到[0,1]的范围
@@ -187,7 +187,7 @@ vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirectio
 }  
 
 vec3 CalcDirLightAndShadow(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirection, sampler2D shadowMap, mat4 lightSpaceMatrix) {
-    float shadow = CalcDirLightShadow(lightSpaceMatrix * vec4(out_vertex_position, 1.0), shadowMap, lightDirection);    
+    float shadow = CalcLightShadow(lightSpaceMatrix * vec4(out_vertex_position, 1.0), shadowMap);    
     vec3 color = CalcDirLight(normal, viewDir, lightColor, lightDirection);
     return color * (1.0 - shadow);
 }
@@ -237,7 +237,7 @@ vec3 CalcSpotLightAndShadow(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lig
     float cosAngle = dot(lightDirectionNorm, direction);
     float f = smoothstep(outerConeAngle, innerConeAngle, cosAngle);
     vec3 color = CalcPointLight(normal, viewDir, lightColor, lightPosition, range) * f;
-    float shadow = CalcDirLightShadow(lightSpaceMatrix * vec4(out_vertex_position, 1.0), shadowMap, lightDirection);    
+    float shadow = CalcLightShadow(lightSpaceMatrix * vec4(out_vertex_position, 1.0), shadowMap);    
     return color * (1.0 - shadow);
 }
 

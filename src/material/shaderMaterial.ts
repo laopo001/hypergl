@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 22nd 2018, 8:25:39 pm
+ * Last Modified: Saturday, November 24th 2018, 1:25:22 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -21,14 +21,11 @@ export class ShaderMaterial extends Material {
     update() {
         //
     }
-    updateShader(renderer: RendererPlatform, attributes: { [s: string]: SEMANTIC }) {
+    updateShader(attributes: { [s: string]: SEMANTIC }) {
         if (this.shader == null) {
             Log.error('this.shader为null');
             return;
         }
-        // tslint:disable-next-line:forin
-        for (let key in this.uniforms) {
-            this.shader.setUniformValue(key, this.uniforms[key]);
-        }
+        this.shader.uniformScope = this.uniforms;
     }
 }

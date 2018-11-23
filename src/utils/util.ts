@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 23rd 2018, 11:22:18 am
+ * Last Modified: Saturday, November 24th 2018, 2:09:22 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -107,5 +107,5 @@ class Greeter implements I {
     range!: string;
 }
 
-let g = new Greeter();
-console.log(g);
+// let g = new Greeter();
+// console.log(g);

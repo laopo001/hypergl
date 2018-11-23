@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 2nd 2018, 5:41:08 pm
+ * Last Modified: Saturday, November 24th 2018, 2:32:56 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -27,59 +27,93 @@ export class StandardMaterial extends Material {
         return this._opacityMap;
     }
     public set opacityMap(value: Undefined<Texture>) {
-        if (value != null) {
-            event.fire('opacityChange', this);
-        }
         this._opacityMap = value;
+        this.setUniform('opacityTexture', this.opacityMap);
     }
     get opacity() {
         return this._opacity;
     }
     set opacity(value) {
-        if (value < 1) {
-            event.fire('opacityChange', this);
-        }
         this._opacity = value;
+        this.setUniform('opacity', this.opacity);
     }
-    name?: string;
-    ambientColor = Scene.ambientColor;
-    diffuseColor = new Color(1, 1, 1);
-    diffuseMap?: Texture;
-    specularColor = new Color(0.3, 0.3, 0.3);
-    specularMap?: Texture;
-    shininess = 64;
+    public get ambientColor() {
+        return this._ambientColor;
+    }
+    public set ambientColor(v) {
+        this._ambientColor = v;
+        this.setUniform('ambientColor', this.ambientColor.data);
+    }
+    public get diffuseColor() {
+        return this._diffuseColor;
+    }
+    public set diffuseColor(value) {
+        this._diffuseColor = value;
+        this.setUniform('diffuseColor', this.diffuseColor.data);
+    }
+    public get diffuseMap() {
+        return this._diffuseMap;
+    }
+    public set diffuseMap(value) {
+        this._diffuseMap = value;
+        this.setUniform('diffuseTexture', this.diffuseMap);
+    }
+    public get specularColor() {
+        return this._specularColor;
+    }
+    public set specularColor(value) {
+        this._specularColor = value;
+        this.setUniform('specularColor', this.specularColor.data);
+    }
+    public get specularMap() {
+        return this._specularMap;
+    }
+    public set specularMap(value) {
+        this._specularMap = value;
+        this.setUniform('specularTexture', this.specularMap);
+    }
+    private _shininess = 64;
+    public get shininess() {
+        return this._shininess;
+    }
+    public set shininess(value) {
+        this._shininess = value;
+        this.setUniform('opacity', this.opacity);
+    }
+    private _specularMap?: Texture;
+    private _specularColor = new Color(0.3, 0.3, 0.3);
+    private _diffuseMap?: Texture;
+
+    private _diffuseColor = new Color(1, 1, 1);
+
+
+    private _ambientColor = Scene.ambientColor;
     private _opacity = 1;
     private _opacityMap?: Texture;
-    constructor() {
-        super();
+    constructor(name?: string) {
+        super(name);
         this.update();
     }
     update() {
-        // this.setParameter('lightPosition', new Vec3(1, 1, 1).data);
         this.setUniform('ambientColor', this.ambientColor.data);
         this.setUniform('diffuseColor', this.diffuseColor.data);
         // tslint:disable-next-line:no-unused-expression
-        this.diffuseMap && this.setUniform('diffuseTexture', this.diffuseMap);
+        // this.diffuseMap && this.setUniform('diffuseTexture', this.diffuseMap);
+
         this.setUniform('specularColor', this.specularColor.data);
         // tslint:disable-next-line:no-unused-expression
-        this.specularMap && this.setUniform('specularTexture', this.specularMap);
+        // this.specularMap && this.setUniform('specularTexture', this.specularMap);
         this.setUniform('shininess', this.shininess);
         this.setUniform('opacity', this.opacity);
         // tslint:disable-next-line:no-unused-expression
-        this.opacityMap && this.setUniform('opacityTexture', this.opacityMap);
-        this._dirtyUpdate = true;
+        // this.opacityMap && this.setUniform('opacityTexture', this.opacityMap);
+
     }
-    updateShader(renderer: RendererPlatform, attributes: { [s: string]: SEMANTIC }) {
+    updateShader(attributes: { [s: string]: SEMANTIC }) {
+        let renderer = this.app.renderer;
         if (this.shader == null) {
             this.shader = renderer.programGenerator.getShader('PhoneMaterial', attributes, this.uniforms);
         }
-
-        if (this._dirtyUpdate) {
-            // tslint:disable-next-line:forin
-            for (let key in this.uniforms) {
-                this.shader.setUniformValue(key, this.uniforms[key]);
-            }
-            this._dirtyUpdate = false;
-        }
+        this.shader.uniformScope = this.uniforms;
     }
 }

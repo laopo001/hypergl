@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 22nd 2018, 1:04:25 am
+ * Last Modified: Saturday, November 24th 2018, 2:24:32 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -26,15 +26,6 @@ export class Mesh {
         return this._material;
     }
     set material(x) {
-        if (!x.meshs.includes(this)) {
-            x.meshs.push(this);
-        }
-        if (this._material) {
-            let index = this._material.meshs.indexOf(this);
-            if (index > -1) {
-                this._material.meshs.splice(index, 1);
-            }
-        }
         this._material = x;
     }
     static defaultMaterial: StandardMaterial = new StandardMaterial();
