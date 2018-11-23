@@ -5,13 +5,15 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 22nd 2018, 9:01:14 pm
+ * Last Modified: Friday, November 23rd 2018, 11:22:18 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 import 'reflect-metadata';
+import { Constructor } from '../types';
+
 
 /**
  * 日志
@@ -66,7 +68,7 @@ export function createClosure() {
     };
 }
 
-function validate<T>(target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<T>) {
+export function validate<T>(target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<T>) {
     const set = descriptor.set!;
     // tslint:disable-next-line:only-arrow-functions
     descriptor.set = function (value: T) {
@@ -77,3 +79,33 @@ function validate<T>(target: any, propertyKey: string, descriptor: TypedProperty
       set(value);
     };
   }
+
+
+  function classDecorator(arr: string[]) {
+    return function fn(c: Constructor<Greeter>) {
+        return class extends c {
+            constructor() {
+                super();
+                arr.forEach(key => {
+                    Object.defineProperty(this, key, {
+                        get: () => { return 'get'; },
+                        set: () => { return 'set'; },
+                    });
+                });
+            }
+        };
+    };
+
+}
+interface I {
+    range: string;
+}
+
+@classDecorator(['range'])
+class Greeter implements I {
+    name = 123;
+    range!: string;
+}
+
+let g = new Greeter();
+console.log(g);

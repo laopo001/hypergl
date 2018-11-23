@@ -5,19 +5,19 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 23rd 2018, 1:24:14 am
+ * Last Modified: Friday, November 23rd 2018, 6:47:35 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Application, Entity, Script, StandardMaterial, Config } from '../src';
+import { Entity, Script, StandardMaterial, Config, Application } from '../src';
 import { FirstPersonCamera } from './utils/first_person_camera';
 import { Rotate } from './utils/rotate';
 import { Vec3 } from '../src/math';
 import { Color } from '../src/core';
-import { Constructor } from 'src/types';
+
 
 
 async function main() {
@@ -27,6 +27,7 @@ async function main() {
     console.log(app);
     let material = new StandardMaterial();
     material.diffuseColor.set(1, 0, 1);
+    material.opacity = 0.5;
     material.update();
 
 
@@ -83,34 +84,5 @@ async function main() {
 }
 
 main();
-
-function classDecorator(arr: string[]) {
-    return function fn(c: Constructor<Greeter>) {
-        return class extends c {
-            constructor() {
-                super();
-                arr.forEach(key => {
-                    Object.defineProperty(this, key, {
-                        get: () => { return 'get'; },
-                        set: () => { return 'set'; },
-                    });
-                });
-            }
-        };
-    };
-
-}
-interface I {
-    range: string;
-}
-
-@classDecorator(['range'])
-class Greeter implements I {
-    name = 123;
-    range!: string;
-}
-
-let g = new Greeter();
-console.log((g as any).range);
 
 
