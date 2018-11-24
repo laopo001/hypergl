@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 24th 2018, 12:27:20 am
+ * Last Modified: Saturday, November 24th 2018, 9:31:20 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -98,7 +98,7 @@ export function renderDirectionalLightArr(name: string, data: LightComponent<Dir
         }
 
         let camera = new Camera();
-        let height = 20;
+        let height = 40;
         let width = 1 * height;
         let length = 1 * height;
         camera.setOrtho(-width, width, -height, height, -length, length);

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 24th 2018, 2:33:18 am
+ * Last Modified: Saturday, November 24th 2018, 7:13:59 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -82,7 +82,7 @@ async function main() {
             type: 'plane'
         })
         .setPosition(0, -2, 0).setLocalScale(10, 1, 10);
-    plane.model.material = material2;
+    // plane.model.material = material2;
     app.scene.root.addChild(plane);
 
     app.start();

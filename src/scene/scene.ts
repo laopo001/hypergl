@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 24th 2018, 2:10:46 am
+ * Last Modified: Saturday, November 24th 2018, 6:30:13 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -63,9 +63,6 @@ export class Scene {
     private materials: Material[] = [];
     constructor() {
         this.root.enabled = true;
-        // event.on('opacityChange', (e) => {
-        //     console.log('opacityChange');
-        // });
         this.systems = new SystemRegistry();
         this.systems.add(new CameraComponentSystem());
         this.systems.add(new LightComponentSystem());
