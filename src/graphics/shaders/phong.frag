@@ -10,6 +10,7 @@ uniform vec4 {{this.color}};
 uniform vec3 {{this.direction}};
 uniform sampler2D {{this.shadowMap}};
 uniform mat4 {{this.lightSpaceMatrix}};
+uniform int {{this.shadowType}};
 {{/each}}
 // directionalLight end
 // pointLight start
@@ -63,6 +64,8 @@ varying vec2 out_vertex_texCoord0;
 varying vec3 out_normal;
 {{/if}}
 varying vec3 out_vertex_position;
+
+vec4 getDiffuseColor;
 
 {{#if attributes.vertex_color}}
 varying vec4 vColor;
@@ -130,7 +133,7 @@ float texture2DShadowLerp( sampler2D depths, vec2 size, vec2 uv, float compare )
     return c;
 }
 // DirLight or SpotLight
-float CalcLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap) {
+float CalcLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, int shadowType) {
     // 执行透视除法
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
       // 变换到[0,1]的范围
@@ -141,31 +144,30 @@ float CalcLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap) {
     bool frustumTest = all( frustumTestVec );
     float shadow = 1.0;
     if(frustumTest) {
-        // 检查当前片元是否在阴影中
-        float bias = 0.001;
-        // 取得当前片元在光源视角下的深度
-        float currentDepth = projCoords.z - bias;
-        // 取得最近点的深度(使用[0,1]范围下的fragPosLight当坐标)
-        // float closestDepth = unpackRGBAToDepth( texture(shadowMap, projCoords.xy) ); 
-        // shadow = currentDepth > closestDepth + bias ? 1.0 : 0.0;
-        float shadowRadius = 1.0;
-        vec2 shadowMapSize = vec2(1024.0, 1024.0);
-        vec2 texelSize = vec2( 1.0 ) / shadowMapSize;
-        float dx0 = - texelSize.x * shadowRadius;
-        float dy0 = - texelSize.y * shadowRadius;
-        float dx1 = + texelSize.x * shadowRadius;
-        float dy1 = + texelSize.y * shadowRadius;
-        shadow = (
-            texture2DCompare( shadowMap, projCoords.xy + vec2( dx0, dy0 ), currentDepth) +
-            texture2DCompare( shadowMap, projCoords.xy + vec2( 0.0, dy0 ), currentDepth ) +
-            texture2DCompare( shadowMap, projCoords.xy + vec2( dx1, dy0 ), currentDepth ) +
-            texture2DCompare( shadowMap, projCoords.xy + vec2( dx0, 0.0 ), currentDepth ) +
-            texture2DCompare( shadowMap, projCoords.xy, currentDepth ) +
-            texture2DCompare( shadowMap, projCoords.xy + vec2( dx1, 0.0 ), currentDepth ) +
-            texture2DCompare( shadowMap, projCoords.xy + vec2( dx0, dy1 ), currentDepth ) +
-            texture2DCompare( shadowMap, projCoords.xy + vec2( 0.0, dy1 ), currentDepth ) +
-            texture2DCompare( shadowMap, projCoords.xy + vec2( dx1, dy1 ), currentDepth )
-        ) * ( 1.0 / 9.0 );
+        if(shadowType == 1) {
+            float bias = 0.001;
+            float currentDepth = projCoords.z - bias;
+            float shadowRadius = 1.0;
+            vec2 shadowMapSize = vec2(1024.0, 1024.0);
+            vec2 texelSize = vec2( 1.0 ) / shadowMapSize;
+            float dx0 = - texelSize.x * shadowRadius;
+            float dy0 = - texelSize.y * shadowRadius;
+            float dx1 = + texelSize.x * shadowRadius;
+            float dy1 = + texelSize.y * shadowRadius;
+            shadow = (
+                texture2DCompare( shadowMap, projCoords.xy + vec2( dx0, dy0 ), currentDepth ) +
+                texture2DCompare( shadowMap, projCoords.xy + vec2( 0.0, dy0 ), currentDepth ) +
+                texture2DCompare( shadowMap, projCoords.xy + vec2( dx1, dy0 ), currentDepth ) +
+                texture2DCompare( shadowMap, projCoords.xy + vec2( dx0, 0.0 ), currentDepth ) +
+                texture2DCompare( shadowMap, projCoords.xy, currentDepth ) +
+                texture2DCompare( shadowMap, projCoords.xy + vec2( dx1, 0.0 ), currentDepth ) +
+                texture2DCompare( shadowMap, projCoords.xy + vec2( dx0, dy1 ), currentDepth ) +
+                texture2DCompare( shadowMap, projCoords.xy + vec2( 0.0, dy1 ), currentDepth ) +
+                texture2DCompare( shadowMap, projCoords.xy + vec2( dx1, dy1 ), currentDepth )
+            ) * ( 1.0 / 9.0 );
+        } else {
+            shadow = texture2DCompare( shadowMap, projCoords.xy, projCoords.z );
+        }
     }
     return 1.0 - shadow;
 }
@@ -181,13 +183,13 @@ vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirectio
     vec3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
     // 合并各个光照分量
-    vec3 diffuse  = lightColor * diff * getOutDiffuseColor().xyz;
+    vec3 diffuse  = lightColor * diff * getDiffuseColor.xyz;
     vec3 specular = lightColor * spec * getOutSpecularColor().xyz;
     return diffuse + specular;
 }  
 
-vec3 CalcDirLightAndShadow(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirection, sampler2D shadowMap, mat4 lightSpaceMatrix) {
-    float shadow = CalcLightShadow(lightSpaceMatrix * vec4(out_vertex_position, 1.0), shadowMap);    
+vec3 CalcDirLightAndShadow(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirection, sampler2D shadowMap, mat4 lightSpaceMatrix, int shadowType) {
+    float shadow = CalcLightShadow(lightSpaceMatrix * vec4(out_vertex_position, 1.0), shadowMap , shadowType);    
     vec3 color = CalcDirLight(normal, viewDir, lightColor, lightDirection);
     return color * (1.0 - shadow);
 }
@@ -231,29 +233,29 @@ vec3 CalcSpotLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPositio
     return color;
 }  
 
-vec3 CalcSpotLightAndShadow(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPosition,  vec3 direction, float range, float innerConeAngle, float outerConeAngle, sampler2D shadowMap, mat4 lightSpaceMatrix) {
+vec3 CalcSpotLightAndShadow(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPosition,  vec3 direction, float range, float innerConeAngle, float outerConeAngle, sampler2D shadowMap, mat4 lightSpaceMatrix, int shadowType) {
     vec3 lightDirection = out_vertex_position - lightPosition;
     vec3 lightDirectionNorm = normalize(lightDirection);
     float cosAngle = dot(lightDirectionNorm, direction);
     float f = smoothstep(outerConeAngle, innerConeAngle, cosAngle);
     vec3 color = CalcPointLight(normal, viewDir, lightColor, lightPosition, range) * f;
-    float shadow = CalcLightShadow(lightSpaceMatrix * vec4(out_vertex_position, 1.0), shadowMap);    
+    float shadow = CalcLightShadow(lightSpaceMatrix * vec4(out_vertex_position, 1.0), shadowMap, shadowType);    
     return color * (1.0 - shadow);
 }
 
 
 void main(void) {
     // vec4 outColor = getOutColor();
-
+    getDiffuseColor = getOutDiffuseColor();
     vec3 norm = normalize(out_normal);
     vec3 viewDir = normalize(camera_position - out_vertex_position);
 
     // start
-    vec3 result = ambientColor.xyz * getOutDiffuseColor().xyz;
+    vec3 result = ambientColor.xyz * getDiffuseColor.xyz;
     {{#each uniforms._directionalLightArr}}
 
     {{#if this.castShadows}}
-        result += CalcDirLightAndShadow(norm, viewDir, vec3({{this.color}}), {{this.direction}}, {{this.shadowMap}}, {{this.lightSpaceMatrix}} );
+        result += CalcDirLightAndShadow(norm, viewDir, vec3({{this.color}}), {{this.direction}}, {{this.shadowMap}}, {{this.lightSpaceMatrix}}, {{this.shadowType}} );
     {{else}}
         result += CalcDirLight(norm, viewDir, vec3({{this.color}}), {{this.direction}} );
     {{/if}}

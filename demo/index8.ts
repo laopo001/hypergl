@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, November 25th 2018, 6:03:04 pm
+ * Last Modified: Monday, November 26th 2018, 1:11:21 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -56,6 +56,7 @@ async function main() {
             castShadows: true,
             shadowMapWidth: 2048,
             shadowMapHeight: 2048,
+            shadowType: 'PCF'
         })
         .setPosition(0, 2, 0);
     app.scene.root.addChild(light);
@@ -75,7 +76,7 @@ async function main() {
 
     let temp = new Entity('temp');
     temp.addChild(box).addChild(box2);
-    // temp.addComponent('script', [new Rotate({ speed: 2 })]);
+    temp.addComponent('script', [new Rotate({ speed: 2 })]);
 
     app.scene.root.addChild(temp);
 

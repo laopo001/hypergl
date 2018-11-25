@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, November 25th 2018, 4:41:44 pm
+ * Last Modified: Sunday, November 25th 2018, 7:17:55 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -42,7 +42,7 @@ export class RendererPlatform {
     constructor(public canvas: HTMLCanvasElement, option?: AppOption) {
         let webgl2;
         if (option && !option.webgl1) {
-            webgl2 = canvas.getContext('webgl2') as any;
+            webgl2 = canvas.getContext('webgl2', option) as any;
         }
         this.webgl2 = webgl2;
         // this.webgl2 = canvas.getContext('webgl2') as any;
@@ -50,7 +50,7 @@ export class RendererPlatform {
             this.platform = 'webgl2';
             Log.debug(`platform:${this.platform}`);
         } else {
-            this.webgl = canvas.getContext('webgl') as any;
+            this.webgl = canvas.getContext('webgl', option) as any;
             if (this.webgl) {
                 this.platform = 'webgl';
                 Log.debug(`platform:${this.platform}`);

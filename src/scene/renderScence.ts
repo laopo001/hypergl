@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, November 25th 2018, 6:01:30 pm
+ * Last Modified: Monday, November 26th 2018, 1:01:25 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -37,7 +37,6 @@ export function renderScence(scene: Scene) {
     let pointLightsUniforms = renderPointLightArr('pointLightArr', lights.pointLights, scene);
     let spotLightsUniforms = renderSpotLightArr('spotLightArr', lights.spotLight, scene);
     let LightsUniforms: any = { ...directionalLightsUniforms, ...pointLightsUniforms, ...spotLightsUniforms };
-
     let temp: Light[] = [];
     renderer.enableBLEND();
     for (let i = 0; i < modelComponents.length; i++) {
@@ -66,8 +65,6 @@ export function renderScence(scene: Scene) {
             });
         }
         material.setLights(LightsUniforms);
-        // material.setDirectionalLightArr('directionalLightArr', lights.directionalLights, scene);
-        // material.setPointLightArr('pointLightArr', lights.pointLights);
         material.updateShader(attributes);
         let shader = mesh.material.shader as Shader;
         renderer.setShaderProgram(shader);
@@ -75,7 +72,6 @@ export function renderScence(scene: Scene) {
         shader.setUniformValue('matrix_model', model.getWorldTransform().data);
         shader.setUniformValue('matrix_normal', model.getWorldTransform().clone().invert().transpose().data);
         shader.setUniformValue('camera_position', camera.getPosition().data);
-        // tslint:disable-next-line:forin
         renderer.draw(model);
         if (!model.mesh.receiveShadow) {
             temp.forEach(item => {
@@ -130,8 +126,10 @@ export function renderDirectionalLightArr(name: string, data: LightComponent<Dir
     data.forEach((item, index) => {
         let obj: any = {};
         if (item.castShadows) {
+            let o = { 'Normal': 0, 'PCF': 1, 'PCFSoft': 2 };
             let { texture, viewProjectionMatrix } = rendererShadowMap(scene, item);
             setLight(name, 'shadowMap', index, obj, uniforms, texture);
+            setLight(name, 'shadowType', index, obj, uniforms, o[item.shadowType]);
             setLight(name, 'lightSpaceMatrix', index, obj, uniforms, viewProjectionMatrix.data);
             setLight(name, 'castShadows', index, obj, uniforms, item.castShadows);
         }

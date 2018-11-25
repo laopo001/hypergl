@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 22nd 2018, 4:27:11 pm
+ * Last Modified: Sunday, November 25th 2018, 9:08:00 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -23,6 +23,7 @@ export class Light {
     castShadows = true;
     shadowFrame?: Frame;
     shadowUpdateMode: ShadowUpdateMode = ShadowUpdateMode.RealTime;
+    shadowType: 'Normal' | 'PCF' | 'PCFSoft' = 'PCF';
     shadowMapWidth = 1024;
     shadowMapHeight = 1024;
     shadowBias = 0.005;

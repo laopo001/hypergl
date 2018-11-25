@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 22nd 2018, 8:27:19 pm
+ * Last Modified: Monday, November 26th 2018, 1:08:21 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -32,6 +32,7 @@ export interface LigthInputs {
     range?: number;
     innerConeAngle?: number;
     outerConeAngle?: number;
+    shadowType?: 'Normal' | 'PCF' | 'PCFSoft';
 }
 
 
@@ -114,4 +115,12 @@ export class LightComponent<T extends Light = Light> extends Component<LigthInpu
     get innerConeAngle(): number {
         return (this.instance as any).innerConeAngle;
     }
+
+    public get shadowType() {
+        return this.instance.shadowType;
+    }
+    public set shadowType(v) {
+        this.instance.shadowType = v;
+    }
+
 }
