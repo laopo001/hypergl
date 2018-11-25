@@ -5,14 +5,12 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, November 25th 2018, 3:49:20 pm
+ * Last Modified: Sunday, November 25th 2018, 6:02:23 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
-let OFFSCREEN_WIDTH = 1024;
-let OFFSCREEN_HEIGHT = 1024;
 
 import { RendererPlatform } from './renderer';
 import { Log } from '../utils/util';
@@ -27,7 +25,7 @@ export class Frame {
     renderer: RendererPlatform;
     renderBuffer!: WebGLRenderbuffer;
     // depthBuffer!: WebGLRenderbuffer;
-    constructor(private scene: Scene, public is3d = false) {
+    constructor(private scene: Scene, private width = scene.app.canvas.width, private height = scene.app.canvas.height, public is3d = false) {
         this.renderer = scene.app.renderer;
     }
     getTexture() {
@@ -39,6 +37,7 @@ export class Frame {
         return new Texture(this.texture);
     }
     createFramebuffer() {
+        let { width, height } = this;
         if (this.is3d) {
             const gl = this.renderer.gl;
             // this.createFramebuffer3D();
@@ -49,17 +48,9 @@ export class Frame {
             gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.textureCube); // Bind the object to target
             gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
             for (let face = 0; face < 6; face++) {
-                gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, gl.RGBA, OFFSCREEN_WIDTH, OFFSCREEN_HEIGHT, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+                gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
 
             }
-            // this.framebuffer = gl.createFramebuffer() as WebGLFramebuffer;
-            // if (!this.framebuffer) {
-            //     Log.error('Failed to create frame buffer object');
-            // }
-            // this.renderBuffer = gl.createRenderbuffer() as WebGLRenderbuffer;
-            // if (!this.renderBuffer) {
-            //     Log.error('Failed to create renderbuffer object');
-            // }
         } else {
             this.createFramebuffer2D();
         }
@@ -68,6 +59,7 @@ export class Frame {
     }
     createFramebuffer2D() {
         const gl = this.renderer.gl;
+        let { width, height } = this;
         // gl.TEXTURE_CUBE_MAP;/////
         this.framebuffer = gl.createFramebuffer() as WebGLFramebuffer;
         if (!this.framebuffer) {
@@ -78,14 +70,14 @@ export class Frame {
             Log.error('Failed to create texture object');
         }
         gl.bindTexture(gl.TEXTURE_2D, this.texture); // Bind the object to target
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, OFFSCREEN_WIDTH, OFFSCREEN_HEIGHT, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
         const depthBuffer = gl.createRenderbuffer() as WebGLRenderbuffer;
         if (!depthBuffer) {
             Log.error('Failed to create renderbuffer object');
         }
         gl.bindRenderbuffer(gl.RENDERBUFFER, depthBuffer); // Bind the object to target
-        gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, OFFSCREEN_WIDTH, OFFSCREEN_HEIGHT);
+        gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, width, height);
 
         // Attach the texture and the renderbuffer object to the FBO
         gl.bindFramebuffer(gl.FRAMEBUFFER, this.framebuffer);
@@ -105,6 +97,7 @@ export class Frame {
     }
     createFramebuffer3D(face = 0) {
         const gl = this.renderer.gl;
+        let { width, height } = this;
         let framebuffer = this.framebuffers[face];
         if (!framebuffer) {
             this.framebuffers[face] = gl.createFramebuffer() as WebGLFramebuffer;
@@ -113,36 +106,17 @@ export class Frame {
             gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_CUBE_MAP_POSITIVE_X + face, this.textureCube, 0);
             let renderBuffer = gl.createRenderbuffer() as WebGLRenderbuffer;
             gl.bindRenderbuffer(gl.RENDERBUFFER, renderBuffer);
-            gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, OFFSCREEN_WIDTH, OFFSCREEN_HEIGHT);
+            gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, width, height);
             gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, renderBuffer);
             gl.bindRenderbuffer(gl.RENDERBUFFER, null);
         }
-
-        // gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.textureCube); // Bind the object to target
-        // // gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, gl.RGBA, OFFSCREEN_WIDTH, OFFSCREEN_HEIGHT, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-        // // gl.texParameteri(gl.TEXTURE_CUBE_MAP_POSITIVE_X + face, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-        // gl.bindRenderbuffer(gl.RENDERBUFFER, this.renderBuffer); // Bind the object to target
-        // gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, OFFSCREEN_WIDTH, OFFSCREEN_HEIGHT);
-
-        // // Attach the texture and the renderbuffer object to the FBO
-        // gl.bindFramebuffer(gl.FRAMEBUFFER, this.framebuffer);
-        // gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_CUBE_MAP_POSITIVE_X + face, this.textureCube, 0);
-        // gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, this.renderBuffer);
-
-        // // Check if FBO is configured correctly
-        // let e = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
-        // if (gl.FRAMEBUFFER_COMPLETE !== e) {
-        //     Log.error('Frame buffer object is incomplete: ' + e.toString());
-        // }
-
-        // // Unbind the buffer object
-        // gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-        // gl.bindTexture(gl.TEXTURE_CUBE_MAP, null);
-        // gl.bindRenderbuffer(gl.RENDERBUFFER, null);
     }
     // tslint:disable-next-line:member-ordering
     private _backViewport?: Int32Array;
-    beforeDraw(index = 0, width = OFFSCREEN_WIDTH, height = OFFSCREEN_HEIGHT) {
+    // tslint:disable-next-line:member-ordering
+    private _backScissor?: Int32Array;
+    beforeDraw(index = 0) {
+        let { width, height } = this;
         const gl = this.renderer.gl;
         if (this.is3d) {
             let framebuffer = this.framebuffers[index];
@@ -151,8 +125,10 @@ export class Frame {
             gl.bindFramebuffer(gl.FRAMEBUFFER, this.framebuffer);
         }
         this._backViewport = this.renderer.gerViewport();
+        this._backScissor = this.renderer.getScissor();
         this.renderer.setViewport(0, 0, width, height);
-        // gl.scissor(0, 0, width, height);
+        this.renderer.setScissor(0, 0, width, height);
+        // this.renderer.setScissor(0, 0, width, height);
         gl.clearColor(1, 1, 1, 1);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     }
@@ -161,6 +137,8 @@ export class Frame {
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);        // Change the drawing destination to color buffer
         let [x, y, w, h] = this._backViewport;
         this.renderer.setViewport(x, y, w, h);
+        [x, y, w, h] = this._backScissor;
+        this.renderer.setScissor(x, y, w, h);
     }
     render() {
         this.beforeDraw();

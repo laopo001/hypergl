@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, November 25th 2018, 3:56:02 pm
+ * Last Modified: Sunday, November 25th 2018, 4:41:44 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -205,6 +205,14 @@ export class RendererPlatform {
     setColorWrite(writeRed: boolean, writeGreen: boolean, writeBlue: boolean, writeAlpha: boolean) {
         this.gl.colorMask(writeRed, writeGreen, writeBlue, writeAlpha);
     }
+    setScissor(x: number, y: number, w: number, h: number) {
+        const gl = this.gl;
+        gl.scissor(x, y, w, h);
+    }
+    getScissor() {
+        const gl = this.gl;
+        return gl.getParameter(gl.SCISSOR_BOX);
+    }
     setViewport(x: number, y: number, w: number, h: number) {
         const gl = this.gl;
         // if (this.viewport && x === this.viewport[0] && y === this.viewport[1]
@@ -213,7 +221,6 @@ export class RendererPlatform {
         //     return;
         // }
         gl.viewport(x, y, w, h);
-        // this.gl.scissor(x, y, w, h);
     }
     gerViewport() {
         const gl = this.gl;

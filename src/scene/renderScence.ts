@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, November 25th 2018, 2:08:07 pm
+ * Last Modified: Sunday, November 25th 2018, 6:01:30 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -94,7 +94,7 @@ export function renderDirectionalLightArr(name: string, data: LightComponent<Dir
         let modelComponents = scene.systems.model!.renderLayers;
         let renderer = scene.app.renderer;
         if (!light.shadowFrame) {
-            light.shadowFrame = scene.createShadowFrame(false);
+            light.shadowFrame = scene.createShadowFrame(light.shadowMapWidth, light.shadowMapHeight, false);
         }
 
         let camera = new Camera();
@@ -110,7 +110,7 @@ export function renderDirectionalLightArr(name: string, data: LightComponent<Dir
 
         // let gl = scene.app.rendererPlatform.gl;
         // gl.cullFace(gl.FRONT);
-        light.shadowFrame.beforeDraw(0, light.shadowMapWidth, light.shadowMapHeight);
+        light.shadowFrame.beforeDraw();
         for (let i = 0; i < modelComponents.length; i++) {
             let modelComponent = modelComponents[i];
             if (!modelComponent.enabled || !modelComponent.mesh || !modelComponent.mesh.castShadow) {
@@ -149,7 +149,7 @@ export function renderPointLightArr(name: string, data: LightComponent<PointLigh
         let modelComponents = scene.systems.model!.renderLayers;
         let renderer = scene.app.renderer;
         if (!light.shadowFrame) {
-            light.shadowFrame = scene.createShadowFrame(true);
+            light.shadowFrame = scene.createShadowFrame(light.shadowMapWidth, light.shadowMapHeight, true);
         }
         let cameras: Camera[] = [];
         for (let i = 0; i < 6; i++) {
@@ -183,7 +183,7 @@ export function renderPointLightArr(name: string, data: LightComponent<PointLigh
             shader.setUniformValue('view_position', camera.getPosition().data);
             shader.setUniformValue('light_range', light.range);
             light.shadowFrame.createFramebuffer3D(i);
-            light.shadowFrame.beforeDraw(i, light.shadowMapWidth, light.shadowMapHeight);
+            light.shadowFrame.beforeDraw(i);
             for (let i = 0; i < modelComponents.length; i++) {
                 let modelComponent = modelComponents[i];
                 if (!modelComponent.enabled || !modelComponent.mesh || !modelComponent.mesh.castShadow) {
@@ -221,7 +221,7 @@ export function renderSpotLightArr(name: string, data: LightComponent<SpotLight>
         let modelComponents = scene.systems.model!.renderLayers;
         let renderer = scene.app.renderer;
         if (!light.shadowFrame) {
-            light.shadowFrame = scene.createShadowFrame(false);
+            light.shadowFrame = scene.createShadowFrame(light.shadowMapWidth, light.shadowMapHeight, false);
         }
         let camera = new Camera();
         camera.setPerspective(light.outerConeAngle * 2, 1, 0.5, light.range);
@@ -232,7 +232,7 @@ export function renderSpotLightArr(name: string, data: LightComponent<SpotLight>
         let shader = renderer.programGenerator.getShader('depth', attributes);
         shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
 
-        light.shadowFrame.beforeDraw(0, light.shadowMapWidth, light.shadowMapHeight);
+        light.shadowFrame.beforeDraw();
         for (let i = 0; i < modelComponents.length; i++) {
             let modelComponent = modelComponents[i];
             if (!modelComponent.enabled || !modelComponent.mesh || !modelComponent.mesh.castShadow) {

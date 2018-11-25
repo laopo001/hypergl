@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 24th 2018, 6:30:13 pm
+ * Last Modified: Sunday, November 25th 2018, 5:45:14 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -83,8 +83,8 @@ export class Scene {
         this._frame = f;
         return f;
     }
-    createShadowFrame(isCube) {
-        const f = new Frame(this, isCube);
+    createShadowFrame(width: number, height: number, isCube: boolean) {
+        const f = new Frame(this, width, height, isCube);
         f.createFramebuffer();
         return f;
     }
