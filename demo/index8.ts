@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 26th 2018, 1:11:21 am
+ * Last Modified: Monday, November 26th 2018, 1:25:18 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -56,7 +56,7 @@ async function main() {
             castShadows: true,
             shadowMapWidth: 2048,
             shadowMapHeight: 2048,
-            shadowType: 'PCF'
+            shadowType: 'PCFSoft'
         })
         .setPosition(0, 2, 0);
     app.scene.root.addChild(light);

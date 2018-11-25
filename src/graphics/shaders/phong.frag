@@ -118,6 +118,7 @@ float unpackRGBAToDepth( const in vec4 v ) {
 float texture2DCompare( sampler2D depths, vec2 uv, float compare ) {
     return step( compare, unpackRGBAToDepth( texture2D( depths, uv ) ) );
 }
+
 float texture2DShadowLerp( sampler2D depths, vec2 size, vec2 uv, float compare ) {
     const vec2 offset = vec2( 0.0, 1.0 );
     vec2 texelSize = vec2( 1.0 ) / size;
@@ -164,6 +165,27 @@ float CalcLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, int shadowTyp
                 texture2DCompare( shadowMap, projCoords.xy + vec2( dx0, dy1 ), currentDepth ) +
                 texture2DCompare( shadowMap, projCoords.xy + vec2( 0.0, dy1 ), currentDepth ) +
                 texture2DCompare( shadowMap, projCoords.xy + vec2( dx1, dy1 ), currentDepth )
+            ) * ( 1.0 / 9.0 );
+        } else if (shadowType==2) {
+            float bias = 0.001;
+            float currentDepth = projCoords.z - bias;
+            float shadowRadius = 1.0;
+            vec2 shadowMapSize = vec2(1024.0, 1024.0);
+            vec2 texelSize = vec2( 1.0 ) / shadowMapSize;
+            float dx0 = - texelSize.x * shadowRadius;
+            float dy0 = - texelSize.y * shadowRadius;
+            float dx1 = + texelSize.x * shadowRadius;
+            float dy1 = + texelSize.y * shadowRadius;
+            shadow = (
+                texture2DShadowLerp( shadowMap, shadowMapSize, projCoords.xy + vec2( dx0, dy0 ), currentDepth ) +
+                texture2DShadowLerp( shadowMap, shadowMapSize, projCoords.xy + vec2( 0.0, dy0 ), currentDepth ) +
+                texture2DShadowLerp( shadowMap, shadowMapSize, projCoords.xy + vec2( dx1, dy0 ), currentDepth ) +
+                texture2DShadowLerp( shadowMap, shadowMapSize, projCoords.xy + vec2( dx0, 0.0 ), currentDepth ) +
+                texture2DShadowLerp( shadowMap, shadowMapSize, projCoords.xy, currentDepth ) +
+                texture2DShadowLerp( shadowMap, shadowMapSize, projCoords.xy + vec2( dx1, 0.0 ), currentDepth ) +
+                texture2DShadowLerp( shadowMap, shadowMapSize, projCoords.xy + vec2( dx0, dy1 ), currentDepth ) +
+                texture2DShadowLerp( shadowMap, shadowMapSize, projCoords.xy + vec2( 0.0, dy1 ), currentDepth ) +
+                texture2DShadowLerp( shadowMap, shadowMapSize, projCoords.xy + vec2( dx1, dy1 ), currentDepth )
             ) * ( 1.0 / 9.0 );
         } else {
             shadow = texture2DCompare( shadowMap, projCoords.xy, projCoords.z );
