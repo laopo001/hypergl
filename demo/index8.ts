@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 24th 2018, 7:13:59 pm
+ * Last Modified: Sunday, November 25th 2018, 3:31:31 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -53,7 +53,9 @@ async function main() {
     let light = new Entity('light')
         .addComponent('light', {
             type: 'directional',
-            castShadows: true
+            castShadows: true,
+            // shadowMapWidth: 2048,
+            // shadowMapHeight: 2048
         })
         .setPosition(0, 2, 0);
     app.scene.root.addChild(light);

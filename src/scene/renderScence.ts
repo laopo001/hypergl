@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 24th 2018, 9:31:20 pm
+ * Last Modified: Sunday, November 25th 2018, 2:08:07 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -110,7 +110,7 @@ export function renderDirectionalLightArr(name: string, data: LightComponent<Dir
 
         // let gl = scene.app.rendererPlatform.gl;
         // gl.cullFace(gl.FRONT);
-        light.shadowFrame.beforeDraw();
+        light.shadowFrame.beforeDraw(0, light.shadowMapWidth, light.shadowMapHeight);
         for (let i = 0; i < modelComponents.length; i++) {
             let modelComponent = modelComponents[i];
             if (!modelComponent.enabled || !modelComponent.mesh || !modelComponent.mesh.castShadow) {
@@ -232,7 +232,7 @@ export function renderSpotLightArr(name: string, data: LightComponent<SpotLight>
         let shader = renderer.programGenerator.getShader('depth', attributes);
         shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
 
-        light.shadowFrame.beforeDraw();
+        light.shadowFrame.beforeDraw(0, light.shadowMapWidth, light.shadowMapHeight);
         for (let i = 0; i < modelComponents.length; i++) {
             let modelComponent = modelComponents[i];
             if (!modelComponent.enabled || !modelComponent.mesh || !modelComponent.mesh.castShadow) {

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 24th 2018, 1:00:25 am
+ * Last Modified: Sunday, November 25th 2018, 3:56:02 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -166,6 +166,9 @@ export class RendererPlatform {
         gl.polygonOffset(2, 2);
         gl.clearColor(r, g, b, a);
     }
+    get contextAttributes() {
+        return this.gl.getContextAttributes();
+    }
     // tslint:disable-next-line:member-ordering
     currShader!: Shader;
     setShaderProgram(shader: Shader) {
@@ -202,12 +205,19 @@ export class RendererPlatform {
     setColorWrite(writeRed: boolean, writeGreen: boolean, writeBlue: boolean, writeAlpha: boolean) {
         this.gl.colorMask(writeRed, writeGreen, writeBlue, writeAlpha);
     }
-    // tslint:disable-next-line:member-ordering
-    viewport?: number[];
     setViewport(x: number, y: number, w: number, h: number) {
-        this.gl.viewport(x, y, w, h);
+        const gl = this.gl;
+        // if (this.viewport && x === this.viewport[0] && y === this.viewport[1]
+        //     && w === this.viewport[2] && h === this.viewport[3]
+        // ) {
+        //     return;
+        // }
+        gl.viewport(x, y, w, h);
         // this.gl.scissor(x, y, w, h);
-        this.viewport = [x, y, w, h];
+    }
+    gerViewport() {
+        const gl = this.gl;
+        return gl.getParameter(gl.VIEWPORT);
     }
     clear(color = true, depth = true, stencil = true) {
         const gl = this.gl;

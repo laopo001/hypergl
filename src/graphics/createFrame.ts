@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 22nd 2018, 12:22:34 pm
+ * Last Modified: Sunday, November 25th 2018, 3:49:20 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -140,6 +140,8 @@ export class Frame {
         // gl.bindTexture(gl.TEXTURE_CUBE_MAP, null);
         // gl.bindRenderbuffer(gl.RENDERBUFFER, null);
     }
+    // tslint:disable-next-line:member-ordering
+    private _backViewport?: Int32Array;
     beforeDraw(index = 0, width = OFFSCREEN_WIDTH, height = OFFSCREEN_HEIGHT) {
         const gl = this.renderer.gl;
         if (this.is3d) {
@@ -148,15 +150,17 @@ export class Frame {
         } else {
             gl.bindFramebuffer(gl.FRAMEBUFFER, this.framebuffer);
         }
-
-        gl.viewport(0, 0, width, height); // Set a viewport for FBO
-        gl.clearColor(1, 1, 1, 1); // Set clear color (the color is slightly changed)
+        this._backViewport = this.renderer.gerViewport();
+        this.renderer.setViewport(0, 0, width, height);
+        // gl.scissor(0, 0, width, height);
+        gl.clearColor(1, 1, 1, 1);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     }
     afterDraw() {
         const gl = this.renderer.gl;
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);        // Change the drawing destination to color buffer
-        this.renderer.setViewport.apply(this.renderer, this.renderer.viewport as [number, number, number, number]);
+        let [x, y, w, h] = this._backViewport;
+        this.renderer.setViewport(x, y, w, h);
     }
     render() {
         this.beforeDraw();
