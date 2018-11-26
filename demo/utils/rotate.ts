@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 22nd 2018, 11:01:59 am
+ * Last Modified: Monday, November 26th 2018, 8:16:14 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -34,7 +34,7 @@ export class Rotate extends Script<RotateInputs> {
     }
     update(dt) {
         // debugger;
-        this.ey += dt * this.inputs.speed * 0.1;
+        this.ey += dt * this.inputs.speed * 0.1 % 360;
         this.entity.setLocalEulerAngles(this.ex, this.ey, this.ez);
 
     }

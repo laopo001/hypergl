@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 26th 2018, 1:08:21 am
+ * Last Modified: Monday, November 26th 2018, 9:36:40 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -121,6 +121,12 @@ export class LightComponent<T extends Light = Light> extends Component<LigthInpu
     }
     public set shadowType(v) {
         this.instance.shadowType = v;
+    }
+    public get shadowBias() {
+        return this.instance.shadowBias;
+    }
+    public set shadowBias(v) {
+        this.instance.shadowBias = v;
     }
 
 }

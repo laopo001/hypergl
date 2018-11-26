@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, November 25th 2018, 9:08:00 pm
+ * Last Modified: Monday, November 26th 2018, 10:06:18 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,14 +20,14 @@ import { Frame } from '../graphics/createFrame';
 
 export class Light {
     color = new Color(1, 1, 1);
-    castShadows = true;
+    castShadows = false;
     shadowFrame?: Frame;
     shadowUpdateMode: ShadowUpdateMode = ShadowUpdateMode.RealTime;
     shadowType: 'Normal' | 'PCF' | 'PCFSoft' = 'PCF';
-    shadowMapWidth = 1024;
-    shadowMapHeight = 1024;
-    shadowBias = 0.005;
-    shadowDarkness = 0.05;
+    shadowMapWidth = 2048;
+    shadowMapHeight = 2048;
+    shadowBias = 0.0001;
+    // shadowDarkness = 0.05;
     constructor() {
         // super();
     }
