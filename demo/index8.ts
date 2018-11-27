@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, November 27th 2018, 4:26:56 pm
+ * Last Modified: Wednesday, November 28th 2018, 12:52:51 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -52,7 +52,7 @@ async function main() {
 
     let light = new Entity('light')
         .addComponent('light', {
-            type: 'spot',
+            type: 'point',
             castShadows: true,
             shadowType: 'Normal'
         })

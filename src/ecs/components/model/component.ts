@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 24th 2018, 2:24:21 am
+ * Last Modified: Tuesday, November 27th 2018, 11:26:43 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,6 +20,7 @@ export interface ModelInputs {
     type: 'box' | 'plane' | 'model',
     mesh?: Mesh;
     options?: any;
+    material?: StandardMaterial;
 }
 export class ModelComponent extends Component<ModelInputs> {
     entity!: Entity;
@@ -58,8 +59,11 @@ export class ModelComponent extends Component<ModelInputs> {
                 mesh = this.inputs.mesh as Mesh;
                 break;
         }
-        // model.meshs.push(mesh!);
         this.instance = mesh!;
+        if (this.inputs.material) {
+            this.instance.material = this.inputs.material;
+        }
+
     }
     initialize(entity: Entity, system: ComponentSystem) {
         this.entity = entity;

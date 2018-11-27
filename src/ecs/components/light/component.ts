@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 26th 2018, 9:36:40 pm
+ * Last Modified: Wednesday, November 28th 2018, 12:55:43 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -51,6 +51,7 @@ export class LightComponent<T extends Light = Light> extends Component<LigthInpu
             }
             case 'point': {
                 light = new PointLight();
+                Log.assert(this.inputs.shadowMapHeight === this.inputs.shadowMapWidth, 'pointLight shadowMapWidth must be equal to shadowMapHeight');
                 break;
             }
             case 'spot': {
@@ -112,20 +113,25 @@ export class LightComponent<T extends Light = Light> extends Component<LigthInpu
     get outerConeAngle(): number {
         return (this.instance as any).outerConeAngle;
     }
+    set outerConeAngle(v) {
+        (this.instance as any).outerConeAngle = v;
+    }
     get innerConeAngle(): number {
         return (this.instance as any).innerConeAngle;
     }
-
-    public get shadowType() {
+    set innerConeAngle(v) {
+        (this.instance as any).innerConeAngle = v;
+    }
+    get shadowType() {
         return this.instance.shadowType;
     }
-    public set shadowType(v) {
+    set shadowType(v) {
         this.instance.shadowType = v;
     }
-    public get shadowBias() {
+    get shadowBias() {
         return this.instance.shadowBias;
     }
-    public set shadowBias(v) {
+    set shadowBias(v) {
         this.instance.shadowBias = v;
     }
 

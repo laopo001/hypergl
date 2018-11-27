@@ -195,7 +195,7 @@ float CalcLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, int shadowTyp
                 texture2DShadowLerp( shadowMap, shadowMapSize, projCoords.xy + vec2( dx1, dy1 ), currentDepth )
             ) * ( 1.0 / 9.0 );
         } else {
-            shadow = texture2DCompare( shadowMap, projCoords.xy, projCoords.z );
+            shadow = texture2DCompare( shadowMap, projCoords.xy, currentDepth );
         }
     }
     return shadow;
@@ -219,14 +219,14 @@ vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirectio
 
 
 
-float CalcPointLightShadow(samplerCube shadowMap, vec3 lightPosition, float range, int shadowType) {
+float CalcPointLightShadow(samplerCube shadowMap, vec3 lightPosition, float range, int shadowType, vec2 shadowMapSize, float shadowBias) {
     vec3  fragToLight =  out_vertex_position - lightPosition;
-
+    float size = shadowMapSize[0];
     float currentDepth =  length(fragToLight);
-    float bias = 0.05;
+    float bias = shadowBias;
     float shadow = 0.0;
     if(shadowType == 1 || shadowType == 2) {
-        float offset = 1.0 / 2048.0;
+        float offset = 1.0 / size; // 2048.0
         for(float x = -offset; x <= offset; x += offset)
         {
             for(float y = -offset; y <= offset; y += offset)
@@ -317,7 +317,7 @@ vec3 CalcPointLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPositi
 }
 
 
-vec3 CalcSpotLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPosition,  vec3 direction, float range, float innerConeAngle, float outerConeAngle) {
+vec3 CalcSpotLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPosition, vec3 direction, float range, float innerConeAngle, float outerConeAngle) {
     vec3 lightDirection = out_vertex_position - lightPosition;
     vec3 lightDirectionNorm = normalize(lightDirection);
     float cosAngle = dot(lightDirectionNorm, direction);
@@ -350,7 +350,7 @@ void main(void) {
     {{#each uniforms._pointLightArr}}
 
     {{#if this.castShadows}}
-        float shadow = CalcPointLightShadow({{this.shadowMap}}, {{this.position}}, {{this.range}}, {{this.shadowType}});    
+        float shadow = CalcPointLightShadow({{this.shadowMap}}, {{this.position}}, {{this.range}}, {{this.shadowType}}, {{this.shadowMapSize}}, {{this.shadowBias}});    
         vec3 color = CalcPointLight(norm, viewDir, vec3({{this.color}}), {{this.position}}, {{this.range}});
         result += shadow * color;
     {{else}}
@@ -361,11 +361,11 @@ void main(void) {
     {{#each uniforms._spotLightArr}}
 
     {{#if this.castShadows}}
-        vec3 color = CalcSpotLight(norm, viewDir, vec3({{this.color}}), {{this.position}},  {{this.direction}}, {{this.range}}, {{this.innerConeAngle}}, {{this.outerConeAngle}} );
+        vec3 color = CalcSpotLight(norm, viewDir, vec3({{this.color}}), {{this.position}}, {{this.direction}}, {{this.range}}, {{this.innerConeAngle}}, {{this.outerConeAngle}} );
         float shadow = CalcLightShadow({{this.lightSpaceMatrix}} * vec4(out_vertex_position, 1.0), {{this.shadowMap}}, {{this.shadowType}}, {{this.shadowMapSize}}, {{this.shadowBias}});    
         result += shadow * color;
     {{else}}
-        result += CalcSpotLight(norm, viewDir, vec3({{this.color}}), {{this.position}},  {{this.direction}}, {{this.range}}, {{this.innerConeAngle}}, {{this.outerConeAngle}} );
+        result += CalcSpotLight(norm, viewDir, vec3({{this.color}}), {{this.position}}, {{this.direction}}, {{this.range}}, {{this.innerConeAngle}}, {{this.outerConeAngle}} );
     {{/if}}
     
     {{/each}}
