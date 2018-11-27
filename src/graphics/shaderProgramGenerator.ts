@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 24th 2018, 1:17:08 am
+ * Last Modified: Tuesday, November 27th 2018, 5:11:43 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -24,13 +24,13 @@ import distanceFrag from './shaders/distance.frag';
 import { RendererPlatform } from './renderer';
 import { Shader } from './shader';
 import { SEMANTIC } from '../conf';
-import { Undefined } from '../types';
+import { Obj } from '../types';
 
 
 
 export class ShaderProgramGenerator {
     generator: { [s: string]: any } = {};
-    private _cache: { [s: string]: Undefined<Shader> } = {};
+    private _cache: Obj<Shader> = {};
     constructor(private renderer: RendererPlatform) {
 
     }

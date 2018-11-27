@@ -7,7 +7,7 @@ import { Vec3 } from '../math';
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, November 20th 2018, 6:01:55 pm
+ * Last Modified: Tuesday, November 27th 2018, 5:11:16 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -25,8 +25,8 @@ export type TypeArrayConstructor = Int8ArrayConstructor | Uint8ArrayConstructor 
 export type Fn<T> = (...args) => T;
 export type FnVoid = Fn<void>;
 export type Nullable<T> = T | null;
-export type Undefined<T> = T | undefined;
-export interface Obj<T> { [s: string]: Undefined<T> }
+export type Undefinedable<T> = T | undefined;
+export interface Obj<T> { [s: string]: Undefinedable<T> }
 export interface CreateMeshOptions {
     positions: number[];
     normals?: number[]; // 法线

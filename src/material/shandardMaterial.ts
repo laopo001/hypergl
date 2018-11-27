@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 24th 2018, 2:32:56 am
+ * Last Modified: Tuesday, November 27th 2018, 5:11:16 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,13 +20,13 @@ import { RendererPlatform } from '../graphics/renderer';
 import { SEMANTIC } from '../conf';
 import { event } from '../core';
 import { Vec3 } from '../math';
-import { Undefined } from '../types';
+import { Undefinedable } from '../types';
 
 export class StandardMaterial extends Material {
-    public get opacityMap(): Undefined<Texture> {
+    public get opacityMap(): Undefinedable<Texture> {
         return this._opacityMap;
     }
-    public set opacityMap(value: Undefined<Texture>) {
+    public set opacityMap(value: Undefinedable<Texture>) {
         this._opacityMap = value;
         this.setUniform('opacityTexture', this.opacityMap);
     }

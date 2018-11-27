@@ -5,7 +5,7 @@ Todos:
   实现基本功能
   new: 
     ☐ 相机裁剪 @started(18-11-22 16:37)
-    ☐ 修复阴影不清晰 @started(18-11-22 16:37)
+    ✔ 修复阴影不清晰 @started(18-11-22 16:37) @done(18-11-27 17:21) @lasted(5d44m10s)
   Done:
     ✔ ECS框架 Entity,Component,System @done(18-11-22 16:30)
     ✔ gltf2.0 @started(18-11-01 00:49) @done(18-11-7 16:30) 

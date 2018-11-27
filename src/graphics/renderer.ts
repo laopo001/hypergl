@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, November 25th 2018, 7:17:55 pm
+ * Last Modified: Tuesday, November 27th 2018, 5:11:16 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,7 +15,7 @@
 import { Log } from '../utils/util';
 import { UNIFORM_TYPE, FILTER, FACE } from '../conf';
 import { ShaderProgramGenerator } from './shaderProgramGenerator';
-import { Undefined, FnVoid, AppOption, Nullable } from '../types';
+import { Undefinedable, FnVoid, AppOption, Nullable } from '../types';
 import { Shader } from './shader';
 import { IndexBuffer } from './indexBuffer';
 import { VertexBuffer } from './vertexBuffer';
@@ -316,7 +316,7 @@ export class RendererPlatform {
         const format = mesh.vertexBuffer.format;
         for (let i = 0; i < attributes.length; i++) {
             let attrbute = attributes[i];
-            let element: Undefined<VertexAttribData>;
+            let element: Undefinedable<VertexAttribData>;
             if (attrbute.element) {
                 element = attrbute.element;
             } else {
