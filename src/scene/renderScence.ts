@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 26th 2018, 10:07:58 pm
+ * Last Modified: Tuesday, November 27th 2018, 3:19:26 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -205,6 +205,9 @@ export function renderPointLightArr(name: string, data: LightComponent<PointLigh
             let { texture } = rendererShadowMap(scene, item);
             setLight(name, 'shadowMap', index, obj, uniforms, texture);
             setLight(name, 'castShadows', index, obj, uniforms, item.castShadows);
+            setLight(name, 'shadowType', index, obj, uniforms, o[item.shadowType]);
+            setLight(name, 'shadowMapSize', index, obj, uniforms, new Float32Array([item.shadowMapWidth, item.shadowMapHeight]));
+            setLight(name, 'shadowBias', index, obj, uniforms, item.shadowBias);
         }
         setLight(name, 'position', index, obj, uniforms, item.getPosition().data);
         setLight(name, 'color', index, obj, uniforms, item.color.data);

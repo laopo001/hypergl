@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 24th 2018, 2:32:53 am
+ * Last Modified: Tuesday, November 27th 2018, 12:31:55 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -24,19 +24,23 @@ export class ModelComponentSystem extends ComponentSystem {
     normalLayers: ModelComponent[] = [];
     opacityLayers: ModelComponent[] = [];
     renderLayers: ModelComponent[] = [];
+    private _dirty = false;
     constructor() {
         super();
 
         event.on('beforeRender', () => {
-            this.opacityLayers = [];
-            this.normalLayers = [];
-            this.renderLayers.forEach(item => {
-                if (item.material instanceof StandardMaterial && (item.material.opacity < 1 || item.material.opacityMap)) {
-                    this.opacityLayers.push(item);
-                } else {
-                    this.normalLayers.push(item);
-                }
-            });
+            if (this._dirty) {
+                this.opacityLayers = [];
+                this.normalLayers = [];
+                this.renderLayers.forEach(item => {
+                    if (item.material instanceof StandardMaterial && (item.material.opacity < 1 || item.material.opacityMap)) {
+                        this.opacityLayers.push(item);
+                    } else {
+                        this.normalLayers.push(item);
+                    }
+                });
+            }
+
             this.opacityLayers.sort((a, b) => {
                 return new Vec3().sub2(b.getPosition(), this.app.scene.activeCamera.getPosition()).length() -
                     new Vec3().sub2(a.getPosition(), this.app.scene.activeCamera.getPosition()).length();
@@ -44,12 +48,9 @@ export class ModelComponentSystem extends ComponentSystem {
             this.renderLayers = this.normalLayers.concat(this.opacityLayers);
         });
     }
-    // get renderLayers() {
-    //     return this.normalLayers.concat(this.opacityLayers);
-    // }
     addComponent(entity: Entity, componentData: any) {
         let component = super.addComponent(entity, componentData) as ModelComponent;
-
+        this._dirty = true;
         // let item = component.instance;
         // if (item.material instanceof StandardMaterial && item.material.opacity < 1 && item.material.opacityMap) {
         //     this.opacityLayers.push(component);

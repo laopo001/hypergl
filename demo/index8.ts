@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 26th 2018, 10:11:12 pm
+ * Last Modified: Tuesday, November 27th 2018, 4:26:56 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -52,8 +52,9 @@ async function main() {
 
     let light = new Entity('light')
         .addComponent('light', {
-            type: 'point',
+            type: 'spot',
             castShadows: true,
+            shadowType: 'Normal'
         })
         .setPosition(0, 2, 0);
     app.scene.root.addChild(light);
