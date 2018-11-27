@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, October 18th 2018, 11:56:13 pm
+ * Last Modified: Tuesday, November 27th 2018, 5:51:25 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,14 +15,11 @@ import { Entity } from '../ecs/entity';
 import { Scene } from './scene';
 import { Camera } from './camera';
 export class RenderTarget {
-    static getList(entitys: Entity[], camera: Camera) {
+    constructor(camera: Camera) {
+        //
+    }
+     getList(camera: Camera) {
         // TODO
-        for (let i = 0; i < entitys.length; i++) {
-            let entity = entitys[i];
-            if (entity.mesh) {
-                // let vec3 = camera.viewProjectionMatrix.mul(entity.mesh.boundingBox);
-            }
-        }
 
     }
 }
