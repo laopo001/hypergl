@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 28th 2018, 7:59:07 pm
+ * Last Modified: Wednesday, November 28th 2018, 11:59:07 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -24,12 +24,9 @@ export class Camera {
     constructor(public node: SceneNode) {
         this.renderTarget = new RenderTarget(this.projectionMatrix, this.node.getWorldTransform().clone().invert());
     }
-    lookAt(direction: Vec3, up: Vec3): void {
-        this.node.lookAt(direction, up);
+    updateRenderTarget() {
+        this.renderTarget.frustum.update(this.projectionMatrix, this.node.getWorldTransform().clone().invert());
     }
-    // getPosition() {
-    //     return this.node.getPosition();
-    // }
     /**
      *
      *

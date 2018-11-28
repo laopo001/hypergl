@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 28th 2018, 8:18:53 pm
+ * Last Modified: Wednesday, November 28th 2018, 10:37:40 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -40,7 +40,7 @@ export class PointLight extends Light {
             v.data[b] = a === 0 ? 1 : -1;
             let camera = new Camera(new SceneNode());
             const near = 0.1;
-            camera.lookAt(v, up);
+            camera.node.lookAt(v, up);
             camera.node.setPosition(node.getPosition());
             camera.setPerspective(90, 1, near, this.range);
             cameras.push(camera);

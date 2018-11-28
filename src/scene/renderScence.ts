@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 28th 2018, 8:53:00 pm
+ * Last Modified: Thursday, November 29th 2018, 1:36:20 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -30,7 +30,8 @@ export function renderScence(scene: Scene) {
     let modelComponents = scene.systems.model!.renderLayers;
     let lights = scene.systems.light!;
     let camera = scene.activeCamera;
-
+    camera.instance.updateRenderTarget();
+    modelComponents = camera.instance.renderTarget.getList(modelComponents);
     let renderer = scene.app.renderer;
     renderer.initDraw(true);
 
@@ -94,6 +95,8 @@ export function renderDirectionalLightArr(name: string, data: LightComponent<Dir
             light.shadowFrame = scene.createShadowFrame(light.shadowMapWidth, light.shadowMapHeight, false);
         }
         let camera = light.instance.camera;
+        camera.updateRenderTarget(); // test
+        modelComponents = camera.renderTarget.getList(modelComponents);
         // let camera = new Camera();
         // let height = 40;
         // let width = 1 * height;
@@ -174,10 +177,14 @@ export function renderPointLightArr(name: string, data: LightComponent<PointLigh
         //     camera.setPerspective(90, 1, near, light.range);
         //     cameras.push(camera);
         // }
-
+        let temp = modelComponents;
 
         for (let i = 0; i < cameras.length; i++) {
             let camera = cameras[i];
+            // camera.updateRenderTarget(); // test
+            // modelComponents = camera.renderTarget.getList(temp);
+            // console.log(modelComponents);
+
             let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
             let shader = renderer.programGenerator.getShader('distance', attributes);
             shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
@@ -228,6 +235,8 @@ export function renderSpotLightArr(name: string, data: LightComponent<SpotLight>
             light.shadowFrame = scene.createShadowFrame(light.shadowMapWidth, light.shadowMapHeight, false);
         }
         let camera = light.instance.camera;
+        camera.updateRenderTarget(); // test
+        modelComponents = camera.renderTarget.getList(modelComponents);
         // let camera = new Camera();
         // camera.setPerspective(light.outerConeAngle * 2, 1, 0.5, light.range);
         // camera.lookAt(light.direction, getUp(light.direction));

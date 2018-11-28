@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 28th 2018, 8:59:22 pm
+ * Last Modified: Thursday, November 29th 2018, 1:50:05 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -60,14 +60,16 @@ async function main() {
     let direction = new Vec3(0, -1, 0);
     let light = new Entity('light')
         .addComponent('light', {
-            type: 'spot',
+            type: 'point',
             castShadows: true,
-            shadowType: 'Normal'
+            shadowType: 'Normal',
+            range: 20
         })
         // .lookAt(direction, getUp(direction))
-        // .lookAt(new Vec3(-0.5, -0.70, 0.5))
-        .setEulerAngles(-45, 0, 0)
-        .setLocalPosition(0, 5, 0).addChild(debug);
+        .lookAt(new Vec3(-0.5, -0.70, 0.5))
+        // .setEulerAngles(-45, 0, 0)
+        .setLocalPosition(5, 5, 5);
+    // .addChild(debug);
     app.scene.root.addChild(light);
 
 
