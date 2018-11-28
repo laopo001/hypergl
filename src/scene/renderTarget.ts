@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, November 27th 2018, 5:51:25 pm
+ * Last Modified: Wednesday, November 28th 2018, 5:09:46 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,12 +14,15 @@
 import { Entity } from '../ecs/entity';
 import { Scene } from './scene';
 import { Camera } from './camera';
+import { Frustum } from '../math/frustum';
+import { Mat4 } from '../math';
+import { BoundingBox } from '../shape/boundingBox';
 export class RenderTarget {
-    constructor(camera: Camera) {
-        //
+    frustum: Frustum;
+    constructor(projectionMatrix: Mat4, viewMatrix: Mat4) {
+        this.frustum = new Frustum(projectionMatrix, viewMatrix);
     }
-     getList(camera: Camera) {
-        // TODO
-
+    getList(box: BoundingBox) {
+        //
     }
 }

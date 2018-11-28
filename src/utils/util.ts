@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 24th 2018, 2:09:22 am
+ * Last Modified: Wednesday, November 28th 2018, 8:34:27 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,6 +13,7 @@
 
 import 'reflect-metadata';
 import { Constructor } from '../types';
+import { Vec3 } from '../math';
 
 
 /**
@@ -109,3 +110,13 @@ class Greeter implements I {
 
 // let g = new Greeter();
 // console.log(g);
+
+export function getUp(v: Vec3) {
+    let up = new Vec3();
+    if (v.z === 0) {
+        up.set(0, 0, 1);
+    } else {
+        up.set(0, -v.z / v.y, 1);
+    }
+    return up;
+}

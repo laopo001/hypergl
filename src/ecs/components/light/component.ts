@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 28th 2018, 12:55:43 am
+ * Last Modified: Wednesday, November 28th 2018, 7:33:57 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -41,21 +41,21 @@ export class LightComponent<T extends Light = Light> extends Component<LigthInpu
 
     name = 'light';
     instance!: T;
-    constructor(inputs) {
-        super(inputs);
+    constructor(inputs: LigthInputs, entity: Entity, system: ComponentSystem) {
+        super(inputs, entity, system);
         let light: Light;
         switch (this.inputs.type) {
             case 'directional': {
-                light = new DirectionalLight();
+                light = new DirectionalLight(this.entity);
                 break;
             }
             case 'point': {
-                light = new PointLight();
+                light = new PointLight(this.entity);
                 Log.assert(this.inputs.shadowMapHeight === this.inputs.shadowMapWidth, 'pointLight shadowMapWidth must be equal to shadowMapHeight');
                 break;
             }
             case 'spot': {
-                light = new SpotLight();
+                light = new SpotLight(this.entity);
                 break;
             }
             default: Log.error(`${this.inputs.type} not match`);
@@ -74,8 +74,7 @@ export class LightComponent<T extends Light = Light> extends Component<LigthInpu
         this.instance = light! as any;
     }
     initialize(entity: Entity, system: ComponentSystem) {
-        this.entity = entity;
-        this.system = system;
+        //
     }
     get direction(): Vec3 {
         return (this.instance as any).direction;

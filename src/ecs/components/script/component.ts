@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 21st 2018, 10:58:13 pm
+ * Last Modified: Wednesday, November 28th 2018, 5:37:40 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -24,8 +24,8 @@ export class ScriptComponent extends Component<ScriptInputs> {
     entity!: Entity;
     name = 'script';
     instance: Script<{}>[];
-    constructor(inputs) {
-        super(inputs);
+    constructor(inputs: ScriptInputs, entity: Entity, system: ComponentSystem) {
+        super(inputs, entity, system);
         this.instance = this.inputs;
         this.instance.forEach(script => {
             if (script.inputs === undefined) {
@@ -34,8 +34,7 @@ export class ScriptComponent extends Component<ScriptInputs> {
         });
     }
     initialize(entity: Entity, system: ComponentSystem) {
-        this.entity = entity;
-        this.system = system;
+
         this.instance.forEach(script => {
           script.entity = entity;
           script.initialize();

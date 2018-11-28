@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, November 26th 2018, 10:06:18 pm
+ * Last Modified: Wednesday, November 28th 2018, 7:27:12 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -28,7 +28,7 @@ export class Light {
     shadowMapHeight = 2048;
     shadowBias = 0.0001;
     // shadowDarkness = 0.05;
-    constructor() {
+    constructor(public node: SceneNode) {
         // super();
     }
 

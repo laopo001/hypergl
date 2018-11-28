@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 20th 2018, 12:57:26 am
+ * Last Modified: Wednesday, November 28th 2018, 7:59:07 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,12 +14,22 @@
 
 import { Vec3, Quat, Mat4 } from '../math';
 import { SceneNode } from './node';
-export class Camera extends SceneNode {
-    projectionMatrix = new Mat4();
-
-    constructor() {
-        super();
+import { RenderTarget } from './renderTarget';
+export class Camera {
+    get viewProjectionMatrix() {
+        return new Mat4().mul2(this.projectionMatrix, this.node.getWorldTransform().clone().invert());
     }
+    projectionMatrix = new Mat4();
+    renderTarget: RenderTarget;
+    constructor(public node: SceneNode) {
+        this.renderTarget = new RenderTarget(this.projectionMatrix, this.node.getWorldTransform().clone().invert());
+    }
+    lookAt(direction: Vec3, up: Vec3): void {
+        this.node.lookAt(direction, up);
+    }
+    // getPosition() {
+    //     return this.node.getPosition();
+    // }
     /**
      *
      *
@@ -36,9 +46,6 @@ export class Camera extends SceneNode {
     setOrtho(left: number, right: number, bottom: number, top: number, near: number, far: number) {
         this.projectionMatrix.setOrtho(left, right, bottom, top, near, far);
         return this;
-    }
-    get viewProjectionMatrix() {
-        return new Mat4().mul2(this.projectionMatrix, this.getWorldTransform().clone().invert());
     }
 
 }

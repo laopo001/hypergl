@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 28th 2018, 12:52:51 am
+ * Last Modified: Wednesday, November 28th 2018, 8:59:22 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -18,6 +18,7 @@ import { Rotate } from './utils/rotate';
 import { Vec3 } from '../src/math';
 import { Color } from '../src/core';
 import { loadImage } from './utils';
+import { getUp } from '../src/utils/util';
 
 
 
@@ -36,6 +37,12 @@ async function main() {
     texture.setSource(img2);
     material2.diffuseMap = texture;
 
+    let debug = new Entity('debug')
+        .addComponent('model', {
+            type: 'box',
+            material
+        }).setLocalScale(0.3, 0.3, 0.3);
+
     let camera = new Entity('camera')
         .addComponent('camera', {
             type: 'perspective',
@@ -50,13 +57,17 @@ async function main() {
         .addComponent('script', [new FirstPersonCamera({ speed: 0.1 })]);
     app.scene.root.addChild(camera);
 
+    let direction = new Vec3(0, -1, 0);
     let light = new Entity('light')
         .addComponent('light', {
-            type: 'point',
+            type: 'spot',
             castShadows: true,
             shadowType: 'Normal'
         })
-        .setPosition(0, 2, 0);
+        // .lookAt(direction, getUp(direction))
+        // .lookAt(new Vec3(-0.5, -0.70, 0.5))
+        .setEulerAngles(-45, 0, 0)
+        .setLocalPosition(0, 5, 0).addChild(debug);
     app.scene.root.addChild(light);
 
 

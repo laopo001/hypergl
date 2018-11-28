@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, November 25th 2018, 5:45:14 pm
+ * Last Modified: Wednesday, November 28th 2018, 8:18:53 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -71,7 +71,7 @@ export class Scene {
     }
     render() {
         this.root.syncHierarchy();
-
+        event.fire('sync');
         renderScence(this);
     }
     // tslint:disable-next-line:member-ordering

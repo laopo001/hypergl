@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, November 20th 2018, 11:37:12 pm
+ * Last Modified: Wednesday, November 28th 2018, 5:35:27 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -25,11 +25,10 @@ export abstract class Component<Inputs> {
         this._enabled = value;
     }
     abstract name: string;
-    system: any;
-    entity!: Entity;
+
     abstract instance: any;
     private _enabled = true;
-    constructor(public inputs: Inputs) {
+    constructor(public inputs: Inputs, public entity: Entity, public system: ComponentSystem) {
     }
     abstract initialize(entity: Entity, system: ComponentSystem);
     getPosition() {

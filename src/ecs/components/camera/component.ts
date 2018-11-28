@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, November 20th 2018, 11:24:46 pm
+ * Last Modified: Wednesday, November 28th 2018, 7:23:35 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -55,9 +55,10 @@ export class CameraComponent extends Component<CameraInputs> {
     get viewProjectionMatrix() {
         return new Mat4().mul2(this.projectionMatrix, this.entity.getWorldTransform().clone().invert());
     }
-    constructor(inputs = cameraData) {
-        super(inputs);
-        let camera = new Camera();
+
+    constructor(inputs: CameraInputs = cameraData, entity: Entity, system: ComponentSystem) {
+        super(inputs, entity, system);
+        let camera = new Camera(this.entity);
         switch (this.inputs.type) {
             case 'perspective': {
                 let { fov, aspectRatio, far, near } = this.inputs.perspective!;
@@ -83,7 +84,6 @@ export class CameraComponent extends Component<CameraInputs> {
         return this;
     }
     initialize(entity: Entity, system: ComponentSystem) {
-        this.entity = entity;
-        this.system = system;
+        //
     }
 }

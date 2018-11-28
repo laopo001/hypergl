@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, November 27th 2018, 11:26:43 pm
+ * Last Modified: Wednesday, November 28th 2018, 7:21:18 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -44,8 +44,8 @@ export class ModelComponent extends Component<ModelInputs> {
         return this.instance;
     }
     name = 'model';
-    constructor(inputs) {
-        super(inputs);
+    constructor(inputs: ModelInputs, entity: Entity, system: ComponentSystem) {
+        super(inputs, entity, system);
         // let model = new Model();
         let mesh: Mesh;
         switch (this.inputs.type) {
@@ -66,7 +66,6 @@ export class ModelComponent extends Component<ModelInputs> {
 
     }
     initialize(entity: Entity, system: ComponentSystem) {
-        this.entity = entity;
-        this.system = system;
+        //
     }
 }

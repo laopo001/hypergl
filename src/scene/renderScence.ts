@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, November 27th 2018, 3:19:26 pm
+ * Last Modified: Wednesday, November 28th 2018, 8:53:00 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -22,6 +22,7 @@ import { Log } from '../utils/util';
 import { Light, DirectionalLight, PointLight, SpotLight } from '../lights';
 import { Camera } from './camera';
 import { Vec3, DEG_TO_RAD } from '../math';
+import { SceneNode } from './node';
 
 
 
@@ -92,13 +93,13 @@ export function renderDirectionalLightArr(name: string, data: LightComponent<Dir
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(light.shadowMapWidth, light.shadowMapHeight, false);
         }
-
-        let camera = new Camera();
-        let height = 40;
-        let width = 1 * height;
-        let length = 1 * height;
-        camera.setOrtho(-width, width, -height, height, -length, length);
-        camera.lookAt(light.direction, camera.up);
+        let camera = light.instance.camera;
+        // let camera = new Camera();
+        // let height = 40;
+        // let width = 1 * height;
+        // let length = 1 * height;
+        // camera.setOrtho(-width, width, -height, height, -length, length);
+        // camera.lookAt(light.direction, camera.up);
 
         let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
         let shader = renderer.programGenerator.getShader('depth', attributes);
@@ -150,28 +151,29 @@ export function renderPointLightArr(name: string, data: LightComponent<PointLigh
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(light.shadowMapWidth, light.shadowMapHeight, true);
         }
-        let cameras: Camera[] = [];
-        for (let i = 0; i < 6; i++) {
-            let v = new Vec3();
-            let a = i % 2;
-            let up;
-            switch (i) {
-                case 0: up = new Vec3(0, -1, 0); break;
-                case 1: up = new Vec3(0, -1, 0); break;
-                case 2: up = new Vec3(0, 0, 1); break;
-                case 3: up = new Vec3(0, 0, -1); break;
-                case 4: up = new Vec3(0, -1, 0); break;
-                case 5: up = new Vec3(0, -1, 0); break;
-            }
-            let b = Math.floor(i / 2);
-            v.data[b] = a === 0 ? 1 : -1;
-            let camera = new Camera();
-            const near = 0.1;
-            camera.lookAt(v, up);
-            camera.setPosition(light.getPosition());
-            camera.setPerspective(90, 1, near, light.range);
-            cameras.push(camera);
-        }
+        let cameras = light.instance.cameras;
+        // let cameras: Camera[] = [];
+        // for (let i = 0; i < 6; i++) {
+        //     let v = new Vec3();
+        //     let a = i % 2;
+        //     let up;
+        //     switch (i) {
+        //         case 0: up = new Vec3(0, -1, 0); break;
+        //         case 1: up = new Vec3(0, -1, 0); break;
+        //         case 2: up = new Vec3(0, 0, 1); break;
+        //         case 3: up = new Vec3(0, 0, -1); break;
+        //         case 4: up = new Vec3(0, -1, 0); break;
+        //         case 5: up = new Vec3(0, -1, 0); break;
+        //     }
+        //     let b = Math.floor(i / 2);
+        //     v.data[b] = a === 0 ? 1 : -1;
+        //     let camera = new Camera(new SceneNode());
+        //     const near = 0.1;
+        //     camera.lookAt(v, up);
+        //     camera.node.setPosition(light.getPosition());
+        //     camera.setPerspective(90, 1, near, light.range);
+        //     cameras.push(camera);
+        // }
 
 
         for (let i = 0; i < cameras.length; i++) {
@@ -179,7 +181,7 @@ export function renderPointLightArr(name: string, data: LightComponent<PointLigh
             let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
             let shader = renderer.programGenerator.getShader('distance', attributes);
             shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
-            shader.setUniformValue('view_position', camera.getPosition().data);
+            shader.setUniformValue('view_position', camera.node.getPosition().data);
             shader.setUniformValue('light_range', light.range);
             light.shadowFrame.createFramebuffer3D(i);
             light.shadowFrame.beforeDraw(i);
@@ -225,10 +227,11 @@ export function renderSpotLightArr(name: string, data: LightComponent<SpotLight>
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(light.shadowMapWidth, light.shadowMapHeight, false);
         }
-        let camera = new Camera();
-        camera.setPerspective(light.outerConeAngle * 2, 1, 0.5, light.range);
-        camera.lookAt(light.direction, getUp(light.direction));
-        camera.setPosition(light.getPosition());
+        let camera = light.instance.camera;
+        // let camera = new Camera();
+        // camera.setPerspective(light.outerConeAngle * 2, 1, 0.5, light.range);
+        // camera.lookAt(light.direction, getUp(light.direction));
+        // camera.setPosition(light.getPosition());
 
         let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
         let shader = renderer.programGenerator.getShader('depth', attributes);
@@ -276,14 +279,4 @@ function setLight(name: string, key: string, index, obj, parameters, value) {
     let t = name + index + '_' + key;
     obj[key] = t;
     parameters[t] = value;
-}
-
-function getUp(v: Vec3) {
-    let up = new Vec3();
-    if (v.z === 0) {
-        up.set(0, 0, 1);
-    } else {
-        up.set(0, -v.z / v.y, 1);
-    }
-    return up;
 }

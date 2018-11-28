@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, November 27th 2018, 1:06:18 pm
+ * Last Modified: Wednesday, November 28th 2018, 8:35:34 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -63,6 +63,7 @@ export class SceneNode extends IElement {
             if (up == null) {
                 // tslint:disable-next-line:no-parameter-reassignment
                 up = this.up;
+                // up = getUp(target);
             }
             let mat4 = new Mat4().setLookAt(this.getPosition(), target, up);
             let quat = new Quat().setFromMat4(mat4);
