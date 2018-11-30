@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, November 25th 2018, 3:48:32 pm
+ * Last Modified: Friday, November 30th 2018, 11:40:09 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -37,7 +37,7 @@ export class Application {
     renderer: RendererPlatform;
     canvas: HTMLCanvasElement;
     lastRenderTime = 0;
-    _isPointerLock = false;
+    private _isPointerLock = false;
     constructor(canvas: HTMLCanvasElement, option?: AppOption) {
         this.canvas = canvas;
         this.renderer = new RendererPlatform(this.canvas, option);

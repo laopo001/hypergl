@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 29th 2018, 12:30:34 am
+ * Last Modified: Friday, November 30th 2018, 11:39:59 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -37,6 +37,5 @@ export class RenderTarget {
             }
             return false;
         });
-        return models;
     }
 }

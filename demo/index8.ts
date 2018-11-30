@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 29th 2018, 1:50:05 am
+ * Last Modified: Friday, November 30th 2018, 11:35:04 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -63,12 +63,12 @@ async function main() {
             type: 'point',
             castShadows: true,
             shadowType: 'Normal',
-            range: 20
+            range: 16
         })
         // .lookAt(direction, getUp(direction))
-        .lookAt(new Vec3(-0.5, -0.70, 0.5))
+        // .lookAt(new Vec3(-0.5, -0.70, 0.5))
         // .setEulerAngles(-45, 0, 0)
-        .setLocalPosition(5, 5, 5);
+        .setLocalPosition(2, 4, -5);
     // .addChild(debug);
     app.scene.root.addChild(light);
 
