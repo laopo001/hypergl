@@ -5,14 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 1st 2018, 10:40:20 pm
+ * Last Modified: Sunday, December 2nd 2018, 1:56:50 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Entity, Application, Model, math, Mesh, StandardMaterial } from '../../..';
+import { Entity, Application, Model, math, Mesh, StandardMaterial, Material } from '../../..';
 import { Component } from '../../component';
 import { ComponentSystem } from '../../system';
 import { Drawable } from '../../../mesh/drawable';
@@ -23,27 +23,18 @@ export interface ModelInputs {
     options?: any;
     castShadow?: boolean,
     receiveShadow?: boolean,
-    material?: StandardMaterial;
+    material?: Material;
 }
-export class ModelComponent extends Component<ModelInputs> {
+export class ModelComponent<T = StandardMaterial> extends Component<ModelInputs> {
     entity!: Entity;
-    instance: Mesh;
-    get mesh() {
-        return this.instance;
-    }
-    public get material(): StandardMaterial {
+    instance: Drawable;
+    // get instance() {
+    //     return this.instance;
+    // }
+    get material() {
         return this.instance.material;
     }
-    public set material(x: StandardMaterial) {
-        // if (!x.meshs.includes(this)) {
-        //     x.meshs.push(this);
-        // }
-        // if (this.material) {
-        // let index = this.material.meshs.indexOf(this);
-        //     if (index > -1) {
-        //         this.material.meshs.splice(index, 1);
-        //     }
-        // }
+    set material(x) {
         this.instance.material = x;
     }
     name = 'model';

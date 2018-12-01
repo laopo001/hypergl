@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 1st 2018, 12:17:20 pm
+ * Last Modified: Sunday, December 2nd 2018, 1:57:36 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -303,7 +303,7 @@ export class RendererPlatform {
     }
     draw(entity: ModelComponent) {
         const gl = this.gl;
-        const mesh = entity.mesh;
+        const mesh = entity.instance;
         if (mesh == null) { return; }
         this.setVertexBuffer(mesh.vertexBuffer);
         if (mesh.indexBuffer) {

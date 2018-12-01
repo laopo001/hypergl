@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 1st 2018, 6:28:56 pm
+ * Last Modified: Sunday, December 2nd 2018, 1:57:36 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -43,16 +43,16 @@ export function renderScence(scene: Scene) {
     renderer.enableBLEND();
     for (let i = 0; i < modelComponents.length; i++) {
         let model = modelComponents[i];
-        if (!model.enabled || !model.mesh) {
+        if (!model.enabled || !model.instance) {
             continue;
         }
-        const mesh = model.mesh;
+        const mesh = model.instance;
         const material = mesh.material;
         let attributes: { [s: string]: SEMANTIC } = {};
         mesh.vertexBuffer.format.elements.forEach(x => {
             attributes[SEMANTICMAP[x.semantic]] = x.semantic;
         });
-        if (!model.mesh.receiveShadow) {
+        if (!model.instance.receiveShadow) {
             LightsUniforms._directionalLightArr.forEach(item => {
                 item.castShadows = false;
                 temp.push(item);
@@ -75,7 +75,7 @@ export function renderScence(scene: Scene) {
         shader.setUniformValue('matrix_normal', model.getWorldTransform().clone().invert().transpose().data);
         shader.setUniformValue('camera_position', camera.getPosition().data);
         renderer.draw(model);
-        if (!model.mesh.receiveShadow) {
+        if (!model.instance.receiveShadow) {
             temp.forEach(item => {
                 item.castShadows = true;
             });
@@ -113,7 +113,7 @@ export function renderDirectionalLightArr(name: string, data: LightComponent<Dir
         light.shadowFrame.beforeDraw();
         for (let i = 0; i < modelComponents.length; i++) {
             let modelComponent = modelComponents[i];
-            if (!modelComponent.enabled || !modelComponent.mesh || !modelComponent.mesh.castShadow) {
+            if (!modelComponent.enabled || !modelComponent.instance || !modelComponent.instance.castShadow) {
                 continue;
             }
             renderer.setShaderProgram(shader as Shader);
@@ -194,7 +194,7 @@ export function renderPointLightArr(name: string, data: LightComponent<PointLigh
             light.shadowFrame.beforeDraw(i);
             for (let i = 0; i < modelComponents.length; i++) {
                 let modelComponent = modelComponents[i];
-                if (!modelComponent.enabled || !modelComponent.mesh || !modelComponent.mesh.castShadow) {
+                if (!modelComponent.enabled || !modelComponent.instance || !modelComponent.instance.castShadow) {
                     continue;
                 }
                 renderer.setShaderProgram(shader as Shader);
@@ -249,7 +249,7 @@ export function renderSpotLightArr(name: string, data: LightComponent<SpotLight>
         light.shadowFrame.beforeDraw();
         for (let i = 0; i < modelComponents.length; i++) {
             let modelComponent = modelComponents[i];
-            if (!modelComponent.enabled || !modelComponent.mesh || !modelComponent.mesh.castShadow) {
+            if (!modelComponent.enabled || !modelComponent.instance || !modelComponent.instance.castShadow) {
                 continue;
             }
             renderer.setShaderProgram(shader as Shader);

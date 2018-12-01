@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, November 27th 2018, 12:31:55 pm
+ * Last Modified: Sunday, December 2nd 2018, 2:07:22 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -51,12 +51,6 @@ export class ModelComponentSystem extends ComponentSystem {
     addComponent(entity: Entity, componentData: any) {
         let component = super.addComponent(entity, componentData) as ModelComponent;
         this._dirty = true;
-        // let item = component.instance;
-        // if (item.material instanceof StandardMaterial && item.material.opacity < 1 && item.material.opacityMap) {
-        //     this.opacityLayers.push(component);
-        // } else {
-        //     this.normalLayers.push(component);
-        // }
         this.renderLayers.push(component);
         return component;
     }

@@ -5,14 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 1st 2018, 10:44:27 pm
+ * Last Modified: Sunday, December 2nd 2018, 2:12:36 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Entity, Script, StandardMaterial, Config, Application, Texture, Mesh } from '../src';
+import { Entity, Script, StandardMaterial, Config, Application, Texture, Mesh, Line } from '../src';
 import { FirstPersonCamera } from './utils/first_person_camera';
 import { Rotate } from './utils/rotate';
 import { Vec3 } from '../src/math';
@@ -65,9 +65,9 @@ async function main() {
             range: 16
         })
         // .lookAt(direction, getUp(direction))
-        // .setEulerAngles(-45, 0, 0)
-        .setLocalPosition(5, 5, -5);
-    // .addChild(debug);
+        .setEulerAngles(-45, 0, 0)
+        .setLocalPosition(5, 5, -5)
+        .addChild(debug);
     app.scene.root.addChild(light);
 
 
@@ -78,18 +78,20 @@ async function main() {
         .setLocalPosition(-1, 0, 0);
     box.model.material = material;
 
-    let lines = Mesh.createLines([new Vec3(-2, 0, 0), new Vec3(2, 0, 0)]);
+    let lines = Line.createLines([
+        [new Vec3(-2, 0, 0), new Vec3(2, 0, 0)]
+    ]);
+
 
     let box2 = new Entity('lines')
         .addComponent('model', {
             type: 'model',
             model: lines,
-            // castShadow: false
         }).setLocalPosition(1, 0, 0);
 
     let temp = new Entity('temp');
-    temp.addChild(box);
-        // .addChild(box2);
+    temp.addChild(box)
+        .addChild(box2);
     temp.addComponent('script', [new Rotate({ speed: 2 })]);
 
     app.scene.root.addChild(temp);
