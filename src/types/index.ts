@@ -7,7 +7,7 @@ import { Vec3 } from '../math';
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, November 27th 2018, 5:11:16 pm
+ * Last Modified: Saturday, December 1st 2018, 9:48:30 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -28,6 +28,18 @@ export type Nullable<T> = T | null;
 export type Undefinedable<T> = T | undefined;
 export interface Obj<T> { [s: string]: Undefinedable<T> }
 export interface CreateMeshOptions {
+    positions: number[];
+    normals?: number[]; // 法线
+    indices?: number[];
+    tangents?: number[]; //
+    colors?: number[];
+    uvs?: number[];
+    uvs1?: number[];
+    blendIndices?: number[];
+    blendWeights?: string[];
+}
+
+export interface CreateDrawabelOptions {
     positions: number[];
     normals?: number[]; // 法线
     indices?: number[];

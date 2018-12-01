@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 24th 2018, 2:24:32 am
+ * Last Modified: Saturday, December 1st 2018, 10:04:38 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,119 +14,30 @@
 
 import { VertexBuffer } from '../graphics/vertexBuffer';
 import { IndexBuffer } from '../graphics/indexBuffer';
-import { StandardMaterial } from '../material';
+import { StandardMaterial, BasicMaterial } from '../material';
 import { SEMANTIC, BUFFER, DrawMode } from '../conf';
 import { VertexType, VertexFormat } from '../graphics/vertexFormat';
 import { CreateMeshOptions, CreateBoxOptions } from '../types';
 import { Vec3, Vec2 } from '../math';
 import { BoundingBox } from '../shape/boundingBox';
+import { Line } from './line';
+import { Drawable } from './drawable';
 
-export class Mesh {
-    get material() {
-        return this._material;
-    }
-    set material(x) {
-        this._material = x;
-    }
-    static defaultMaterial: StandardMaterial = new StandardMaterial();
+export class Mesh extends Drawable {
     static createBox = createBox;
     static createPlane = createPlane;
-    name?: string;
-    mode = DrawMode.TRIANGLES; // 默认绘制模式 为 三角形
-    // tslint:disable-next-line:member-ordering
-    vertexBuffer!: VertexBuffer;
-    indexBuffer?: IndexBuffer;
+    static createLines = createLines;
     castShadow = true;
-    aabb!: BoundingBox;
     receiveShadow = true;
-    _material!: StandardMaterial;
+    material = new StandardMaterial();
     // private _material = Mesh.defaultMaterial;
     constructor() {
-        this.material = Mesh.defaultMaterial;
-        // TODO
+        super();
     }
     // tslint:disable-next-line:cyclomatic-complexity
     static createMesh(opts: CreateMeshOptions) {
-        // Check the supplied options and provide defaults for unspecified ones
-        let positions = opts.positions;
-        let normals = opts && opts.normals !== undefined ? opts.normals : null;
-        let indices = opts.indices !== undefined ? opts.indices : undefined;
-        let tangents = opts && opts.tangents !== undefined ? opts.tangents : null;
-        let colors = opts && opts.colors !== undefined ? opts.colors : null;
-        let uvs = opts && opts.uvs !== undefined ? opts.uvs : null;
-        let uvs1 = opts && opts.uvs1 !== undefined ? opts.uvs1 : null;
-        let blendIndices = opts && opts.blendIndices !== undefined ? opts.blendIndices : null;
-        let blendWeights = opts && opts.blendWeights !== undefined ? opts.blendWeights : null;
-
-        let vertexDesc: VertexType[] = [
-            { semantic: SEMANTIC.POSITION, size: 3, dataType: Float32Array }
-        ];
-        if (normals !== null) {
-            vertexDesc.push({ semantic: SEMANTIC.NORMAL, size: 3, dataType: Float32Array });
-        }
-        if (tangents !== null) {
-            vertexDesc.push({ semantic: SEMANTIC.TANGENT, size: 4, dataType: Float32Array });
-        }
-        if (colors !== null) {
-            vertexDesc.push({ semantic: SEMANTIC.COLOR, size: 4, dataType: Uint8Array, normalize: false });
-        }
-        if (uvs !== null) {
-            vertexDesc.push({ semantic: SEMANTIC.TEXCOORD0, size: 2, dataType: Float32Array });
-        }
-        if (uvs1 !== null) {
-            vertexDesc.push({ semantic: SEMANTIC.TEXCOORD1, size: 2, dataType: Float32Array });
-        }
-        if (blendIndices !== null) {
-            vertexDesc.push({ semantic: SEMANTIC.BLENDINDICES, size: 2, dataType: Uint8Array });
-        }
-        if (blendWeights !== null) {
-            vertexDesc.push({ semantic: SEMANTIC.BLENDWEIGHT, size: 2, dataType: Float32Array });
-        }
-
-        let vertexFormat = new VertexFormat(vertexDesc);
-
-        // Create the vertex buffer
-        let numVertices = positions.length / 3;
-        let vertexBuffer = new VertexBuffer(vertexFormat, numVertices);
-        let iterator = vertexBuffer.toIterator();
-
-        for (let i = 0; i < numVertices; i++) {
-            let setter = iterator.value;
-            setter[SEMANTIC.POSITION].set(positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2]);
-            if (normals !== null) {
-                setter[SEMANTIC.NORMAL].set(normals[i * 3], normals[i * 3 + 1], normals[i * 3 + 2]);
-            }
-            if (tangents !== null) {
-                setter[SEMANTIC.TANGENT].set(tangents[i * 4], tangents[i * 4 + 1], tangents[i * 4 + 2], tangents[i * 4 + 3]);
-            }
-            if (colors !== null) {
-                setter[SEMANTIC.COLOR].set(colors[i * 4], colors[i * 4 + 1], colors[i * 4 + 2], colors[i * 4 + 3]);
-            }
-            if (uvs !== null) {
-                setter[SEMANTIC.TEXCOORD0].set(uvs[i * 2], uvs[i * 2 + 1]);
-            }
-            if (uvs1 !== null) {
-                setter[SEMANTIC.TEXCOORD1].set(uvs1[i * 2], uvs1[i * 2 + 1]);
-            }
-            if (blendIndices !== null) {
-                setter[SEMANTIC.BLENDINDICES].set(blendIndices[i * 2], blendIndices[i * 2 + 1]);
-            }
-            if (blendWeights !== null) {
-                setter[SEMANTIC.BLENDWEIGHT].set(blendWeights[i * 2], blendWeights[i * 2 + 1]);
-            }
-            iterator.next();
-        }
-        // vertexBuffer.bind();
-
-        // Create the index buffer
-        let indexBuffer = indices && new IndexBuffer(Uint16Array, BUFFER.STATIC, indices);
-        // let aabb = new BoundingBox();
-        // aabb.compute(positions);
-
         let mesh = new Mesh();
-        mesh.aabb = BoundingBox.compute(positions);
-        mesh.vertexBuffer = vertexBuffer;
-        mesh.indexBuffer = indexBuffer;
+        mesh.create(opts);
         return mesh;
     }
 }
@@ -313,4 +224,29 @@ export function createPlane(opts?: {
     // }
 
     return Mesh.createMesh(options);
+}
+
+interface CreateLinesOptions {
+    type?: 'LINES' | 'LINE_LOOP' | 'LINE_STRIP',
+    width?: number
+}
+
+function createLines(vertex: Vec3[], opts: CreateLinesOptions = {}) {
+    let positions: number[] = [];
+    let type = opts.type || 'LINES';
+
+    vertex.forEach(vec => {
+        positions.push(vec.x, vec.y, vec.z);
+    });
+    let options = {
+        positions,
+        // normals,
+        // uvs,
+        // // uvs1,
+        // indices
+    };
+    let mesh = Mesh.createMesh(options);
+    mesh.mode = DrawMode[type];
+    mesh.material = new BasicMaterial() as any;
+    return mesh;
 }

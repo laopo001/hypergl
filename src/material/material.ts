@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 24th 2018, 2:24:16 am
+ * Last Modified: Saturday, December 1st 2018, 10:37:50 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -27,7 +27,7 @@ export abstract class Material {
     uniforms: { [s: string]: any } = {};
     shader?: Shader;
     cullFace = FACE.BACK;
-    meshs: ModelComponent[] = [];
+    // meshs: ModelComponent[] = [];
     // protected _dirtyUpdate = false;
     constructor(public name?: string) {
 
