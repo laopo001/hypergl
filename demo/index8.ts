@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 30th 2018, 11:35:04 pm
+ * Last Modified: Saturday, December 1st 2018, 3:31:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -57,18 +57,16 @@ async function main() {
         .addComponent('script', [new FirstPersonCamera({ speed: 0.1 })]);
     app.scene.root.addChild(camera);
 
-    let direction = new Vec3(0, -1, 0);
     let light = new Entity('light')
         .addComponent('light', {
             type: 'point',
             castShadows: true,
             shadowType: 'Normal',
-            range: 16
+            range: 13
         })
         // .lookAt(direction, getUp(direction))
-        // .lookAt(new Vec3(-0.5, -0.70, 0.5))
         // .setEulerAngles(-45, 0, 0)
-        .setLocalPosition(2, 4, -5);
+        .setLocalPosition(5, 5, -5);
     // .addChild(debug);
     app.scene.root.addChild(light);
 

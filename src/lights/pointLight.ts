@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 28th 2018, 10:37:40 pm
+ * Last Modified: Saturday, December 1st 2018, 3:26:14 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,6 +20,7 @@ export class PointLight extends Light {
     range = 10;
     shadowMapWidth = 512;
     shadowMapHeight = 512;
+    shadowBias = 0.05;
     cameras: Camera[] = [];
     constructor(node: SceneNode) {
         super(node);

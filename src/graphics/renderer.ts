@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 29th 2018, 1:45:27 am
+ * Last Modified: Saturday, December 1st 2018, 12:17:20 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -249,6 +249,7 @@ export class RendererPlatform {
                 gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
                 gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
                 gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_R, gl.CLAMP_TO_EDGE);
+                // gl.texParameterf(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_COMPARE_FUNC, gl.LESS);
                 // 向target绑定纹理对象
                 gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture.webglTexture);
                 // gl.generateMipmap(gl.TEXTURE_2D);
