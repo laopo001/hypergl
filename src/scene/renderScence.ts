@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 1st 2018, 3:06:38 pm
+ * Last Modified: Saturday, December 1st 2018, 6:28:56 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -181,8 +181,8 @@ export function renderPointLightArr(name: string, data: LightComponent<PointLigh
 
         for (let i = 0; i < cameras.length; i++) {
             let camera = cameras[i];
-            // camera.updateRenderTarget(); // test
-            // modelComponents = camera.renderTarget.getList(temp);
+            camera.updateRenderTarget(); // test
+            modelComponents = camera.renderTarget.getList(temp);
             // console.log(modelComponents);
 
             let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };

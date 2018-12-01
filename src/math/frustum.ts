@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 28th 2018, 3:48:49 pm
+ * Last Modified: Saturday, December 1st 2018, 6:27:25 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,89 +14,39 @@
 import { Entity } from '../ecs/entity';
 import { Mat4 } from './mat4';
 import { Vec3 } from './vec3';
+import { BoundingBox } from '../shape/boundingBox';
+import { Plane } from './plane';
 export class Frustum {
-    planes: number[][] = [];
+    planes: Plane[] = [];
     constructor(projectionMatrix, viewMatrix) {
         for (let i = 0; i < 6; i++) {
-            this.planes[i] = [];
+            this.planes[i] = new Plane();
         }
         this.update(projectionMatrix, viewMatrix);
     }
     update(projectionMatrix, viewMatrix) {
         let viewProj = new Mat4();
         viewProj.mul2(projectionMatrix, viewMatrix);
-        let vpm = viewProj.data;
-        // Extract the numbers for the RIGHT plane
-        this.planes[0][0] = vpm[3] - vpm[0];
-        this.planes[0][1] = vpm[7] - vpm[4];
-        this.planes[0][2] = vpm[11] - vpm[8];
-        this.planes[0][3] = vpm[15] - vpm[12];
-        // Normalize the result
-        let t = Math.sqrt(this.planes[0][0] * this.planes[0][0] + this.planes[0][1] * this.planes[0][1] + this.planes[0][2] * this.planes[0][2]);
-        this.planes[0][0] /= t;
-        this.planes[0][1] /= t;
-        this.planes[0][2] /= t;
-        this.planes[0][3] /= t;
+        let me = viewProj.data;
+        let planes = this.planes;
 
-        // Extract the numbers for the LEFT plane
-        this.planes[1][0] = vpm[3] + vpm[0];
-        this.planes[1][1] = vpm[7] + vpm[4];
-        this.planes[1][2] = vpm[11] + vpm[8];
-        this.planes[1][3] = vpm[15] + vpm[12];
-        // Normalize the result
-        t = Math.sqrt(this.planes[1][0] * this.planes[1][0] + this.planes[1][1] * this.planes[1][1] + this.planes[1][2] * this.planes[1][2]);
-        this.planes[1][0] /= t;
-        this.planes[1][1] /= t;
-        this.planes[1][2] /= t;
-        this.planes[1][3] /= t;
+        // tslint:disable-next-line:one-variable-per-declaration
+        let me0 = me[0], me1 = me[1], me2 = me[2], me3 = me[3];
+        // tslint:disable-next-line:one-variable-per-declaration
+        let me4 = me[4], me5 = me[5], me6 = me[6], me7 = me[7];
+        // tslint:disable-next-line:one-variable-per-declaration
+        let me8 = me[8], me9 = me[9], me10 = me[10], me11 = me[11];
+        // tslint:disable-next-line:one-variable-per-declaration
+        let me12 = me[12], me13 = me[13], me14 = me[14], me15 = me[15];
 
-        // Extract the BOTTOM plane
-        this.planes[2][0] = vpm[3] + vpm[1];
-        this.planes[2][1] = vpm[7] + vpm[5];
-        this.planes[2][2] = vpm[11] + vpm[9];
-        this.planes[2][3] = vpm[15] + vpm[13];
-        // Normalize the result
-        t = Math.sqrt(this.planes[2][0] * this.planes[2][0] + this.planes[2][1] * this.planes[2][1] + this.planes[2][2] * this.planes[2][2]);
-        this.planes[2][0] /= t;
-        this.planes[2][1] /= t;
-        this.planes[2][2] /= t;
-        this.planes[2][3] /= t;
+        planes[0].set(me3 - me0, me7 - me4, me11 - me8, me15 - me12).normalize();
+        planes[1].set(me3 + me0, me7 + me4, me11 + me8, me15 + me12).normalize();
+        planes[2].set(me3 + me1, me7 + me5, me11 + me9, me15 + me13).normalize();
+        planes[3].set(me3 - me1, me7 - me5, me11 - me9, me15 - me13).normalize();
+        planes[4].set(me3 - me2, me7 - me6, me11 - me10, me15 - me14).normalize();
+        planes[5].set(me3 + me2, me7 + me6, me11 + me10, me15 + me14).normalize();
 
-        // Extract the TOP plane
-        this.planes[3][0] = vpm[3] - vpm[1];
-        this.planes[3][1] = vpm[7] - vpm[5];
-        this.planes[3][2] = vpm[11] - vpm[9];
-        this.planes[3][3] = vpm[15] - vpm[13];
-        // Normalize the result
-        t = Math.sqrt(this.planes[3][0] * this.planes[3][0] + this.planes[3][1] * this.planes[3][1] + this.planes[3][2] * this.planes[3][2]);
-        this.planes[3][0] /= t;
-        this.planes[3][1] /= t;
-        this.planes[3][2] /= t;
-        this.planes[3][3] /= t;
-
-        // Extract the FAR plane
-        this.planes[4][0] = vpm[3] - vpm[2];
-        this.planes[4][1] = vpm[7] - vpm[6];
-        this.planes[4][2] = vpm[11] - vpm[10];
-        this.planes[4][3] = vpm[15] - vpm[14];
-        // Normalize the result
-        t = Math.sqrt(this.planes[4][0] * this.planes[4][0] + this.planes[4][1] * this.planes[4][1] + this.planes[4][2] * this.planes[4][2]);
-        this.planes[4][0] /= t;
-        this.planes[4][1] /= t;
-        this.planes[4][2] /= t;
-        this.planes[4][3] /= t;
-
-        // Extract the NEAR plane
-        this.planes[5][0] = vpm[3] + vpm[2];
-        this.planes[5][1] = vpm[7] + vpm[6];
-        this.planes[5][2] = vpm[11] + vpm[10];
-        this.planes[5][3] = vpm[15] + vpm[14];
-        // Normalize the result
-        t = Math.sqrt(this.planes[5][0] * this.planes[5][0] + this.planes[5][1] * this.planes[5][1] + this.planes[5][2] * this.planes[5][2]);
-        this.planes[5][0] /= t;
-        this.planes[5][1] /= t;
-        this.planes[5][2] /= t;
-        this.planes[5][3] /= t;
+        return this;
     }
     containsPoint(point: Vec3) {
         for (let p = 0; p < 6; p++) {
@@ -109,7 +59,25 @@ export class Frustum {
         }
         return true;
     }
-    containsSphere (sphere) {
+    containsBox(box: BoundingBox) {
+        for (let i = 0; i < this.planes.length; i++) {
+            const plane = this.planes[i];
+            let [x, y, z] = plane.normal.data;
+            let p1 = new Vec3();
+            let p2 = new Vec3();
+            p1.x = x > 0 ? box.min.x : box.max.x;
+            p2.x = x > 0 ? box.max.x : box.min.x;
+            p1.y = y > 0 ? box.min.y : box.max.y;
+            p2.y = y > 0 ? box.max.y : box.min.y;
+            p1.z = z > 0 ? box.min.z : box.max.z;
+            p2.z = z > 0 ? box.max.z : box.min.z;
+            if (plane.distanceToPoint(p1) < 0 && plane.distanceToPoint(p2) < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+    containsSphere(sphere) {
         let c = 0;
         let d;
         let p;
