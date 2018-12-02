@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 22nd 2018, 7:57:14 pm
+ * Last Modified: Monday, December 3rd 2018, 12:44:35 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -56,7 +56,10 @@ export class Entity extends SceneNode {
     constructor(options?: { name?: string, tag: string[] })
     constructor(name?) {
         super();
-        if (typeof name === 'string') {
+        if (typeof name === 'undefined') {
+            //
+        }
+        else if (typeof name === 'string') {
             this.name = name;
         } else {
             this.name = name.name;

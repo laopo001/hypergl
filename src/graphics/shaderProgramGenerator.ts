@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, November 27th 2018, 5:11:43 pm
+ * Last Modified: Monday, December 3rd 2018, 12:57:49 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -21,6 +21,8 @@ import depthVert from './shaders/depth.vert';
 import depthFrag from './shaders/depth.frag';
 import distanceVert from './shaders/distance.vert';
 import distanceFrag from './shaders/distance.frag';
+import colorVert from './shaders/color.vert';
+import colorFrag from './shaders/color.frag';
 import { RendererPlatform } from './renderer';
 import { Shader } from './shader';
 import { SEMANTIC } from '../conf';
@@ -80,6 +82,10 @@ function createShaderDefinition(name: string, renderer: RendererPlatform, option
         case 'distance':
             vertStr = distanceVert(options);
             fragStr = distanceFrag(options);
+            break;
+        case 'color':
+            vertStr = colorVert(options);
+            fragStr = colorFrag(options);
             break;
     }
 
