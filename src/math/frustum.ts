@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 1st 2018, 6:27:25 pm
+ * Last Modified: Sunday, December 2nd 2018, 4:46:13 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -49,15 +49,13 @@ export class Frustum {
         return this;
     }
     containsPoint(point: Vec3) {
-        for (let p = 0; p < 6; p++) {
-            if (this.planes[p][0] * point.x +
-                this.planes[p][1] * point.y +
-                this.planes[p][2] * point.z +
-                this.planes[p][3] <= 0) {
-                return false;
+        let planes = this.planes;
+        for (let i = 0; i < 6; i ++) {
+            if (planes[ i ].distanceToPoint(point) < 0) {
+                return false;	//不在边界内,返回false
             }
         }
-        return true;
+        return true;		//在边界内,返回true
     }
     containsBox(box: BoundingBox) {
         for (let i = 0; i < this.planes.length; i++) {
@@ -78,26 +76,15 @@ export class Frustum {
         return true;
     }
     containsSphere(sphere) {
-        let c = 0;
-        let d;
-        let p;
-        let sr = sphere.radius;
-        let sc = sphere.center;
-        let scx = sc.x;
-        let scy = sc.y;
-        let scz = sc.z;
         let planes = this.planes;
-        let plane;
-        for (p = 0; p < 6; p++) {
-            plane = planes[p];
-            d = plane[0] * scx + plane[1] * scy + plane[2] * scz + plane[3];
-            if (d <= -sr) {
-                return 0;
-            }
-            if (d > sr) {
-                c++;
+        let center = sphere.center;
+        let negRadius = - sphere.radius;
+        for (let i = 0; i < 6; i ++) {
+            let distance = planes[ i ].distanceToPoint(center);
+            if (distance < negRadius) {
+                return false;	//不相交返回false
             }
         }
-        return (c === 6) ? 2 : 1;
+        return true;	//相交返回true
     }
 }

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 2nd 2018, 2:09:12 am
+ * Last Modified: Sunday, December 2nd 2018, 5:37:04 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,11 +15,14 @@
 import { Vec3 } from '../math';
 import { Drawable } from './drawable';
 import { DrawMode } from '../conf';
+import { BasicMaterial } from '../material';
 export class Line extends Drawable {
     static createLines = createLines;
     mode = DrawMode.LINES;
-    lines = Array<[Vec3, Vec3]>();
+    // castShadow = true;
+    lines = Array<Vec3>();
     width = 1;
+    material = new BasicMaterial();
 }
 
 interface CreateLinesOptions {
@@ -27,16 +30,13 @@ interface CreateLinesOptions {
     width?: number
 }
 
-export function createLines(vertex: Array<[Vec3, Vec3]>, opts: CreateLinesOptions = {}) {
+export function createLines(vertex: Array<Vec3>, opts: CreateLinesOptions = {}) {
     let line = new Line();
     let positions: number[] = [];
     let type = opts.type || 'LINES';
     let width = opts.width || 1;
-    vertex.forEach(pairs => {
-        let vec1 = pairs[0];
-        positions.push(vec1.x, vec1.y, vec1.z);
-        let vec2 = pairs[1];
-        positions.push(vec2.x, vec2.y, vec2.z);
+    vertex.forEach(vec => {
+        positions.push(vec.x, vec.y, vec.z);
     });
     let options = {
         positions,

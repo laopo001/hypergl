@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 1st 2018, 10:28:44 pm
+ * Last Modified: Sunday, December 2nd 2018, 5:39:54 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -38,7 +38,7 @@ export class Drawable {
             return 'mesh';
         }
     }
-    material: Material = new BasicMaterial();
+    material!: Material;
     constructor() {
         // TODO
     }

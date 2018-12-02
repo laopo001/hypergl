@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 2nd 2018, 1:57:36 am
+ * Last Modified: Sunday, December 2nd 2018, 5:05:28 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -194,14 +194,6 @@ export class RendererPlatform {
         this._clearColor = [r, g, b, a];
         this.gl.clearColor(r, g, b, a);
     }
-    /**
-     * 写入帧缓冲区。
-     * @param {boolean} writeRed
-     * @param {boolean} writeGreen
-     * @param {boolean} writeBlue
-     * @param {boolean} writeAlpha
-     * @memberof RendererPlatform
-     */
     setColorWrite(writeRed: boolean, writeGreen: boolean, writeBlue: boolean, writeAlpha: boolean) {
         this.gl.colorMask(writeRed, writeGreen, writeBlue, writeAlpha);
     }
@@ -215,11 +207,6 @@ export class RendererPlatform {
     }
     setViewport(x: number, y: number, w: number, h: number) {
         const gl = this.gl;
-        // if (this.viewport && x === this.viewport[0] && y === this.viewport[1]
-        //     && w === this.viewport[2] && h === this.viewport[3]
-        // ) {
-        //     return;
-        // }
         gl.viewport(x, y, w, h);
     }
     gerViewport() {

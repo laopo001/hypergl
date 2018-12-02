@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 1st 2018, 10:04:38 pm
+ * Last Modified: Sunday, December 2nd 2018, 5:35:27 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -26,7 +26,7 @@ import { Drawable } from './drawable';
 export class Mesh extends Drawable {
     static createBox = createBox;
     static createPlane = createPlane;
-    static createLines = createLines;
+    // static createLines = createLines;
     castShadow = true;
     receiveShadow = true;
     material = new StandardMaterial();
@@ -226,27 +226,27 @@ export function createPlane(opts?: {
     return Mesh.createMesh(options);
 }
 
-interface CreateLinesOptions {
-    type?: 'LINES' | 'LINE_LOOP' | 'LINE_STRIP',
-    width?: number
-}
+// interface CreateLinesOptions {
+//     type?: 'LINES' | 'LINE_LOOP' | 'LINE_STRIP',
+//     width?: number
+// }
 
-function createLines(vertex: Vec3[], opts: CreateLinesOptions = {}) {
-    let positions: number[] = [];
-    let type = opts.type || 'LINES';
+// function createLines(vertex: Vec3[], opts: CreateLinesOptions = {}) {
+//     let positions: number[] = [];
+//     let type = opts.type || 'LINES';
 
-    vertex.forEach(vec => {
-        positions.push(vec.x, vec.y, vec.z);
-    });
-    let options = {
-        positions,
-        // normals,
-        // uvs,
-        // // uvs1,
-        // indices
-    };
-    let mesh = Mesh.createMesh(options);
-    mesh.mode = DrawMode[type];
-    mesh.material = new BasicMaterial() as any;
-    return mesh;
-}
+//     vertex.forEach(vec => {
+//         positions.push(vec.x, vec.y, vec.z);
+//     });
+//     let options = {
+//         positions,
+//         // normals,
+//         // uvs,
+//         // // uvs1,
+//         // indices
+//     };
+//     let mesh = Mesh.createMesh(options);
+//     mesh.mode = DrawMode[type];
+//     mesh.material = new BasicMaterial() as any;
+//     return mesh;
+// }

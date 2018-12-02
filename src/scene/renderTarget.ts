@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 2nd 2018, 1:57:51 am
+ * Last Modified: Sunday, December 2nd 2018, 5:15:51 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -25,6 +25,18 @@ export class RenderTarget {
     }
     getList(models: ModelComponent[]) {
         return models.filter(model => {
+            let points = model.instance.aabb.getPoints();
+            for (let i = 0; i < points.length; i++) {
+                let scale = model.entity.getLocalScale();
+                let point = points[i];
+                point = new Vec3().mul2(point, scale);
+                point = new Vec3().add2(point, model.getPosition());
+                if (this.frustum.containsPoint(point)) {
+                    return true;
+                }
+            }
+            return false;
+
             return this.frustum.containsBox(model.instance.aabb);
         });
     }

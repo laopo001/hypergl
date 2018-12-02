@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 28th 2018, 8:35:34 pm
+ * Last Modified: Sunday, December 2nd 2018, 8:15:54 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -45,6 +45,8 @@ export class SceneNode extends IElement {
     private _dirtyLocal = false;
     private _dirtyWorld = false;
     private _up = new Vec3();
+    private _right = new Vec3();
+    private _forward = new Vec3();
 
     constructor() {
         super();
@@ -399,5 +401,10 @@ export class SceneNode extends IElement {
     get up() {
         return this.getWorldTransform().getY(this._up).normalize();
     }
-
+    get forward() {
+        return this.getWorldTransform().getZ(this._forward).normalize().scale(-1);
+    }
+    get right() {
+        return this.getWorldTransform().getX(this._right).normalize();
+    }
 }

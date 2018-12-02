@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 2nd 2018, 2:12:36 am
+ * Last Modified: Sunday, December 2nd 2018, 7:42:45 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -28,8 +28,8 @@ async function main() {
     });
     console.log(app);
     let material = new StandardMaterial();
-    // material.diffuseColor.set(1, 0, 0);
-    material.opacity = 0.5;
+    material.diffuseColor.set(1, 0, 0);
+    // material.opacity = 0.5;
 
     let material2 = new StandardMaterial();
     let texture = new Texture();
@@ -53,7 +53,9 @@ async function main() {
                 far: 10000
             }
         })
-        .setPosition(-10, 4, 4).lookAt(new Vec3(0, 0, 0))
+        .setPosition(0, 5, 5)
+        .lookAt(new Vec3(0, 0, 0))
+        // .setEulerAngles(-15, 52, 0)
         .addComponent('script', [new FirstPersonCamera({ speed: 0.1 })]);
     app.scene.root.addChild(camera);
 
@@ -61,7 +63,7 @@ async function main() {
         .addComponent('light', {
             type: 'directional',
             castShadows: true,
-            shadowType: 'Normal',
+            shadowType: 'PCF',
             range: 16
         })
         // .lookAt(direction, getUp(direction))
@@ -73,13 +75,15 @@ async function main() {
 
     let box = new Entity('box')
         .addComponent('model', {
-            type: 'box'
+            type: 'box',
+            // castShadow: false,
+            receiveShadow: false
         })
         .setLocalPosition(-1, 0, 0);
     box.model.material = material;
 
     let lines = Line.createLines([
-        [new Vec3(-2, 0, 0), new Vec3(2, 0, 0)]
+        new Vec3(-2, 0, 0), new Vec3(2, 0, 0)
     ]);
 
 

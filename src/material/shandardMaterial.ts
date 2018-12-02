@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, November 27th 2018, 5:11:16 pm
+ * Last Modified: Sunday, December 2nd 2018, 6:01:20 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -111,9 +111,9 @@ export class StandardMaterial extends Material {
     }
     updateShader(attributes: { [s: string]: SEMANTIC }) {
         let renderer = this.app.renderer;
-        if (this.shader == null) {
+        // if (this.shader == null) {
             this.shader = renderer.programGenerator.getShader('PhoneMaterial', attributes, this.uniforms);
-        }
+        // }
         this.shader.uniformScope = this.uniforms;
     }
 }

@@ -156,8 +156,8 @@ float CalcLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, int shadowTyp
     bool inFrustum = all( inFrustumVec );
     bvec2 frustumTestVec = bvec2( inFrustum, projCoords.z <= 1.0 );
     bool frustumTest = all( frustumTestVec );
-    float shadow = 1.0;
-    if(frustumTest) {
+    float shadow = 0.0;
+    // if(frustumTest) {
         if(shadowType == 1) {
             float shadowRadius = 1.0;
             vec2 texelSize = vec2( 1.0 ) / shadowMapSize;
@@ -197,7 +197,7 @@ float CalcLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, int shadowTyp
         } else {
             shadow = texture2DCompare( shadowMap, projCoords.xy, currentDepth );
         }
-    }
+    // }
     return shadow;
 }
 
