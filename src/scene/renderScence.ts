@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 2nd 2018, 1:57:36 am
+ * Last Modified: Tuesday, December 4th 2018, 1:28:21 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -47,7 +47,7 @@ export function renderScence(scene: Scene) {
             continue;
         }
         const mesh = model.instance;
-        const material = mesh.material;
+        const material = model.material;
         let attributes: { [s: string]: SEMANTIC } = {};
         mesh.vertexBuffer.format.elements.forEach(x => {
             attributes[SEMANTICMAP[x.semantic]] = x.semantic;
@@ -68,7 +68,7 @@ export function renderScence(scene: Scene) {
         }
         material.setLights(LightsUniforms);
         material.updateShader(attributes);
-        let shader = mesh.material.shader as Shader;
+        let shader = material.shader as Shader;
         renderer.setShaderProgram(shader);
         shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
         shader.setUniformValue('matrix_model', model.getWorldTransform().data);

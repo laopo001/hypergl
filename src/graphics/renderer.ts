@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 2nd 2018, 5:05:28 pm
+ * Last Modified: Tuesday, December 4th 2018, 1:25:14 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -288,9 +288,10 @@ export class RendererPlatform {
         gl.uniform1i(u_Sampler, t);
 
     }
-    draw(entity: ModelComponent) {
+    draw(model: ModelComponent) {
         const gl = this.gl;
-        const mesh = entity.instance;
+        const mesh = model.instance;
+        const material = model.material;
         if (mesh == null) { return; }
         this.setVertexBuffer(mesh.vertexBuffer);
         if (mesh.indexBuffer) {
@@ -333,11 +334,11 @@ export class RendererPlatform {
             let value = shader.getUniformValue(sampler.name) as Texture;
             this.loadTexture(gl, shader.program as WebGLProgram, sampler.name, value, i);
         }
-        if (mesh.material.cullFace === FACE.NONE) {
+        if (material.cullFace === FACE.NONE) {
             gl.disable(gl.CULL_FACE);
         } else {
             gl.enable(gl.CULL_FACE);
-            gl.cullFace(gl[mesh.material.cullFace]);
+            gl.cullFace(gl[material.cullFace]);
         }
 
         if (mesh.indexBuffer) {

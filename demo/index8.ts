@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 3rd 2018, 1:36:43 am
+ * Last Modified: Tuesday, December 4th 2018, 1:29:03 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -41,13 +41,13 @@ function createCoordinateSystem() {
         .addComponent('model', {
             type: 'model',
             model: lines,
-            // material: color2
+            material: color2
         }).setLocalEulerAngles(0, 90, 0);
     let line3 = new Entity('lines3')
         .addComponent('model', {
             type: 'model',
             model: lines,
-            // material: color3
+            material: color3
         }).setLocalEulerAngles(0, 0, 90);
     temp.addChild(line1).addChild(line2).addChild(line3);
     return temp;
@@ -71,7 +71,6 @@ async function main() {
     let debug = new Entity('debug')
         .addComponent('model', {
             type: 'box',
-            material
         }).setLocalScale(0.3, 0.3, 0.3);
 
     let camera = new Entity('camera')
