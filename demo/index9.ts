@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 4th 2018, 4:24:18 pm
+ * Last Modified: Tuesday, December 4th 2018, 5:29:28 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -83,6 +83,7 @@ async function main() {
                 far: 10000
             }
         })
+        .addComponent('listener', {})
         .setPosition(0, 5, 5)
         .lookAt(new Vec3(0, 0, 0))
         // .setEulerAngles(-15, 52, 0)
@@ -114,7 +115,7 @@ async function main() {
         })
         .setLocalPosition(-1, 0, 0);
     box.model.material = material;
-    box.audio.play();
+    // box.audio.play();
 
     let lines = Line.createLines([
         new Vec3(-2, 0, 0), new Vec3(2, 0, 0)
