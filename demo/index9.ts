@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 4th 2018, 5:29:28 pm
+ * Last Modified: Wednesday, December 5th 2018, 12:38:57 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -84,8 +84,8 @@ async function main() {
             }
         })
         .addComponent('listener', {})
-        .setPosition(0, 5, 5)
-        .lookAt(new Vec3(0, 0, 0))
+        // .setPosition(0, 5, 5)
+        // .lookAt(new Vec3(0, 0, 0))
         // .setEulerAngles(-15, 52, 0)
         .addComponent('script', [new FirstPersonCamera({ speed: 0.1 })]);
     app.scene.root.addChild(camera);
@@ -111,9 +111,14 @@ async function main() {
             receiveShadow: false
         })
         .addComponent('audio', {
-            src: ['./assets/audios/sprite.webm', './assets/audios/sprite.mp3']
+            src: [
+                // './assets/audios/sprite.webm',
+                './assets/audios/secret.mp3',
+                // './assets/audios/sprite.mp3'
+            ],
+            autoplay: true
         })
-        .setLocalPosition(-1, 0, 0);
+        .setLocalPosition(-3, 0, 0);
     box.model.material = material;
     // box.audio.play();
 
@@ -131,7 +136,7 @@ async function main() {
     let temp = new Entity('temp');
     temp.addChild(box);
     // .addChild(box2);
-    temp.addComponent('script', [new Rotate({ speed: 2 })]);
+    // temp.addComponent('script', [new Rotate({ speed: 2 })]);
 
     app.scene.root.addChild(temp);
     app.scene.root.addChild(createCoordinateSystem());

@@ -5,7 +5,7 @@ import { Log } from '../../../utils/util';
 import { Mat4, Vec3 } from '../../../math';
 import { ComponentSystem } from '../../system';
 import { event } from '../../../core';
-import { Howl,  } from 'howler';
+import { Howl, Howler  } from 'howler';
 
 interface IHowlSoundSpriteDefinition {
     [name: string]: [number, number] | [number, number, boolean]

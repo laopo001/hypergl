@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 22nd 2018, 1:10:47 am
+ * Last Modified: Wednesday, December 5th 2018, 12:34:49 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -78,10 +78,12 @@ export class FirstPersonCamera extends Script<FirstPersonCameraInputs> {
         }, false);
     }
     update(dt) {
+
         this.entity.setLocalEulerAngles(this.ex, this.ey, this.ez);
 
         if (this.forwards) {
             this.entity.translateLocal(0, 0, -this.inputs.speed * dt);
+            console.log(this.entity.getPosition());
         } else if (this.backwards) {
             this.entity.translateLocal(0, 0, this.inputs.speed * dt);
         }

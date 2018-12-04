@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 4th 2018, 5:42:26 pm
+ * Last Modified: Tuesday, December 4th 2018, 10:19:23 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -21,13 +21,4 @@ export class ListenerComponentSystem extends ComponentSystem {
     componentConstructor = ListenerComponent;
     name = 'listener';
     components: ListenerComponent[] = [];
-    constructor() {
-        super();
-        event.on('beforeRender', () => {
-            let audios = this.app.scene.systems.audio!.components as AudioComponent[];
-            audios.forEach(audio => {
-                //
-            });
-        });
-    }
 }
