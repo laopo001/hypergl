@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 28th 2018, 8:18:53 pm
+ * Last Modified: Tuesday, December 4th 2018, 4:05:23 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -29,7 +29,8 @@ import { CameraComponentSystem } from '../ecs/components/camera/system';
 import { LightComponentSystem } from '../ecs/components/light/system';
 import { ScriptComponentSystem } from '../ecs/components/script/system';
 import { ModelComponentSystem } from '../ecs/components/model/system';
-import { CameraComponent } from 'src/ecs/components/camera';
+import { CameraComponent } from '../ecs/components/camera';
+import { AudioComponentSystem } from '../ecs/components/audio';
 export class Scene {
     static ambientColor = new Color(0.2, 0.2, 0.2);
     // static ambient = new Vec3(0, -1, -1);
@@ -68,6 +69,7 @@ export class Scene {
         this.systems.add(new LightComponentSystem());
         this.systems.add(new ScriptComponentSystem());
         this.systems.add(new ModelComponentSystem());
+        this.systems.add(new AudioComponentSystem());
     }
     render() {
         this.root.syncHierarchy();

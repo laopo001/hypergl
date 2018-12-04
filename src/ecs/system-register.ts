@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, November 20th 2018, 7:05:19 pm
+ * Last Modified: Tuesday, December 4th 2018, 4:03:22 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,12 +17,14 @@ import { CameraComponentSystem } from './components/camera';
 import { ModelComponentSystem } from './components/model';
 import { LightComponentSystem } from './components/light';
 import { ScriptComponentSystem } from './components/script';
+import { AudioComponentSystem } from './components/audio';
 export class SystemRegistry {
     // [s: string]: any;
     camera?: CameraComponentSystem;
     model?: ModelComponentSystem;
     light?: LightComponentSystem;
     script?: ScriptComponentSystem;
+    audio?: AudioComponentSystem;
     list: ComponentSystem[] = [];
     add(system: ComponentSystem) {
         if (this[system.name]) {

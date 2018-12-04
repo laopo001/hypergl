@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 3rd 2018, 12:44:35 am
+ * Last Modified: Tuesday, December 4th 2018, 4:24:11 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,6 +17,7 @@ import { CameraComponent, CameraInputs } from './components/camera';
 import { LightComponent, LigthInputs } from './components/light';
 import { ScriptInputs, Script, ScriptComponent } from './components/script';
 import { ModelInputs, ModelComponent } from './components/model';
+import { AudioComponent, AudioInputs } from './components/audio';
 import { Component } from './component';
 import { Shader } from '../graphics/shader';
 import { Log } from '../utils/util';
@@ -34,6 +35,7 @@ export interface ComponentInputs {
     'light': LigthInputs,
     'model': ModelInputs,
     'script': ScriptInputs,
+    'audio': AudioInputs,
 }
 
 export type componentName = keyof ComponentInputs;
@@ -45,6 +47,7 @@ export class Entity extends SceneNode {
     camera!: CameraComponent;
     light!: LightComponent;
     script!: ScriptComponent;
+    audio!: AudioComponent;
     boundingBox: any;
     get app() {
         return Application.getApp();
