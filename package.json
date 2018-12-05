@@ -68,7 +68,7 @@
     "start": "webpack --config webpack.demo.js --colors --watch",
     "build": "webpack --colors",
     "build:prod": "webpack --colors -p",
-    "lint": "node node_modules/tslint/bin/tslint -c tslint.json src/**/*.ts --exclude src/third_party",
+    "lint": "node node_modules/tslint/bin/tslint -c tslint.json src/**/*.ts --exclude **/src/third_party/**",
     "test": "jest",
     "test:karma": "webpack --colors && gulp replaceTests && karma start && rm -r _temp",
     "tsc": "tsc -p tsconfig.compiler.json",

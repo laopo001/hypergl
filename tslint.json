@@ -477,7 +477,7 @@
   "defaultSeverity": "warning",
   "linterOptions": {
     "exclude": [
-      "src/third_party"
+      "**/src/third_party/**"
     ]
   }
 }
