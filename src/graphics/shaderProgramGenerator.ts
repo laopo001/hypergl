@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 29th 2018, 12:25:09 am
+ * Last Modified: Monday, December 3rd 2018, 12:57:49 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -21,16 +21,18 @@ import depthVert from './shaders/depth.vert';
 import depthFrag from './shaders/depth.frag';
 import distanceVert from './shaders/distance.vert';
 import distanceFrag from './shaders/distance.frag';
+import colorVert from './shaders/color.vert';
+import colorFrag from './shaders/color.frag';
 import { RendererPlatform } from './renderer';
 import { Shader } from './shader';
 import { SEMANTIC } from '../conf';
-import { Undefined } from '../types';
+import { Obj } from '../types';
 
 
 
 export class ShaderProgramGenerator {
     generator: { [s: string]: any } = {};
-    private _cache: { [s: string]: Undefined<Shader> } = {};
+    private _cache: Obj<Shader> = {};
     constructor(private renderer: RendererPlatform) {
 
     }
@@ -57,7 +59,7 @@ function generateKey(options) {
     for (let x in options.uniforms) {
         str += x + ',';
     }
-    return JSON.stringify(options.attributes) + JSON.stringify(options.data) + str;
+    return JSON.stringify(options.attributes) + str;
 }
 
 function createShaderDefinition(name: string, renderer: RendererPlatform, options) {
@@ -80,6 +82,10 @@ function createShaderDefinition(name: string, renderer: RendererPlatform, option
         case 'distance':
             vertStr = distanceVert(options);
             fragStr = distanceFrag(options);
+            break;
+        case 'color':
+            vertStr = colorVert(options);
+            fragStr = colorFrag(options);
             break;
     }
 

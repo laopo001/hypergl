@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 14th 2018, 10:35:23 pm
+ * Last Modified: Friday, November 2nd 2018, 12:20:10 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -27,7 +27,7 @@ function addLight(app, v) {
     light.direction = new Vec3(1, -1, 1);
     // light.color = new Color(0.5, 1, 0.5);
     app.scene.root.addChild(light);
-    let mesh = Mesh.createBox(app.rendererPlatform);
+    let mesh = Mesh.createBox();
     let entity = new Entity();
     entity.mesh = mesh;
     let m3 = new BasicMaterial();
@@ -87,7 +87,7 @@ let main = async () => {
     m2.diffuseMap = texture;
     m2.update();
 
-    let shader = new Shader(app.rendererPlatform, {
+    let shader = new Shader(app.renderer, {
         attributes: {
             aPosition: Config.SEMANTIC.POSITION,
             aUv0: Config.SEMANTIC.TEXCOORD0
@@ -102,7 +102,7 @@ let main = async () => {
     sm.setUniform('uDiffuseMap', texture);
 
 
-    let mesh = Mesh.createBox(app.rendererPlatform);
+    let mesh = Mesh.createBox();
     let entity = new Entity();
     entity.mesh = mesh;
     mesh.material = sm;
@@ -110,7 +110,7 @@ let main = async () => {
     app.scene.root.addChild(entity);
 
 
-    let mesh2 = Mesh.createBox(app.rendererPlatform);
+    let mesh2 = Mesh.createBox();
     let entity2 = new Entity();
     entity2.setLocalScale(2, 2, 2);
     mesh2.material = m2;
@@ -119,7 +119,7 @@ let main = async () => {
     app.scene.root.addChild(entity2);
 
     (_ => {
-        let mesh = Mesh.createBox(app.rendererPlatform);
+        let mesh = Mesh.createBox();
         // console.log(mesh);
         let m = new StandardMaterial();
         m.diffuseColor = new Color(0.5, 1, 0.5);

@@ -4,12 +4,14 @@ Projects:
 Todos:
   实现基本功能
   new: 
-    ☐ 重构代码
-    ☐ ECS框架 Entity,Component,System 
-    ☐ 解析加载mtl材质 @started(18-10-30 11:22)
-    ✔ 解析加载obj模型 @done(18-10-30 11:20)
-    ☐ PCF阴影 @started(18-10-17 23:29)
+    ☐ createLines 和 drawLine @started(18-12-01 18:49)
+    ✔ 相机裁剪 @started(18-11-22 16:37) @done(18-12-01 15:33) @lasted(1w1d22h56m3s)
+    ✔ 修复阴影不清晰 @started(18-11-22 16:37) @done(18-11-27 17:21) @lasted(5d44m10s)
   Done:
+    ✔ ECS框架 Entity,Component,System @done(18-11-22 16:30)
+    ✔ gltf2.0 @started(18-11-01 00:49) @done(18-11-7 16:30) 
+    ✔ 解析加载obj模型 @done(18-10-30 11:20)
+    ✔ PCF阴影 @started(18-10-17 23:29) @done(18-10-22 23:35)
     ✔ opacityMap @started(18-10-15 01:21) @done(18-10-15 01:50) @lasted(29m56s)
     ✔ 颜色混合opacity @done(18-10-14 12:30)
     ✔ directionalLight, pointLight, spotLight 阴影生成 @done(18-10-10 00:14)
@@ -37,7 +39,7 @@ Todos:
     ✔ 空间立方体的demo webgl1 to webgl2 @done(18-08-20 00:04)
     ✔ event 事件模块 @started(18-08-22 01:31) @done(18-08-22 01:52) @lasted(21m14s)
   Cancelled:
-    None
+    ✘ 解析加载mtl材质 @started(18-10-30 11:22) @cancelled(18-11-02 22:38) (3d资产加载格式推荐使用gltf2.0)
   Tagging:
     None
   Timekeeping:

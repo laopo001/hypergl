@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, September 21st 2018, 3:14:33 pm
+ * Last Modified: Saturday, November 24th 2018, 1:25:04 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -30,16 +30,12 @@ export class BasicMaterial extends Material {
         if (this.colorMap) {
             this.setUniform('diffuseTexture', this.colorMap);
         }
-        this._dirtyUpdate = true;
     }
-    updateShader(renderer: RendererPlatform, attributes: { [s: string]: SEMANTIC }) {
-        if (this._dirtyUpdate) {
+    updateShader(attributes: { [s: string]: SEMANTIC }) {
+        let renderer = this.app.renderer;
+        if (this.shader == null) {
             this.shader = renderer.programGenerator.getShader('BasicMaterial', attributes, this.uniforms);
-            // tslint:disable-next-line:forin
-            for (let key in this.uniforms) {
-                this.shader.setUniformValue(key, this.uniforms[key]);
-            }
-            this._dirtyUpdate = false;
         }
+        this.shader.uniformScope = this.uniforms;
     }
 }

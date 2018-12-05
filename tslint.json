@@ -43,7 +43,7 @@
     "no-namespace": true,
     // 禁止使用 non-null 断言
     // non-null 断言是已废弃的操作符
-    "no-non-null-assertion": true,
+    "no-non-null-assertion": false,
     // 禁止对函数的参数重新赋值
     "no-parameter-reassignment": true,
     // 禁止使用三斜杠引入类型定义文件
@@ -474,5 +474,10 @@
       "check-preblock"
     ]
   },
-  "defaultSeverity": "warning"
+  "defaultSeverity": "warning",
+  "linterOptions": {
+    "exclude": [
+      "**/src/third_party/**"
+    ]
+  }
 }

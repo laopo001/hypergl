@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 22nd 2018, 8:25:39 pm
+ * Last Modified: Saturday, November 3rd 2018, 11:28:28 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,7 +13,7 @@
 
 
 
-import { FILTER, ADDRESS, PIXELFORMAT } from '../conf';
+import { FILTER, WRAP, PIXELFORMAT } from '../conf';
 import { Log } from '../utils/util';
 import { powerOfTwo } from '../math';
 
@@ -21,9 +21,9 @@ let TextureID = 0;
 export class Texture {
     id = TextureID++;
     source?: HTMLVideoElement | HTMLImageElement | HTMLCanvasElement;
-    wrapU = ADDRESS.REPEAT;
-    wrapV = ADDRESS.REPEAT;
-    wrapR = ADDRESS.REPEAT;
+    wrapU = WRAP.REPEAT;
+    wrapV = WRAP.REPEAT;
+    wrapR = WRAP.REPEAT;
     isCube = false;
     level = 0;
     minFilter = FILTER.LINEAR; // 纹理在缩小时的过滤方式

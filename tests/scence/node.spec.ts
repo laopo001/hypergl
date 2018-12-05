@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, September 23rd 2018, 2:36:41 am
+ * Last Modified: Wednesday, December 5th 2018, 5:02:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -31,7 +31,7 @@ test('SceneNode setLocalPosition getLocalPosition', () => {
     let node = new SceneNode();
     let child = new SceneNode();
     let grandson = new SceneNode();
-    node.scene = { layer: [], add: _ => { } } as any;
+
     node.addChild(child);
     child.addChild(grandson);
     child.setLocalPosition(new Vec3(1, 0, 0));
@@ -46,7 +46,7 @@ test('SceneNode setPosition getPosition', () => {
     let child = new SceneNode();
     let grandson = new SceneNode();
     // tslint:disable-next-line:no-empty
-    node.scene = { layer: [], add: _ => { } } as any;
+
     node.addChild(child);
     child.addChild(grandson);
     child.setPosition(new Vec3(1, 0, 0));
@@ -97,13 +97,41 @@ test('SceneNode setRotation setRotation2', () => {
 });
 
 
-test('SceneNode setRotation setRotation2', () => {
-    let camera = new Camera();
+test('SceneNode setLocalScale', () => {
     let node1 = new SceneNode();
+    let node2 = new SceneNode();
 
-    camera.setPerspective(45, 1000 / 600, 1, 1000);
-    camera.setPosition(0, 5, 10);
-    camera.lookAt(node1);
+    // node1.setLocalScale(new Vec3(0.01, 0.01, 0.01));
+    node1.setPosition(100, 100, 100);
+    node1.addChild(node2);
 
-    expect(1).toEqual(1);
+
+    expect(node2.getPosition().data).toEqual(new Vec3(100, 100, 100).data);
+
+});
+
+
+test('SceneNode translateLocal', () => {
+    let node1 = new SceneNode();
+    // node1.setLocalScale(new Vec3(0.01, 0.01, 0.01));
+    node1.translateLocal(0, 0, -1);
+    node1.getPosition();
+    expect(node1.getPosition().data).toEqual(new Vec3(0, 0, -1).data);
+
+});
+
+
+test('SceneNode 坐标系转换', () => {
+    let node1 = new SceneNode();
+    node1.translateLocal(0, 0, -1);
+    node1.getPosition();
+    // expect(node1.getPosition().data).toEqual(new Vec3(1, 0, -1).data);
+
+    let node2 = new SceneNode();
+
+    node2.translateLocal(0, 0, 1);
+    // node2.setLocalEulerAngles(0, 45, 0);
+    let { x, y, z } = node1.getPosition();
+    let res = node2.getWorldTransform().invert().mulVec4(new Vec4(x, y, z, 1));
+    expect(res.data).toEqual(new Vec4(0, 0, -2, 1).data);
 });

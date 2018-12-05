@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, October 30th 2018, 1:41:52 pm
+ * Last Modified: Thursday, November 22nd 2018, 1:01:23 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -141,7 +141,7 @@ export enum FILTER {
     NEAREST_MIPMAP_LINEAR,
 }
 
-export enum ADDRESS {
+export enum WRAP {
     /**
      * 仅使用小数部分忽略纹理坐标的整数部分
      */
@@ -199,4 +199,10 @@ export enum DrawMode {
     TRIANGLES,
     TRIANGLE_STRIP,
     TRIANGLE_FAN,
+}
+
+export enum FACE {
+    BACK = 'BACK',
+    FRONT = 'FRONT',
+    NONE = 'NONE',
 }

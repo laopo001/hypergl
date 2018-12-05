@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, October 14th 2018, 12:50:51 am
+ * Last Modified: Sunday, December 2nd 2018, 5:41:34 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,13 +15,19 @@
 import { Light } from './light';
 import { Vec3 } from '../math';
 import { Color } from '../core';
+import { Camera, SceneNode } from '../scene';
 export class DirectionalLight extends Light {
-    get direction() {
-        // this.getWorldTransform().getY(this._direction);
-        return this._direction;
+    camera: Camera;
+    shadowBias = 0.001;
+    direction = new Vec3(-0.5, -0.70, 0.5);
+    constructor(node: SceneNode) {
+        super(node);
+        let camera = new Camera(node);
+        let height = 40;
+        let width = 1 * height;
+        let length = 1 * height;
+        camera.setOrtho(-width, width, -height, height, -length, length);
+        // node.lookAt(this.direction, node.up);
+        this.camera = camera;
     }
-    set direction(x) {
-        this._direction = x;
-    }
-    private _direction = new Vec3(-0.5, -0.70, 0.5);
 }

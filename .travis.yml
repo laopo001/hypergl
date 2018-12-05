@@ -5,6 +5,13 @@ node_js:
 cache:
   directories:
     - node_modules
+git:
+  submodules: false
+before_install:
+  # Use sed to replace the SSH URL with the public URL if .gitmodules exists
+  - test -e ".gitmodules" && sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
+  # update the submodule in repo by manual
+  - git submodule update --init --recursive
 install:
   - npm install
 script:

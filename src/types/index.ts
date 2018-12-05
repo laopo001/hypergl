@@ -7,7 +7,7 @@ import { Vec3 } from '../math';
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 29th 2018, 1:38:01 am
+ * Last Modified: Saturday, December 1st 2018, 9:48:30 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -25,8 +25,8 @@ export type TypeArrayConstructor = Int8ArrayConstructor | Uint8ArrayConstructor 
 export type Fn<T> = (...args) => T;
 export type FnVoid = Fn<void>;
 export type Nullable<T> = T | null;
-export type Undefined<T> = T | undefined;
-export interface Obj<T> { [s: string]: Undefined<T> }
+export type Undefinedable<T> = T | undefined;
+export interface Obj<T> { [s: string]: Undefinedable<T> }
 export interface CreateMeshOptions {
     positions: number[];
     normals?: number[]; // 法线
@@ -39,6 +39,25 @@ export interface CreateMeshOptions {
     blendWeights?: string[];
 }
 
+export interface CreateDrawabelOptions {
+    positions: number[];
+    normals?: number[]; // 法线
+    indices?: number[];
+    tangents?: number[]; //
+    colors?: number[];
+    uvs?: number[];
+    uvs1?: number[];
+    blendIndices?: number[];
+    blendWeights?: string[];
+}
+
+export type Constructor<T> = new (...args) => T;
+
+// export interface Constructor2<T> {
+//     new(...args): T;
+// }
+
+export declare type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 export interface CreateBoxOptions {
     halfExtents?: Vec3;
@@ -46,3 +65,4 @@ export interface CreateBoxOptions {
     lengthSegments?: number;
     heightSegments?: number;
 }
+

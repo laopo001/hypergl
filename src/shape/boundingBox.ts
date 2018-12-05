@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, October 30th 2018, 12:37:22 pm
+ * Last Modified: Thursday, November 29th 2018, 12:38:28 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -16,39 +16,14 @@ import { Vec3 } from '../math';
 export class BoundingBox {
     min = new Vec3();
     max = new Vec3();
+    private _points?: Vec3[];
+
     constructor(private center = new Vec3(), private halfExtents = new Vec3(0.5, 0.5, 0.5)) {
 
     }
     static compute(positions: number[]) {
         const box = new BoundingBox();
-        for (let i = 0; i < positions.length; i++) {
-            let item = positions[i];
-            if (i % 3 === 0) {
-                if (box.min.x > item) {
-                    box.min.x = item;
-                } else if (box.max.x < item) {
-                    box.max.x = item;
-                }
-            } else if (i % 3 === 1) {
-                if (box.min.y > item) {
-                    box.min.y = item;
-                } else if (box.max.y < item) {
-                    box.max.y = item;
-                }
-            } else if (i % 3 === 2) {
-                if (box.min.z > item) {
-                    box.min.z = item;
-                } else if (box.max.z < item) {
-                    box.max.z = item;
-                }
-            }
-        }
-        box.center = new Vec3().add2(box.min, box.max).scale(0.5);
-        box.halfExtents = new Vec3(
-            (box.max.x - box.min.x) / 2,
-            (box.max.y - box.min.y) / 2,
-            (box.max.z - box.min.z) / 2,
-        );
+        box.compute(positions);
         return box;
     }
     compute(positions: number[]) {
@@ -80,6 +55,22 @@ export class BoundingBox {
             (this.max.y - this.min.y) / 2,
             (this.max.z - this.min.z) / 2,
         );
+        this._points = undefined;
     }
-
+    getPoints() {
+        if (this._points) {
+            return this._points;
+        }
+        let vec3Arr = [this.max, this.min];
+        let { x: x1, x: y1, x: z1 } = this.max;
+        let { x: x2, x: y2, x: z2 } = this.min;
+        vec3Arr.push(new Vec3(x1, y2, z2));
+        vec3Arr.push(new Vec3(x2, y1, z2));
+        vec3Arr.push(new Vec3(x2, y2, z1));
+        vec3Arr.push(new Vec3(x2, y1, z1));
+        vec3Arr.push(new Vec3(x1, y2, z1));
+        vec3Arr.push(new Vec3(x1, y1, z2));
+        this._points = vec3Arr;
+        return vec3Arr;
+    }
 }

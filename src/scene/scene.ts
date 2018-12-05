@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, October 30th 2018, 3:31:12 pm
+ * Last Modified: Tuesday, December 4th 2018, 5:25:02 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -24,7 +24,15 @@ import { Log } from '../utils/util';
 import { Mesh } from '../mesh/mesh';
 import { StandardMaterial, Material } from '../material';
 import { event, IElement } from '../core';
-export class Scene extends IElement {
+import { SystemRegistry } from '../ecs/system-register';
+import { CameraComponentSystem } from '../ecs/components/camera/system';
+import { LightComponentSystem } from '../ecs/components/light/system';
+import { ScriptComponentSystem } from '../ecs/components/script/system';
+import { ModelComponentSystem } from '../ecs/components/model/system';
+import { CameraComponent } from '../ecs/components/camera';
+import { AudioComponentSystem } from '../ecs/components/audio';
+import { ListenerComponentSystem } from '../ecs/components/listener';
+export class Scene {
     static ambientColor = new Color(0.2, 0.2, 0.2);
     // static ambient = new Vec3(0, -1, -1);
     fog;
@@ -38,35 +46,36 @@ export class Scene extends IElement {
             pointLights: [],
             spotLight: []
         };
-    readonly layers: Entity[] = [];
-    readonly opacityLayers: Entity[] = [];
-    get renderLayers() {
-        return this.layers.concat(this.opacityLayers);
-    }
-    root: SceneNode = new SceneNode();
-    readonly cameras: Camera[] = [];
-    private _activeCamera!: Camera;
+
+    app!: Application;
+    entitys: Entity[] = [];
+
+    root: Entity = new Entity('root');
+    // readonly cameras: Camera[] = [];
+    systems: SystemRegistry;
+    private _activeCamera!: CameraComponent;
     get activeCamera() {
-        Log.assert(this._activeCamera || this.cameras[0], 'scene 没有 activeCamera');
-        return this._activeCamera || this.cameras[0];
+        let defaultCamera = this.systems.camera!.components[0];
+        Log.assert(this._activeCamera || defaultCamera, 'scene 没有 activeCamera');
+        return this._activeCamera || defaultCamera;
     }
     set activeCamera(x) {
         this._activeCamera = x;
     }
     private materials: Material[] = [];
-    constructor(public app: Application) {
-        super();
-        this.root.scene = this;
-        event.on('opacityChange', (e) => {
-            console.log(123);
-        });
+    constructor() {
+        this.root.enabled = true;
+        this.systems = new SystemRegistry();
+        this.systems.add(new CameraComponentSystem());
+        this.systems.add(new LightComponentSystem());
+        this.systems.add(new ScriptComponentSystem());
+        this.systems.add(new ModelComponentSystem());
+        this.systems.add(new AudioComponentSystem());
+        this.systems.add(new ListenerComponentSystem());
     }
     render() {
         this.root.syncHierarchy();
-        this.opacityLayers.sort((a, b) => {
-            return new Vec3().sub2(b.getPosition(), this.activeCamera.getPosition()).length() -
-                new Vec3().sub2(a.getPosition(), this.activeCamera.getPosition()).length();
-        });
+        event.fire('sync');
         renderScence(this);
     }
     // tslint:disable-next-line:member-ordering
@@ -78,25 +87,20 @@ export class Scene extends IElement {
         this._frame = f;
         return f;
     }
-    createShadowFrame(isCube) {
-        const f = new Frame(this, isCube);
+    createShadowFrame(width: number, height: number, isCube: boolean) {
+        const f = new Frame(this, width, height, isCube);
         f.createFramebuffer();
         return f;
     }
-    add(child) {
-        if (child instanceof DirectionalLight) {
-            this.lights.directionalLights.push(child);
-        } else if (child instanceof PointLight) {
-            this.lights.pointLights.push(child);
-        } else if (child instanceof SpotLight) {
-            this.lights.spotLight.push(child);
-        } else if (child instanceof Entity) {
-            if (child.mesh && (child.mesh.material instanceof StandardMaterial && child.mesh.material.opacity < 1 || (child.mesh.material as StandardMaterial).opacityMap)) {
-                this.opacityLayers.push(child);
-            } else {
-                this.layers.push(child);
+    add(child: Entity) {
+        if (child.children.length > 0) {
+            for (let i = 0; i < child.children.length; i++) {
+                const element = child.children[i];
+                this.add(element);
             }
         }
+        this.entitys.push(child);
+        child.enabled = true;
     }
     get [Symbol.toStringTag]() {
         return 'Scene';

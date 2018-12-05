@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 22nd 2018, 8:25:39 pm
+ * Last Modified: Wednesday, December 5th 2018, 12:33:35 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,8 +14,9 @@
 
 import { IElement } from '../core/element';
 import { Vec3, Quat, Mat4, Vec2 } from '../math';
-import { Log } from '../utils/util';
+import { Log, getUp } from '../utils/util';
 import { Scene } from './scene';
+import { Entity } from '../ecs';
 
 let scaleCompensatePosTransform = new Mat4();
 let scaleCompensatePos = new Vec3();
@@ -33,23 +34,26 @@ export class SceneNode extends IElement {
     localTransform = new Mat4();
     parent?: SceneNode;
     readonly children: SceneNode[] = [];
-    scene!: Scene;
+
     // World-space
     position = new Vec3(0, 0, 0);
     rotation = new Quat(0, 0, 0, 1);
     eulerAngles = new Vec3(0, 0, 0);
     worldTransform = new Mat4();
-    dirtyNormal = true;
     scaleCompensation = false;
+    private _dirtyNormal = true;
     private _dirtyLocal = false;
     private _dirtyWorld = false;
     private _up = new Vec3();
+    private _right = new Vec3();
+    private _forward = new Vec3();
 
     constructor() {
         super();
     }
-    lookAt(target: Vec3, up: Vec3);
-    lookAt(target: SceneNode);
+    lookAt(target: Vec3): this;
+    lookAt(target: Vec3, up: Vec3): this;
+    lookAt(target: SceneNode): this;
     lookAt(target?, up?) {
         if (target instanceof SceneNode) {
             let targetLocation = target.getPosition();
@@ -58,19 +62,24 @@ export class SceneNode extends IElement {
             let quat = new Quat().setFromMat4(mat4);
             this.setRotation(quat);
         } else {
+            if (up == null) {
+                 // up = this.up;
+                // tslint:disable-next-line:no-parameter-reassignment
+                up = getUp(target);
+            }
             let mat4 = new Mat4().setLookAt(this.getPosition(), target, up);
             let quat = new Quat().setFromMat4(mat4);
             this.setRotation(quat);
         }
+        return this;
     }
     addChild(child: SceneNode) {
         this.children.push(child);
         child.parent = this;
-        child.scene = this.scene;
-        this.scene.add(child);
+        child._dirtify();
     }
-    setPosition(x: Vec3);
-    setPosition(x: number, y: number, z: number);
+    setPosition(x: Vec3): this;
+    setPosition(x: number, y: number, z: number): this;
     setPosition(x?, y?, z?) {
         let position = new Vec3();
         if (x instanceof Vec3) {
@@ -87,6 +96,7 @@ export class SceneNode extends IElement {
         if (!this._dirtyLocal) {
             this._dirtify(true);
         }
+        return this;
     }
     /**
      * 获取世界坐标
@@ -97,8 +107,8 @@ export class SceneNode extends IElement {
         this.getWorldTransform().getTranslation(this.position);
         return this.position;
     }
-    setLocalEulerAngles(x: Vec3);
-    setLocalEulerAngles(x: number, y: number, z: number);
+    setLocalEulerAngles(x: Vec3): this;
+    setLocalEulerAngles(x: number, y: number, z: number): this;
     setLocalEulerAngles(x?, y?, z?) {
         if (x instanceof Vec3) {
             this.localRotation.setFromEulerAngles(x.data[0], x.data[1], x.data[2]);
@@ -108,13 +118,14 @@ export class SceneNode extends IElement {
         if (!this._dirtyLocal) {
             this._dirtify(true);
         }
+        return this;
     }
     getLocalEulerAngles() {
         this.localRotation.getEulerAngles(this.localEulerAngles);
         return this.localEulerAngles;
     }
-    setEulerAngles(x: Vec3);
-    setEulerAngles(x: number, y: number, z: number);
+    setEulerAngles(x: Vec3): this;
+    setEulerAngles(x: number, y: number, z: number): this;
     setEulerAngles(x?, y?, z?) {
         if (x instanceof Vec3) {
             this.localRotation.setFromEulerAngles(x.data[0], x.data[1], x.data[2]);
@@ -130,14 +141,14 @@ export class SceneNode extends IElement {
         if (!this._dirtyLocal) {
             this._dirtify(true);
         }
-
+        return this;
     }
     getEulerAngles() {
         this.getWorldTransform().getEulerAngles(this.eulerAngles);
         return this.eulerAngles;
     }
-    setLocalPosition(x: Vec3);
-    setLocalPosition(x: number, y: number, z: number);
+    setLocalPosition(x: Vec3): this;
+    setLocalPosition(x: number, y: number, z: number): this;
     setLocalPosition(x?, y?, z?) {
         if (x instanceof Vec3) {
             this.localPosition.copy(x);
@@ -148,14 +159,13 @@ export class SceneNode extends IElement {
         if (!this._dirtyLocal) {
             this._dirtify(true);
         }
+        return this;
     }
     getLocalPosition() {
         return this.localPosition;
     }
-
-
-    setRotation(x: Quat);
-    setRotation(x: number, y: number, z: number, w: number);
+    setRotation(x: Quat): this;
+    setRotation(x: number, y: number, z: number, w: number): this;
     setRotation(x?, y?, z?, w?) {
         let rotation: Quat;
         if (x instanceof Quat) {
@@ -174,6 +184,7 @@ export class SceneNode extends IElement {
         if (!this._dirtyLocal) {
             this._dirtify(true);
         }
+        return this;
     }
     getRotation() {
         this.rotation.setFromMat4(this.getWorldTransform());
@@ -189,8 +200,8 @@ export class SceneNode extends IElement {
         this._sync();
         return this.worldTransform;
     }
-    setLocalScale(x: Vec3);
-    setLocalScale(x: number, y: number, z: number);
+    setLocalScale(x: Vec3): this;
+    setLocalScale(x: number, y: number, z: number): this;
     setLocalScale(x?, y?, z?) {
         if (x instanceof Vec3) {
             this.localScale.copy(x);
@@ -200,12 +211,13 @@ export class SceneNode extends IElement {
         if (!this._dirtyLocal) {
             this._dirtify(true);
         }
+        return this;
     }
     getLocalScale() {
         return this.localScale;
     }
-    rotate(x: Vec3);
-    rotate(x: number, y: number, z: number);
+    rotate(x: Vec3): this;
+    rotate(x: number, y: number, z: number): this;
     rotate(x?, y?, z?) {
         let quaternion = new Quat();
         let invParentRot = new Quat();
@@ -229,9 +241,10 @@ export class SceneNode extends IElement {
         if (!this._dirtyLocal) {
             this._dirtify(true);
         }
+        return this;
     }
-    rotateLocal(x: Vec3);
-    rotateLocal(x: number, y: number, z: number);
+    rotateLocal(x: Vec3): this;
+    rotateLocal(x: number, y: number, z: number): this;
     rotateLocal(x?, y?, z?) {
         let quaternion = new Quat();
         if (x instanceof Vec3) {
@@ -245,9 +258,10 @@ export class SceneNode extends IElement {
         if (!this._dirtyLocal) {
             this._dirtify(true);
         }
+        return this;
     }
-    translateLocal(x: Vec3);
-    translateLocal(x: number, y: number, z: number);
+    translateLocal(x: Vec3): this;
+    translateLocal(x: number, y: number, z: number): this;
     translateLocal(x?, y?, z?) {
         let translation: Vec3;
         if (x instanceof Vec3) {
@@ -261,6 +275,15 @@ export class SceneNode extends IElement {
         if (!this._dirtyLocal) {
             this._dirtify(true);
         }
+        return this;
+    }
+
+    getLocalTransform() {
+        if (this._dirtyLocal) {
+            this.localTransform.setTRS(this.localPosition, this.localRotation, this.localScale);
+            this._dirtyLocal = false;
+        }
+        return this.localTransform;
     }
     // 更新此节点及其所有后代的世界转换矩阵。
     syncHierarchy() {
@@ -352,7 +375,8 @@ export class SceneNode extends IElement {
      * @returns
      * @memberof INode
      */
-    private _dirtify(local?: boolean) {
+    // tslint:disable-next-line:member-ordering
+    _dirtify(local?: boolean) {
         if ((!local || (local && this._dirtyLocal)) && this._dirtyWorld) {
             return;
         }
@@ -370,12 +394,17 @@ export class SceneNode extends IElement {
                 this.children[i]._dirtify();
             }
         }
-        this.dirtyNormal = true;
+        this._dirtyNormal = true;
         // this._aabbVer++;
         // TODO
     }
     get up() {
         return this.getWorldTransform().getY(this._up).normalize();
     }
-
+    get forward() {
+        return this.getWorldTransform().getZ(this._forward).normalize().scale(-1);
+    }
+    get right() {
+        return this.getWorldTransform().getX(this._right).normalize();
+    }
 }

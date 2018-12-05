@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, October 19th 2018, 12:36:13 am
+ * Last Modified: Monday, November 19th 2018, 11:10:42 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -28,7 +28,7 @@ function addLight(app, v) {
     // light.range = 20;
     // light.color = new Color(0.5, 1, 0.5);
     app.scene.lights.pointLights.push(light);
-    let mesh = Mesh.createBox(app.rendererPlatform);
+    let mesh = Mesh.createBox();
     let entity = new Entity();
     entity.mesh = mesh;
     let m3 = new BasicMaterial();
@@ -75,7 +75,7 @@ let main = async () => {
     material2.update();
 
 
-    let mesh = Mesh.createBox(app.rendererPlatform);
+    let mesh = Mesh.createBox();
     let entity = new Entity();
     entity.mesh = mesh;
     mesh.material = material;
@@ -85,7 +85,7 @@ let main = async () => {
     app.scene.root.addChild(entity);
 
 
-    let mesh2 = Mesh.createBox(app.rendererPlatform);
+    let mesh2 = Mesh.createBox();
     let entity2 = new Entity();
     entity2.setLocalScale(2, 2, 2);
     mesh2.material = material2;
@@ -94,7 +94,7 @@ let main = async () => {
     app.scene.root.addChild(entity2);
 
     (_ => {
-        let mesh = Mesh.createBox(app.rendererPlatform);
+        let mesh = Mesh.createBox();
         // console.log(mesh);
         let m = new StandardMaterial();
         m.diffuseColor = new Color(0.5, 1, 0.5);
@@ -116,7 +116,7 @@ let main = async () => {
 
     app.scene.cameras.push(camera);
 
-    let script = new FirstPersonCamera(FirstPersonCamera.defaultInputs, app);
+    let script = new FirstPersonCamera(FirstPersonCamera.defaultInputs);
     (script as any).entity = camera;
     script.initialize();
     // ------------

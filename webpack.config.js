@@ -10,7 +10,7 @@ module.exports = function (env, webpackConfig) {
         },
         //入口文件输出配置
         output: {
-            path: path.resolve(__dirname, 'build'),
+            path: path.resolve(__dirname, 'dist'),
             library: 'HGL',
             libraryTarget: "umd",
             filename: '[name].js'
@@ -62,7 +62,7 @@ module.exports = function (env, webpackConfig) {
         resolve: {
             extensions: ['.ts', '.tsx', '.js'],
             alias: {
-                'handlebars': 'handlebars/dist/handlebars.js'
+                'gltf-loader-ts': path.resolve(__dirname, `./src/third_party/gltf-loader-ts/source`)
             }
         },
         externals: [],

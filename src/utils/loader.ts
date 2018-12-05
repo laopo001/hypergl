@@ -5,19 +5,15 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, October 31st 2018, 12:55:41 am
+ * Last Modified: Wednesday, December 5th 2018, 10:12:16 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
-import { fetch } from 'whatwg-fetch';
-import { Mesh } from '../mesh/mesh';
+import { fetch } from 'isomorphic-fetch';
 import { CreateMeshOptions } from '../types';
-import { StandardMaterial, Material } from '../material';
-import { Color } from '../core';
-import { loadImage } from '../../demo/utils';
-import { Texture } from '../texture';
+import { Mesh } from '../mesh/mesh';
 
 function resolveObjModel(res: string) {
     let options: CreateMeshOptions = {
@@ -107,86 +103,8 @@ function resolveObjModel(res: string) {
     if ((options.indices as number[]).length === 0) {
         delete options.indices;
     }
-    console.log(options);
-    return options;
+    return Mesh.createMesh(options);
 }
 export async function loaderObjModel<T>(url: T) {
     return fetch(url).then(res => res.text()).then(resolveObjModel);
-}
-async function getMap(url: string, fileName: string) {
-    let arr = url.split('/');
-    arr[arr.length - 1] = fileName;
-    let newUrl = arr.join('/');
-    // let img = await fetch(newUrl).then(res => res.blob()).then(blob => new File([blob], fileName));
-    // console.log(img);
-    let img = await loadImage(newUrl);
-    let t = new Texture();
-    t.setSource(img);
-    return t;
-}
-
-
-async function resolveMtlModel(url: string, res: string) {
-    let rows = res.split('\n');
-    let m = new StandardMaterial();
-    for (let i = 0; i < rows.length; i++) {
-        let item = rows[i];
-        let cols = item.split(' ');
-
-        switch (cols[0].toLowerCase()) {
-            case 'kd':
-                // Diffuse color
-                m.diffuseColor = new Color(parseFloat(cols[1]), parseFloat(cols[2]), parseFloat(cols[3]));
-                break;
-            case 'ks':
-                // Specular color (color when light is reflected from shiny surface) using RGB values
-                m.specularColor = new Color(parseFloat(cols[1]), parseFloat(cols[2]), parseFloat(cols[3]));
-                break;
-            case 'map_kd':
-                // Diffuse texture map
-                let texture = await getMap(url, cols[1]);
-                m.diffuseMap = texture;
-                break;
-            case 'map_ks':
-                // Specular map
-                // setMapForType("specularMap", value);
-                break;
-            case 'norm':
-                // setMapForType("normalMap", value);
-                break;
-            case 'map_bump':
-            case 'bump':
-                // Bump texture map
-                // setMapForType("bumpMap", value);
-                break;
-            case 'map_d':
-                // Alpha map
-                // setMapForType("alphaMap", value);
-                // params.transparent = true;
-                break;
-            case 'ns':
-                // The specular exponent (defines the focus of the specular highlight)
-                // A high exponent results in a tight, concentrated highlight. Ns values normally range from 0 to 1000.
-                m.shininess = parseFloat(cols[1]);
-
-                break;
-
-            case 'd':
-                let n = parseFloat(cols[1]);
-                if (n < 1) {
-                    m.opacity = n;
-                }
-                break;
-
-            default:
-                break;
-        }
-
-    }
-    m.update();
-    return m;
-}
-
-export async function loaderMtlModel<T= Material>(url: string): Promise<T> {
-    return fetch(url).then(res => res.text()).then(resolveMtlModel.bind(window, url));
 }

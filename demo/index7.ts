@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, October 31st 2018, 12:55:45 am
+ * Last Modified: Wednesday, December 5th 2018, 10:10:41 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -28,7 +28,7 @@ function addLight(app, v) {
     // light.range = 20;
     // light.color = new Color(0.5, 1, 0.5);
     app.scene.lights.pointLights.push(light);
-    let mesh = Mesh.createBox(app.rendererPlatform);
+    let mesh = Mesh.createBox();
     let entity = new Entity();
     entity.mesh = mesh;
     let m3 = new BasicMaterial();
@@ -55,8 +55,14 @@ let main = async () => {
         // webgl1:true
     });
 
+<<<<<<< HEAD
     let model = await app.loaderObjModel('./assets/models/test/untitled.obj');
     let mtl = await util.loaderMtlModel('./assets/models/test/untitled.mtl');
+=======
+    let model = await util.loaderObjModel('./assets/models/box.obj');
+
+
+>>>>>>> master
     let dirlight = new DirectionalLight();
     dirlight.castShadows = true;
     // dirlight.direction = new Vec3(0, -1, 1);
@@ -80,16 +86,24 @@ let main = async () => {
     material2.update();
 
 
+<<<<<<< HEAD
     let mesh = Mesh.createBox(app.rendererPlatform);
     let entity = new Entity();
     entity.mesh = model;
     entity.mesh.material = mtl;
+=======
+    let mesh = Mesh.createBox();
+    console.log(model, mesh);
+    let entity = new Entity();
+    entity.mesh = model;
+    entity.mesh!.material = material;
+>>>>>>> master
     entity.name = '123';
     entity.setPosition(1.5, 1, 2);
     // entity.setLocalScale(0.01, 0.01, 0.01);
     app.scene.root.addChild(entity);
 
-    let mesh2 = Mesh.createBox(app.rendererPlatform);
+    let mesh2 = Mesh.createBox();
     let entity2 = new Entity();
     entity2.setLocalScale(2, 2, 2);
     mesh2.material = material2;
@@ -100,7 +114,7 @@ let main = async () => {
 
 
     (_ => {
-        let mesh = Mesh.createBox(app.rendererPlatform);
+        let mesh = Mesh.createBox();
         // console.log(mesh);
         let m = new StandardMaterial();
         m.diffuseColor = new Color(0.5, 1, 0.5);
@@ -121,9 +135,9 @@ let main = async () => {
     camera.setPosition(-2, 5, 10);
     camera.lookAt(new Vec3(0, 0, 0), camera.up);
 
-    app.scene.cameras.push(camera);
+    // app.scene.cameras.push(camera);
 
-    let script = new FirstPersonCamera(FirstPersonCamera.defaultInputs, app);
+    let script = new FirstPersonCamera(FirstPersonCamera.defaultInputs);
     (script as any).entity = camera;
     script.initialize();
     // ------------

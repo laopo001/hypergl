@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, October 22nd 2018, 11:37:50 pm
+ * Last Modified: Wednesday, December 5th 2018, 5:48:19 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,13 +15,14 @@ import * as math from './math';
 import * as util from './utils';
 // export * from './math';
 export * from './conf';
-export * from './core/timer';
+export * from './core';
+export * from './math';
 export * from './application';
-export * from './scene/scene';
+export * from './scene';
 export * from './graphics';
 export * from './material';
 export * from './ecs';
 export * from './texture';
 export * from './lights';
-
+export * from './mesh';
 export { Config, math, util };

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, October 5th 2018, 12:57:15 pm
+ * Last Modified: Friday, November 2nd 2018, 12:23:46 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -44,6 +44,6 @@ const vertices = [
 
 
 // tslint:disable-next-line:no-object-literal-type-assertion
-export const buffer = new VertexBuffer(({} as any), format, vertices.length, BUFFER.STATIC);
+export const buffer = new VertexBuffer(format, vertices.length, BUFFER.STATIC);
 
 

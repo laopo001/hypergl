@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, October 30th 2018, 1:47:13 pm
+ * Last Modified: Tuesday, December 4th 2018, 1:25:14 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,17 +13,17 @@
 
 
 import { Log } from '../utils/util';
-import { UNIFORM_TYPE, FILTER } from '../conf';
+import { UNIFORM_TYPE, FILTER, FACE } from '../conf';
 import { ShaderProgramGenerator } from './shaderProgramGenerator';
-import { Undefined, FnVoid, AppOption, Nullable } from '../types';
+import { Undefinedable, FnVoid, AppOption, Nullable } from '../types';
 import { Shader } from './shader';
 import { IndexBuffer } from './indexBuffer';
 import { VertexBuffer } from './vertexBuffer';
-import { Entity } from '../ecs';
+import { Entity } from '../ecs/entity';
 import { Texture } from '../texture';
 import { ShaderVariable } from './shaderVariable';
-import { FACE } from '../material/material';
 import { VertexAttribData } from './vertexFormat';
+import { ModelComponent } from 'src/ecs/components/model';
 export type Platform = 'webgl' | 'webgl2';
 export class RendererPlatform {
     get gl() {
@@ -42,7 +42,7 @@ export class RendererPlatform {
     constructor(public canvas: HTMLCanvasElement, option?: AppOption) {
         let webgl2;
         if (option && !option.webgl1) {
-            webgl2 = canvas.getContext('webgl2') as any;
+            webgl2 = canvas.getContext('webgl2', option) as any;
         }
         this.webgl2 = webgl2;
         // this.webgl2 = canvas.getContext('webgl2') as any;
@@ -50,7 +50,7 @@ export class RendererPlatform {
             this.platform = 'webgl2';
             Log.debug(`platform:${this.platform}`);
         } else {
-            this.webgl = canvas.getContext('webgl') as any;
+            this.webgl = canvas.getContext('webgl', option) as any;
             if (this.webgl) {
                 this.platform = 'webgl';
                 Log.debug(`platform:${this.platform}`);
@@ -166,6 +166,9 @@ export class RendererPlatform {
         gl.polygonOffset(2, 2);
         gl.clearColor(r, g, b, a);
     }
+    get contextAttributes() {
+        return this.gl.getContextAttributes();
+    }
     // tslint:disable-next-line:member-ordering
     currShader!: Shader;
     setShaderProgram(shader: Shader) {
@@ -176,12 +179,14 @@ export class RendererPlatform {
         this.gl.useProgram(shader.program as WebGLProgram);
     }
     setVertexBuffer(vertexBuffer: VertexBuffer) {
-        const gl = this.gl;
-        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer.bufferId as WebGLBuffer);
+        // const gl = this.gl;
+        // gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer.bufferId as WebGLBuffer);
+        vertexBuffer.bind(this);
     }
     setIndexBuffer(indexBuffer: IndexBuffer) {
-        const gl = this.gl;
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer.bufferId as WebGLBuffer);
+        // const gl = this.gl;
+        // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer.bufferId as WebGLBuffer);
+        indexBuffer.bind(this);
     }
     // tslint:disable-next-line:member-ordering
     private _clearColor = [0, 0, 0, 1];
@@ -189,23 +194,24 @@ export class RendererPlatform {
         this._clearColor = [r, g, b, a];
         this.gl.clearColor(r, g, b, a);
     }
-    /**
-     * 写入帧缓冲区。
-     * @param {boolean} writeRed
-     * @param {boolean} writeGreen
-     * @param {boolean} writeBlue
-     * @param {boolean} writeAlpha
-     * @memberof RendererPlatform
-     */
     setColorWrite(writeRed: boolean, writeGreen: boolean, writeBlue: boolean, writeAlpha: boolean) {
         this.gl.colorMask(writeRed, writeGreen, writeBlue, writeAlpha);
     }
-    // tslint:disable-next-line:member-ordering
-    viewport?: number[];
+    setScissor(x: number, y: number, w: number, h: number) {
+        const gl = this.gl;
+        gl.scissor(x, y, w, h);
+    }
+    getScissor() {
+        const gl = this.gl;
+        return gl.getParameter(gl.SCISSOR_BOX);
+    }
     setViewport(x: number, y: number, w: number, h: number) {
-        this.gl.viewport(x, y, w, h);
-        // this.gl.scissor(x, y, w, h);
-        this.viewport = [x, y, w, h];
+        const gl = this.gl;
+        gl.viewport(x, y, w, h);
+    }
+    gerViewport() {
+        const gl = this.gl;
+        return gl.getParameter(gl.VIEWPORT);
     }
     clear(color = true, depth = true, stencil = true) {
         const gl = this.gl;
@@ -227,9 +233,10 @@ export class RendererPlatform {
             if (texture.webglTexture) {
                 let u_Sampler = gl.getUniformLocation(program, name);
                 gl.activeTexture(gl['TEXTURE' + t]);
-                gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.REPEAT);
-                gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.REPEAT);
-                gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_R, gl.REPEAT);
+                gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_R, gl.CLAMP_TO_EDGE);
+                // gl.texParameterf(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_COMPARE_FUNC, gl.LESS);
                 // 向target绑定纹理对象
                 gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture.webglTexture);
                 // gl.generateMipmap(gl.TEXTURE_2D);
@@ -281,23 +288,24 @@ export class RendererPlatform {
         gl.uniform1i(u_Sampler, t);
 
     }
-    draw(entity: Entity) {
+    draw(model: ModelComponent) {
         const gl = this.gl;
-        const mesh = entity.mesh;
+        const mesh = model.instance;
+        const material = model.material;
         if (mesh == null) { return; }
         this.setVertexBuffer(mesh.vertexBuffer);
         if (mesh.indexBuffer) {
             this.setIndexBuffer(mesh.indexBuffer);
         }
 
-        const shader = this.currShader as Shader;
+        const shader = this.currShader;
         const samplers = shader.samplers;
         const uniforms = shader.uniforms;
         const attributes = shader.attributes;
         const format = mesh.vertexBuffer.format;
         for (let i = 0; i < attributes.length; i++) {
             let attrbute = attributes[i];
-            let element: Undefined<VertexAttribData>;
+            let element: Undefinedable<VertexAttribData>;
             if (attrbute.element) {
                 element = attrbute.element;
             } else {
@@ -318,33 +326,39 @@ export class RendererPlatform {
         Log.assert(shader.checkUniformScope() === true, 'UniformScopValue not set', shader.uniformScope);
         for (let i = 0; i < uniforms.length; i++) {
             let uniform = uniforms[i];
-            this.uniformFunction[uniform.type](uniform, shader.uniformScope[uniform.name]);
+            this.uniformFunction[uniform.type](uniform, shader.getUniformValue(uniform.name));
         }
 
         for (let i = 0; i < samplers.length; i++) {
             let sampler = samplers[i];
-            let value = shader.uniformScope[sampler.name] as Texture;
+            let value = shader.getUniformValue(sampler.name) as Texture;
             this.loadTexture(gl, shader.program as WebGLProgram, sampler.name, value, i);
         }
-        if (mesh.material.cullFace === FACE.NONE) {
+        if (material.cullFace === FACE.NONE) {
             gl.disable(gl.CULL_FACE);
         } else {
             gl.enable(gl.CULL_FACE);
-            gl.cullFace(gl[mesh.material.cullFace]);
+            gl.cullFace(gl[material.cullFace]);
         }
 
         if (mesh.indexBuffer) {
+            let drawFormat;
+            if (mesh.indexBuffer.dataType === Uint8Array) {
+                drawFormat = gl.UNSIGNED_BYTE;
+            } else if (mesh.indexBuffer.dataType === Uint16Array) {
+                drawFormat = gl.UNSIGNED_SHORT;
+            } else if (mesh.indexBuffer.dataType === Uint32Array) {
+                drawFormat = gl.UNSIGNED_INT;
+            }
             gl.drawElements(
                 this.glDrawMode[mesh.mode],
-                // gl.TRIANGLES,
                 mesh.indexBuffer.length,
-                mesh.indexBuffer.drawFormat,
+                drawFormat,
                 0
             );
         } else {
             gl.drawArrays(
                 this.glDrawMode[mesh.mode],
-                // gl.TRIANGLES,
                 0, mesh.vertexBuffer.numVertices);
         }
 

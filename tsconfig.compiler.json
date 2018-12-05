@@ -1,6 +1,15 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "declaration": true
-  }
+    "declaration": true,
+    "outDir": "lib"
+  },
+  "include": [
+    "src",
+    "typings",
+  ],
+  "exclude": [
+    "node_modules",
+    "src/third_party/gltf-loader-ts/test",
+  ]
 }
