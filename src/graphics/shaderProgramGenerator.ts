@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 3rd 2018, 12:57:49 am
+ * Last Modified: Wednesday, December 5th 2018, 10:23:00 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -47,7 +47,7 @@ export class ShaderProgramGenerator {
         if (!shader) {
             let shaderDefinition = createShaderDefinition(name, this.renderer, options);
             shader = this._cache[key] = new Shader(this.renderer, shaderDefinition);
-            console.log(shader);
+            // console.log(shader);
         }
         return shader;
     }
@@ -63,7 +63,7 @@ function generateKey(options) {
 }
 
 function createShaderDefinition(name: string, renderer: RendererPlatform, options) {
-    console.log(name, options);
+    // console.log(name, options);
     let vertStr!: string;
     let fragStr!: string;
     switch (name) {

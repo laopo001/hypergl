@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 28th 2018, 7:23:35 pm
+ * Last Modified: Wednesday, December 5th 2018, 11:24:27 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -39,9 +39,9 @@ export interface CameraInputs {
 export const cameraData: CameraInputs = {
     type: 'perspective',
     perspective: {
-        fov: 90,
+        fov: 45,
         aspectRatio: 1,
-        near: 1,
+        near: 0.1,
         far: 10000
     }
 };
