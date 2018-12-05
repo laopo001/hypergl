@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 5th 2018, 12:38:57 am
+ * Last Modified: Wednesday, December 5th 2018, 5:03:15 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -136,7 +136,7 @@ async function main() {
     let temp = new Entity('temp');
     temp.addChild(box);
     // .addChild(box2);
-    // temp.addComponent('script', [new Rotate({ speed: 2 })]);
+    temp.addComponent('script', [new Rotate({ speed: 2 })]);
 
     app.scene.root.addChild(temp);
     app.scene.root.addChild(createCoordinateSystem());

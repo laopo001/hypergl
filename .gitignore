@@ -9,6 +9,7 @@ lib/
 yarn-error.log
 coverage/
 build/
+dist/
 _temp/
 yarn.lock
 src/third_party/gltf-loader-ts
