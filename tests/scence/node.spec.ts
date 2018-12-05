@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 5th 2018, 12:11:48 am
+ * Last Modified: Wednesday, December 5th 2018, 5:02:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -118,4 +118,20 @@ test('SceneNode translateLocal', () => {
     node1.getPosition();
     expect(node1.getPosition().data).toEqual(new Vec3(0, 0, -1).data);
 
+});
+
+
+test('SceneNode 坐标系转换', () => {
+    let node1 = new SceneNode();
+    node1.translateLocal(0, 0, -1);
+    node1.getPosition();
+    // expect(node1.getPosition().data).toEqual(new Vec3(1, 0, -1).data);
+
+    let node2 = new SceneNode();
+
+    node2.translateLocal(0, 0, 1);
+    // node2.setLocalEulerAngles(0, 45, 0);
+    let { x, y, z } = node1.getPosition();
+    let res = node2.getWorldTransform().invert().mulVec4(new Vec4(x, y, z, 1));
+    expect(res.data).toEqual(new Vec4(0, 0, -2, 1).data);
 });

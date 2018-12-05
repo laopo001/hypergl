@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 5th 2018, 12:34:49 am
+ * Last Modified: Wednesday, December 5th 2018, 4:52:36 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -83,7 +83,6 @@ export class FirstPersonCamera extends Script<FirstPersonCameraInputs> {
 
         if (this.forwards) {
             this.entity.translateLocal(0, 0, -this.inputs.speed * dt);
-            console.log(this.entity.getPosition());
         } else if (this.backwards) {
             this.entity.translateLocal(0, 0, this.inputs.speed * dt);
         }
