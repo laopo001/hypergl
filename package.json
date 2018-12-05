@@ -1,6 +1,6 @@
 {
   "name": "hypergl",
-  "version": "0.0.1",
+  "version": "0.0.1-nightly.20181205.5",
   "author": "ldh",
   "description": "...",
   "keywords": [
@@ -17,16 +17,18 @@
     }
   },
   "license": "MIT",
-  "main": "",
+  "main": "dist/index.js",
+  "types": "lib/index.d.ts",
   "bugs": {
-    "url": "https://github.com/playcanvas/engine/issues"
+    "url": "https://github.com/laopo001/hypergl/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/playcanvas/engine.git"
+    "url": "https://github.com/laopo001/hypergl"
   },
   "devDependencies": {
     "@types/handlebars": "^4.0.39",
+    "@types/howler": "^2.0.5",
     "@types/jest": "^23.3.1",
     "@types/node": "^10.0.3",
     "ali-oss": "^5.1.1",
@@ -66,9 +68,11 @@
     "start": "webpack --config webpack.demo.js --colors --watch",
     "build": "webpack --colors",
     "build:prod": "webpack --colors -p",
-    "lint": "node node_modules/tslint/bin/tslint -c tslint.json src/**/*.ts --exclude src/third_party",
+    "lint": "node node_modules/tslint/bin/tslint -c tslint.json src/**/*.ts --exclude **/src/third_party/**",
     "test": "jest",
-    "test:karma": "webpack --colors && gulp replaceTests && karma start && rm -r _temp"
+    "test:karma": "webpack --colors && gulp replaceTests && karma start && rm -r _temp",
+    "tsc": "tsc -p tsconfig.compiler.json",
+    "prepublish": "npm  run tsc && npm run build"
   },
   "pre-commit": [
     "lint",
@@ -78,7 +82,7 @@
     "node": ">= 0.6.12"
   },
   "dependencies": {
-    "gltf-loader-ts": "./src/third_party/gltf-loader-ts",
+    "howler": "^2.0.15",
     "isomorphic-fetch": "^2.2.1",
     "reflect-metadata": "^0.1.12"
   }

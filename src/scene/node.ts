@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 2nd 2018, 8:15:54 pm
+ * Last Modified: Wednesday, December 5th 2018, 12:33:35 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,7 +14,7 @@
 
 import { IElement } from '../core/element';
 import { Vec3, Quat, Mat4, Vec2 } from '../math';
-import { Log } from '../utils/util';
+import { Log, getUp } from '../utils/util';
 import { Scene } from './scene';
 import { Entity } from '../ecs';
 
@@ -63,9 +63,9 @@ export class SceneNode extends IElement {
             this.setRotation(quat);
         } else {
             if (up == null) {
+                 // up = this.up;
                 // tslint:disable-next-line:no-parameter-reassignment
-                up = this.up;
-                // up = getUp(target);
+                up = getUp(target);
             }
             let mat4 = new Mat4().setLookAt(this.getPosition(), target, up);
             let quat = new Quat().setFromMat4(mat4);

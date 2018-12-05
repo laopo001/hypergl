@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 3rd 2018, 12:44:35 am
+ * Last Modified: Tuesday, December 4th 2018, 5:28:27 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,6 +17,7 @@ import { CameraComponent, CameraInputs } from './components/camera';
 import { LightComponent, LigthInputs } from './components/light';
 import { ScriptInputs, Script, ScriptComponent } from './components/script';
 import { ModelInputs, ModelComponent } from './components/model';
+import { AudioComponent, AudioInputs } from './components/audio';
 import { Component } from './component';
 import { Shader } from '../graphics/shader';
 import { Log } from '../utils/util';
@@ -27,6 +28,7 @@ import { ComponentSystem } from './system';
 import { Scene, SceneNode } from '../scene';
 import { Constructor } from '../types';
 import { Vec3 } from '../math';
+import { ListenerComponent, ListenerInputs } from './components/listener';
 let EntityID = 0;
 
 export interface ComponentInputs {
@@ -34,6 +36,8 @@ export interface ComponentInputs {
     'light': LigthInputs,
     'model': ModelInputs,
     'script': ScriptInputs,
+    'audio': AudioInputs,
+    'listener': ListenerInputs,
 }
 
 export type componentName = keyof ComponentInputs;
@@ -45,6 +49,8 @@ export class Entity extends SceneNode {
     camera!: CameraComponent;
     light!: LightComponent;
     script!: ScriptComponent;
+    audio!: AudioComponent;
+    listener!: ListenerComponent;
     boundingBox: any;
     get app() {
         return Application.getApp();

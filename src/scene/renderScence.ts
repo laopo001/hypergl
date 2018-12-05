@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 4th 2018, 1:28:21 am
+ * Last Modified: Tuesday, December 4th 2018, 5:38:45 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -27,7 +27,7 @@ import { SceneNode } from './node';
 
 
 export function renderScence(scene: Scene) {
-    let modelComponents = scene.systems.model!.renderLayers;
+    let modelComponents = scene.systems.model!.components;
     let lights = scene.systems.light!;
     let camera = scene.activeCamera;
     camera.instance.updateRenderTarget();
@@ -89,7 +89,7 @@ export function renderScence(scene: Scene) {
 let o = { 'Normal': 0, 'PCF': 1, 'PCFSoft': 2 };
 export function renderDirectionalLightArr(name: string, data: LightComponent<DirectionalLight>[], scene: Scene) {
     function rendererShadowMap(scene: Scene, light: LightComponent<DirectionalLight>) {
-        let modelComponents = scene.systems.model!.renderLayers;
+        let modelComponents = scene.systems.model!.components;
         let renderer = scene.app.renderer;
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(light.shadowMapWidth, light.shadowMapHeight, false);
@@ -149,7 +149,7 @@ export function renderDirectionalLightArr(name: string, data: LightComponent<Dir
 
 export function renderPointLightArr(name: string, data: LightComponent<PointLight>[], scene: Scene) {
     function rendererShadowMap(scene: Scene, light: LightComponent<PointLight>) {
-        let modelComponents = scene.systems.model!.renderLayers;
+        let modelComponents = scene.systems.model!.components;
         let renderer = scene.app.renderer;
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(light.shadowMapWidth, light.shadowMapHeight, true);
@@ -229,7 +229,7 @@ export function renderPointLightArr(name: string, data: LightComponent<PointLigh
 
 export function renderSpotLightArr(name: string, data: LightComponent<SpotLight>[], scene: Scene) {
     function rendererShadowMap(scene: Scene, light: LightComponent<SpotLight>) {
-        let modelComponents = scene.systems.model!.renderLayers;
+        let modelComponents = scene.systems.model!.components;
         let renderer = scene.app.renderer;
         if (!light.shadowFrame) {
             light.shadowFrame = scene.createShadowFrame(light.shadowMapWidth, light.shadowMapHeight, false);

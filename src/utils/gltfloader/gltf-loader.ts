@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 10th 2018, 7:46:06 pm
+ * Last Modified: Wednesday, December 5th 2018, 8:14:02 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -22,6 +22,7 @@ import { Camera } from '../../scene/camera';
 import { Entity } from '../../ecs';
 import { Mat4, Quat, RAD_TO_DEG } from '../../math';
 import { Scene } from '../../scene/scene';
+import { SceneNode } from '../../scene';
 
 let loader = new GltfLoader();
 
@@ -182,7 +183,7 @@ export class GltfAssetLoader {
     async loadCamera(index: number) {
         let assets = await this.assets;
         let { gltf } = assets;
-        let camera = new Camera();
+        let camera = new Camera(new SceneNode());
         if (gltf.cameras) {
             let cameraData = gltf.cameras[index];
             switch (cameraData.type) {

@@ -22,7 +22,7 @@ module.exports = {
         '^.+\\.tsx?$': 'ts-jest',
     },
     testRegex: '(/tests/.*(?<!\\.ignore)|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
-    testPathIgnorePatterns: ['src/third_party'],
+    testPathIgnorePatterns: ['/third_party/'],
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
     testEnvironment: 'node',
     verbose: true

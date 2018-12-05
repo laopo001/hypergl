@@ -225,6 +225,42 @@ export class Mat4 {
         return this.mul2(this, rhs);
     }
 
+    mulVec4(v: Vec4): Vec4 {
+        let a = this.data;
+        let a00, a01, a02, a03,
+            a10, a11, a12, a13,
+            a20, a21, a22, a23,
+            a30, a31, a32, a33,
+            b0, b1, b2, b3;
+
+        b0 = v.data[0];
+        b1 = v.data[1];
+        b2 = v.data[2];
+        b3 = v.data[3];
+        a00 = a[0];
+        a01 = a[1];
+        a02 = a[2];
+        a03 = a[3];
+        a10 = a[4];
+        a11 = a[5];
+        a12 = a[6];
+        a13 = a[7];
+        a20 = a[8];
+        a21 = a[9];
+        a22 = a[10];
+        a23 = a[11];
+        a30 = a[12];
+        a31 = a[13];
+        a32 = a[14];
+        a33 = a[15];
+        return new Vec4(
+            a00 * b0 + a10 * b1 + a20 * b2 + a30 * b3,
+            a01 * b0 + a11 * b1 + a21 * b2 + a31 * b3,
+            a02 * b0 + a12 * b1 + a22 * b2 + a32 * b3,
+            a03 * b0 + a13 * b1 + a23 * b2 + a33 * b3
+        )
+    }
+
     /**
      * 移动到某个点
      *

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 2nd 2018, 2:07:22 am
+ * Last Modified: Tuesday, December 4th 2018, 5:38:45 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -23,7 +23,7 @@ export class ModelComponentSystem extends ComponentSystem {
     componentConstructor = ModelComponent;
     normalLayers: ModelComponent[] = [];
     opacityLayers: ModelComponent[] = [];
-    renderLayers: ModelComponent[] = [];
+    components: ModelComponent[] = [];
     private _dirty = false;
     constructor() {
         super();
@@ -32,7 +32,7 @@ export class ModelComponentSystem extends ComponentSystem {
             if (this._dirty) {
                 this.opacityLayers = [];
                 this.normalLayers = [];
-                this.renderLayers.forEach(item => {
+                this.components.forEach(item => {
                     if (item.material instanceof StandardMaterial && (item.material.opacity < 1 || item.material.opacityMap)) {
                         this.opacityLayers.push(item);
                     } else {
@@ -45,13 +45,13 @@ export class ModelComponentSystem extends ComponentSystem {
                 return new Vec3().sub2(b.getPosition(), this.app.scene.activeCamera.getPosition()).length() -
                     new Vec3().sub2(a.getPosition(), this.app.scene.activeCamera.getPosition()).length();
             });
-            this.renderLayers = this.normalLayers.concat(this.opacityLayers);
+            this.components = this.normalLayers.concat(this.opacityLayers);
         });
     }
     addComponent(entity: Entity, componentData: any) {
         let component = super.addComponent(entity, componentData) as ModelComponent;
         this._dirty = true;
-        this.renderLayers.push(component);
+        // this.list.push(component);
         return component;
     }
 }
