@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 4th 2018, 5:38:45 pm
+ * Last Modified: Thursday, December 6th 2018, 5:47:43 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -33,8 +33,9 @@ export function renderScence(scene: Scene) {
     camera.instance.updateRenderTarget();
     modelComponents = camera.instance.renderTarget.getList(modelComponents);
     let renderer = scene.app.renderer;
-    renderer.initDraw(true);
-
+    let { r, b, g, a } = camera.clearColor;
+    renderer.setClearColor(r, b, g, a);
+    renderer.clear();
     let directionalLightsUniforms = renderDirectionalLightArr('directionalLightArr', lights.directionalLights, scene);
     let pointLightsUniforms = renderPointLightArr('pointLightArr', lights.pointLights, scene);
     let spotLightsUniforms = renderSpotLightArr('spotLightArr', lights.spotLight, scene);
@@ -85,7 +86,6 @@ export function renderScence(scene: Scene) {
     renderer.disableBLEND();
 }
 
-
 let o = { 'Normal': 0, 'PCF': 1, 'PCFSoft': 2 };
 export function renderDirectionalLightArr(name: string, data: LightComponent<DirectionalLight>[], scene: Scene) {
     function rendererShadowMap(scene: Scene, light: LightComponent<DirectionalLight>) {
@@ -97,19 +97,11 @@ export function renderDirectionalLightArr(name: string, data: LightComponent<Dir
         let camera = light.instance.camera;
         camera.updateRenderTarget(); // test
         modelComponents = camera.renderTarget.getList(modelComponents);
-        // let camera = new Camera();
-        // let height = 40;
-        // let width = 1 * height;
-        // let length = 1 * height;
-        // camera.setOrtho(-width, width, -height, height, -length, length);
-        // camera.lookAt(light.direction, camera.up);
 
         let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
         let shader = renderer.programGenerator.getShader('depth', attributes);
         shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
 
-        // let gl = scene.app.rendererPlatform.gl;
-        // gl.cullFace(gl.FRONT);
         light.shadowFrame.beforeDraw();
         for (let i = 0; i < modelComponents.length; i++) {
             let modelComponent = modelComponents[i];

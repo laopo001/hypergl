@@ -1,7 +1,7 @@
 
 import { Entity, Camera } from '../../..';
 import { Component } from '../../component';
-import { Log } from '../../../utils/util';
+import { Log, copy } from '../../../utils/util';
 import { Mat4, Vec3 } from '../../../math';
 import { ComponentSystem } from '../../system';
 import { event } from '../../../core';
@@ -48,8 +48,6 @@ export class AudioComponent extends Component<AudioInputs> {
         super(inputs, entity, system);
         copy(inputs, AudioData);
         const sound = new Howl(this.inputs);
-        // event.on('start', () => { });
-        // sound.pos(50, 2, 2);
         this.instance = sound;
     }
 
@@ -68,10 +66,3 @@ export class AudioComponent extends Component<AudioInputs> {
 }
 
 
-function copy(ref, source) {
-    for (let k in source) {
-        if (ref[k] === undefined) {
-            ref[k] = source[k];
-        }
-    }
-}

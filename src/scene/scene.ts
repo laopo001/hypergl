@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 4th 2018, 5:25:02 pm
+ * Last Modified: Thursday, December 6th 2018, 5:12:02 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -32,10 +32,14 @@ import { ModelComponentSystem } from '../ecs/components/model/system';
 import { CameraComponent } from '../ecs/components/camera';
 import { AudioComponentSystem } from '../ecs/components/audio';
 import { ListenerComponentSystem } from '../ecs/components/listener';
+import { FOG } from '../conf';
 export class Scene {
     static ambientColor = new Color(0.2, 0.2, 0.2);
-    // static ambient = new Vec3(0, -1, -1);
-    fog;
+    fog: FOG = FOG.NONE;
+    fogColor = new Color(0, 0, 0);
+    fogDensity = 0;
+    fogStart = 1;
+    fogEnd = 1000;
     baseMaterial;
     readonly lights: {
         directionalLights: DirectionalLight[],

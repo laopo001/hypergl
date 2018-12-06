@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 5th 2018, 11:24:27 pm
+ * Last Modified: Thursday, December 6th 2018, 5:23:06 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,9 +14,10 @@
 
 import { Entity, Camera } from '../../..';
 import { Component } from '../../component';
-import { Log } from '../../../utils/util';
+import { Log, copy } from '../../../utils/util';
 import { Mat4 } from '../../../math';
 import { ComponentSystem } from '../../system';
+import { Color } from '../../../core';
 
 export interface CameraInputs {
     type: 'perspective' | 'orthographic'
@@ -34,6 +35,7 @@ export interface CameraInputs {
         near: number;
         far: number;
     }
+    clearColor?: Color;
 }
 
 export const cameraData: CameraInputs = {
@@ -43,7 +45,8 @@ export const cameraData: CameraInputs = {
         aspectRatio: 1,
         near: 0.1,
         far: 10000
-    }
+    },
+    clearColor: new Color(0, 0, 0)
 };
 
 export class CameraComponent extends Component<CameraInputs> {
@@ -56,8 +59,9 @@ export class CameraComponent extends Component<CameraInputs> {
         return new Mat4().mul2(this.projectionMatrix, this.entity.getWorldTransform().clone().invert());
     }
 
-    constructor(inputs: CameraInputs = cameraData, entity: Entity, system: ComponentSystem) {
+    constructor(inputs: CameraInputs, entity: Entity, system: ComponentSystem) {
         super(inputs, entity, system);
+        copy(inputs, cameraData);
         let camera = new Camera(this.entity);
         switch (this.inputs.type) {
             case 'perspective': {
@@ -73,6 +77,7 @@ export class CameraComponent extends Component<CameraInputs> {
             default: Log.error(`${this.inputs.type} not match`);
                 break;
         }
+        camera.clearColor = this.inputs.clearColor!;
         this.instance = camera;
     }
     setPerspective(fov: number, aspect: number, near: number, far: number) {
@@ -85,5 +90,11 @@ export class CameraComponent extends Component<CameraInputs> {
     }
     initialize(entity: Entity, system: ComponentSystem) {
         //
+    }
+    get clearColor() {
+        return this.instance.clearColor;
+    }
+    set clearColor(v) {
+        this.instance.clearColor = v;
     }
 }

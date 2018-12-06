@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 28th 2018, 11:59:07 pm
+ * Last Modified: Thursday, December 6th 2018, 5:18:25 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,7 +15,9 @@
 import { Vec3, Quat, Mat4 } from '../math';
 import { SceneNode } from './node';
 import { RenderTarget } from './renderTarget';
+import { Color } from '../core';
 export class Camera {
+    clearColor = new Color(0, 0, 0);
     get viewProjectionMatrix() {
         return new Mat4().mul2(this.projectionMatrix, this.node.getWorldTransform().clone().invert());
     }

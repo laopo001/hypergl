@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 28th 2018, 8:34:27 pm
+ * Last Modified: Thursday, December 6th 2018, 5:20:33 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -44,6 +44,14 @@ export namespace Log {
     }
     export function debug(message: any) {
         console.debug(message);
+    }
+}
+
+export function copy(ref, source) {
+    for (let k in source) {
+        if (ref[k] === undefined) {
+            ref[k] = source[k];
+        }
     }
 }
 
