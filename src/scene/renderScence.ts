@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, December 6th 2018, 5:47:43 pm
+ * Last Modified: Thursday, December 6th 2018, 11:55:04 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -31,7 +31,7 @@ export function renderScence(scene: Scene) {
     let lights = scene.systems.light!;
     let camera = scene.activeCamera;
     camera.instance.updateRenderTarget();
-    modelComponents = camera.instance.renderTarget.getList(modelComponents);
+    modelComponents = camera.instance.getList(modelComponents);
     let renderer = scene.app.renderer;
     let { r, b, g, a } = camera.clearColor;
     renderer.setClearColor(r, b, g, a);
@@ -96,7 +96,7 @@ export function renderDirectionalLightArr(name: string, data: LightComponent<Dir
         }
         let camera = light.instance.camera;
         camera.updateRenderTarget(); // test
-        modelComponents = camera.renderTarget.getList(modelComponents);
+        modelComponents = camera.getList(modelComponents);
 
         let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
         let shader = renderer.programGenerator.getShader('depth', attributes);
@@ -174,7 +174,7 @@ export function renderPointLightArr(name: string, data: LightComponent<PointLigh
         for (let i = 0; i < cameras.length; i++) {
             let camera = cameras[i];
             camera.updateRenderTarget(); // test
-            modelComponents = camera.renderTarget.getList(temp);
+            modelComponents = camera.getList(temp);
             // console.log(modelComponents);
 
             let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
@@ -228,7 +228,7 @@ export function renderSpotLightArr(name: string, data: LightComponent<SpotLight>
         }
         let camera = light.instance.camera;
         camera.updateRenderTarget(); // test
-        modelComponents = camera.renderTarget.getList(modelComponents);
+        modelComponents = camera.getList(modelComponents);
         // let camera = new Camera();
         // camera.setPerspective(light.outerConeAngle * 2, 1, 0.5, light.range);
         // camera.lookAt(light.direction, getUp(light.direction));

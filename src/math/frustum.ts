@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 2nd 2018, 4:46:13 pm
+ * Last Modified: Friday, December 7th 2018, 12:48:03 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -16,6 +16,7 @@ import { Mat4 } from './mat4';
 import { Vec3 } from './vec3';
 import { BoundingBox } from '../shape/boundingBox';
 import { Plane } from './plane';
+import { BoundingSphere } from '../shape/boundingSphere';
 export class Frustum {
     planes: Plane[] = [];
     constructor(projectionMatrix, viewMatrix) {
@@ -75,7 +76,7 @@ export class Frustum {
         }
         return true;
     }
-    containsSphere(sphere) {
+    containsSphere(sphere: BoundingSphere) {
         let planes = this.planes;
         let center = sphere.center;
         let negRadius = - sphere.radius;

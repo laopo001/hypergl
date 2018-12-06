@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, December 6th 2018, 5:23:06 pm
+ * Last Modified: Thursday, December 6th 2018, 8:07:12 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -36,6 +36,7 @@ export interface CameraInputs {
         far: number;
     }
     clearColor?: Color;
+    frustumCulling?: boolean;
 }
 
 export const cameraData: CameraInputs = {
@@ -46,7 +47,8 @@ export const cameraData: CameraInputs = {
         near: 0.1,
         far: 10000
     },
-    clearColor: new Color(0, 0, 0)
+    clearColor: new Color(0, 0, 0),
+    frustumCulling: false
 };
 
 export class CameraComponent extends Component<CameraInputs> {

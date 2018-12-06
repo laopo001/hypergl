@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, December 6th 2018, 5:18:25 pm
+ * Last Modified: Friday, December 7th 2018, 1:07:36 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,20 +14,48 @@
 
 import { Vec3, Quat, Mat4 } from '../math';
 import { SceneNode } from './node';
-import { RenderTarget } from './renderTarget';
 import { Color } from '../core';
+import { Frustum } from '../math/frustum';
+import { ModelComponent } from '../ecs/components/model';
+import { BoundingSphere } from '../shape/boundingSphere';
 export class Camera {
     clearColor = new Color(0, 0, 0);
     get viewProjectionMatrix() {
         return new Mat4().mul2(this.projectionMatrix, this.node.getWorldTransform().clone().invert());
     }
     projectionMatrix = new Mat4();
-    renderTarget: RenderTarget;
+    frustum: Frustum;
     constructor(public node: SceneNode) {
-        this.renderTarget = new RenderTarget(this.projectionMatrix, this.node.getWorldTransform().clone().invert());
+        this.frustum = new Frustum(this.projectionMatrix, this.node.getWorldTransform().clone().invert());
     }
     updateRenderTarget() {
-        this.renderTarget.frustum.update(this.projectionMatrix, this.node.getWorldTransform().clone().invert());
+        this.frustum.update(this.projectionMatrix, this.node.getWorldTransform().clone().invert());
+    }
+    getList(models: ModelComponent[]) {
+
+        return models.filter(model => {
+            // return true;
+            let { center, radius } = model.instance.aabb;
+
+            let scale = model.entity.getLocalScale();
+            let max = Math.max(scale.x, scale.y, scale.z);
+            let point = new Vec3().add2(center, model.getPosition());
+            return this.frustum.containsSphere(new BoundingSphere(point, radius * max));
+
+            // let points = model.instance.aabb.getPoints();
+            // for (let i = 0; i < points.length; i++) {
+            //     let scale = model.entity.getLocalScale();
+            //     let point = points[i];
+            //     point = new Vec3().mul2(point, scale);
+            //     point = new Vec3().add2(point, model.getPosition());
+            //     if (this.frustum.containsPoint(point)) {
+            //         return true;
+            //     }
+            // }
+            // return false;
+
+            // return this.frustum.containsBox(model.instance.aabb);
+        });
     }
     /**
      *

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 2nd 2018, 5:39:54 pm
+ * Last Modified: Friday, December 7th 2018, 12:51:41 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -19,6 +19,7 @@ import { VertexType, VertexFormat } from '../graphics/vertexFormat';
 import { CreateMeshOptions, CreateBoxOptions, CreateDrawabelOptions } from '../types';
 import { Vec3, Vec2 } from '../math';
 import { BoundingBox } from '../shape/boundingBox';
+import { BoundingSphere } from '../shape/boundingSphere';
 
 export class Drawable {
     name?: string;
@@ -27,7 +28,7 @@ export class Drawable {
     vertexBuffer!: VertexBuffer;
     indexBuffer?: IndexBuffer;
     castShadow = false;
-    aabb!: BoundingBox;
+    aabb!: BoundingSphere;
     receiveShadow = false;
     get type() {
         if (this.mode === 1 || this.mode === 2 || this.mode === 3) {
@@ -118,7 +119,7 @@ export class Drawable {
         // Create the index buffer
         let indexBuffer = indices && new IndexBuffer(Uint16Array, BUFFER.STATIC, indices);
 
-        this.aabb = BoundingBox.compute(positions);
+        this.aabb = BoundingSphere.compute(positions);
         this.vertexBuffer = vertexBuffer;
         this.indexBuffer = indexBuffer;
         return this;
