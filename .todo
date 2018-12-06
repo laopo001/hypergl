@@ -4,7 +4,11 @@ Projects:
 Todos:
   实现基本功能
   new: 
-    ☐ createLines 和 drawLine @started(18-12-01 18:49)
+    ☐ fog
+    ☐ bounding-sphere
+    ☐ physical system and rigid-body
+    ✔ audio-component and listener-component @done(18-12-06 15:53)
+    ✔ createLines 和 drawLine @started(18-12-01 18:49) @done(18-12-06 15:52) @lasted(4d21h3m39s)
     ✔ 相机裁剪 @started(18-11-22 16:37) @done(18-12-01 15:33) @lasted(1w1d22h56m3s)
     ✔ 修复阴影不清晰 @started(18-11-22 16:37) @done(18-11-27 17:21) @lasted(5d44m10s)
   Done:

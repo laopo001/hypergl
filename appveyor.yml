@@ -7,6 +7,7 @@ matrix:
   fast_finish: true
 
 install:
+  - git submodule update --init --recursive
   - choco install firefox
   - choco install googlechrome
   - ps: Install-Product node $env:nodejs_version
