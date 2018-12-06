@@ -71,7 +71,7 @@ function getAllFiles(root) {
 
 gulp.task('replaceTests', function (cb) {
     let stream = gulp.src('./testsOnbrowser/**')
-        .pipe(replace("'../src/index'", "'../build/index'"))
+        .pipe(replace("'../src/index'", "'../dist/index'"))
         .pipe(gulp.dest('_temp'))
     return stream;
 });

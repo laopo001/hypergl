@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 10th 2018, 9:07:34 pm
+ * Last Modified: Wednesday, December 5th 2018, 10:12:16 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -30,23 +30,23 @@ function resolveObjModel(res: string) {
         let item = arr[i];
         let vec = item.split(' ');
 
-        if (item.startsWith('v ')) {
+        if (vec[0] === 'v') {
             let arr = vec.map(x => parseFloat(x));
             // vertex.push(arr[1], arr[2], arr[3]);
             positions.push(arr[1], arr[2], arr[3]);
         }
-        if (item.startsWith('vn ')) {
+        if (vec[0] === 'vn') {
             let arr = vec.map(x => parseFloat(x));
             // normals.push(arr[1], arr[2], arr[3]);
             // tslint:disable-next-line:no-non-null-assertion
             normals.push(arr[1], arr[2], arr[3]);
         }
-        if (item.startsWith('vt ')) {
+        if (vec[0] === 'vt') {
             let arr = vec.map(x => parseFloat(x));
             // tslint:disable-next-line:no-non-null-assertion
             uvs.push(arr[1], arr[2]);
         }
-        if (item.startsWith('f ')) {
+        if (vec[0] === 'f') {
             if (vec.length === 4) {
                 for (let i = 1; i < vec.length; i++) {
                     let vertex = vec[i];

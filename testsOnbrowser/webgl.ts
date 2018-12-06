@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 16th 2018, 9:35:29 pm
+ * Last Modified: Thursday, December 6th 2018, 4:14:27 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -22,5 +22,4 @@ describe('Application', () => {
   it('new Application not null', () => {
     assert.notEqual(new Application(document.createElement('canvas')), null);
   });
-
 });

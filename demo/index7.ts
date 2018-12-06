@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 21st 2018, 12:54:26 am
+ * Last Modified: Wednesday, December 5th 2018, 10:10:41 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -55,9 +55,14 @@ let main = async () => {
         // webgl1:true
     });
 
+<<<<<<< HEAD
+    let model = await app.loaderObjModel('./assets/models/test/untitled.obj');
+    let mtl = await util.loaderMtlModel('./assets/models/test/untitled.mtl');
+=======
     let model = await util.loaderObjModel('./assets/models/box.obj');
 
 
+>>>>>>> master
     let dirlight = new DirectionalLight();
     dirlight.castShadows = true;
     // dirlight.direction = new Vec3(0, -1, 1);
@@ -69,21 +74,30 @@ let main = async () => {
 
 
     let material = new StandardMaterial();
-    material.diffuseColor = new Color(1, 0, 0);
-    // material.opacity = 0.5;
+    material.diffuseColor = new Color(0.5, 0, 0);
+    material.opacity = 0.5;
     // material.opacityMap = texture2;
     material.update();
+
+
 
     let material2 = new StandardMaterial();
     material2.diffuseMap = texture;
     material2.update();
 
 
+<<<<<<< HEAD
+    let mesh = Mesh.createBox(app.rendererPlatform);
+    let entity = new Entity();
+    entity.mesh = model;
+    entity.mesh.material = mtl;
+=======
     let mesh = Mesh.createBox();
     console.log(model, mesh);
     let entity = new Entity();
     entity.mesh = model;
     entity.mesh!.material = material;
+>>>>>>> master
     entity.name = '123';
     entity.setPosition(1.5, 1, 2);
     // entity.setLocalScale(0.01, 0.01, 0.01);

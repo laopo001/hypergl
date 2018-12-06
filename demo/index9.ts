@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 5th 2018, 5:03:15 pm
+ * Last Modified: Thursday, December 6th 2018, 12:49:30 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -77,7 +77,7 @@ async function main() {
         .addComponent('camera', {
             type: 'perspective',
             perspective: {
-                fov: 90,
+                fov: 45,
                 aspectRatio: app.canvas.width / app.canvas.height,
                 near: 1,
                 far: 10000

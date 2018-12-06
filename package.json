@@ -1,6 +1,6 @@
 {
   "name": "hypergl",
-  "version": "0.0.1-nightly.20181205.5",
+  "version": "0.0.1-nightly.20181206.1",
   "author": "ldh",
   "description": "...",
   "keywords": [
@@ -70,7 +70,7 @@
     "build:prod": "webpack --colors -p",
     "lint": "node node_modules/tslint/bin/tslint -c tslint.json src/**/*.ts --exclude **/src/third_party/**",
     "test": "jest",
-    "test:karma": "webpack --colors && gulp replaceTests && karma start && rm -r _temp",
+    "test:karma": "webpack --colors && gulp replaceTests && karma start",
     "tsc": "tsc -p tsconfig.compiler.json",
     "prepublish": "npm  run tsc && npm run build"
   },
