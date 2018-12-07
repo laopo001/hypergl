@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 3rd 2018, 1:30:46 am
+ * Last Modified: Friday, December 7th 2018, 3:26:43 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,13 +17,14 @@ import { Material } from './material';
 import { RendererPlatform } from '../graphics/renderer';
 import { Shader } from '../graphics/shader';
 import { SEMANTIC } from '../conf';
+import { StandardMaterial } from './shandardMaterial';
 export class ColorMaterial extends Material {
-    get color(): Color {
-        return this._color;
+    get diffuseColor(): Color {
+        return this._diffuseColor;
     }
-    set color(value: Color) {
-        this._color = value;
-        this.setUniform('diffuseColor', this.color.data);
+    set diffuseColor(value: Color) {
+        this._diffuseColor = value;
+        this.setUniform('diffuseColor', this.diffuseColor.data);
     }
     get opacity() {
         return this._opacity;
@@ -34,14 +35,14 @@ export class ColorMaterial extends Material {
     }
 
     shader?: Shader;
-    private _color: Color = new Color(1, 1, 1, 1);
-    private _opacity: number = 1;
-    constructor() {
-        super();
+    protected _diffuseColor: Color = new Color(1, 1, 1, 1);
+    protected _opacity: number = 1;
+    constructor(name?: string) {
+        super(name);
         this.update();
     }
     update() {
-        this.setUniform('diffuseColor', this.color.data);
+        this.setUniform('diffuseColor', this.diffuseColor.data);
         this.setUniform('opacity', this.opacity);
     }
     updateShader(attributes: { [s: string]: SEMANTIC }) {

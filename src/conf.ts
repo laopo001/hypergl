@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, December 6th 2018, 5:10:20 pm
+ * Last Modified: Friday, December 7th 2018, 3:47:46 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -208,8 +208,8 @@ export enum FACE {
 }
 
 export enum FOG {
-    NONE = 'NONE',
-    LINEAR = 'LINEAR',
-    EXP = 'EXP',
-    EXP2 = 'EXP2',
+    NONE,
+    LINEAR,
+    EXP,
+    EXP2
 }

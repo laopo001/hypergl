@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 4th 2018, 1:29:03 am
+ * Last Modified: Friday, December 7th 2018, 2:52:52 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -26,11 +26,11 @@ function createCoordinateSystem() {
         new Vec3(0, 0, 0), new Vec3(5, 0, 0)
     ]);
     let color = new ColorMaterial();
-    color.color = new Color(1, 0, 1);
+    color.diffuseColor = new Color(1, 0, 1);
     let color2 = new ColorMaterial();
-    color2.color = new Color(1, 0, 0);
+    color2.diffuseColor = new Color(1, 0, 0);
     let color3 = new ColorMaterial();
-    color3.color = new Color(0, 0, 1);
+    color3.diffuseColor = new Color(0, 0, 1);
     let line1 = new Entity('lines')
         .addComponent('model', {
             type: 'model',

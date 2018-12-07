@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 2nd 2018, 6:01:20 pm
+ * Last Modified: Friday, December 7th 2018, 3:26:35 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -21,8 +21,9 @@ import { SEMANTIC } from '../conf';
 import { event } from '../core';
 import { Vec3 } from '../math';
 import { Undefinedable } from '../types';
+import { ColorMaterial } from './colorMaterial';
 
-export class StandardMaterial extends Material {
+export class StandardMaterial extends ColorMaterial {
     public get opacityMap(): Undefinedable<Texture> {
         return this._opacityMap;
     }
@@ -72,7 +73,6 @@ export class StandardMaterial extends Material {
         this._specularMap = value;
         this.setUniform('specularTexture', this.specularMap);
     }
-    private _shininess = 64;
     public get shininess() {
         return this._shininess;
     }
@@ -80,21 +80,21 @@ export class StandardMaterial extends Material {
         this._shininess = value;
         this.setUniform('opacity', this.opacity);
     }
+    protected _opacity = 1;
+
+    protected _diffuseColor = new Color(1, 1, 1);
+    private _shininess = 64;
     private _specularMap?: Texture;
     private _specularColor = new Color(0.3, 0.3, 0.3);
     private _diffuseMap?: Texture;
-
-    private _diffuseColor = new Color(1, 1, 1);
-
-
     private _ambientColor = Scene.ambientColor;
-    private _opacity = 1;
     private _opacityMap?: Texture;
     constructor(name?: string) {
         super(name);
         this.update();
     }
     update() {
+        if (this.ambientColor == null) return;
         this.setUniform('ambientColor', this.ambientColor.data);
         this.setUniform('diffuseColor', this.diffuseColor.data);
         // tslint:disable-next-line:no-unused-expression
@@ -112,7 +112,7 @@ export class StandardMaterial extends Material {
     updateShader(attributes: { [s: string]: SEMANTIC }) {
         let renderer = this.app.renderer;
         // if (this.shader == null) {
-            this.shader = renderer.programGenerator.getShader('PhoneMaterial', attributes, this.uniforms);
+        this.shader = renderer.programGenerator.getShader('PhoneMaterial', attributes, this.uniforms);
         // }
         this.shader.uniformScope = this.uniforms;
     }

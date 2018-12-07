@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 4th 2018, 1:30:20 am
+ * Last Modified: Friday, December 7th 2018, 1:52:04 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -26,8 +26,8 @@ export interface ModelInputs {
     material?: Material;
 }
 export class ModelComponent<T = StandardMaterial> extends Component<ModelInputs> {
-    get material() {
-        return this._material || this.instance.material as Material;
+    get material(): Material {
+        return this._material || this.instance.material;
     }
     set material(x) {
         this.instance.material = x;
@@ -35,9 +35,6 @@ export class ModelComponent<T = StandardMaterial> extends Component<ModelInputs>
     entity!: Entity;
     instance: Drawable;
     name = 'model';
-    // get instance() {
-    //     return this.instance;
-    // }
     private _material;
     constructor(inputs: ModelInputs, entity: Entity, system: ComponentSystem) {
         super(inputs, entity, system);

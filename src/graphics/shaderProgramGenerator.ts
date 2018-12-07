@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 5th 2018, 10:23:00 pm
+ * Last Modified: Friday, December 7th 2018, 4:33:52 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -63,7 +63,7 @@ function generateKey(options) {
 }
 
 function createShaderDefinition(name: string, renderer: RendererPlatform, options) {
-    // console.log(name, options);
+    console.log(name, options);
     let vertStr!: string;
     let fragStr!: string;
     switch (name) {

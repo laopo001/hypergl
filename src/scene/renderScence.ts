@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, December 6th 2018, 11:55:04 pm
+ * Last Modified: Friday, December 7th 2018, 3:45:22 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,7 +13,6 @@
 
 
 import { Entity, LightComponent } from '../ecs';
-import { BasicMaterial } from '../material/basicMaterial';
 import { Scene } from './scene';
 import { Mesh } from '../mesh/mesh';
 import { Shader } from '../graphics/shader';
@@ -75,7 +74,12 @@ export function renderScence(scene: Scene) {
         shader.setUniformValue('matrix_model', model.getWorldTransform().data);
         shader.setUniformValue('matrix_normal', model.getWorldTransform().clone().invert().transpose().data);
         shader.setUniformValue('camera_position', camera.getPosition().data);
+        shader.setUniformValue('fog', scene.fog);
+        shader.setUniformValue('fogColor', scene.fogColor.data3);
+        shader.setUniformValue('fogDist', new Float32Array([scene.fogStart, scene.fogEnd]));
+
         renderer.draw(model);
+
         if (!model.instance.receiveShadow) {
             temp.forEach(item => {
                 item.castShadows = true;

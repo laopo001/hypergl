@@ -4,6 +4,9 @@ precision highp float;
 uniform vec3 camera_position;
 uniform float opacity;
 uniform sampler2D opacityTexture;
+uniform vec3 fogColor;
+uniform vec2 fogDist;
+varying float out_Dist;
 // directionalLight start
 {{#each uniforms._directionalLightArr}}
 uniform vec4 {{this.color}};
@@ -370,6 +373,10 @@ void main(void) {
     
     {{/each}}
     // end
+    {{#ifEq uniforms.fog 1}}
+    float fogFactor = (fogDist.y - out_Dist) / (fogDist.y - fogDist.x);
+    result = mix(fogColor, vec3(result), clamp(fogFactor, 0.0, 1.0));
+    {{/ifEq}}
 
     // result = ambient + diffuse + specular;
     gl_FragColor = vec4(result, getOutOpacityColor());

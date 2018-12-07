@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 4th 2018, 1:25:14 am
+ * Last Modified: Friday, December 7th 2018, 3:44:12 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -326,7 +326,11 @@ export class RendererPlatform {
         Log.assert(shader.checkUniformScope() === true, 'UniformScopValue not set', shader.uniformScope);
         for (let i = 0; i < uniforms.length; i++) {
             let uniform = uniforms[i];
-            this.uniformFunction[uniform.type](uniform, shader.getUniformValue(uniform.name));
+            try {
+                this.uniformFunction[uniform.type](uniform, shader.getUniformValue(uniform.name));
+            } catch (error) {
+                console.log(uniform.name, uniform.type);
+            }
         }
 
         for (let i = 0; i < samplers.length; i++) {

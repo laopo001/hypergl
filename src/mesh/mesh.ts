@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 2nd 2018, 5:35:27 pm
+ * Last Modified: Friday, December 7th 2018, 2:42:34 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,7 +14,7 @@
 
 import { VertexBuffer } from '../graphics/vertexBuffer';
 import { IndexBuffer } from '../graphics/indexBuffer';
-import { StandardMaterial, BasicMaterial } from '../material';
+import { StandardMaterial } from '../material';
 import { SEMANTIC, BUFFER, DrawMode } from '../conf';
 import { VertexType, VertexFormat } from '../graphics/vertexFormat';
 import { CreateMeshOptions, CreateBoxOptions } from '../types';

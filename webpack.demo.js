@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 4th 2018, 4:06:19 pm
+ * Last Modified: Friday, December 7th 2018, 4:28:36 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -69,7 +69,14 @@ module.exports = function (env, webpackConfig) {
                 //     test: /\.(frag|vert)$/,
                 //     use: 'raw-loader'
                 // },
-                { test: /\.(frag|vert|handlebars)$/, loader: 'handlebars-loader' }
+                {
+                    test: /\.(frag|vert|handlebars)$/, loader: 'handlebars-loader',
+                    query: {
+                        helperDirs: [
+                            __dirname + "/src/graphics/shaders/helpers",
+                        ]
+                    }
+                }
 
             ]
         },

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 2nd 2018, 5:37:04 pm
+ * Last Modified: Friday, December 7th 2018, 2:41:57 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,14 +15,14 @@
 import { Vec3 } from '../math';
 import { Drawable } from './drawable';
 import { DrawMode } from '../conf';
-import { BasicMaterial } from '../material';
+import { ColorMaterial } from '../material';
 export class Line extends Drawable {
     static createLines = createLines;
     mode = DrawMode.LINES;
     // castShadow = true;
     lines = Array<Vec3>();
     width = 1;
-    material = new BasicMaterial();
+    material = new ColorMaterial();
 }
 
 interface CreateLinesOptions {

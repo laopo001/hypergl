@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 4th 2018, 5:38:45 pm
+ * Last Modified: Friday, December 7th 2018, 10:48:16 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -33,7 +33,7 @@ export class ModelComponentSystem extends ComponentSystem {
                 this.opacityLayers = [];
                 this.normalLayers = [];
                 this.components.forEach(item => {
-                    if (item.material instanceof StandardMaterial && (item.material.opacity < 1 || item.material.opacityMap)) {
+                    if ((item.material as StandardMaterial).opacity < 1 || (item.material as StandardMaterial).opacityMap) {
                         this.opacityLayers.push(item);
                     } else {
                         this.normalLayers.push(item);
