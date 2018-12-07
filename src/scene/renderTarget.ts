@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 2nd 2018, 5:15:51 pm
+ * Last Modified: Saturday, December 8th 2018, 12:18:48 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -24,20 +24,20 @@ export class RenderTarget {
         this.frustum = new Frustum(projectionMatrix, viewMatrix);
     }
     getList(models: ModelComponent[]) {
-        return models.filter(model => {
-            let points = model.instance.aabb.getPoints();
-            for (let i = 0; i < points.length; i++) {
-                let scale = model.entity.getLocalScale();
-                let point = points[i];
-                point = new Vec3().mul2(point, scale);
-                point = new Vec3().add2(point, model.getPosition());
-                if (this.frustum.containsPoint(point)) {
-                    return true;
-                }
-            }
-            return false;
+        // return models.filter(model => {
+        //     let points = model.instance.aabb.getPoints();
+        //     for (let i = 0; i < points.length; i++) {
+        //         let scale = model.entity.getLocalScale();
+        //         let point = points[i];
+        //         point = new Vec3().mul2(point, scale);
+        //         point = new Vec3().add2(point, model.getPosition());
+        //         if (this.frustum.containsPoint(point)) {
+        //             return true;
+        //         }
+        //     }
+        //     return false;
 
-            return this.frustum.containsBox(model.instance.aabb);
-        });
+        //     return this.frustum.containsBox(model.instance.aabb);
+        // });
     }
 }

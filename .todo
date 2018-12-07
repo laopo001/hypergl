@@ -4,8 +4,8 @@ Projects:
 Todos:
   实现基本功能
   new: 
-    ☐ fog
-    ☐ bounding-sphere
+    ✔ fog @done(18-12-08 02:05)
+    ✔ bounding-sphere @done(18-12-07 02:06)
     ☐ physical system and rigid-body
     ✔ audio-component and listener-component @done(18-12-06 15:53)
     ✔ createLines 和 drawLine @started(18-12-01 18:49) @done(18-12-06 15:52) @lasted(4d21h3m39s)

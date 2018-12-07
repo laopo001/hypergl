@@ -4,6 +4,7 @@ precision highp float;
 uniform vec3 camera_position;
 uniform float opacity;
 uniform sampler2D opacityTexture;
+uniform float fogDensity;
 uniform vec3 fogColor;
 uniform vec2 fogDist;
 varying float out_Dist;
@@ -91,6 +92,9 @@ vec4 getOutDiffuseColor() {
     return diffuseColor;
     {{/if}}
 }
+
+{{> fog.frag}}
+
 vec4 getOutSpecularColor() {
     {{#if uniforms.specularTexture}}
     return texture2D(specularTexture, out_vertex_texCoord0);
@@ -107,10 +111,6 @@ float getOutOpacityColor() {
     {{/if}}
 }
 
-// float unpack(const in vec4 rgbaDepth) {
-//     const vec4 bitShift = vec4(1.0, 1.0/256.0, 1.0/(256.0*256.0), 1.0/(256.0*256.0*256.0));
-//     return dot(rgbaDepth, bitShift);
-// }
 
 const float PackUpscale = 256. / 255.;
 const float UnpackDownscale = 255. / 256.;
@@ -373,11 +373,12 @@ void main(void) {
     
     {{/each}}
     // end
-    {{#ifEq uniforms.fog 1}}
-    float fogFactor = (fogDist.y - out_Dist) / (fogDist.y - fogDist.x);
-    result = mix(fogColor, vec3(result), clamp(fogFactor, 0.0, 1.0));
-    {{/ifEq}}
-
+    
+    // {{#ifEq uniforms.fog 1}}
+    // float fogFactor = (fogDist.y - out_Dist) / (fogDist.y - fogDist.x);
+    // result = mix(fogColor, vec3(result), clamp(fogFactor, 0.0, 1.0));
+    // {{/ifEq}}
+    result = addFog(result);
     // result = ambient + diffuse + specular;
     gl_FragColor = vec4(result, getOutOpacityColor());
 

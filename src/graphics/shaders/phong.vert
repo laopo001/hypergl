@@ -4,7 +4,7 @@ uniform mat4 matrix_viewProjection;
 uniform mat4 matrix_normal;
 attribute vec3 vertex_position;
 varying vec3 out_vertex_position;
-varying float out_Dist;
+// varying float out_Dist;
 {{#if attributes.vertex_color}}
 attribute vec4 vertex_color;
 varying vec4 vColor;
@@ -29,7 +29,7 @@ void main(void) {
     vec4 posW = matrix_model * vec4(vertex_position, 1.0);
     out_vertex_position = vec3(posW);
     gl_Position = matrix_viewProjection * posW;
-    out_Dist = gl_Position.w;
+    // out_Dist = gl_Position.w;
 
     {{#if attributes.vertex_color}}
     vColor = vertex_color;

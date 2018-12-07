@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, December 6th 2018, 5:12:02 pm
+ * Last Modified: Saturday, December 8th 2018, 1:53:33 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -37,7 +37,7 @@ export class Scene {
     static ambientColor = new Color(0.2, 0.2, 0.2);
     fog: FOG = FOG.NONE;
     fogColor = new Color(0, 0, 0);
-    fogDensity = 0;
+    fogDensity = 0.01;
     fogStart = 1;
     fogEnd = 1000;
     baseMaterial;

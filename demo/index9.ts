@@ -5,14 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 7th 2018, 2:52:52 pm
+ * Last Modified: Saturday, December 8th 2018, 2:05:31 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Entity, Script, StandardMaterial, Config, Application, Texture, Mesh, Line, ColorMaterial } from '../src';
+import { Entity, Script, StandardMaterial, Config, Application, Texture, Mesh, Line, ColorMaterial, FOG } from '../src';
 import { FirstPersonCamera } from './utils/first_person_camera';
 import { Rotate } from './utils/rotate';
 import { Vec3 } from '../src/math';
@@ -57,6 +57,8 @@ async function main() {
     const app = new Application(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
+    app.scene.fog = FOG.LINEAR;
+    app.scene.fogEnd = 1000;
     console.log(app);
     let material = new StandardMaterial();
     material.diffuseColor.set(1, 0, 0);

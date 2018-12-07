@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 7th 2018, 3:45:22 pm
+ * Last Modified: Saturday, December 8th 2018, 1:33:50 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -76,6 +76,7 @@ export function renderScence(scene: Scene) {
         shader.setUniformValue('camera_position', camera.getPosition().data);
         shader.setUniformValue('fog', scene.fog);
         shader.setUniformValue('fogColor', scene.fogColor.data3);
+        shader.setUniformValue('fogDensity', scene.fogDensity);
         shader.setUniformValue('fogDist', new Float32Array([scene.fogStart, scene.fogEnd]));
 
         renderer.draw(model);
@@ -151,28 +152,6 @@ export function renderPointLightArr(name: string, data: LightComponent<PointLigh
             light.shadowFrame = scene.createShadowFrame(light.shadowMapWidth, light.shadowMapHeight, true);
         }
         let cameras = light.instance.cameras;
-        // let cameras: Camera[] = [];
-        // for (let i = 0; i < 6; i++) {
-        //     let v = new Vec3();
-        //     let a = i % 2;
-        //     let up;
-        //     switch (i) {
-        //         case 0: up = new Vec3(0, -1, 0); break;
-        //         case 1: up = new Vec3(0, -1, 0); break;
-        //         case 2: up = new Vec3(0, 0, 1); break;
-        //         case 3: up = new Vec3(0, 0, -1); break;
-        //         case 4: up = new Vec3(0, -1, 0); break;
-        //         case 5: up = new Vec3(0, -1, 0); break;
-        //     }
-        //     let b = Math.floor(i / 2);
-        //     v.data[b] = a === 0 ? 1 : -1;
-        //     let camera = new Camera(new SceneNode());
-        //     const near = 0.1;
-        //     camera.lookAt(v, up);
-        //     camera.node.setPosition(light.getPosition());
-        //     camera.setPerspective(90, 1, near, light.range);
-        //     cameras.push(camera);
-        // }
         let temp = modelComponents;
 
         for (let i = 0; i < cameras.length; i++) {
@@ -233,10 +212,6 @@ export function renderSpotLightArr(name: string, data: LightComponent<SpotLight>
         let camera = light.instance.camera;
         camera.updateRenderTarget(); // test
         modelComponents = camera.getList(modelComponents);
-        // let camera = new Camera();
-        // camera.setPerspective(light.outerConeAngle * 2, 1, 0.5, light.range);
-        // camera.lookAt(light.direction, getUp(light.direction));
-        // camera.setPosition(light.getPosition());
 
         let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
         let shader = renderer.programGenerator.getShader('depth', attributes);
