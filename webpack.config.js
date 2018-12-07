@@ -55,7 +55,14 @@ module.exports = function (env, webpackConfig) {
                 //     test: /\.(frag|vert)$/,
                 //     use: 'raw-loader'
                 // },
-                { test: /\.(frag|vert|handlebars)$/, loader: 'handlebars-loader' }
+                {
+                    test: /\.(frag|vert|handlebars)$/, loader: 'handlebars-loader',
+                    query: {
+                        helperDirs: [
+                            __dirname + "/src/graphics/shaders/helpers",
+                        ]
+                    }
+                }
 
             ]
         },
