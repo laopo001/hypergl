@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 8th 2018, 2:05:31 am
+ * Last Modified: Saturday, December 8th 2018, 6:21:40 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -118,26 +118,32 @@ async function main() {
                 './assets/audios/secret.mp3',
                 // './assets/audios/sprite.mp3'
             ],
-            autoplay: true
+            // autoplay: true
         })
         .setLocalPosition(-3, 0, 0);
     box.model.material = material;
-    // box.audio.play();
+
 
     let lines = Line.createLines([
         new Vec3(-2, 0, 0), new Vec3(2, 0, 0)
     ]);
 
 
-    let box2 = new Entity('lines')
+    let box2 = new Entity('box2')
         .addComponent('model', {
-            type: 'model',
-            model: lines,
-        }).setLocalPosition(1, 0, 0);
+            type: 'sphere',
+        })
+        .addComponent('audio', {
+            src: [
+                './assets/audios/sprite.webm',
+            ],
+            // autoplay: true
+        })
+        .setLocalPosition(3, 0, 0);
 
     let temp = new Entity('temp');
-    temp.addChild(box);
-    // .addChild(box2);
+    temp.addChild(box)
+        .addChild(box2);
     temp.addComponent('script', [new Rotate({ speed: 2 })]);
 
     app.scene.root.addChild(temp);

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 7th 2018, 1:52:04 pm
+ * Last Modified: Saturday, December 8th 2018, 5:48:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -18,7 +18,7 @@ import { ComponentSystem } from '../../system';
 import { Drawable } from '../../../mesh/drawable';
 
 export interface ModelInputs {
-    type: 'box' | 'plane' | 'model',
+    type: 'box' | 'plane' | 'sphere' | 'model',
     model?: Drawable;
     options?: any;
     castShadow?: boolean,
@@ -46,6 +46,9 @@ export class ModelComponent<T = StandardMaterial> extends Component<ModelInputs>
                 break;
             case 'plane':
                 mesh = Mesh.createPlane(this.inputs.options);
+                break;
+            case 'sphere':
+                mesh = Mesh.createSphere(this.inputs.options);
                 break;
             case 'model':
                 mesh = this.inputs.model as Mesh;

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 7th 2018, 2:42:34 pm
+ * Last Modified: Saturday, December 8th 2018, 8:56:55 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -26,6 +26,7 @@ import { Drawable } from './drawable';
 export class Mesh extends Drawable {
     static createBox = createBox;
     static createPlane = createPlane;
+    static createSphere = createSphere;
     // static createLines = createLines;
     castShadow = true;
     receiveShadow = true;
@@ -159,11 +160,13 @@ export function createBox(opts?: CreateBoxOptions) {
     return Mesh.createMesh(options);
 }
 
-export function createPlane(opts?: {
+export interface CreatePlaneOptions {
     halfExtents?: Vec2,
     widthSegments?: number,
     lengthSegments?: number
-}) {
+}
+
+export function createPlane(opts?: CreatePlaneOptions) {
     // Check the supplied options and provide defaults for unspecified ones
     let he = opts && opts.halfExtents !== undefined ? opts.halfExtents : new Vec2(0.5, 0.5);
     let ws = opts && opts.widthSegments !== undefined ? opts.widthSegments : 5;
@@ -218,6 +221,75 @@ export function createPlane(opts?: {
         // uvs1: uvs, // UV1 = UV0 for plane
         indices
     };
+    // if (pc.precalculatedTangents) {
+    //     options.tangents = pc.calculateTangents(positions, normals, uvs, indices);
+    // }
+    return Mesh.createMesh(options);
+}
+
+export interface CreateSphereOptions {
+    radius?: number;
+    segments?: number;
+}
+
+export function createSphere(opts?: CreateSphereOptions) {
+    let radius = opts && opts.radius !== undefined ? opts.radius : 0.5;
+    let latitudeBands = opts && opts.segments !== undefined ? opts.segments : 16;
+    let longitudeBands = opts && opts.segments !== undefined ? opts.segments : 16;
+
+    // tslint:disable-next-line:one-variable-per-declaration
+    let lon, lat;
+    // tslint:disable-next-line:one-variable-per-declaration
+    let theta, sinTheta, cosTheta, phi, sinPhi, cosPhi;
+    // tslint:disable-next-line:one-variable-per-declaration
+    let first, second;
+    // tslint:disable-next-line:one-variable-per-declaration
+    let x, y, z, u, v;
+    let positions: number[] = [];
+    let normals: number[] = [];
+    let uvs: number[] = [];
+    let indices: number[] = [];
+
+    for (lat = 0; lat <= latitudeBands; lat++) {
+        theta = lat * Math.PI / latitudeBands;
+        sinTheta = Math.sin(theta);
+        cosTheta = Math.cos(theta);
+
+        for (lon = 0; lon <= longitudeBands; lon++) {
+            // Sweep the sphere from the positive Z axis to match a 3DS Max sphere
+            phi = lon * 2 * Math.PI / longitudeBands - Math.PI / 2.0;
+            sinPhi = Math.sin(phi);
+            cosPhi = Math.cos(phi);
+
+            x = cosPhi * sinTheta;
+            y = cosTheta;
+            z = sinPhi * sinTheta;
+            u = 1.0 - lon / longitudeBands;
+            v = 1.0 - lat / latitudeBands;
+
+            positions.push(x * radius, y * radius, z * radius);
+            normals.push(x, y, z);
+            uvs.push(u, v);
+        }
+    }
+
+    for (lat = 0; lat < latitudeBands; ++lat) {
+        for (lon = 0; lon < longitudeBands; ++lon) {
+            first = (lat * (longitudeBands + 1)) + lon;
+            second = first + longitudeBands + 1;
+
+            indices.push(first + 1, second, first);
+            indices.push(first + 1, second + 1, second);
+        }
+    }
+
+    let options = {
+        positions,
+        normals,
+        uvs,
+        // uvs1: uvs, // UV1 = UV0 for sphere
+        indices
+    };
 
     // if (pc.precalculatedTangents) {
     //     options.tangents = pc.calculateTangents(positions, normals, uvs, indices);
@@ -225,28 +297,3 @@ export function createPlane(opts?: {
 
     return Mesh.createMesh(options);
 }
-
-// interface CreateLinesOptions {
-//     type?: 'LINES' | 'LINE_LOOP' | 'LINE_STRIP',
-//     width?: number
-// }
-
-// function createLines(vertex: Vec3[], opts: CreateLinesOptions = {}) {
-//     let positions: number[] = [];
-//     let type = opts.type || 'LINES';
-
-//     vertex.forEach(vec => {
-//         positions.push(vec.x, vec.y, vec.z);
-//     });
-//     let options = {
-//         positions,
-//         // normals,
-//         // uvs,
-//         // // uvs1,
-//         // indices
-//     };
-//     let mesh = Mesh.createMesh(options);
-//     mesh.mode = DrawMode[type];
-//     mesh.material = new BasicMaterial() as any;
-//     return mesh;
-// }
