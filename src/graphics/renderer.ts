@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 7th 2018, 3:44:12 pm
+ * Last Modified: Sunday, December 9th 2018, 1:42:40 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -289,6 +289,9 @@ export class RendererPlatform {
 
     }
     draw(model: ModelComponent) {
+        if (model.entity.name === 'box2') {
+           console.log(123);
+        }
         const gl = this.gl;
         const mesh = model.instance;
         const material = model.material;
@@ -366,7 +369,11 @@ export class RendererPlatform {
                 0, mesh.vertexBuffer.numVertices);
         }
 
-
+        for (let i = 0; i < attributes.length; i++) {
+            let attrbute = attributes[i];
+            gl.disableVertexAttribArray(attrbute.locationId);
+            attrbute.enable = false;
+        }
     }
     enableBLEND() {
         let gl = this.gl;
