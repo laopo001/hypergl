@@ -9,14 +9,15 @@ varying vec3 out_vertex_position;
 attribute vec4 vertex_color;
 varying vec4 vColor;
 {{/if}}
-{{#if attributes.vertex_texCoord0}}
-attribute vec2 vertex_texCoord0;
-varying vec2 out_vertex_texCoord0;
-{{/if}}
 {{#if attributes.normal}}
 attribute vec3 normal;
 varying vec3 out_normal;
 {{/if}}
+{{#if attributes.vertex_texCoord0}}
+attribute vec2 vertex_texCoord0;
+varying vec2 out_vertex_texCoord0;
+{{/if}}
+
 
 
 vec4 getPosition() {

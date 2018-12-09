@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 8th 2018, 6:21:40 pm
+ * Last Modified: Monday, December 10th 2018, 1:53:29 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -101,8 +101,8 @@ async function main() {
         })
         // .lookAt(direction, getUp(direction))
         .setEulerAngles(-45, 0, 0)
-        .setLocalPosition(5, 5, -5)
-        .addChild(debug);
+        .setLocalPosition(5, 5, -5);
+        // .addChild(debug);
     app.scene.root.addChild(light);
 
 
@@ -147,7 +147,7 @@ async function main() {
     temp.addComponent('script', [new Rotate({ speed: 2 })]);
 
     app.scene.root.addChild(temp);
-    app.scene.root.addChild(createCoordinateSystem());
+    // app.scene.root.addChild(createCoordinateSystem());
 
     let plane = new Entity('plane')
         .addComponent('model', {

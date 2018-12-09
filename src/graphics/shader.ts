@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 24th 2018, 1:17:08 am
+ * Last Modified: Monday, December 10th 2018, 2:15:33 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -101,6 +101,7 @@ export class Shader {
             // this.attributes.push(new ShaderInput(this.renderer, this.definition.attributes[info.name], this.renderer.glTypeToJs[info.type] as GLType, location));
             this.attributes.push(new ShaderVariable(this.definition.attributes[info.name], this.renderer.glTypeToJs[info.type] as UNIFORM_TYPE, location));
         }
+
         i = 0;
         let numUniforms = gl.getProgramParameter(this.program, gl.ACTIVE_UNIFORMS);
         while (i < numUniforms) {

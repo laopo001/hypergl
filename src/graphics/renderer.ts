@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 9th 2018, 1:42:40 am
+ * Last Modified: Monday, December 10th 2018, 2:15:35 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -289,9 +289,9 @@ export class RendererPlatform {
 
     }
     draw(model: ModelComponent) {
-        if (model.entity.name === 'box2') {
-           console.log(123);
-        }
+        // if (model.entity.name === 'box2' && this.currShader.attributes.length === 2 && model.instance.vertexBuffer.format.elements.length === 2) {
+        //     // console.log(1);
+        // }
         const gl = this.gl;
         const mesh = model.instance;
         const material = model.material;
@@ -309,12 +309,12 @@ export class RendererPlatform {
         for (let i = 0; i < attributes.length; i++) {
             let attrbute = attributes[i];
             let element: Undefinedable<VertexAttribData>;
-            if (attrbute.element) {
-                element = attrbute.element;
-            } else {
-                element = format.elements.find(x => x.semantic === attrbute.name);
-                attrbute.element = element;
-            }
+            // if (attrbute.element) {
+            //     element = attrbute.element;
+            // } else {
+            element = format.elements.find(x => x.semantic === attrbute.name);
+            attrbute.element = element;
+            // }
 
             if (element) {
                 gl.vertexAttribPointer(attrbute.locationId, element.size, this.AttrbuteType[(element.dataType as any).name], element.normalize, element.stride, element.offset);
