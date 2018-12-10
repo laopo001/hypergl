@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 10th 2018, 9:49:45 pm
+ * Last Modified: Tuesday, December 11th 2018, 1:08:10 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -227,8 +227,58 @@ export class RendererPlatform {
         gl.clearColor(r, g, b, a);
         this.clear();
     }
-    loadTexture(gl: WebGL2RenderingContext, program: WebGLProgram, name: string, texture: Texture, t = 0) {
+    initTexture(gl: WebGL2RenderingContext, texture: Texture) {
+        if (texture.source == null) { Log.error('texture 设置 source' + texture); return; }
+        const webglTexture = gl.createTexture() as WebGLTexture;
+        if (!texture.isCube) {
+            gl.bindTexture(gl.TEXTURE_2D, webglTexture);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, texture.source as any);
+        } else {
+            gl.bindTexture(gl.TEXTURE_CUBE_MAP, webglTexture); // Bind the object to target
+            // gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            for (let face = 0; face < 6; face++) {
+                gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, texture.source[face]);
+            }
+        }
 
+        return webglTexture;
+    }
+    loadTexture(gl: WebGL2RenderingContext, program: WebGLProgram, name: string, texture: Texture, t = 0) {
+        if (texture.webglTexture) {
+            if (!texture.isCube) {
+                let u_Sampler = gl.getUniformLocation(program, name);
+                gl.activeTexture(gl['TEXTURE' + t]);
+                gl.bindTexture(gl.TEXTURE_2D, texture.webglTexture);
+                if (texture.flipY) {
+                    // 对纹理图像进行Y轴反转
+                    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
+                }
+                if (texture.isPowerOf2()) {
+                    gl.generateMipmap(gl.TEXTURE_2D);
+                }
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, this.glFilter[texture.minFilter]);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, this.glFilter[texture.magFilter]);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, this.glAddress[texture.wrapU]);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, this.glAddress[texture.wrapV]);
+                gl.uniform1i(u_Sampler, t);
+            } else {
+                // CUBE
+                let u_Sampler = gl.getUniformLocation(program, name);
+                gl.activeTexture(gl['TEXTURE' + t]);
+                gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture.webglTexture);
+                gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_R, gl.CLAMP_TO_EDGE);
+                // gl.texParameterf(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_COMPARE_FUNC, gl.LESS);
+                // gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
+                gl.uniform1i(u_Sampler, t);
+            }
+        } else {
+            texture.webglTexture = this.initTexture(gl, texture);
+            this.loadTexture(gl, program, name, texture, t);
+        }
+        ////////////////////////
+        /*
         if (texture.isCube) {
             if (texture.webglTexture) {
                 let u_Sampler = gl.getUniformLocation(program, name);
@@ -248,7 +298,6 @@ export class RendererPlatform {
         if (texture.webglTexture) {
             let u_Sampler = gl.getUniformLocation(program, name);
             gl.activeTexture(gl['TEXTURE' + t]);
-            // 向target绑定纹理对象
             gl.bindTexture(gl.TEXTURE_2D, texture.webglTexture);
             gl.generateMipmap(gl.TEXTURE_2D);
             gl.uniform1i(u_Sampler, t);
@@ -265,20 +314,14 @@ export class RendererPlatform {
         gl.activeTexture(gl['TEXTURE' + t]);
         // 向target绑定纹理对象
         gl.bindTexture(gl.TEXTURE_2D, webglTexture);
-
-
-        // 配置纹理参数
-        // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-        // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-        // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-        // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
         // 配置纹理图像
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, texture.source);
         if (texture.isPowerOf2()) {
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, this.glFilter[texture.minFilter]);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, this.glFilter[texture.magFilter]);
             gl.generateMipmap(gl.TEXTURE_2D);
         } else {
+            // 配置纹理参数
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, this.glFilter[texture.minFilter]);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, this.glFilter[texture.magFilter]);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, this.glAddress[texture.wrapU]);
@@ -286,7 +329,7 @@ export class RendererPlatform {
         }
         // 将0号纹理传递给着色器
         gl.uniform1i(u_Sampler, t);
-
+        */
     }
     draw(model: ModelComponent) {
         const gl = this.gl;
@@ -366,11 +409,11 @@ export class RendererPlatform {
                 0, mesh.vertexBuffer.numVertices);
         }
 
-        for (let i = 0; i < attributes.length; i++) {
-            let attrbute = attributes[i];
-            gl.disableVertexAttribArray(attrbute.locationId);
-            attrbute.enable = false;
-        }
+        // for (let i = 0; i < attributes.length; i++) {
+        //     let attrbute = attributes[i];
+        //     gl.disableVertexAttribArray(attrbute.locationId);
+        //     attrbute.enable = false;
+        // }
     }
     enableBLEND() {
         let gl = this.gl;

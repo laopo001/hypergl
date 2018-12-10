@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 10th 2018, 10:10:26 pm
+ * Last Modified: Tuesday, December 11th 2018, 12:32:36 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -94,15 +94,15 @@ async function main() {
 
     let light = new Entity('light')
         .addComponent('light', {
-            type: 'directional',
+            type: 'point',
             castShadows: true,
             shadowType: 'PCF',
             range: 16
         })
         // .lookAt(direction, getUp(direction))
         .setEulerAngles(-45, 0, 0)
-        .setLocalPosition(5, 5, -5);
-        // .addChild(debug);
+        .setLocalPosition(0, 5, 0);
+    // .addChild(debug);
     app.scene.root.addChild(light);
 
 
@@ -110,7 +110,8 @@ async function main() {
         .addComponent('model', {
             type: 'box',
             // castShadow: false,
-            receiveShadow: false
+            receiveShadow: false,
+            material: material2
         })
         .addComponent('audio', {
             src: [
@@ -136,7 +137,7 @@ async function main() {
     let temp = new Entity('temp');
     temp.addChild(box)
         .addChild(box2);
-    temp.addComponent('script', [new Rotate({ speed: 2 })]);
+    temp.addComponent('script', [new Rotate({ speed: 1 })]);
 
     app.scene.root.addChild(temp);
     // app.scene.root.addChild(createCoordinateSystem());

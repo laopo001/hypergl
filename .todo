@@ -4,6 +4,7 @@ Projects:
 Todos:
   实现基本功能
   new: 
+    ☐ cubeTexture @started(18-12-11 01:08)
     ✔ fog @done(18-12-08 02:05)
     ✔ bounding-sphere @done(18-12-07 02:06)
     ☐ physical system and rigid-body

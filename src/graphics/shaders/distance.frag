@@ -2,7 +2,7 @@
 precision highp float;
 uniform vec3 view_position;
 uniform float light_range;
-varying vec3 out_vertex_position;
+in vec3 out_vertex_position;
 
 const float PackUpscale = 256. / 255.;
 const float UnpackDownscale = 255. / 256.;

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 3rd 2018, 11:28:28 pm
+ * Last Modified: Tuesday, December 11th 2018, 12:56:44 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,29 +17,41 @@ import { FILTER, WRAP, PIXELFORMAT } from '../conf';
 import { Log } from '../utils/util';
 import { powerOfTwo } from '../math';
 
+export type SourceElement = HTMLVideoElement | HTMLImageElement | HTMLCanvasElement;
+
 let TextureID = 0;
 export class Texture {
     id = TextureID++;
-    source?: HTMLVideoElement | HTMLImageElement | HTMLCanvasElement;
+    source?: SourceElement | Array<SourceElement>;
     wrapU = WRAP.REPEAT;
     wrapV = WRAP.REPEAT;
     wrapR = WRAP.REPEAT;
-    isCube = false;
+    // isCube = false;
     level = 0;
     minFilter = FILTER.LINEAR; // 纹理在缩小时的过滤方式
     magFilter = FILTER.LINEAR; // 纹理在放大时的过滤方式
     format = PIXELFORMAT.R8_G8_B8; // gl.RGB
     dataType = Uint8Array;
     flipY = true; // 文理是否需要垂直翻转,默认为false
-    constructor(public webglTexture?: WebGLTexture) {
+    _width?: number;
+    _height?: number;
+    constructor(public isCube = false, public webglTexture?: WebGLTexture) {
         // TODO
     }
-    setSource(source: HTMLVideoElement | HTMLImageElement | HTMLCanvasElement) {
-        this.source = source;
+    setSource(source: SourceElement);
+    setSource(left: SourceElement, right: SourceElement, top: SourceElement, bottom: SourceElement, front: SourceElement, end: SourceElement);
+    setSource(...source) {
+        if (!this.isCube) {
+            this.source = source[0];
+            this._width = source[0].width;
+            this._height = source[0].height;
+        } else {
+            this.source = source;
+        }
     }
     isPowerOf2() {
-        if (this.source == null) { Log.error('source not set'); return false; }
-        return powerOfTwo(this.source.width) && powerOfTwo(this.source.height);
+        if (this._width == null || this._height == null) { return false; }
+        return powerOfTwo(this._width) && powerOfTwo(this._height);
     }
 }
 

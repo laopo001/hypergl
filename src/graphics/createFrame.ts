@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 29th 2018, 1:47:21 am
+ * Last Modified: Tuesday, December 11th 2018, 1:05:30 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -25,20 +25,18 @@ export class Frame {
     textureCube!: WebGLTexture;
     renderer: RendererPlatform;
     renderBuffer!: WebGLRenderbuffer;
+
     // depthBuffer!: WebGLRenderbuffer;
     constructor(private scene: Scene, private width = scene.app.canvas.width, private height = scene.app.canvas.height, public is3d = false) {
         this.renderer = scene.app.renderer;
     }
     getTexture() {
         if (this.is3d) {
-            let t = new Texture(this.textureCube);
-            // t.wrapU = WRAP.CLAMP_TO_EDGE;
-            // t.wrapV = WRAP.CLAMP_TO_EDGE;
-            // t.wrapR = WRAP.CLAMP_TO_EDGE;
-            t.isCube = true;
-            return t;
+            return new Texture(true, this.textureCube);
+        } else {
+            return new Texture(false, this.texture);
         }
-        return new Texture(this.texture);
+
     }
     createFramebuffer() {
         let { width, height } = this;
