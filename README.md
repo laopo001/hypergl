@@ -12,8 +12,8 @@ npm run test:karma (测试依赖浏览器的部分)
  * entity component system 
  * component: light, model, camera, script, audio, listener, etc.
  * support web-audio 3d 
+ * fog
 
 # Roadmap
- * fog
- * bounding-sphere
- * vphysical system and rigid-body
+ * skybox
+ * physical system and rigid-body
