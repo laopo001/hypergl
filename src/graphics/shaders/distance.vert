@@ -1,9 +1,9 @@
 {{#if data.GL2}}{{> gles3.vert}}{{/if}}
-attribute vec3 vertex_position;
+in vec3 vertex_position;
 
 uniform mat4 matrix_model;
 uniform mat4 matrix_viewProjection;
-varying vec3 out_vertex_position;
+out vec3 out_vertex_position;
 
 void main()
 {

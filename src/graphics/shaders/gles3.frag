@@ -1,6 +1,6 @@
 #version 300 es
 #define GL2
-#define varying in
+// #define varying in
 out highp vec4 hyper_fragColor;
 #define gl_FragColor hyper_fragColor
 #define texture2D texture

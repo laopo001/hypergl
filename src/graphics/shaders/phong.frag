@@ -7,7 +7,6 @@ uniform sampler2D opacityTexture;
 uniform float fogDensity;
 uniform vec3 fogColor;
 uniform vec2 fogDist;
-varying float out_Dist;
 // directionalLight start
 {{#each uniforms._directionalLightArr}}
 uniform vec4 {{this.color}};
@@ -70,17 +69,17 @@ uniform float shininess;
 
 //////////////
 {{#if attributes.vertex_texCoord0}}
-varying vec2 out_vertex_texCoord0;
+in vec2 out_vertex_texCoord0;
 {{/if}}
 {{#if attributes.normal}}
-varying vec3 out_normal;
+in vec3 out_normal;
 {{/if}}
-varying vec3 out_vertex_position;
+in vec3 out_vertex_position;
 
 vec4 getDiffuseColor;
 
 {{#if attributes.vertex_color}}
-varying vec4 vColor;
+in vec4 vColor;
 vec4 getOutColor() {
     return vColor;
 }

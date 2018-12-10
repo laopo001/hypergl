@@ -2,10 +2,10 @@
 uniform mat4 matrix_model;
 uniform mat4 matrix_viewProjection;
 
-attribute vec3 vertex_position;
+in vec3 vertex_position;
 {{#if attributes.vertex_color}}
-attribute vec4 vertex_color;
-varying vec4 vColor;
+in vec4 vertex_color;
+out vec4 vColor;
 {{/if}}
 
 vec4 getPosition() {

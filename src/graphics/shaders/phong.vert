@@ -2,20 +2,19 @@
 uniform mat4 matrix_model;
 uniform mat4 matrix_viewProjection;
 uniform mat4 matrix_normal;
-attribute vec3 vertex_position;
-varying vec3 out_vertex_position;
-// varying float out_Dist;
+in vec3 vertex_position;
+out vec3 out_vertex_position;
 {{#if attributes.vertex_color}}
-attribute vec4 vertex_color;
-varying vec4 vColor;
+in vec4 vertex_color;
+out vec4 vColor;
 {{/if}}
 {{#if attributes.normal}}
-attribute vec3 normal;
-varying vec3 out_normal;
+in vec3 normal;
+out vec3 out_normal;
 {{/if}}
 {{#if attributes.vertex_texCoord0}}
-attribute vec2 vertex_texCoord0;
-varying vec2 out_vertex_texCoord0;
+in vec2 vertex_texCoord0;
+out vec2 out_vertex_texCoord0;
 {{/if}}
 
 
@@ -30,7 +29,6 @@ void main(void) {
     vec4 posW = matrix_model * vec4(vertex_position, 1.0);
     out_vertex_position = vec3(posW);
     gl_Position = matrix_viewProjection * posW;
-    // out_Dist = gl_Position.w;
 
     {{#if attributes.vertex_color}}
     vColor = vertex_color;
