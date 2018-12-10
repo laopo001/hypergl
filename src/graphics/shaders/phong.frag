@@ -1,7 +1,7 @@
 {{#if data.GL2}}{{> gles3.frag}}{{/if}}
 precision highp float;
 
-uniform vec3 camera_position;
+uniform vec3 cameraPosition;
 uniform float opacity;
 uniform sampler2D opacityTexture;
 uniform float fogDensity;
@@ -334,7 +334,7 @@ void main(void) {
     // vec4 outColor = getOutColor();
     getDiffuseColor = getOutDiffuseColor();
     vec3 norm = normalize(out_normal);
-    vec3 viewDir = normalize(camera_position - out_vertex_position);
+    vec3 viewDir = normalize(cameraPosition - out_vertex_position);
 
     // start
     vec3 result = ambientColor.xyz * getDiffuseColor.xyz;
