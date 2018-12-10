@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, December 6th 2018, 1:03:25 am
+ * Last Modified: Monday, December 10th 2018, 10:05:44 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -65,6 +65,13 @@ export class SceneNode extends IElement {
             if (up == null) {
                 // tslint:disable-next-line:no-parameter-reassignment
                 up = this.up;
+                // let dv = new Vec3().sub2(target, this.getPosition());
+                // let yaw = -Math.atan2(dv.z, dv.x) - Math.PI / 2;
+                // let len = Math.sqrt(dv.x * dv.x + dv.z * dv.z);
+                // let pitch = Math.atan2(dv.y, len);
+                // let quat = new Quat().setFromEulerAngles(0 * 90, pitch * 90, yaw * 90);
+                // this.setRotation(quat);
+                // return this;
             }
             let mat4 = new Mat4().setLookAt(this.getPosition(), target, up);
             let quat = new Quat().setFromMat4(mat4);

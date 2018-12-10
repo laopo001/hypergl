@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 10th 2018, 2:15:35 am
+ * Last Modified: Monday, December 10th 2018, 9:49:45 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -289,9 +289,6 @@ export class RendererPlatform {
 
     }
     draw(model: ModelComponent) {
-        // if (model.entity.name === 'box2' && this.currShader.attributes.length === 2 && model.instance.vertexBuffer.format.elements.length === 2) {
-        //     // console.log(1);
-        // }
         const gl = this.gl;
         const mesh = model.instance;
         const material = model.material;

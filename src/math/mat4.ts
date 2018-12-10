@@ -362,8 +362,15 @@ export class Mat4 {
 
         return (position: Vec3, target: Vec3, up: Vec3): this => {
             z.sub2(position, target).normalize();
+            if (z.length() === 0) {
+                z.z = 1;
+            }
             y.copy(up).normalize();
             x.cross(y, z).normalize();
+            if (x.length() === 0) {
+                z.x += 0.0001;
+                x.cross(y, z).normalize();
+            }
             y.cross(z, x);
 
             let r = this.data;

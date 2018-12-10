@@ -54,7 +54,7 @@ export class Quat {
     }
 
 
-    getAxisAngle(axis) {
+    getAxisAngle(axis: Vec3) {
         let rad = Math.acos(this.w) * 2;
         const s = Math.sin(rad / 2);
         if (s !== 0) {
@@ -78,7 +78,7 @@ export class Quat {
     }
 
 
-    getEulerAngles(eulers?/*ref*/) {
+    getEulerAngles(eulers?/*ref*/: Vec3) {
         let x, y, z, qx, qy, qz, qw, a2;
 
         eulers = (eulers === undefined) ? new Vec3() : eulers;
@@ -191,7 +191,7 @@ export class Quat {
     }
 
 
-    set(x, y, z, w) {
+    set(x: number, y: number, z: number, w: number) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -201,7 +201,7 @@ export class Quat {
     }
 
 
-    setFromAxisAngle({ x, y, z }, angle) {
+    setFromAxisAngle({ x, y, z }: Vec3, angle: number) {
         let sa, ca;
 
         angle *= 0.5 * math.DEG_TO_RAD;
@@ -218,7 +218,7 @@ export class Quat {
     }
 
 
-    setFromEulerAngles(ex, ey, ez) {
+    setFromEulerAngles(ex: number, ey: number, ez: number) {
         let sx, cx, sy, cy, sz, cz, halfToRad;
 
         halfToRad = 0.5 * math.DEG_TO_RAD;
@@ -390,7 +390,7 @@ export class Quat {
     }
 
 
-    transformVector(vec, res) {
+    transformVector(vec: Vec3, res?: Vec3) {
         if (res === undefined) {
             res = new Vec3();
         }
