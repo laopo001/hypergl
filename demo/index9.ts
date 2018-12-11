@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 11th 2018, 3:55:20 pm
+ * Last Modified: Tuesday, December 11th 2018, 7:01:22 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -94,7 +94,7 @@ async function main() {
 
     let light = new Entity('light')
         .addComponent('light', {
-            type: 'point',
+            type: 'directional',
             castShadows: true,
             shadowType: 'PCF',
             range: 16
@@ -122,7 +122,7 @@ async function main() {
         .setLocalPosition(-3, 0, 0);
     box.model.material = material;
 
-    let box2 = new Entity('box2')
+    let sphere = new Entity('sphere')
         .addComponent('model', {
             type: 'sphere',
         })
@@ -136,7 +136,7 @@ async function main() {
 
     let temp = new Entity('temp');
     temp.addChild(box)
-        .addChild(box2);
+        .addChild(sphere);
     temp.addComponent('script', [new Rotate({ speed: 1 })]);
 
     app.scene.root.addChild(temp);

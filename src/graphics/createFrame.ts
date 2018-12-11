@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 11th 2018, 2:14:12 pm
+ * Last Modified: Tuesday, December 11th 2018, 7:00:29 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -128,8 +128,8 @@ export class Frame {
         }
         this._backViewport = this.renderer.gerViewport();
         this._backScissor = this.renderer.getScissor();
-        this.renderer.setViewport(0, 0, width, height);
-        this.renderer.setScissor(0, 0, width, height);
+        gl.viewport(0, 0, width, height);
+        gl.scissor(0, 0, width, height);
         // this.renderer.setScissor(0, 0, width, height);
         gl.clearColor(1, 1, 1, 1);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -138,9 +138,9 @@ export class Frame {
         const gl = this.renderer.gl;
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);        // Change the drawing destination to color buffer
         let [x, y, w, h] = this._backViewport;
-        this.renderer.setViewport(x, y, w, h);
+        gl.viewport(x, y, w, h);
         [x, y, w, h] = this._backScissor;
-        this.renderer.setScissor(x, y, w, h);
+        gl.scissor(x, y, w, h);
     }
     render() {
         this.beforeDraw();
