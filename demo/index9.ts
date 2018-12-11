@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 11th 2018, 7:01:22 pm
+ * Last Modified: Wednesday, December 12th 2018, 12:54:04 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -59,10 +59,17 @@ async function main() {
     });
     app.scene.fog = FOG.LINEAR;
     app.scene.fogEnd = 1000;
-    console.log(app);
+    let skycube = new Texture(true);
+    let Helipad_negx = await loadImage('assets/images/Helipad_negx.png');
+    let Helipad_negy = await loadImage('assets/images/Helipad_negy.png');
+    let Helipad_negz = await loadImage('assets/images/Helipad_negz.png');
+    let Helipad_posx = await loadImage('assets/images/Helipad_posx.png');
+    let Helipad_posy = await loadImage('assets/images/Helipad_posy.png');
+    let Helipad_posz = await loadImage('assets/images/Helipad_posz.png');
+    skycube.setSource(Helipad_posx, Helipad_negx, Helipad_posy, Helipad_negy, Helipad_posz, Helipad_negz);
+
     let material = new StandardMaterial();
-    material.diffuseColor.set(1, 0, 0);
-    // material.opacity = 0.5;
+    material.diffuseMap = skycube;
 
     let material2 = new StandardMaterial();
     let texture = new Texture();
@@ -73,7 +80,8 @@ async function main() {
     let debug = new Entity('debug')
         .addComponent('model', {
             type: 'box',
-        }).setLocalScale(0.3, 0.3, 0.3);
+        });
+    app.scene.root.addChild(debug);
 
     let camera = new Entity('camera')
         .addComponent('camera', {
@@ -88,7 +96,6 @@ async function main() {
         .addComponent('listener', {})
         .setPosition(5, 5, 0)
         .lookAt(new Vec3(0, 0, 0))
-        // .setEulerAngles(-15, 52, 0)
         .addComponent('script', [new FirstPersonCamera({ speed: 0.1 })]);
     app.scene.root.addChild(camera);
 
@@ -120,7 +127,6 @@ async function main() {
             // autoplay: true
         })
         .setLocalPosition(-3, 0, 0);
-    box.model.material = material;
 
     let sphere = new Entity('sphere')
         .addComponent('model', {

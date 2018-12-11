@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 11th 2018, 3:54:01 pm
+ * Last Modified: Tuesday, December 11th 2018, 9:05:21 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -54,6 +54,7 @@ export class Application {
     }
     start() {
         this.renderer.setViewport(0, 0, this.canvas.width, this.canvas.height);
+        this.renderer.setScissor(0, 0, this.canvas.width, this.canvas.height);
         this.tick();
     }
     addScene(scene: Scene) {

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 1st 2018, 10:37:50 pm
+ * Last Modified: Tuesday, December 11th 2018, 8:47:12 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -19,8 +19,9 @@ import { Mesh } from '../mesh/mesh';
 import { Application } from '../application';
 import { ModelComponent } from '../ecs/components/model';
 
-
+let MaterialId = 0;
 export abstract class Material {
+    MaterialId = MaterialId++;
     get app() {
         return Application.getApp();
     }
