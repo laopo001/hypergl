@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 11th 2018, 1:05:30 am
+ * Last Modified: Tuesday, December 11th 2018, 2:14:12 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -114,9 +114,9 @@ export class Frame {
         }
     }
     // tslint:disable-next-line:member-ordering
-    private _backViewport?: Int32Array;
+    private _backViewport?: number[];
     // tslint:disable-next-line:member-ordering
-    private _backScissor?: Int32Array;
+    private _backScissor?: number[];
     beforeDraw(index = 0) {
         let { width, height } = this;
         const gl = this.renderer.gl;

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 11th 2018, 1:08:10 am
+ * Last Modified: Tuesday, December 11th 2018, 2:13:57 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -197,21 +197,35 @@ export class RendererPlatform {
     setColorWrite(writeRed: boolean, writeGreen: boolean, writeBlue: boolean, writeAlpha: boolean) {
         this.gl.colorMask(writeRed, writeGreen, writeBlue, writeAlpha);
     }
+    // tslint:disable-next-line:member-ordering
+    private _last_scissor = new Array<number>(4);
     setScissor(x: number, y: number, w: number, h: number) {
         const gl = this.gl;
+        this._last_scissor[0] = x;
+        this._last_scissor[1] = y;
+        this._last_scissor[2] = w;
+        this._last_scissor[3] = h;
         gl.scissor(x, y, w, h);
     }
     getScissor() {
-        const gl = this.gl;
-        return gl.getParameter(gl.SCISSOR_BOX);
+        return this._last_scissor;
+        // const gl = this.gl;
+        // return gl.getParameter(gl.SCISSOR_BOX);
     }
+    // tslint:disable-next-line:member-ordering
+    private _last_viewport = new Array<number>(4);
     setViewport(x: number, y: number, w: number, h: number) {
         const gl = this.gl;
+        this._last_viewport[0] = x;
+        this._last_viewport[1] = y;
+        this._last_viewport[2] = w;
+        this._last_viewport[3] = h;
         gl.viewport(x, y, w, h);
     }
     gerViewport() {
-        const gl = this.gl;
-        return gl.getParameter(gl.VIEWPORT);
+        return this._last_viewport;
+        // const gl = this.gl;
+        // return gl.getParameter(gl.VIEWPORT);
     }
     clear(color = true, depth = true, stencil = true) {
         const gl = this.gl;
