@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 10th 2018, 8:37:59 pm
+ * Last Modified: Wednesday, December 12th 2018, 4:10:25 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -23,10 +23,14 @@ import distanceVert from './shaders/distance.vert';
 import distanceFrag from './shaders/distance.frag';
 import colorVert from './shaders/color.vert';
 import colorFrag from './shaders/color.frag';
+import skyVert from './shaders/sky.vert';
+import skyFrag from './shaders/sky.frag';
+
 import { RendererPlatform } from './renderer';
 import { Shader } from './shader';
 import { SEMANTIC } from '../conf';
 import { Obj } from '../types';
+import { Log } from '../utils/util';
 
 
 
@@ -56,10 +60,18 @@ export class ShaderProgramGenerator {
 function generateKey(options) {
     let str = '';
     // tslint:disable-next-line:forin
+    for (let x in options.data) {
+        str += x + ',';
+    }
+    // tslint:disable-next-line:forin
     for (let x in options.uniforms) {
         str += x + ',';
     }
-    return JSON.stringify(options.attributes) + str;
+    // tslint:disable-next-line:forin
+    for (let x in options.attributes) {
+        str += x + ',';
+    }
+    return str;
 }
 
 function createShaderDefinition(name: string, renderer: RendererPlatform, options) {
@@ -87,6 +99,12 @@ function createShaderDefinition(name: string, renderer: RendererPlatform, option
             vertStr = colorVert(options);
             fragStr = colorFrag(options);
             break;
+        case 'SkyMaterial':
+            vertStr = skyVert(options);
+            fragStr = skyFrag(options);
+            break;
+        default:
+            Log.error('没有找到 ' + name);
     }
 
 

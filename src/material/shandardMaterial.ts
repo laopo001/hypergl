@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 7th 2018, 3:26:35 pm
+ * Last Modified: Wednesday, December 12th 2018, 3:15:47 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -31,13 +31,13 @@ export class StandardMaterial extends ColorMaterial {
         this._opacityMap = value;
         this.setUniform('opacityTexture', this.opacityMap);
     }
-    get opacity() {
-        return this._opacity;
-    }
-    set opacity(value) {
-        this._opacity = value;
-        this.setUniform('opacity', this.opacity);
-    }
+    // get opacity() {
+    //     return this._opacity;
+    // }
+    // set opacity(value) {
+    //     this._opacity = value;
+    //     this.setUniform('opacity', this.opacity);
+    // }
     public get ambientColor() {
         return this._ambientColor;
     }
@@ -45,13 +45,13 @@ export class StandardMaterial extends ColorMaterial {
         this._ambientColor = v;
         this.setUniform('ambientColor', this.ambientColor.data);
     }
-    public get diffuseColor() {
-        return this._diffuseColor;
-    }
-    public set diffuseColor(value) {
-        this._diffuseColor = value;
-        this.setUniform('diffuseColor', this.diffuseColor.data);
-    }
+    // public get diffuseColor() {
+    //     return this._diffuseColor;
+    // }
+    // public set diffuseColor(value) {
+    //     this._diffuseColor = value;
+    //     this.setUniform('diffuseColor', this.diffuseColor.data);
+    // }
     public get diffuseMap() {
         return this._diffuseMap;
     }
@@ -80,9 +80,9 @@ export class StandardMaterial extends ColorMaterial {
         this._shininess = value;
         this.setUniform('opacity', this.opacity);
     }
-    protected _opacity = 1;
+    // protected _opacity = 1;
 
-    protected _diffuseColor = new Color(1, 1, 1);
+    // protected _diffuseColor = new Color(1, 1, 1);
     private _shininess = 64;
     private _specularMap?: Texture;
     private _specularColor = new Color(0.3, 0.3, 0.3);
@@ -91,24 +91,25 @@ export class StandardMaterial extends ColorMaterial {
     private _opacityMap?: Texture;
     constructor(name?: string) {
         super(name);
-        this.update();
-    }
-    update() {
-        if (this.ambientColor == null) return;
         this.setUniform('ambientColor', this.ambientColor.data);
-        this.setUniform('diffuseColor', this.diffuseColor.data);
-        // tslint:disable-next-line:no-unused-expression
-        // this.diffuseMap && this.setUniform('diffuseTexture', this.diffuseMap);
-
         this.setUniform('specularColor', this.specularColor.data);
-        // tslint:disable-next-line:no-unused-expression
-        // this.specularMap && this.setUniform('specularTexture', this.specularMap);
         this.setUniform('shininess', this.shininess);
-        this.setUniform('opacity', this.opacity);
-        // tslint:disable-next-line:no-unused-expression
-        // this.opacityMap && this.setUniform('opacityTexture', this.opacityMap);
-
+        // this.update();
     }
+    // update() {
+    //     if (this.ambientColor == null) return;
+    //     this.setUniform('ambientColor', this.ambientColor.data);
+    //     this.setUniform('diffuseColor', this.diffuseColor.data);
+    //     // tslint:disable-next-line:no-unused-expression
+    //     // this.diffuseMap && this.setUniform('diffuseTexture', this.diffuseMap);
+    //     this.setUniform('specularColor', this.specularColor.data);
+    //     // tslint:disable-next-line:no-unused-expression
+    //     // this.specularMap && this.setUniform('specularTexture', this.specularMap);
+    //     this.setUniform('shininess', this.shininess);
+    //     this.setUniform('opacity', this.opacity);
+    //     // tslint:disable-next-line:no-unused-expression
+    //     // this.opacityMap && this.setUniform('opacityTexture', this.opacityMap);
+    // }
     updateShader(attributes: { [s: string]: SEMANTIC }) {
         let renderer = this.app.renderer;
         // if (this.shader == null) {

@@ -5,15 +5,16 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 3rd 2018, 12:59:26 am
+ * Last Modified: Wednesday, December 12th 2018, 4:11:42 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-export * from './basicMaterial';
+// export * from './basicMaterial';
 export * from './shandardMaterial';
 export * from './material';
 export * from './shaderMaterial';
 export * from './colorMaterial';
+export * from './skyMaterial';

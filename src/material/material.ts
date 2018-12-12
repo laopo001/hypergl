@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 11th 2018, 8:47:12 pm
+ * Last Modified: Wednesday, December 12th 2018, 3:15:47 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -39,7 +39,7 @@ export abstract class Material {
     getUniform(name: string) {
         return this.uniforms[name];
     }
-    abstract update();
+    // abstract update();
     abstract updateShader(attributes: { [s: string]: SEMANTIC });
     setLights(uniforms: any) {
         Object.assign(this.uniforms, uniforms);

@@ -5,14 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 12th 2018, 12:54:04 am
+ * Last Modified: Wednesday, December 12th 2018, 5:13:15 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Entity, Script, StandardMaterial, Config, Application, Texture, Mesh, Line, ColorMaterial, FOG } from '../src';
+import { Entity, Script, StandardMaterial, Config, SkyMaterial, Application, Texture, Mesh, Line, ColorMaterial, FOG } from '../src';
 import { FirstPersonCamera } from './utils/first_person_camera';
 import { Rotate } from './utils/rotate';
 import { Vec3 } from '../src/math';
@@ -67,6 +67,8 @@ async function main() {
     let Helipad_posy = await loadImage('assets/images/Helipad_posy.png');
     let Helipad_posz = await loadImage('assets/images/Helipad_posz.png');
     skycube.setSource(Helipad_posx, Helipad_negx, Helipad_posy, Helipad_negy, Helipad_posz, Helipad_negz);
+    let skym = new SkyMaterial();
+    skym.cubeTexture = skycube;
 
     let material = new StandardMaterial();
     material.diffuseMap = skycube;
@@ -80,7 +82,10 @@ async function main() {
     let debug = new Entity('debug')
         .addComponent('model', {
             type: 'box',
-        });
+            material: skym
+        })
+        .setLocalScale(100, 100, 100);
+        // .addComponent('script', [new Rotate({ speed: 1 })]);
     app.scene.root.addChild(debug);
 
     let camera = new Entity('camera')
@@ -106,10 +111,8 @@ async function main() {
             shadowType: 'PCF',
             range: 16
         })
-        // .lookAt(direction, getUp(direction))
         .setEulerAngles(-45, 0, 0)
         .setLocalPosition(0, 5, 0);
-    // .addChild(debug);
     app.scene.root.addChild(light);
 
 
