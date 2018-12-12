@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 5th 2018, 8:14:02 pm
+ * Last Modified: Wednesday, December 12th 2018, 9:11:21 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -177,7 +177,6 @@ export class GltfAssetLoader {
         } else {
             Log.error(`${this.url}的gltf没有materials属性`);
         }
-        standardmaterial.update();
         return standardmaterial;
     }
     async loadCamera(index: number) {
