@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 12th 2018, 5:13:15 pm
+ * Last Modified: Wednesday, December 12th 2018, 9:32:24 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -60,13 +60,16 @@ async function main() {
     app.scene.fog = FOG.LINEAR;
     app.scene.fogEnd = 1000;
     let skycube = new Texture(true);
-    let Helipad_negx = await loadImage('assets/images/Helipad_negx.png');
-    let Helipad_negy = await loadImage('assets/images/Helipad_negy.png');
-    let Helipad_negz = await loadImage('assets/images/Helipad_negz.png');
-    let Helipad_posx = await loadImage('assets/images/Helipad_posx.png');
-    let Helipad_posy = await loadImage('assets/images/Helipad_posy.png');
-    let Helipad_posz = await loadImage('assets/images/Helipad_posz.png');
-    skycube.setSource(Helipad_posx, Helipad_negx, Helipad_posy, Helipad_negy, Helipad_posz, Helipad_negz);
+    let negx = await loadImage('assets/images/skybox_nx.jpg');
+    let negy = await loadImage('assets/images/skybox_ny.jpg');
+    let negz = await loadImage('assets/images/skybox_nz.jpg');
+    let posx = await loadImage('assets/images/skybox_px.jpg');
+    let posy = await loadImage('assets/images/skybox_py.jpg');
+    let posz = await loadImage('assets/images/skybox_pz.jpg');
+    skycube.setSource(posx, negx, posy, negy, posz, negz);
+    skycube.wrapU = Config.WRAP.CLAMP_TO_EDGE;
+    skycube.wrapV = Config.WRAP.CLAMP_TO_EDGE;
+    skycube.wrapR = Config.WRAP.CLAMP_TO_EDGE;
     let skym = new SkyMaterial();
     skym.cubeTexture = skycube;
 
@@ -85,7 +88,7 @@ async function main() {
             material: skym
         })
         .setLocalScale(100, 100, 100);
-        // .addComponent('script', [new Rotate({ speed: 1 })]);
+    // .addComponent('script', [new Rotate({ speed: 1 })]);
     app.scene.root.addChild(debug);
 
     let camera = new Entity('camera')
