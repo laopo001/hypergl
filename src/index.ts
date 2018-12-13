@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 5th 2018, 5:48:19 pm
+ * Last Modified: Thursday, December 13th 2018, 2:25:27 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -25,4 +25,5 @@ export * from './ecs';
 export * from './texture';
 export * from './lights';
 export * from './mesh';
+export * from './utils/gltfloader/gltf-loader';
 export { Config, math, util };

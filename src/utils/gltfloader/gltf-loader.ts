@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 12th 2018, 9:11:21 pm
+ * Last Modified: Thursday, December 13th 2018, 2:29:49 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -81,13 +81,15 @@ export class GltfAssetLoader {
         let entity = new Entity();
         if (typeof nodeData.mesh === 'number') {
             let mesh = await this.loadMesh(nodeData.mesh);
-            entity.mesh = mesh;
+            entity.addComponent('model', {
+                type: 'model',
+                model: mesh
+            });
+            // entity.mesh = mesh;
         }
         if (typeof nodeData.camera === 'number') {
             let camera = await this.loadCamera(nodeData.camera);
-            // console.warn('gltf create camera');
-            entity = camera as any;
-            //
+            entity.addComponent('camera', camera as any);
         }
         if (nodeData.translation) {
             let [x, y, z] = nodeData.translation;
@@ -110,9 +112,7 @@ export class GltfAssetLoader {
 
             entity.setLocalScale(mat.getScale());
             entity.setRotation(quat);
-            // entity.setLocalEulerAngles(mat.getEulerAngles());
             entity.setLocalPosition(mat.getTranslation());
-            // entity.worldTransform.set(nodeData.matrix as any);
         }
         if (nodeData.children) {
             for (let i = 0; i < nodeData.children.length; i++) {
@@ -120,7 +120,6 @@ export class GltfAssetLoader {
                 let entityChild = await this.resolveSenceNode(index);
                 entity.addChild(entityChild);
             }
-
         }
         return entity;
     }
@@ -182,20 +181,38 @@ export class GltfAssetLoader {
     async loadCamera(index: number) {
         let assets = await this.assets;
         let { gltf } = assets;
-        let camera = new Camera(new SceneNode());
+
         if (gltf.cameras) {
             let cameraData = gltf.cameras[index];
             switch (cameraData.type) {
                 case 'perspective':
                     {
                         let { aspectRatio, zfar, znear, yfov } = cameraData.perspective!;
-                        camera.setPerspective(yfov * RAD_TO_DEG, aspectRatio!, znear, zfar!);
+                        return {
+                            type: 'perspective',
+                            perspective: {
+                                fov: yfov * RAD_TO_DEG,
+                                aspectRatio,
+                                near: znear,
+                                far: zfar
+                            }
+                        };
+                        break;
                     }
-                    break;
                 case 'orthographic':
                     {
                         let { xmag, ymag, zfar, znear } = cameraData.orthographic!;
-                        camera.setOrtho(-xmag, xmag, -ymag, ymag, znear, zfar);
+                        return {
+                            type: 'orthographic',
+                            orthographic: {
+                                left: -xmag,
+                                right: xmag,
+                                bottom: -ymag,
+                                top: ymag,
+                                near: znear,
+                                far: zfar,
+                            }
+                        };
                         break;
                     }
             }
@@ -203,7 +220,7 @@ export class GltfAssetLoader {
         } else {
             Log.error(`${this.url}的gltf没有cameras属性`);
         }
-        return camera;
+
     }
     async loadTexture(index: number) {
         let assets = await this.assets;

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 11th 2018, 4:41:13 pm
+ * Last Modified: Thursday, December 13th 2018, 3:54:47 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -73,7 +73,7 @@ export function renderScence(scene: Scene) {
         shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
         shader.setUniformValue('matrix_model', model.getWorldTransform().data);
         shader.setUniformValue('matrix_normal', model.getWorldTransform().clone().invert().transpose().data);
-        shader.setUniformValue('cameraPosition', camera.getPosition().data);
+        shader.setUniformValue('uCameraPosition', camera.getPosition().data);
         shader.setUniformValue('fog', scene.fog);
         shader.setUniformValue('fogColor', scene.fogColor.data3);
         shader.setUniformValue('fogDensity', scene.fogDensity);
