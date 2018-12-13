@@ -20,9 +20,9 @@ npm run test:karma (测试依赖浏览器的部分)
  * component: light, model, camera, script, audio, listener, etc.
  * support web-audio 3d 
  * fog
+ * skybox
 
 # Roadmap
- * skybox
  * physical system and rigid-body
 
 # examples
