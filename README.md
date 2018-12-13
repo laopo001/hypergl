@@ -27,3 +27,4 @@ npm run test:karma (测试依赖浏览器的部分)
 
 # examples
  * [3d-audio](https://stackblitz.com/edit/hypegl-3d-audio)
+ * [skybox](https://stackblitz.com/edit/hypegl-skybox)
