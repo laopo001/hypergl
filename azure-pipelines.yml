@@ -20,8 +20,4 @@ steps:
     npm install
     npm run test
   displayName: 'test'
-- script: |
-    gulp version
-    npm publish
-  displayName: 'change version'
 
