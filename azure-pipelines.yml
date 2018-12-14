@@ -14,10 +14,25 @@ steps:
   inputs:
     versionSpec: '10.x'
   displayName: 'Install Node.js'
-
 - script: |
     test -e ".gitmodules" && sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
     git submodule update --init --recursive
     npm install
     npm run test
   displayName: 'test'
+- script: |
+    gulp version
+  displayName: 'change version'
+
+- task: npmAuthenticate@0
+  displayName: 'npm Authenticate .npmrc'
+  inputs:
+    workingFile: .npmrc
+    customEndpoint: dadigua
+    
+- task: Npm@1
+  displayName: 'npm publish'
+  inputs:
+    command: publish
+    verbose: false
+    publishEndpoint: dadigua
