@@ -22,11 +22,6 @@ steps:
   displayName: 'test'
 - script: |
     gulp version
+    npm publish
   displayName: 'change version'
-
-- task: npmAuthenticate@0
-  displayName: 'npm Authenticate .npmrc'
-  inputs:
-    workingFile: .npmrc
-    customEndpoint: dadigua
 
