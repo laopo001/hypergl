@@ -29,10 +29,4 @@ steps:
   inputs:
     workingFile: .npmrc
     customEndpoint: dadigua
-    
-- task: Npm@1
-  displayName: 'npm publish'
-  inputs:
-    command: publish
-    verbose: false
-    publishEndpoint: dadigua
+

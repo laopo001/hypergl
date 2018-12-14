@@ -72,7 +72,8 @@
     "test": "jest",
     "test:karma": "webpack --colors && gulp replaceTests && karma start",
     "tsc": "tsc -p tsconfig.compiler.json",
-    "prepublish": "npm  run tsc && npm run build"
+    "version": "gulp version",
+    "prepublishOnly": "npm  run tsc && npm run build"
   },
   "pre-commit": [
     "lint",
