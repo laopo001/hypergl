@@ -24,7 +24,9 @@ npm run test:karma (测试依赖浏览器的部分)
 
 # Roadmap
  * physical system and rigid-body
+ * pbr material
 
 # examples
  * [3d-audio](https://stackblitz.com/edit/hypegl-3d-audio)
  * [skybox](https://stackblitz.com/edit/hypegl-skybox)
+ * [gltf-loader](https://stackblitz.com/edit/hypegl-gltf)

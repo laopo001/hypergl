@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, December 13th 2018, 3:47:18 pm
+ * Last Modified: Friday, December 14th 2018, 5:06:37 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -86,6 +86,7 @@ async function main() {
             type: 'box',
             material: skym
         })
+        // .setLocalPosition(10, 20, 30)
         .setLocalScale(100, 100, 100);
     app.scene.root.addChild(debug);
 

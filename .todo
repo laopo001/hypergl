@@ -4,6 +4,7 @@ Projects:
 Todos:
   实现基本功能
   new: 
+    ☐ pbr material
     ✔ skybox @done(18-12-13 11:14)
     ✔ cubeTexture @started(18-12-11 01:08) @done(18-12-13 11:14) @lasted(2d10h6m41s)
     ✔ fog @done(18-12-08 02:05)
