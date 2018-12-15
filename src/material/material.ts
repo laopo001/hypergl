@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 15th 2018, 7:30:06 pm
+ * Last Modified: Saturday, December 15th 2018, 11:12:04 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -26,6 +26,7 @@ export abstract class Material {
         return Application.getApp();
     }
     uniforms: { [s: string]: any } = {};
+    shaderTempletes: { [s: string]: any } = {};
     shader?: Shader;
     // cullFace = FACE.BACK;
     cullFace = FACE.NONE;
@@ -38,6 +39,9 @@ export abstract class Material {
     }
     getUniform(name: string) {
         return this.uniforms[name];
+    }
+    setShaderTempletes(name: string, data: any) {
+        this.shaderTempletes[name] = data;
     }
     abstract updateShader(attributes: { [s: string]: SEMANTIC });
     setLights(uniforms: any) {

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 15th 2018, 6:49:05 pm
+ * Last Modified: Saturday, December 15th 2018, 11:15:23 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -19,50 +19,60 @@ import { Material } from './material';
 import { RendererPlatform } from '../graphics/renderer';
 import { SEMANTIC } from '../conf';
 import { event } from '../core';
-import { Vec3 } from '../math';
+import { Vec3, Vec2 } from '../math';
 import { Undefinedable } from '../types';
 import { ColorMaterial } from './colorMaterial';
 
 export class StandardMaterial extends ColorMaterial {
-    public get opacityMap(): Undefinedable<Texture> {
+    get opacityMap(): Undefinedable<Texture> {
         return this._opacityMap;
     }
-    public set opacityMap(value: Undefinedable<Texture>) {
+    set opacityMap(value: Undefinedable<Texture>) {
         this._opacityMap = value;
         this.setUniform('opacityTexture', this.opacityMap);
     }
-    public get ambientColor() {
+    get ambientColor() {
         return this._ambientColor;
     }
-    public set ambientColor(v) {
+    set ambientColor(v) {
         this._ambientColor = v;
         this.setUniform('ambientColor', this.ambientColor.data);
     }
-    public get diffuseMap() {
+    get diffuseMap() {
         return this._diffuseMap;
     }
-    public set diffuseMap(value) {
+    set diffuseMap(value) {
         this._diffuseMap = value;
         this.setUniform('diffuseTexture', this.diffuseMap);
     }
-    public get specularColor() {
+
+    private _diffuseMapOffset = new Vec2(0, 0);
+    get diffuseMapOffset(): Vec2 {
+        return this._diffuseMapOffset;
+    }
+    set diffuseMapOffset(v: Vec2) {
+        this._diffuseMapOffset = v;
+        this.setUniform('diffuseMapOffset', this.diffuseMapOffset.data);
+    }
+
+    get specularColor() {
         return this._specularColor;
     }
-    public set specularColor(value) {
+    set specularColor(value) {
         this._specularColor = value;
         this.setUniform('specularColor', this.specularColor.data);
     }
-    public get specularMap() {
+    get specularMap() {
         return this._specularMap;
     }
-    public set specularMap(value) {
+    set specularMap(value) {
         this._specularMap = value;
         this.setUniform('specularTexture', this.specularMap);
     }
-    public get shininess() {
+    get shininess() {
         return this._shininess;
     }
-    public set shininess(value) {
+    set shininess(value) {
         this._shininess = value;
         this.setUniform('opacity', this.opacity);
     }
@@ -77,6 +87,7 @@ export class StandardMaterial extends ColorMaterial {
         this.setUniform('ambientColor', this.ambientColor.data);
         this.setUniform('specularColor', this.specularColor.data);
         this.setUniform('shininess', this.shininess);
+        this.setUniform('diffuseMapOffset', this.diffuseMapOffset.data);
         // this.update();
     }
     // update() {
@@ -96,7 +107,7 @@ export class StandardMaterial extends ColorMaterial {
     updateShader(attributes: { [s: string]: SEMANTIC }) {
         let renderer = this.app.renderer;
         // if (this.shader == null) {
-        this.shader = renderer.programGenerator.getShader('PhoneMaterial', attributes, this.uniforms);
+        this.shader = renderer.programGenerator.getShader('PhoneMaterial', attributes, this.uniforms, this.shaderTempletes);
         // }
         this.shader.uniformScope = this.uniforms;
     }

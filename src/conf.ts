@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 7th 2018, 3:47:46 pm
+ * Last Modified: Sunday, December 16th 2018, 12:50:00 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -193,9 +193,9 @@ export enum ShadowUpdateMode {
 
 export enum DrawMode {
     POINTS,
-    LINES,
-    LINE_LOOP,
-    LINE_STRIP,
+    LINES, // 每一对顶点被解释为一条直线
+    LINE_LOOP, // 头尾相连
+    LINE_STRIP, // 一系列的连续直线
     TRIANGLES,
     TRIANGLE_STRIP,
     TRIANGLE_FAN,

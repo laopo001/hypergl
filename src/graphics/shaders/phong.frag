@@ -1,6 +1,13 @@
 {{#if data.GL2}}{{> gles3.frag}}{{/if}}
 precision highp float;
 
+uniform vec4 ambientColor;
+uniform vec4 diffuseColor;
+uniform sampler2D diffuseTexture;
+uniform vec2 diffuseMapOffset;
+uniform vec4 specularColor;
+uniform vec4 specularTexture;
+uniform float shininess;
 uniform vec3 uCameraPosition;
 uniform float opacity;
 uniform sampler2D opacityTexture;
@@ -45,50 +52,25 @@ uniform float {{this.shadowBias}};
 {{/each}}
 // soptLight end
 
-{{#if uniforms.diffuseTexture}}
-uniform sampler2D diffuseTexture;
-{{/if}}
-{{#if uniforms.ambientColor}}
-uniform vec4 ambientColor;
-{{/if}}
-{{#if uniforms.diffuseColor}}
-uniform vec4 diffuseColor;
-{{/if}}
-{{#if uniforms.specularColor}}
-uniform vec4 specularColor;
-{{/if}}
-{{#if uniforms.specularTexture}}
-uniform vec4 specularTexture;
-{{/if}}
-{{#if uniforms.lightPosition}}
-uniform vec3 lightPosition;
-{{/if}}
-{{#if uniforms.shininess}}
-uniform float shininess;
-{{/if}}
-
 //////////////
-{{#if attributes.vertex_texCoord0}}
 in vec2 out_vertex_texCoord0;
-{{/if}}
-{{#if attributes.normal}}
 in vec3 out_normal;
-{{/if}}
 in vec3 out_vertex_position;
 
-vec4 getDiffuseColor;
+vec3 getDiffuseColor;
 
-{{#if attributes.vertex_color}}
-in vec4 vColor;
-vec4 getOutColor() {
-    return vColor;
-}
-{{else}}
-vec4 getOutDiffuseColor() {
+// {{#if attributes.vertex_color}}
+// in vec4 vColor;
+// vec4 getOutColor() {
+//     return vColor;
+// }
+// {{else}}
+// {{/if}}
+vec3 getOutDiffuseColor() {
     {{#if uniforms.diffuseTexture}}
-    return texture2D(diffuseTexture, out_vertex_texCoord0);
+    return texture2D(diffuseTexture, out_vertex_texCoord0 - diffuseMapOffset).rgb;
     {{else}}
-    return diffuseColor;
+    return diffuseColor.rgb;
     {{/if}}
 }
 
@@ -101,7 +83,7 @@ vec4 getOutSpecularColor() {
     return specularColor;
     {{/if}}
 }
-{{/if}}
+
 float getOutOpacityColor() {
     {{#if uniforms.opacityTexture}}
     return texture2D(opacityTexture, out_vertex_texCoord0).r;

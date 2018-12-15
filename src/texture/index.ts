@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 15th 2018, 7:59:26 pm
+ * Last Modified: Saturday, December 15th 2018, 9:12:53 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -30,10 +30,6 @@ export class Texture {
     level = 0;
     minFilter = FILTER.LINEAR; // 纹理在缩小时的过滤方式
     magFilter = FILTER.LINEAR; // 纹理在放大时的过滤方式
-    offset = new Vec2(0, 0);
-    center = new Vec2(0, 0);
-    repeat = new Vec2(0, 0);
-    rotation = 0;
     format = PIXELFORMAT.R8_G8_B8; // gl.RGB
     dataType = Uint8Array;
     flipY = true; // 文理是否需要垂直翻转,默认为false

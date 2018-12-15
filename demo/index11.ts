@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 15th 2018, 8:00:03 pm
+ * Last Modified: Sunday, December 16th 2018, 12:48:05 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -80,10 +80,10 @@ async function main() {
     grassMaterial.diffuseMap = texture2;
 
     let material2 = new StandardMaterial();
-    let texture = new Texture();
+    let flare = new Texture();
     let img2 = await loadImage('assets/images/flare-2.png');
-    texture.setSource(img2);
-    material2.diffuseMap = texture;
+    flare.setSource(img2);
+    material2.diffuseMap = flare;
 
     let sky = new Entity('sky')
         .addComponent('model', {
@@ -119,7 +119,7 @@ async function main() {
         })
         .setEulerAngles(-45, 0, 0)
         .setLocalPosition(0, 5, 0);
-    // app.scene.root.addChild(light);
+    app.scene.root.addChild(light);
 
     let sphere1 = new Entity('sphere1')
         .addComponent('model', {
@@ -145,11 +145,30 @@ async function main() {
             type: 'sphere',
         })
         .setLocalPosition(0, 0, 0);
-    let misc2 = new Texture();
-    misc2.setSource(await loadImage('assets/images/misc.jpg'));
-    misc2.offset = new Vec2(0.1, 0.4);
-    sphere3.model.material.diffuseMap = misc2;
+
+    sphere3.model.material.diffuseMap = misc;
+    sphere3.model.material.diffuseMapOffset = new Vec2(0.5, 0.5);
     app.scene.root.addChild(sphere3);
+
+    let sphere4 = new Entity('sphere4')
+        .addComponent('model', {
+            type: 'sphere',
+        })
+        .setLocalPosition(-1.5, 0, 0);
+    let tree = new Texture();
+    tree.setSource(await loadImage('assets/images/tree.png'));
+    sphere4.model.material.diffuseMap = misc;
+    sphere4.model.material.opacityMap = flare;
+    app.scene.root.addChild(sphere4);
+
+    let sphere5 = new Entity('sphere5')
+        .addComponent('model', {
+            type: 'sphere',
+        })
+        .setLocalPosition(-3, 0, 0);
+    sphere5.model.instance.mode = 1;
+    app.scene.root.addChild(sphere5);
+
 
     let plane = new Entity('plane')
         .addComponent('model', {

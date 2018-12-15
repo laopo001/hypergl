@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 15th 2018, 8:33:02 pm
+ * Last Modified: Sunday, December 16th 2018, 12:12:58 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -24,6 +24,8 @@ import { Texture } from '../texture';
 import { ShaderVariable } from './shaderVariable';
 import { VertexAttribData } from './vertexFormat';
 import { ModelComponent } from 'src/ecs/components/model';
+import { cache } from '../utils/decorators';
+import { Line } from '../mesh';
 export type Platform = 'webgl' | 'webgl2';
 export class RendererPlatform {
     get gl() {
@@ -185,8 +187,8 @@ export class RendererPlatform {
         ];
         let [r, g, b, a] = this._clearColor;
         gl.enable(gl.DEPTH_TEST);
-        gl.enable(gl.POLYGON_OFFSET_FILL);
-        gl.polygonOffset(2, 2);
+        // gl.enable(gl.POLYGON_OFFSET_FILL);
+        // gl.polygonOffset(2, 2);
         gl.clearColor(r, g, b, a);
     }
     get contextAttributes() {
@@ -249,6 +251,11 @@ export class RendererPlatform {
         return this._last_viewport;
         // const gl = this.gl;
         // return gl.getParameter(gl.VIEWPORT);
+    }
+    @cache
+    setLineWidth(width: number) {
+        const gl = this.gl;
+        gl.lineWidth(width);
     }
     clear(color = true, depth = true, stencil = true) {
         const gl = this.gl;
@@ -429,7 +436,9 @@ export class RendererPlatform {
             gl.enable(gl.CULL_FACE);
             gl.cullFace(gl[material.cullFace]);
         }
-
+        if (mesh instanceof Line) {
+            this.setLineWidth(mesh.width);
+        }
         if (mesh.indexBuffer) {
             let drawFormat;
             if (mesh.indexBuffer.dataType === Uint8Array) {

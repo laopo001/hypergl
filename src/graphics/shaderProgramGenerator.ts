@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 12th 2018, 4:10:25 pm
+ * Last Modified: Saturday, December 15th 2018, 11:15:22 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -40,12 +40,12 @@ export class ShaderProgramGenerator {
     constructor(private renderer: RendererPlatform) {
 
     }
-    getShader(name: string, attributes = {}, uniforms = {}) {
+    getShader(name: string, attributes = {}, uniforms = {}, shaderTempletes = {}) {
         let { platform } = this.renderer;
         let data: { [s: string]: any } = {};
         data['GL2'] = platform === 'webgl2';
         data.name = name;
-        let options = { attributes, uniforms, data };
+        let options = { attributes, uniforms, data, shaderTempletes };
         const key = generateKey(options);
         let shader = this._cache[key];
         if (!shader) {
@@ -61,7 +61,11 @@ function generateKey(options) {
     let str = '';
     // tslint:disable-next-line:forin
     for (let x in options.data) {
-        str += x + ',';
+        str += x + ',' + options.data[x];
+    }
+    // tslint:disable-next-line:forin
+    for (let x in options.shaderTempletes) {
+        str += x + ',' + options.shaderTempletes[x];
     }
     // tslint:disable-next-line:forin
     for (let x in options.uniforms) {

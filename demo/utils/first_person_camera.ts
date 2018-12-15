@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 5th 2018, 4:52:36 pm
+ * Last Modified: Saturday, December 15th 2018, 11:26:28 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -27,6 +27,8 @@ export class FirstPersonCamera extends Script<FirstPersonCameraInputs> {
     backwards = false;
     left = false;
     right = false;
+    top = false;
+    bottom = false;
     initialize() {
         let eulers = this.entity.getLocalEulerAngles();
         this.ex = eulers.x;
@@ -61,6 +63,12 @@ export class FirstPersonCamera extends Script<FirstPersonCameraInputs> {
             if (event.key === 'd') {
                 this.right = true;
             }
+            if (event.key === 'q') {
+                this.bottom = true;
+            }
+            if (event.key === 'e') {
+                this.top = true;
+            }
         }, false);
         document.addEventListener('keyup', (event) => {
             if (event.key === 'w') {
@@ -74,6 +82,12 @@ export class FirstPersonCamera extends Script<FirstPersonCameraInputs> {
             }
             if (event.key === 'd') {
                 this.right = false;
+            }
+            if (event.key === 'q') {
+                this.bottom = false;
+            }
+            if (event.key === 'e') {
+                this.top = false;
             }
         }, false);
     }
@@ -91,6 +105,12 @@ export class FirstPersonCamera extends Script<FirstPersonCameraInputs> {
             this.entity.translateLocal(-this.inputs.speed * dt, 0, 0);
         } else if (this.right) {
             this.entity.translateLocal(this.inputs.speed * dt, 0, 0);
+        }
+
+        if (this.bottom) {
+            this.entity.translateLocal(0, -this.inputs.speed * dt, 0);
+        } else if (this.top) {
+            this.entity.translateLocal(0, this.inputs.speed * dt, 0);
         }
     }
 }
