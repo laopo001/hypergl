@@ -1,6 +1,11 @@
 const gulp = require('gulp')
 const replace = require('gulp-replace')
 const minimist = require('minimist');
+const child_process = require('child_process');
+var co = require('co');
+var fs = require('fs');
+var OSS = require('ali-oss')
+var path = require('path');
 
 var knownOptions = {
     string: 'demo',
@@ -31,31 +36,31 @@ Date.prototype.format = function (fmt) {
 }
 // console.log(process.argv[3])
 
-var co = require('co');
-var fs = require('fs');
-var OSS = require('ali-oss')
-var path = require('path');
+
 
 
 gulp.task('version', function (cb) {
-    let package = require('./package.json');
+    let text = fs.readFileSync('./package.json', {
+        encoding: 'utf8'
+    });
+    let package = JSON.parse(text);
     let version = package.version;
     let [a, b] = version.split('-');
     let [c, d, e] = b.split('.');
     let dt = new Date().format('yyyyMMdd');
-
     if (dt === d) {
         e = parseInt(e) + 1;
     } else {
         d = dt;
         e = 0;
     }
-
     b = [c, d, e].join('.');
-    version = [a, b].join('-');
-    package.version = version;
-
-    fs.writeFileSync('./package.json', JSON.stringify(package));
+    version2 = [a, b].join('-');
+    let res = text.replace(version, version2);
+    fs.writeFileSync('./package.json', res);
+    child_process.execSync(`git commit -am "${version2}"`);
+    // package.version = version2;
+    // fs.writeFileSync('./package.json', JSON.stringify(package));
     cb();
 });
 
