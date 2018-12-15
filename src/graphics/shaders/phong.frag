@@ -6,11 +6,13 @@ uniform vec4 diffuseColor;
 uniform sampler2D diffuseTexture;
 uniform vec2 diffuseMapOffset;
 uniform vec4 specularColor;
-uniform vec4 specularTexture;
+uniform sampler2D specularTexture;
 uniform float shininess;
 uniform vec3 uCameraPosition;
 uniform float opacity;
 uniform sampler2D opacityTexture;
+uniform vec2 uOpacityMapOffset;
+uniform float uAlphaTest;
 uniform float fogDensity;
 uniform vec3 fogColor;
 uniform vec2 fogDist;
@@ -57,7 +59,9 @@ in vec2 out_vertex_texCoord0;
 in vec3 out_normal;
 in vec3 out_vertex_position;
 
-vec3 getDiffuseColor;
+{{> fog.frag}}
+
+vec3 dDiffuseColor;
 
 // {{#if attributes.vertex_color}}
 // in vec4 vColor;
@@ -74,19 +78,17 @@ vec3 getOutDiffuseColor() {
     {{/if}}
 }
 
-{{> fog.frag}}
-
-vec4 getOutSpecularColor() {
+vec3 getOutSpecularColor() {
     {{#if uniforms.specularTexture}}
-    return texture2D(specularTexture, out_vertex_texCoord0);
+    return texture2D(specularTexture, out_vertex_texCoord0).rgb;
     {{else}}
-    return specularColor;
+    return specularColor.rgb;
     {{/if}}
 }
 
 float getOutOpacityColor() {
     {{#if uniforms.opacityTexture}}
-    return texture2D(opacityTexture, out_vertex_texCoord0).r;
+    return texture2D(opacityTexture, out_vertex_texCoord0 - uOpacityMapOffset).r;
     {{else}}
     return opacity;
     {{/if}}
@@ -189,16 +191,16 @@ float CalcLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, int shadowTyp
 
 // 计算方向
 vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirection) {
-    vec3 lightDir = normalize(-lightDirection);
+    vec3 lightDir = normalize(lightDirection);
     // 计算漫反射强度
-    float diff = max(dot(normal, lightDir), 0.0);
+    float diff = max(dot(normal, -lightDir), 0.0);
     // 计算镜面反射强度
-    vec3 reflectDir = reflect(-lightDir, normal);
+    vec3 reflectDir = reflect(lightDir, normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
     // 合并各个光照分量
-    vec3 diffuse  = lightColor * diff * getDiffuseColor.xyz;
+    vec3 diffuse  = (lightColor - ambientColor.xyz - vec3(0.2)) * diff * dDiffuseColor.xyz;
     vec3 specular = lightColor * spec * getOutSpecularColor().xyz;
-    return diffuse + specular;
+    return diffuse + specular ;
 }  
 
 
@@ -310,16 +312,21 @@ vec3 CalcSpotLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPositio
     return color;
 }  
 
+void alphaTest(float a) {
+    if (a <= uAlphaTest) discard;
+}
 
 
 void main(void) {
     // vec4 outColor = getOutColor();
-    getDiffuseColor = getOutDiffuseColor();
+    float opacity = getOutOpacityColor();
+    alphaTest(opacity);
+    dDiffuseColor = getOutDiffuseColor();
     vec3 norm = normalize(out_normal);
     vec3 viewDir = normalize(uCameraPosition - out_vertex_position);
 
     // start
-    vec3 result = ambientColor.xyz * getDiffuseColor.xyz;
+    vec3 result = ambientColor.xyz * dDiffuseColor.xyz;
     {{#each uniforms._directionalLightArr}}
 
     {{#if this.castShadows}}
@@ -361,7 +368,7 @@ void main(void) {
     // {{/ifEq}}
     result = addFog(result);
     // result = ambient + diffuse + specular;
-    gl_FragColor = vec4(result, getOutOpacityColor());
+    gl_FragColor = vec4(result, opacity);
 
 }
 

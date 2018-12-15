@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 15th 2018, 11:15:23 pm
+ * Last Modified: Sunday, December 16th 2018, 2:14:54 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -24,6 +24,7 @@ import { Undefinedable } from '../types';
 import { ColorMaterial } from './colorMaterial';
 
 export class StandardMaterial extends ColorMaterial {
+    private _opacityMap?: Texture;
     get opacityMap(): Undefinedable<Texture> {
         return this._opacityMap;
     }
@@ -31,6 +32,15 @@ export class StandardMaterial extends ColorMaterial {
         this._opacityMap = value;
         this.setUniform('opacityTexture', this.opacityMap);
     }
+    private _opacityMapOffset = new Vec2(0, 0);
+    public get opacityMapOffset(): Vec2 {
+        return this._opacityMapOffset;
+    }
+    public set opacityMapOffset(v: Vec2) {
+        this._opacityMapOffset = v;
+        this.setUniform('uOpacityMapOffset', this.opacityMapOffset.data);
+    }
+
     get ambientColor() {
         return this._ambientColor;
     }
@@ -45,8 +55,6 @@ export class StandardMaterial extends ColorMaterial {
         this._diffuseMap = value;
         this.setUniform('diffuseTexture', this.diffuseMap);
     }
-
-    private _diffuseMapOffset = new Vec2(0, 0);
     get diffuseMapOffset(): Vec2 {
         return this._diffuseMapOffset;
     }
@@ -76,34 +84,30 @@ export class StandardMaterial extends ColorMaterial {
         this._shininess = value;
         this.setUniform('opacity', this.opacity);
     }
+    // alphaWrite = true;
+    private _alphaTest = 0;
+    get alphaTest() {
+        return this._alphaTest;
+    }
+    set alphaTest(value) {
+        this._alphaTest = value;
+        this.setUniform('uAlphaTest', this.alphaTest);
+    }
+    private _diffuseMapOffset = new Vec2(0, 0);
     private _shininess = 64;
     private _specularMap?: Texture;
-    private _specularColor = new Color(0.3, 0.3, 0.3);
+    private _specularColor = new Color(1, 1, 1);
     private _diffuseMap?: Texture;
     private _ambientColor = Scene.ambientColor;
-    private _opacityMap?: Texture;
     constructor(name?: string) {
         super(name);
         this.setUniform('ambientColor', this.ambientColor.data);
         this.setUniform('specularColor', this.specularColor.data);
         this.setUniform('shininess', this.shininess);
         this.setUniform('diffuseMapOffset', this.diffuseMapOffset.data);
-        // this.update();
+        this.setUniform('uOpacityMapOffset', this.opacityMapOffset.data);
+        this.setUniform('uAlphaTest', this.alphaTest);
     }
-    // update() {
-    //     if (this.ambientColor == null) return;
-    //     this.setUniform('ambientColor', this.ambientColor.data);
-    //     this.setUniform('diffuseColor', this.diffuseColor.data);
-    //     // tslint:disable-next-line:no-unused-expression
-    //     // this.diffuseMap && this.setUniform('diffuseTexture', this.diffuseMap);
-    //     this.setUniform('specularColor', this.specularColor.data);
-    //     // tslint:disable-next-line:no-unused-expression
-    //     // this.specularMap && this.setUniform('specularTexture', this.specularMap);
-    //     this.setUniform('shininess', this.shininess);
-    //     this.setUniform('opacity', this.opacity);
-    //     // tslint:disable-next-line:no-unused-expression
-    //     // this.opacityMap && this.setUniform('opacityTexture', this.opacityMap);
-    // }
     updateShader(attributes: { [s: string]: SEMANTIC }) {
         let renderer = this.app.renderer;
         // if (this.shader == null) {

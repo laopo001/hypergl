@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 16th 2018, 12:48:05 am
+ * Last Modified: Sunday, December 16th 2018, 2:58:46 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -169,6 +169,33 @@ async function main() {
     sphere5.model.instance.mode = 1;
     app.scene.root.addChild(sphere5);
 
+    let sphere6 = new Entity('sphere6')
+        .addComponent('model', {
+            type: 'sphere',
+        })
+        .setLocalPosition(0, 0, -1.5);
+    sphere6.model.material.diffuseMap = misc;
+    sphere6.model.material.opacityMap = flare;
+    // sphere6.model.material.opacityMapOffset = new Vec2(0.3, 0.1);
+    sphere6.model.material.alphaTest = 0.9;
+    app.scene.root.addChild(sphere6);
+
+    let sphere7 = new Entity('sphere7')
+        .addComponent('model', {
+            type: 'sphere',
+        })
+        .setLocalPosition(1.5, 0, -1.5);
+    // sphere7.model.material.diffuseMap = misc;
+    sphere7.model.material.specularColor = new Color(1, 0, 1);
+    sphere7.model.material.shininess = 1;
+    app.scene.root.addChild(sphere7);
+
+    let sphere8 = new Entity('sphere8')
+        .addComponent('model', {
+            type: 'sphere',
+        })
+        .setLocalPosition(3, 0, -1.5);
+    app.scene.root.addChild(sphere8);
 
     let plane = new Entity('plane')
         .addComponent('model', {
