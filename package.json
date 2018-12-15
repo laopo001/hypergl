@@ -60,6 +60,7 @@
     "main": "dist/index.js",
     "name": "hypergl",
     "pre-commit": [
+        "version",
         "lint",
         "test"
     ],
@@ -86,5 +87,5 @@
             ]
         }
     },
-    "version": "0.0.1-nightly.20181215.5"
+    "version": "0.0.1-nightly.20181215.7"
 }

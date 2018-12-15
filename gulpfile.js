@@ -58,7 +58,7 @@ gulp.task('version', function (cb) {
     version2 = [a, b].join('-');
     let res = text.replace(version, version2);
     fs.writeFileSync('./package.json', res);
-    child_process.execSync(`git commit -am "${version2}"`);
+    // child_process.execSync(`git commit -am "${version2}"`);
     // package.version = version2;
     // fs.writeFileSync('./package.json', JSON.stringify(package));
     cb();
