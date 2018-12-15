@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 12th 2018, 3:15:47 pm
+ * Last Modified: Saturday, December 15th 2018, 7:30:06 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -27,8 +27,8 @@ export abstract class Material {
     }
     uniforms: { [s: string]: any } = {};
     shader?: Shader;
-    cullFace = FACE.BACK;
-    // meshs: ModelComponent[] = [];
+    // cullFace = FACE.BACK;
+    cullFace = FACE.NONE;
     // protected _dirtyUpdate = false;
     constructor(public name?: string) {
 
@@ -39,7 +39,6 @@ export abstract class Material {
     getUniform(name: string) {
         return this.uniforms[name];
     }
-    // abstract update();
     abstract updateShader(attributes: { [s: string]: SEMANTIC });
     setLights(uniforms: any) {
         Object.assign(this.uniforms, uniforms);

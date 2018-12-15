@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 12th 2018, 12:40:41 am
+ * Last Modified: Saturday, December 15th 2018, 8:33:02 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -99,7 +99,6 @@ export class RendererPlatform {
 
         this.uniformFunction[UNIFORM_TYPE.BOOL] = (uniform: ShaderVariable, value) => {
             gl.uniform1i(uniform.locationId, value);
-
         };
         this.uniformFunction[UNIFORM_TYPE.INT] = this.uniformFunction[UNIFORM_TYPE.BOOL];
         this.uniformFunction[UNIFORM_TYPE.FLOAT] = (uniform, value) => {
@@ -138,6 +137,30 @@ export class RendererPlatform {
         this.uniformFunction[UNIFORM_TYPE.FLOATARRAY] = (uniform, value) => {
             gl.uniform1fv(uniform.locationId, value);
         };
+        // tslint:disable-next-line:forin
+        for (let k in this.uniformFunction) {
+            let old = this.uniformFunction[k];
+            this.uniformFunction[k] = (uniform, value) => {
+                if (uniform.value !== value) {
+                    old(uniform, value);
+                    uniform.value = value;
+                } else {
+                    if (Array.isArray(value)) {
+                        for (let i = 0; i < value.length; i++) {
+                            const element = value[i];
+                            const element2 = uniform.value[i];
+                            if (element !== element2) {
+                                old(uniform, value);
+                            }
+                        }
+                    }
+                }
+                // if (uniform.value !== value) {
+                //     old(uniform, value);
+                //     uniform.value = value;
+                // }
+            };
+        }
         this.glFilter = [
             gl.LINEAR,
             gl.LINEAR_MIPMAP_LINEAR,

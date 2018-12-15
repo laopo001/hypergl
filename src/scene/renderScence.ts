@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, December 13th 2018, 3:54:47 pm
+ * Last Modified: Saturday, December 15th 2018, 8:15:59 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -120,8 +120,6 @@ function rendererDirectionalShadowMap(scene: Scene, light: LightComponent<Direct
 }
 let o = { 'Normal': 0, 'PCF': 1, 'PCFSoft': 2 };
 export function renderDirectionalLightArr(name: string, data: LightComponent<DirectionalLight>[], scene: Scene) {
-
-
     let uniforms = {};
     let res: string[][] = [];
 

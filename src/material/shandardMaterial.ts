@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 12th 2018, 3:15:47 pm
+ * Last Modified: Saturday, December 15th 2018, 6:49:05 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -31,13 +31,6 @@ export class StandardMaterial extends ColorMaterial {
         this._opacityMap = value;
         this.setUniform('opacityTexture', this.opacityMap);
     }
-    // get opacity() {
-    //     return this._opacity;
-    // }
-    // set opacity(value) {
-    //     this._opacity = value;
-    //     this.setUniform('opacity', this.opacity);
-    // }
     public get ambientColor() {
         return this._ambientColor;
     }
@@ -45,13 +38,6 @@ export class StandardMaterial extends ColorMaterial {
         this._ambientColor = v;
         this.setUniform('ambientColor', this.ambientColor.data);
     }
-    // public get diffuseColor() {
-    //     return this._diffuseColor;
-    // }
-    // public set diffuseColor(value) {
-    //     this._diffuseColor = value;
-    //     this.setUniform('diffuseColor', this.diffuseColor.data);
-    // }
     public get diffuseMap() {
         return this._diffuseMap;
     }
@@ -80,9 +66,6 @@ export class StandardMaterial extends ColorMaterial {
         this._shininess = value;
         this.setUniform('opacity', this.opacity);
     }
-    // protected _opacity = 1;
-
-    // protected _diffuseColor = new Color(1, 1, 1);
     private _shininess = 64;
     private _specularMap?: Texture;
     private _specularColor = new Color(0.3, 0.3, 0.3);
