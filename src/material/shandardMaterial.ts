@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 16th 2018, 2:14:54 am
+ * Last Modified: Monday, December 17th 2018, 12:19:37 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -77,12 +77,20 @@ export class StandardMaterial extends ColorMaterial {
         this._specularMap = value;
         this.setUniform('specularTexture', this.specularMap);
     }
+    private _specularMapOffset = new Vec2(0, 0);
+    get specularMapOffset(): Vec2 {
+        return this._specularMapOffset;
+    }
+    set specularMapOffset(v: Vec2) {
+        this._specularMapOffset = v;
+        this.setUniform('uSpecularMapOffset', this.specularMapOffset.data);
+    }
     get shininess() {
         return this._shininess;
     }
     set shininess(value) {
         this._shininess = value;
-        this.setUniform('opacity', this.opacity);
+        this.setUniform('shininess', this.shininess);
     }
     // alphaWrite = true;
     private _alphaTest = 0;
@@ -106,6 +114,7 @@ export class StandardMaterial extends ColorMaterial {
         this.setUniform('shininess', this.shininess);
         this.setUniform('diffuseMapOffset', this.diffuseMapOffset.data);
         this.setUniform('uOpacityMapOffset', this.opacityMapOffset.data);
+        this.setUniform('uSpecularMapOffset', this.specularMapOffset.data);
         this.setUniform('uAlphaTest', this.alphaTest);
     }
     updateShader(attributes: { [s: string]: SEMANTIC }) {

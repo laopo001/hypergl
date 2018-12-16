@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 16th 2018, 2:58:46 am
+ * Last Modified: Monday, December 17th 2018, 12:33:02 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -186,8 +186,9 @@ async function main() {
         })
         .setLocalPosition(1.5, 0, -1.5);
     // sphere7.model.material.diffuseMap = misc;
+    // sphere7.model.material.specularMap = misc;
     sphere7.model.material.specularColor = new Color(1, 0, 1);
-    sphere7.model.material.shininess = 1;
+    sphere7.model.material.shininess = 2;
     app.scene.root.addChild(sphere7);
 
     let sphere8 = new Entity('sphere8')

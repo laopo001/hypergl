@@ -7,6 +7,7 @@ uniform sampler2D diffuseTexture;
 uniform vec2 diffuseMapOffset;
 uniform vec4 specularColor;
 uniform sampler2D specularTexture;
+uniform vec2 uSpecularMapOffset;
 uniform float shininess;
 uniform vec3 uCameraPosition;
 uniform float opacity;
@@ -80,7 +81,7 @@ vec3 getOutDiffuseColor() {
 
 vec3 getOutSpecularColor() {
     {{#if uniforms.specularTexture}}
-    return texture2D(specularTexture, out_vertex_texCoord0).rgb;
+    return texture2D(specularTexture, out_vertex_texCoord0 - uSpecularMapOffset).rgb;
     {{else}}
     return specularColor.rgb;
     {{/if}}
@@ -198,8 +199,8 @@ vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirectio
     vec3 reflectDir = reflect(lightDir, normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
     // 合并各个光照分量
-    vec3 diffuse  = (lightColor - ambientColor.xyz - vec3(0.2)) * diff * dDiffuseColor.xyz;
-    vec3 specular = lightColor * spec * getOutSpecularColor().xyz;
+    vec3 diffuse  = (lightColor - ambientColor.xyz) * diff * dDiffuseColor.xyz * 0.9;
+    vec3 specular = (lightColor - ambientColor.xyz)  * spec * getOutSpecularColor().xyz;
     return diffuse + specular ;
 }  
 
