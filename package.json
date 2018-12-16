@@ -76,7 +76,8 @@
         "test": "jest",
         "test:karma": "webpack --colors && gulp replaceTests && karma start",
         "tsc": "tsc -p tsconfig.compiler.json",
-        "version": "gulp version"
+        "version": "gulp version",
+        "commit": "gulp commit"
     },
     "types": "lib/index.d.ts",
     "typesVersions": {
@@ -86,5 +87,5 @@
             ]
         }
     },
-    "version": "0.0.1-nightly.20181215.8"
+    "version": "0.0.1-nightly.20181216.0"
 }

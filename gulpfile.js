@@ -64,6 +64,13 @@ gulp.task('version', function (cb) {
     cb();
 });
 
+gulp.task('commit', function (cb) {
+    let package = require('./package.json');
+    let version = package.version;
+    child_process.execSync(`git commit -am "${version}"`);
+    cb();
+});
+
 gulp.task('replace', function (cb) {
     let stream = gulp.src(['./build/**', '!./build/assets/**'])
         .pipe(replace('script src="', `script src="http://dadigua.oss-cn-shenzhen.aliyuncs.com/webgl-learn/demo${options.demo}/deploy/`))
