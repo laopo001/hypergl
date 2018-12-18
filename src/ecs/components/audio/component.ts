@@ -51,7 +51,10 @@ export class AudioComponent extends Component<AudioInputs> {
         this.instance = sound;
     }
 
-    initialize(entity: Entity, system: ComponentSystem) {
+    initialize() {
+        //
+    }
+    destroy() {
         //
     }
     play(spriteOrId?: string | number): number {

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 15th 2018, 6:35:53 pm
+ * Last Modified: Tuesday, December 18th 2018, 11:44:57 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -65,7 +65,10 @@ export class ModelComponent<T = StandardMaterial> extends Component<ModelInputs>
         }
 
     }
-    initialize(entity: Entity, system: ComponentSystem) {
+    initialize() {
+        //
+    }
+    destroy() {
         //
     }
 }

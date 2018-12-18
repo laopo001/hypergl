@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 28th 2018, 5:37:40 pm
+ * Last Modified: Tuesday, December 18th 2018, 11:44:38 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -33,11 +33,13 @@ export class ScriptComponent extends Component<ScriptInputs> {
             }
         });
     }
-    initialize(entity: Entity, system: ComponentSystem) {
-
+    initialize() {
         this.instance.forEach(script => {
-          script.entity = entity;
+          script.entity = this.entity;
           script.initialize();
         });
+    }
+    destroy() {
+        //
     }
 }

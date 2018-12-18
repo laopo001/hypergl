@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 5th 2018, 5:01:11 pm
+ * Last Modified: Tuesday, December 18th 2018, 11:45:07 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -49,7 +49,10 @@ export class ListenerComponent extends Component<ListenerInputs> {
         });
     }
 
-    initialize(entity: Entity, system: ComponentSystem) {
+    initialize() {
+        //
+    }
+    destroy() {
         //
     }
 }

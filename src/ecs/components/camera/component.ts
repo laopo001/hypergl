@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, December 6th 2018, 8:07:12 pm
+ * Last Modified: Tuesday, December 18th 2018, 11:46:18 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -90,7 +90,10 @@ export class CameraComponent extends Component<CameraInputs> {
         this.instance.projectionMatrix.setOrtho(left, right, bottom, top, near, far);
         return this;
     }
-    initialize(entity: Entity, system: ComponentSystem) {
+    initialize() {
+        //
+    }
+    destroy() {
         //
     }
     get clearColor() {
