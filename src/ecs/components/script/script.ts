@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 24th 2018, 1:52:42 am
+ * Last Modified: Wednesday, December 19th 2018, 12:11:31 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -30,4 +30,5 @@ export abstract class Script<Inputs> {
     }
     abstract initialize();
     abstract update(dt: number);
+    destroy?();
 }

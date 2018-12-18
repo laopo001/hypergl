@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 18th 2018, 11:44:57 pm
+ * Last Modified: Wednesday, December 19th 2018, 1:13:34 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -64,11 +64,5 @@ export class ModelComponent<T = StandardMaterial> extends Component<ModelInputs>
             this._material = this.inputs.material;
         }
 
-    }
-    initialize() {
-        //
-    }
-    destroy() {
-        //
     }
 }

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 18th 2018, 11:45:07 pm
+ * Last Modified: Wednesday, December 19th 2018, 1:41:42 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -37,22 +37,24 @@ export class ListenerComponent extends Component<ListenerInputs> {
         }
 
         this.instance = null;
-        event.on('beforeRender', () => {
-            let audios = this.entity.app.scene.systems.audio!.components as AudioComponent[];
-            audios.forEach(audio => {
-                let a = audio.entity.getPosition();
-                let m = this.entity.getWorldTransform();
-                let v = m.clone().invert().mulVec4(new Vec4(a.x, a.y, a.z, 1));
-                let { x, y, z } = v;
-                audio.instance.pos(x, y, z);
-            });
-        });
     }
-
     initialize() {
-        //
+        super.initialize();
+        event.on('beforeRender', this.update);
     }
     destroy() {
-        //
+        super.destroy();
+        event.off('beforeRender', this.update);
+    }
+    private update = () => {
+        let audios = this.entity.app.scene.systems.audio!.components as AudioComponent[];
+        audios.forEach(audio => {
+            if (!audio.initialized) { return; }
+            let a = audio.entity.getPosition();
+            let m = this.entity.getWorldTransform();
+            let v = m.clone().invert().mulVec4(new Vec4(a.x, a.y, a.z, 1));
+            let { x, y, z } = v;
+            audio.instance.pos(x, y, z);
+        });
     }
 }

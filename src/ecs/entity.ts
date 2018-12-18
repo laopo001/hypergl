@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 4th 2018, 5:28:27 pm
+ * Last Modified: Wednesday, December 19th 2018, 1:44:29 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -26,7 +26,7 @@ import { Light } from '../lights';
 import { Application } from '../application';
 import { ComponentSystem } from './system';
 import { Scene, SceneNode } from '../scene';
-import { Constructor } from '../types';
+import { Constructor, Undefinedable } from '../types';
 import { Vec3 } from '../math';
 import { ListenerComponent, ListenerInputs } from './components/listener';
 let EntityID = 0;
@@ -43,6 +43,21 @@ export interface ComponentInputs {
 export type componentName = keyof ComponentInputs;
 
 export class Entity extends SceneNode {
+    get app() {
+        return Application.getApp();
+    }
+    get enabled() {
+        return this._enabled;
+    }
+    set enabled(value) {
+        this._enabled = value;
+        if (value) {
+            // tslint:disable-next-line:no-unused-expression
+            this.components && this.components.forEach(x => {
+                x.initialize();
+            });
+        }
+    }
     EntityID = EntityID++;
     mesh?: Mesh;
     model!: ModelComponent;
@@ -52,12 +67,10 @@ export class Entity extends SceneNode {
     audio!: AudioComponent;
     listener!: ListenerComponent;
     boundingBox: any;
-    get app() {
-        return Application.getApp();
-    }
-    enabled = false;
     parent?: Entity;
     readonly children: Entity[] = [];
+    private components: Component<{}>[] = [];
+    private _enabled = false;
     constructor(name?: string)
     constructor(options?: { name?: string, tag: string[] })
     constructor(name?) {
@@ -77,14 +90,15 @@ export class Entity extends SceneNode {
         Log.assert(system != null, name + ' system not register');
         let component = system.addComponent(this, options);
         this[name as string] = component;
+        this.components.push(component);
         return this;
     }
     addComponents<K extends keyof ComponentInputs>(arr: Array<{ name: K, options: ComponentInputs[K] }>) {
-        arr.map(item => {
+        arr.forEach(item => {
             if (this[item.name as any]) {
                 return;
             }
-            return this.addComponent(item.name, item.options);
+            this.addComponent(item.name, item.options);
         });
         return this;
     }
@@ -94,9 +108,22 @@ export class Entity extends SceneNode {
         }
         return this[name];
     }
-
-    removeComponent(component: Component<any> | string) {
-        // TODO
+    removeComponent(component: Component<{}>);
+    removeComponent<K extends keyof ComponentInputs>(component: K);
+    removeComponent(component) {
+        if (typeof component === 'string') {
+            const system = this.app.scene.systems[component] as ComponentSystem;
+            Log.assert(system != null, name + ' system not register');
+            this.components.splice(this.components.indexOf(this[component]), 1);
+            this[component] = null;
+            system.removeComponent(this[component]);
+        } else {
+            const system = this.app.scene.systems[component.name] as ComponentSystem;
+            this.components.splice(this.components.indexOf(component), 1);
+            this[component.name] = null;
+            system.removeComponent(component);
+        }
+        return this;
     }
     addChild(child: Entity) {
         super.addChild(child);
@@ -107,7 +134,13 @@ export class Entity extends SceneNode {
         }
         return this;
     }
-    findByName(name: string) {
+    addChildren(children: Entity[]) {
+        children.forEach(item => {
+            this.addChild(item);
+        });
+        return this;
+    }
+    findByName(name: string): Undefinedable<Entity>  {
         if (this.name === name) {
             return this;
         }

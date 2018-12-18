@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 15th 2018, 8:15:59 pm
+ * Last Modified: Wednesday, December 19th 2018, 2:12:21 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,14 +14,11 @@
 
 import { Entity, LightComponent } from '../ecs';
 import { Scene } from './scene';
-import { Mesh } from '../mesh/mesh';
 import { Shader } from '../graphics/shader';
 import { SEMANTICMAP, SEMANTIC } from '../conf';
 import { Log } from '../utils/util';
 import { Light, DirectionalLight, PointLight, SpotLight } from '../lights';
-import { Camera } from './camera';
 import { Vec3, DEG_TO_RAD } from '../math';
-import { SceneNode } from './node';
 
 
 
@@ -71,7 +68,7 @@ export function renderScence(scene: Scene) {
         let shader = material.shader as Shader;
         renderer.setShaderProgram(shader);
         shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
-        shader.setUniformValue('matrix_model', model.getWorldTransform().data);
+        shader.setUniformValue('matrix_model', model.getWorldTransform().clone().data);
         shader.setUniformValue('matrix_normal', model.getWorldTransform().clone().invert().transpose().data);
         shader.setUniformValue('uCameraPosition', camera.getPosition().data);
         shader.setUniformValue('fog', scene.fog);

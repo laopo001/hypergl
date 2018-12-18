@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 16th 2018, 12:12:58 am
+ * Last Modified: Wednesday, December 19th 2018, 2:05:36 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -147,20 +147,17 @@ export class RendererPlatform {
                     old(uniform, value);
                     uniform.value = value;
                 } else {
-                    if (Array.isArray(value)) {
+                    if (value.BYTES_PER_ELEMENT !== null) {
                         for (let i = 0; i < value.length; i++) {
                             const element = value[i];
                             const element2 = uniform.value[i];
                             if (element !== element2) {
                                 old(uniform, value);
+                                break;
                             }
                         }
                     }
                 }
-                // if (uniform.value !== value) {
-                //     old(uniform, value);
-                //     uniform.value = value;
-                // }
             };
         }
         this.glFilter = [

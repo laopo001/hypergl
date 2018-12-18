@@ -5,7 +5,7 @@ import { Log, copy } from '../../../utils/util';
 import { Mat4, Vec3 } from '../../../math';
 import { ComponentSystem } from '../../system';
 import { event } from '../../../core';
-import { Howl, Howler  } from 'howler';
+import { Howl, Howler } from 'howler';
 
 interface IHowlSoundSpriteDefinition {
     [name: string]: [number, number] | [number, number, boolean]
@@ -43,19 +43,22 @@ export const AudioData: Partial<AudioInputs> = {
 
 export class AudioComponent extends Component<AudioInputs> {
     name = 'camera';
-    instance: Howl;
+    instance!: Howl;
     constructor(inputs: AudioInputs, entity: Entity, system: ComponentSystem) {
         super(inputs, entity, system);
         copy(inputs, AudioData);
-        const sound = new Howl(this.inputs);
-        this.instance = sound;
+        // const sound = new Howl(this.inputs);
+        // this.instance = sound;
     }
 
     initialize() {
-        //
+        super.initialize();
+        const sound = new Howl(this.inputs);
+        this.instance = sound;
     }
     destroy() {
-        //
+        super.destroy();
+        this.instance = undefined as any;
     }
     play(spriteOrId?: string | number): number {
         return this.instance.play();

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, December 13th 2018, 1:31:55 pm
+ * Last Modified: Wednesday, December 19th 2018, 1:38:49 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -56,6 +56,8 @@ async function main() {
     const app = new Application(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
+    console.log(app);
+
     app.scene.fog = FOG.LINEAR;
     app.scene.fogEnd = 1000;
     let skycube = new Texture(true);

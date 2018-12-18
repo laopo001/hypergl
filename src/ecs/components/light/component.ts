@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 18th 2018, 11:46:18 pm
+ * Last Modified: Wednesday, December 19th 2018, 1:15:04 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -72,12 +72,6 @@ export class LightComponent<T extends Light = Light> extends Component<LigthInpu
         }
 
         this.instance = light! as any;
-    }
-    initialize() {
-        //
-    }
-    destroy() {
-        //
     }
     get direction(): Vec3 {
         // return (this.instance as any).direction;
