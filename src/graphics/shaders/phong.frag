@@ -1,4 +1,4 @@
-{{#if data.GL2}}{{> gles3.frag}}{{/if}}
+{{#if data.GL2}}{{> gles3.frag}}{{else}}{{> gles2.frag}}{{/if}}
 precision highp float;
 
 uniform vec4 ambientColor;

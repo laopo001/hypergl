@@ -1,4 +1,4 @@
-{{#if data.GL2}}{{> gles3.vert}}{{/if}}
+{{#if data.GL2}}{{> gles3.vert}}{{else}}{{> gles2.vert}}{{/if}}
 uniform mat4 matrix_model;
 uniform mat4 matrix_viewProjection;
 uniform mat4 matrix_normal;
