@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 2:05:36 am
+ * Last Modified: Wednesday, December 19th 2018, 2:25:52 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -140,26 +140,32 @@ export class RendererPlatform {
             gl.uniform1fv(uniform.locationId, value);
         };
         // tslint:disable-next-line:forin
-        for (let k in this.uniformFunction) {
-            let old = this.uniformFunction[k];
-            this.uniformFunction[k] = (uniform, value) => {
-                if (uniform.value !== value) {
-                    old(uniform, value);
-                    uniform.value = value;
-                } else {
-                    if (value.BYTES_PER_ELEMENT !== null) {
-                        for (let i = 0; i < value.length; i++) {
-                            const element = value[i];
-                            const element2 = uniform.value[i];
-                            if (element !== element2) {
-                                old(uniform, value);
-                                break;
-                            }
-                        }
-                    }
-                }
-            };
-        }
+        // for (let k in this.uniformFunction) {
+        //     let old = this.uniformFunction[k];
+        //     this.uniformFunction[k] = (uniform, value) => {
+        //         // if (uniform.value !== value) {
+        //         //     old(uniform, value);
+        //         //     uniform.value = value;
+        //         // } else {
+        //         if (value.BYTES_PER_ELEMENT !== null) {
+        //             if (uniform.value == null) {
+        //                 old(uniform, value);
+        //                 uniform.value = value;
+        //             }
+        //             for (let i = 0; i < value.length; i++) {
+        //                 const element = value[i];
+        //                 const element2 = uniform.value[i];
+        //                 if (element !== element2) {
+        //                     old(uniform, value);
+        //                     break;
+        //                 }
+        //             }
+        //         } else {
+        //             old(uniform, value);
+        //         }
+        //         // }
+        //     };
+        // }
         this.glFilter = [
             gl.LINEAR,
             gl.LINEAR_MIPMAP_LINEAR,
