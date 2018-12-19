@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 6:01:24 pm
+ * Last Modified: Wednesday, December 19th 2018, 7:29:53 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -74,7 +74,7 @@ export class Application<T= {}> {
         // this._isPointerLock = true;
         (this.canvas as any).requestPointerLock();
     }
-    resigistPlugins(cs: Constructor<{ name: string }>[]) {
+    registerPlugins(cs: Constructor<{ name: string }>[]) {
         cs.forEach(c => {
             let p = new c(this);
             if (p.name in this.plugins) {

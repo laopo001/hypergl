@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 5:50:06 pm
+ * Last Modified: Wednesday, December 19th 2018, 7:29:53 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -58,8 +58,8 @@ async function main() {
     const app = new Application<{ loadImage: LoadImagePlugin }>(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
-    app.resigistPlugins([LoadImagePlugin, StatsPlugin]);
-    // console.log(app.plugins.loadImage.load);
+    app.registerPlugins([LoadImagePlugin, StatsPlugin]);
+    // console.log(app.plugins.loadImage.load);Registry
     let loadImage = app.plugins.loadImage.load;
     console.log(app);
 
