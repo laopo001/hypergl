@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 18th 2018, 10:13:39 pm
+ * Last Modified: Wednesday, December 19th 2018, 4:35:32 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -16,7 +16,9 @@
 import { Entity, StandardMaterial, Config, SkyMaterial, Application, Vec3, Color, Texture, Mesh, Line, ColorMaterial, FOG, GltfAssetLoader, Vec2 } from '../src';
 import { FirstPersonCamera } from './utils/first_person_camera';
 import { Rotate } from './utils/rotate';
-import { loadImage } from './utils';
+import { LoadImagePlugin } from './plugins/loadImage';
+// import { loadImage } from './utils';
+import { Log } from '../src/utils/util';
 
 function createCoordinateSystem() {
     let temp = new Entity();
@@ -52,9 +54,12 @@ function createCoordinateSystem() {
 }
 
 async function main() {
-    const app = new Application(document.getElementById('canvas') as HTMLCanvasElement, {
+    const app = new Application<{ loadImage: LoadImagePlugin }>(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
+    app.resigistPlugins([LoadImagePlugin]);
+    // console.log(app.plugins.loadImage.load);
+    let loadImage = app.plugins.loadImage.load;
     console.log(app);
 
     // app.scene.fog = FOG.LINEAR;

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 14th 2018, 5:37:11 pm
+ * Last Modified: Wednesday, December 19th 2018, 4:48:18 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,7 +14,7 @@
 
 import { Scene } from './scene/scene';
 import { RendererPlatform } from './graphics/renderer';
-import { AppOption, FnVoid } from './types';
+import { AppOption, FnVoid, Constructor } from './types';
 import { event, Timer } from './core';
 import { Mesh } from './mesh/mesh';
 import { SystemRegistry } from './ecs/system-register';
@@ -22,7 +22,7 @@ import { CameraComponentSystem } from './ecs/components/camera/system';
 
 let app;
 const timer = new Timer();
-export class Application {
+export class Application<T= {}> {
     get scene() {
         return this.sceneInstances[this.activeIndex];
     }
@@ -37,6 +37,7 @@ export class Application {
     renderer: RendererPlatform;
     canvas: HTMLCanvasElement;
     lastRenderTime = 0;
+    plugins: T = {} as any;
     private _isPointerLock = false;
     constructor(canvas: HTMLCanvasElement, option?: AppOption) {
         this.canvas = canvas;
@@ -49,7 +50,7 @@ export class Application {
         }, false);
         app = this;
     }
-    static getApp(): Application {
+    static getApp<T>(): Application<T> {
         return app;
     }
     start() {
@@ -72,17 +73,19 @@ export class Application {
         // this._isPointerLock = true;
         (this.canvas as any).requestPointerLock();
     }
-    private tick() {
+    resigistPlugins(cs: Constructor<{ name: string }>[]) {
+        cs.forEach(c => {
+            let p = new c(this);
+            this.plugins[p.name] = p;
+        });
+    }
+    private tick = () => {
         event.fire('beforeRender');
         timer.start();
         this.scene.render();
         timer.end();
         event.fire('update', timer.getDuration());
         event.fire('afterRender');
-        window.requestAnimationFrame(this.tick.bind(this));
-    }
-
-    private complete() {
-        // appendCanvas(this.canvas);
+        window.requestAnimationFrame(this.tick);
     }
 }

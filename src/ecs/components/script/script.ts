@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 12:11:31 am
+ * Last Modified: Wednesday, December 19th 2018, 4:07:48 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,10 +15,10 @@
 import { Entity, Application } from '../../..';
 import { Component } from '../../component';
 import { Constructor } from '../../../types';
-export abstract class Script<Inputs> {
+export abstract class Script<Inputs, T= {}> {
     static defaultInputs: any = {};
     get app() {
-        return Application.getApp();
+        return Application.getApp<T>();
     }
     entity!: Entity;
     inputs!: Inputs;
