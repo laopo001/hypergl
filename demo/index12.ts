@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 7:29:53 pm
+ * Last Modified: Thursday, December 20th 2018, 12:02:47 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,13 +13,13 @@
 
 
 
-import { Entity, StandardMaterial, Config, SkyMaterial, Application, Vec3, Color, Texture, Mesh, Line, ColorMaterial, FOG, GltfAssetLoader, Vec2 } from '../src';
+import { Entity, StandardMaterial, Config, SkyMaterial, Application, Vec3, Color, Texture, Mesh, Line, ColorMaterial, FOG, GltfAssetLoader, Vec2 } from 'hypergl';
 import { FirstPersonCamera } from './utils/first_person_camera';
 import { Rotate } from './utils/rotate';
-import { LoadImagePlugin } from './plugins/loadImage';
-import { StatsPlugin } from './plugins/stat';
-// import { loadImage } from './utils';
-import { Log } from '../src/utils/util';
+// tslint:disable-next-line:no-duplicate-imports
+import { LoadImagePlugin } from 'hypergl/plugins/load';
+import { StatsPlugin } from 'hypergl/plugins/stat';
+
 
 function createCoordinateSystem() {
     let temp = new Entity();
@@ -59,7 +59,6 @@ async function main() {
         // webgl1:true
     });
     app.registerPlugins([LoadImagePlugin, StatsPlugin]);
-    // console.log(app.plugins.loadImage.load);Registry
     let loadImage = app.plugins.loadImage.load;
     console.log(app);
 

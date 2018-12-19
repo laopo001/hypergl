@@ -31,10 +31,19 @@
     "outDir": "build/output",
     "types": [],
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
       "gltf-loader-ts": [
         "./src/third_party/gltf-loader-ts/source"
+      ],
+      "hypergl": [
+        "./src"
+      ],
+      "hypergl/plugins/load": [
+        "./plugins/load"
+      ],
+      "hypergl/plugins/stat": [
+        "./plugins/stat"
       ]
     }
   },

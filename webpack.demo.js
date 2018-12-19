@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 4:19:22 pm
+ * Last Modified: Wednesday, December 19th 2018, 11:57:49 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -83,7 +83,9 @@ module.exports = function (env, webpackConfig) {
         resolve: {
             extensions: ['.ts', '.tsx', '.js'],
             alias: {
-                'gltf-loader-ts': path.resolve(__dirname, `./src/third_party/gltf-loader-ts/source`)
+                'gltf-loader-ts': path.resolve(__dirname, `./src/third_party/gltf-loader-ts/source`),
+                'hypergl/plugins': path.resolve(__dirname, `./plugins`),
+                'hypergl': path.resolve(__dirname, `./src`),
             }
         },
         externals: [],
