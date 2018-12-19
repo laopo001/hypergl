@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 2:25:52 am
+ * Last Modified: Wednesday, December 19th 2018, 10:31:50 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -140,32 +140,74 @@ export class RendererPlatform {
             gl.uniform1fv(uniform.locationId, value);
         };
         // tslint:disable-next-line:forin
-        // for (let k in this.uniformFunction) {
-        //     let old = this.uniformFunction[k];
-        //     this.uniformFunction[k] = (uniform, value) => {
-        //         // if (uniform.value !== value) {
-        //         //     old(uniform, value);
-        //         //     uniform.value = value;
-        //         // } else {
-        //         if (value.BYTES_PER_ELEMENT !== null) {
-        //             if (uniform.value == null) {
-        //                 old(uniform, value);
-        //                 uniform.value = value;
-        //             }
-        //             for (let i = 0; i < value.length; i++) {
-        //                 const element = value[i];
-        //                 const element2 = uniform.value[i];
-        //                 if (element !== element2) {
-        //                     old(uniform, value);
-        //                     break;
-        //                 }
-        //             }
-        //         } else {
-        //             old(uniform, value);
-        //         }
-        //         // }
-        //     };
-        // }
+        for (let k in this.uniformFunction) {
+            let old = this.uniformFunction[k];
+            this.uniformFunction[k] = (uniform, value) => {
+                // if (uniform.value !== value) {
+                //     old(uniform, value);
+                //     uniform.value = value;
+                // } else {
+                if (value.BYTES_PER_ELEMENT !== null) {
+                    if (uniform.value == null) {
+                        old(uniform, value);
+                        uniform.value = [];
+                        uniform.value[0] = value[0];
+                        uniform.value[1] = value[1];
+                        uniform.value[2] = value[2];
+                        uniform.value[3] = value[3];
+                        uniform.value[4] = value[4];
+                        uniform.value[5] = value[5];
+                        uniform.value[6] = value[6];
+                        uniform.value[7] = value[7];
+                        uniform.value[8] = value[8];
+                        uniform.value[9] = value[9];
+                        uniform.value[10] = value[10];
+                        uniform.value[11] = value[11];
+                        uniform.value[12] = value[12];
+                        uniform.value[13] = value[13];
+                        uniform.value[14] = value[14];
+                        uniform.value[15] = value[15];
+                        return;
+                    }
+                    let t = false;
+                    for (let i = 0; i < value.length; i++) {
+                        const element = value[i];
+                        const element2 = uniform.value[i];
+                        if (element !== element2) {
+                            t = true;
+                            break;
+                        }
+                    }
+                    if (t) {
+                        old(uniform, value);
+                        uniform.value[0] = value[0];
+                        uniform.value[1] = value[1];
+                        uniform.value[2] = value[2];
+                        uniform.value[3] = value[3];
+                        uniform.value[4] = value[4];
+                        uniform.value[5] = value[5];
+                        uniform.value[6] = value[6];
+                        uniform.value[7] = value[7];
+                        uniform.value[8] = value[8];
+                        uniform.value[9] = value[9];
+                        uniform.value[10] = value[10];
+                        uniform.value[11] = value[11];
+                        uniform.value[12] = value[12];
+                        uniform.value[13] = value[13];
+                        uniform.value[14] = value[14];
+                        uniform.value[15] = value[15];
+                        return;
+                    }
+                } else {
+                    if (uniform.value !== value) {
+                        old(uniform, value);
+                        uniform.value = value;
+                    }
+                    // old(uniform, value);
+                }
+            };
+            // };
+        }
         this.glFilter = [
             gl.LINEAR,
             gl.LINEAR_MIPMAP_LINEAR,
