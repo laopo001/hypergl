@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 4:35:32 pm
+ * Last Modified: Wednesday, December 19th 2018, 5:50:06 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,6 +17,7 @@ import { Entity, StandardMaterial, Config, SkyMaterial, Application, Vec3, Color
 import { FirstPersonCamera } from './utils/first_person_camera';
 import { Rotate } from './utils/rotate';
 import { LoadImagePlugin } from './plugins/loadImage';
+import { StatsPlugin } from './plugins/stat';
 // import { loadImage } from './utils';
 import { Log } from '../src/utils/util';
 
@@ -57,7 +58,7 @@ async function main() {
     const app = new Application<{ loadImage: LoadImagePlugin }>(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
-    app.resigistPlugins([LoadImagePlugin]);
+    app.resigistPlugins([LoadImagePlugin, StatsPlugin]);
     // console.log(app.plugins.loadImage.load);
     let loadImage = app.plugins.loadImage.load;
     console.log(app);

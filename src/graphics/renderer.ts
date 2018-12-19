@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 10:31:50 am
+ * Last Modified: Wednesday, December 19th 2018, 5:26:18 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -150,7 +150,7 @@ export class RendererPlatform {
                 if (value.BYTES_PER_ELEMENT !== null) {
                     if (uniform.value == null) {
                         old(uniform, value);
-                        uniform.value = [];
+                        uniform.value = new Array(16);
                         uniform.value[0] = value[0];
                         uniform.value[1] = value[1];
                         uniform.value[2] = value[2];
@@ -329,13 +329,11 @@ export class RendererPlatform {
                 gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, texture.source[face]);
             }
         }
-
         return webglTexture;
     }
-    loadTexture(gl: WebGL2RenderingContext, program: WebGLProgram, name: string, texture: Texture, t = 0) {
+    loadTexture(gl: WebGL2RenderingContext, program: WebGLProgram, variable: ShaderVariable, texture: Texture, t = 0) {
         if (texture.webglTexture) {
             if (!texture.isCube) {
-                let u_Sampler = gl.getUniformLocation(program, name);
                 gl.activeTexture(gl['TEXTURE' + t]);
                 gl.bindTexture(gl.TEXTURE_2D, texture.webglTexture);
                 if (texture.flipY) {
@@ -349,10 +347,9 @@ export class RendererPlatform {
                 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, this.glFilter[texture.magFilter]);
                 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, this.glAddress[texture.wrapU]);
                 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, this.glAddress[texture.wrapV]);
-                gl.uniform1i(u_Sampler, t);
+                gl.uniform1i(variable.locationId, t);
             } else {
                 // CUBE
-                let u_Sampler = gl.getUniformLocation(program, name);
                 gl.activeTexture(gl['TEXTURE' + t]);
                 gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture.webglTexture);
                 // gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
@@ -365,11 +362,11 @@ export class RendererPlatform {
                 gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_R, this.glAddress[texture.wrapR]);
                 // gl.texParameterf(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_COMPARE_FUNC, gl.LESS);
                 // gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
-                gl.uniform1i(u_Sampler, t);
+                gl.uniform1i(variable.locationId, t);
             }
         } else {
             texture.webglTexture = this.initTexture(gl, texture);
-            this.loadTexture(gl, program, name, texture, t);
+            this.loadTexture(gl, program, variable, texture, t);
         }
         ////////////////////////
         /*
@@ -473,7 +470,7 @@ export class RendererPlatform {
         for (let i = 0; i < samplers.length; i++) {
             let sampler = samplers[i];
             let value = shader.getUniformValue(sampler.name) as Texture;
-            this.loadTexture(gl, shader.program as WebGLProgram, sampler.name, value, i);
+            this.loadTexture(gl, shader.program as WebGLProgram, sampler, value, i);
         }
         if (material.cullFace === FACE.NONE) {
             gl.disable(gl.CULL_FACE);

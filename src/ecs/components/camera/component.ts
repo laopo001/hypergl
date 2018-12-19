@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 1:15:04 am
+ * Last Modified: Wednesday, December 19th 2018, 5:20:00 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -57,8 +57,9 @@ export class CameraComponent extends Component<CameraInputs> {
     get projectionMatrix() {
         return this.instance.projectionMatrix;
     }
+    private _viewProjectionMatrix = new Mat4();
     get viewProjectionMatrix() {
-        return new Mat4().mul2(this.projectionMatrix, this.entity.getWorldTransform().clone().invert());
+        return this._viewProjectionMatrix.mul2(this.projectionMatrix, this.entity.getWorldTransform().clone().invert());
     }
 
     constructor(inputs: CameraInputs, entity: Entity, system: ComponentSystem) {

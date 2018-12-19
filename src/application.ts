@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 4:48:18 pm
+ * Last Modified: Wednesday, December 19th 2018, 6:01:24 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -19,6 +19,7 @@ import { event, Timer } from './core';
 import { Mesh } from './mesh/mesh';
 import { SystemRegistry } from './ecs/system-register';
 import { CameraComponentSystem } from './ecs/components/camera/system';
+import { Log } from './utils/util';
 
 let app;
 const timer = new Timer();
@@ -76,6 +77,10 @@ export class Application<T= {}> {
     resigistPlugins(cs: Constructor<{ name: string }>[]) {
         cs.forEach(c => {
             let p = new c(this);
+            if (p.name in this.plugins) {
+                console.error(p.name + '插件名称已经注册', c);
+                return;
+            }
             this.plugins[p.name] = p;
         });
     }
