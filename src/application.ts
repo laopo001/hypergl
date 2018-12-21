@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 21st 2018, 3:35:13 pm
+ * Last Modified: Friday, December 21st 2018, 8:15:52 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -44,8 +44,6 @@ export class Application<T= {}> {
         this.canvas = canvas;
         this.renderer = new RendererPlatform(this.canvas, option);
         this.addScene(new Scene());
-        // this.systems.add()
-
         // document.addEventListener('pointerlockchange', e => {
         //     this._isPointerLock = !this._isPointerLock;
         // }, false);
@@ -70,10 +68,7 @@ export class Application<T= {}> {
     on(name: string, cb: FnVoid) {
         event.on(name, cb);
     }
-    setRequestPointerLock() {
-        // this._isPointerLock = true;
-        (this.canvas as any).requestPointerLock();
-    }
+
     registerPlugins(cs: Constructor<{ name: string }>[]) {
         cs.forEach(c => {
             let p = new c(this);

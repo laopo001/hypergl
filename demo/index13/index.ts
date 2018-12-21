@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 21st 2018, 5:24:35 pm
+ * Last Modified: Friday, December 21st 2018, 7:56:20 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -31,5 +31,4 @@ worker.addEventListener('message', (e) => {
         default:
             break;
     }
-
 });

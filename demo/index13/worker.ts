@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 21st 2018, 5:23:30 pm
+ * Last Modified: Friday, December 21st 2018, 8:10:36 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -186,6 +186,9 @@ async function main(canvas) {
     });
     app.on('afterRender', () => {
         postMessage({ type: 'afterRender' });
+    });
+    app.on('update', () => {
+        postMessage({ type: 'update' });
     });
     app.start();
 }
