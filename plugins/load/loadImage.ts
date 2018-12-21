@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 11:11:12 pm
+ * Last Modified: Friday, December 21st 2018, 4:18:17 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -18,13 +18,16 @@ export class LoadImagePlugin {
 
     }
     load(url: string) {
-        return new Promise<HTMLImageElement>((resolve, reject) => {
-            const image = new Image();
-            image.onload = () => {
-                resolve(image);
-            };
-            image.src = url;
-            image.crossOrigin = 'anonymous';
+        // return new Promise<HTMLImageElement>((resolve, reject) => {
+        //     const image = new Image();
+        //     image.onload = () => {
+        //         resolve(image);
+        //     };
+        //     image.src = url;
+        //     image.crossOrigin = 'anonymous';
+        // });
+        return fetch(url).then(b => b.blob()).then(blob => {
+            return createImageBitmap(blob) as any as HTMLImageElement;
         });
     }
 }

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 7:29:53 pm
+ * Last Modified: Friday, December 21st 2018, 3:35:13 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -46,9 +46,9 @@ export class Application<T= {}> {
         this.addScene(new Scene());
         // this.systems.add()
 
-        document.addEventListener('pointerlockchange', e => {
-            this._isPointerLock = !this._isPointerLock;
-        }, false);
+        // document.addEventListener('pointerlockchange', e => {
+        //     this._isPointerLock = !this._isPointerLock;
+        // }, false);
         app = this;
     }
     static getApp<T>(): Application<T> {
@@ -91,6 +91,6 @@ export class Application<T= {}> {
         timer.end();
         event.fire('update', timer.getDuration());
         event.fire('afterRender');
-        window.requestAnimationFrame(this.tick);
+        requestAnimationFrame(this.tick);
     }
 }

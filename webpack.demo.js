@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 11:57:49 pm
+ * Last Modified: Friday, December 21st 2018, 3:19:04 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,13 +20,14 @@ module.exports = function (env, webpackConfig) {
     return {
         //页面入口文件配置
         entry: {
-            index: `./demo/index12`
+            index: `./demo/index13/index.ts`,
+            worker: `./demo/index13/worker.ts`
         },
         //入口文件输出配置
         output: {
             path: path.resolve(__dirname, 'build'),
             library: 'HGL',
-            libraryTarget: "umd",
+            // libraryTarget: "umd",
             filename: '[name].js'
         },
         //插件项

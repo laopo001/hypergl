@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, September 22nd 2018, 7:27:30 pm
+ * Last Modified: Friday, December 21st 2018, 3:49:35 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -30,8 +30,8 @@ export class Timer {
 }
 
 export function now() {
-    if (window.performance && window.performance.now) {
-        return window.performance.now();
+    if (typeof performance !== 'undefined' && performance.now) {
+        return performance.now();
     } else {
         return Date.now();
     }

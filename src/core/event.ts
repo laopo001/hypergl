@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 6:03:01 pm
+ * Last Modified: Friday, December 21st 2018, 3:35:35 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -35,7 +35,7 @@ export const event = {
         if (event.hasEvent(name)) {
             const waitMoves: any[] = [];
             _callbacks[name].forEach((x, index) => {
-                x.apply(window, args);
+                x.apply(this, args);
                 // tslint:disable-next-line:no-unused-expression
                 (x as any).once && waitMoves.push(index);
             });
@@ -50,7 +50,7 @@ export const event = {
     fire(name: string, ...args) {
         if (event.hasEvent(name)) {
             _callbacks[name].forEach((x, index) => {
-                x.apply(window, args);
+                x.apply({}, args);
             });
         }
         return event;
