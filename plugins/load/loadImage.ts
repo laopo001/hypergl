@@ -5,15 +5,15 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 21st 2018, 4:18:17 pm
+ * Last Modified: Friday, December 21st 2018, 10:10:53 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
-import { Application } from 'hypergl';
-export class LoadImagePlugin {
-    name = 'loadImage';
+import { Application, Plugin } from 'hypergl';
+export class LoadImagePlugin implements Plugin {
+    static pname = 'loadImage';
     constructor(private app: Application) {
 
     }
@@ -27,7 +27,7 @@ export class LoadImagePlugin {
         //     image.crossOrigin = 'anonymous';
         // });
         return fetch(url).then(b => b.blob()).then(blob => {
-            return createImageBitmap(blob) as any as HTMLImageElement;
+            return createImageBitmap(blob);
         });
     }
 }

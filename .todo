@@ -4,6 +4,7 @@ Projects:
 Todos:
   实现基本功能
   new: 
+    ✔ support OffscreenCanvas ()@done(18-12-21 20:32)
     ✔ plugin features @done(18-12-20 00:01)
     ☐ pbr material
     ✔ skybox @done(18-12-13 11:14)

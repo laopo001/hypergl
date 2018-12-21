@@ -5,55 +5,28 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 14th 2018, 5:06:37 pm
+ * Last Modified: Friday, December 21st 2018, 10:10:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Entity, StandardMaterial, Config, SkyMaterial, Application, Vec3, Color, Texture, Mesh, Line, ColorMaterial, FOG, GltfAssetLoader } from '../src';
+import { Entity, StandardMaterial, Config, SkyMaterial, Application, Vec3, Color, Texture, Mesh, Line, ColorMaterial, FOG, GltfAssetLoader, Vec2 } from 'hypergl';
 import { FirstPersonCamera } from './utils/first_person_camera';
 import { Rotate } from './utils/rotate';
-import { loadImage } from './utils';
-
-function createCoordinateSystem() {
-    let temp = new Entity();
-    let lines = Line.createLines([
-        new Vec3(0, 0, 0), new Vec3(5, 0, 0)
-    ]);
-    let color = new ColorMaterial();
-    color.diffuseColor = new Color(1, 0, 1);
-    let color2 = new ColorMaterial();
-    color2.diffuseColor = new Color(1, 0, 0);
-    let color3 = new ColorMaterial();
-    color3.diffuseColor = new Color(0, 0, 1);
-    let line1 = new Entity('lines')
-        .addComponent('model', {
-            type: 'model',
-            model: lines,
-            material: color
-        });
-    let line2 = new Entity('lines2')
-        .addComponent('model', {
-            type: 'model',
-            model: lines,
-            material: color2
-        }).setLocalEulerAngles(0, 90, 0);
-    let line3 = new Entity('lines3')
-        .addComponent('model', {
-            type: 'model',
-            model: lines,
-            material: color3
-        }).setLocalEulerAngles(0, 0, 90);
-    temp.addChild(line1).addChild(line2).addChild(line3);
-    return temp;
-}
+// tslint:disable-next-line:no-duplicate-imports
+import { LoadImagePlugin } from 'hypergl/plugins/load';
+import { StatsPlugin } from 'hypergl/plugins/stat';
+import { PointerPlugin } from 'hypergl/plugins/pointer';
+import { AppPlugin } from './types';
 
 async function main() {
-    const app = new Application(document.getElementById('canvas') as HTMLCanvasElement, {
+    const app = new Application<AppPlugin>(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
+    app.registerPlugins([LoadImagePlugin, StatsPlugin, PointerPlugin]);
+    let loadImage = app.plugins.loadImage.load;
     console.log(app);
 
     // app.scene.fog = FOG.LINEAR;

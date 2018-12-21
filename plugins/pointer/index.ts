@@ -5,17 +5,21 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 21st 2018, 8:17:15 pm
+ * Last Modified: Friday, December 21st 2018, 10:08:53 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Application } from 'hypergl';
-export class PointerPlugin {
-    name = 'pointer';
-    _isPointerLock = false;
+import { Application, Plugin } from 'hypergl';
+export class PointerPlugin implements Plugin {
+    get isPointerLocked() {
+        return this._isPointerLock;
+    }
+    static pname = 'pointer';
+    // name = 'pointer';
+    private _isPointerLock = false;
     constructor(private app: Application) {
         document.addEventListener('pointerlockchange', e => {
             this._isPointerLock = !this._isPointerLock;

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 21st 2018, 8:15:52 pm
+ * Last Modified: Friday, December 21st 2018, 10:04:56 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -21,14 +21,20 @@ import { SystemRegistry } from './ecs/system-register';
 import { CameraComponentSystem } from './ecs/components/camera/system';
 import { Log } from './utils/util';
 
+
+export interface PluginClass<T= Plugin> {
+    pname: string;
+    new(app: Application): T;
+}
+
+export class Plugin {
+}
+
 let app;
 const timer = new Timer();
 export class Application<T= {}> {
     get scene() {
         return this.sceneInstances[this.activeIndex];
-    }
-    get isPointerLocked() {
-        return this._isPointerLock;
     }
     get [Symbol.toStringTag]() {
         return 'Application';
@@ -39,7 +45,7 @@ export class Application<T= {}> {
     canvas: HTMLCanvasElement;
     lastRenderTime = 0;
     plugins: T = {} as any;
-    private _isPointerLock = false;
+    // private _isPointerLock = false;
     constructor(canvas: HTMLCanvasElement, option?: AppOption) {
         this.canvas = canvas;
         this.renderer = new RendererPlatform(this.canvas, option);
@@ -69,14 +75,14 @@ export class Application<T= {}> {
         event.on(name, cb);
     }
 
-    registerPlugins(cs: Constructor<{ name: string }>[]) {
+    registerPlugins(cs: PluginClass[]) {
         cs.forEach(c => {
-            let p = new c(this);
-            if (p.name in this.plugins) {
-                console.error(p.name + '插件名称已经注册', c);
+            if (c.pname in this.plugins) {
+                console.error(c.pname + '插件名称已经注册', c);
                 return;
             }
-            this.plugins[p.name] = p;
+            let p = new c(this);
+            this.plugins[c.pname] = p;
         });
     }
     private tick = () => {

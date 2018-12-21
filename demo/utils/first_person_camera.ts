@@ -5,18 +5,19 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 4:09:51 pm
+ * Last Modified: Friday, December 21st 2018, 9:50:14 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 import { math, Script } from '../../src';
+import { AppPlugin } from '../types';
 
 export interface FirstPersonCameraInputs {
     speed: number;
 }
-export class FirstPersonCamera extends Script<FirstPersonCameraInputs> {
+export class FirstPersonCamera extends Script<FirstPersonCameraInputs, AppPlugin> {
     static defaultInputs = {
         speed: 1
     };
@@ -38,7 +39,7 @@ export class FirstPersonCamera extends Script<FirstPersonCameraInputs> {
         let x = 0, y = 0;
         // tslint:disable-next-line:no-non-null-assertion
         document.getElementById('canvas')!.addEventListener('mousemove', (event) => {
-            if (this.app.isPointerLocked) {
+            if (this.app.plugins.pointer.isPointerLocked) {
                 this.ex -= event.movementY / 5;
                 this.ex = math.clamp(this.ex, -90, 90);
                 this.ey -= event.movementX / 5;
@@ -46,8 +47,8 @@ export class FirstPersonCamera extends Script<FirstPersonCameraInputs> {
         }, false);
         // tslint:disable-next-line:no-non-null-assertion
         document.getElementById('canvas')!.addEventListener('mousedown', (event) => {
-            if (!this.app.isPointerLocked) {
-                this.app.setRequestPointerLock();
+            if (!this.app.plugins.pointer.isPointerLocked) {
+                this.app.plugins.pointer.lock();
             }
         }, false);
         document.addEventListener('keydown', (event) => {
