@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 7th 2018, 1:07:36 am
+ * Last Modified: Saturday, December 22nd 2018, 9:47:39 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -34,13 +34,13 @@ export class Camera {
     getList(models: ModelComponent[]) {
 
         return models.filter(model => {
-            // return true;
-            let { center, radius } = model.instance.aabb;
+            return true;
+            // let { center, radius } = model.instance.aabb;
 
-            let scale = model.entity.getLocalScale();
-            let max = Math.max(scale.x, scale.y, scale.z);
-            let point = new Vec3().add2(center, model.getPosition());
-            return this.frustum.containsSphere(new BoundingSphere(point, radius * max));
+            // let scale = model.entity.getLocalScale();
+            // let max = Math.max(scale.x, scale.y, scale.z);
+            // let point = new Vec3().add2(center, model.getPosition());
+            // return this.frustum.containsSphere(new BoundingSphere(point, radius * max));
 
             // let points = model.instance.aabb.getPoints();
             // for (let i = 0; i < points.length; i++) {

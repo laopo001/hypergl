@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 5:26:18 pm
+ * Last Modified: Saturday, December 22nd 2018, 9:44:56 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -25,7 +25,7 @@ import { ShaderVariable } from './shaderVariable';
 import { VertexAttribData } from './vertexFormat';
 import { ModelComponent } from 'src/ecs/components/model';
 import { cache } from '../utils/decorators';
-import { Line } from '../mesh';
+import { Line, Drawable } from '../mesh';
 export type Platform = 'webgl' | 'webgl2';
 export class RendererPlatform {
     get gl() {
@@ -422,9 +422,9 @@ export class RendererPlatform {
         gl.uniform1i(u_Sampler, t);
         */
     }
-    draw(model: ModelComponent) {
+    draw(model: Drawable) {
         const gl = this.gl;
-        const mesh = model.instance;
+        const mesh = model;
         const material = model.material;
         if (mesh == null) { return; }
         this.setVertexBuffer(mesh.vertexBuffer);

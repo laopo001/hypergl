@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 21st 2018, 9:51:50 pm
+ * Last Modified: Saturday, December 22nd 2018, 9:44:56 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -140,7 +140,7 @@ async function main() {
             type: 'sphere',
         })
         .setLocalPosition(-3, 0, 0);
-    sphere5.model.instance.mode = 1;
+    sphere5.model.instance.meshs[0].mode = 1;
     app.scene.root.addChild(sphere5);
 
     let sphere6 = new Entity('sphere6')

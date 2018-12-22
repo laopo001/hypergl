@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 1:44:29 am
+ * Last Modified: Saturday, December 22nd 2018, 10:02:09 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -125,22 +125,18 @@ export class Entity extends SceneNode {
         }
         return this;
     }
-    addChild(child: Entity) {
-        super.addChild(child);
-        child.parent = this;
-        this.app.scene.add(child);
-        if (!this.enabled) {
-            child.enabled = false;
-        }
-        return this;
-    }
-    addChildren(children: Entity[]) {
-        children.forEach(item => {
-            this.addChild(item);
+    addChild(...children: Entity[]) {
+        children.forEach(child => {
+            super.addChild(child);
+            child.parent = this;
+            this.app.scene.add(child);
+            if (!this.enabled) {
+                child.enabled = false;
+            }
         });
         return this;
     }
-    findByName(name: string): Undefinedable<Entity>  {
+    findByName(name: string): Undefinedable<Entity> {
         if (this.name === name) {
             return this;
         }
@@ -156,4 +152,13 @@ export class Entity extends SceneNode {
     findByTag(name: string[]) {
         //
     }
+    // private _addChild(child: Entity) {
+    //     super.addChild(child);
+    //     child.parent = this;
+    //     this.app.scene.add(child);
+    //     if (!this.enabled) {
+    //         child.enabled = false;
+    //     }
+    //     return this;
+    // }
 }

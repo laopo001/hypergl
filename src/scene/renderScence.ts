@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 2:21:30 am
+ * Last Modified: Saturday, December 22nd 2018, 10:13:55 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -39,51 +39,56 @@ export function renderScence(scene: Scene) {
     let temp: Light[] = [];
     renderer.enableBLEND();
     for (let i = 0; i < modelComponents.length; i++) {
-        let model = modelComponents[i];
-        if (!model.enabled || !model.instance) {
+        let modelComponent = modelComponents[i];
+        if (!modelComponent.enabled) {
             continue;
         }
-        const mesh = model.instance;
-        const material = model.material;
-        let attributes: { [s: string]: SEMANTIC } = {};
-        mesh.vertexBuffer.format.elements.forEach(x => {
-            attributes[SEMANTICMAP[x.semantic]] = x.semantic;
-        });
-        if (!model.instance.receiveShadow) {
-            LightsUniforms._directionalLightArr.forEach(item => {
-                item.castShadows = false;
-                temp.push(item);
-            });
-            LightsUniforms._pointLightArr.forEach(item => {
-                item.castShadows = false;
-                temp.push(item);
-            });
-            LightsUniforms._spotLightArr.forEach(item => {
-                item.castShadows = false;
-                temp.push(item);
-            });
-        }
-        material.setLights(LightsUniforms);
-        material.updateShader(attributes);
-        let shader = material.shader as Shader;
-        renderer.setShaderProgram(shader);
-        shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
-        shader.setUniformValue('matrix_model', model.getWorldTransform().data);
-        shader.setUniformValue('matrix_normal', model.getWorldTransform().clone().invert().transpose().data);
-        shader.setUniformValue('uCameraPosition', camera.getPosition().data);
-        shader.setUniformValue('fog', scene.fog);
-        shader.setUniformValue('fogColor', scene.fogColor.data3);
-        shader.setUniformValue('fogDensity', scene.fogDensity);
-        shader.setUniformValue('fogDist', new Float32Array([scene.fogStart, scene.fogEnd]));
 
-        renderer.draw(model);
-
-        if (!model.instance.receiveShadow) {
-            temp.forEach(item => {
-                item.castShadows = true;
+        const model = modelComponent.instance;
+        for (let i = 0; i < model.meshs.length; i++) {
+            const drawable = model.meshs[i];
+            const material = modelComponent._material || drawable.material;
+            let attributes: { [s: string]: SEMANTIC } = {};
+            drawable.vertexBuffer.format.elements.forEach(x => {
+                attributes[SEMANTICMAP[x.semantic]] = x.semantic;
             });
-            temp = [];
+            if (!drawable.receiveShadow) {
+                LightsUniforms._directionalLightArr.forEach(item => {
+                    item.castShadows = false;
+                    temp.push(item);
+                });
+                LightsUniforms._pointLightArr.forEach(item => {
+                    item.castShadows = false;
+                    temp.push(item);
+                });
+                LightsUniforms._spotLightArr.forEach(item => {
+                    item.castShadows = false;
+                    temp.push(item);
+                });
+            }
+            material.setLights(LightsUniforms);
+            material.updateShader(attributes);
+            let shader = material.shader as Shader;
+            renderer.setShaderProgram(shader);
+            shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
+            shader.setUniformValue('matrix_model', modelComponent.getWorldTransform().data);
+            shader.setUniformValue('matrix_normal', modelComponent.getWorldTransform().clone().invert().transpose().data);
+            shader.setUniformValue('uCameraPosition', camera.getPosition().data);
+            shader.setUniformValue('fog', scene.fog);
+            shader.setUniformValue('fogColor', scene.fogColor.data3);
+            shader.setUniformValue('fogDensity', scene.fogDensity);
+            shader.setUniformValue('fogDist', new Float32Array([scene.fogStart, scene.fogEnd]));
+
+            renderer.draw(drawable);
+
+            if (!drawable.receiveShadow) {
+                temp.forEach(item => {
+                    item.castShadows = true;
+                });
+                temp = [];
+            }
         }
+
     }
     renderer.disableBLEND();
 }
@@ -105,12 +110,15 @@ function rendererDirectionalShadowMap(scene: Scene, light: LightComponent<Direct
     light.shadowFrame.beforeDraw();
     for (let i = 0; i < modelComponents.length; i++) {
         let modelComponent = modelComponents[i];
-        if (!modelComponent.enabled || !modelComponent.instance || !modelComponent.instance.castShadow) {
-            continue;
+        for (let i = 0; i < modelComponent.instance.meshs.length; i++) {
+            const drawable = modelComponent.instance.meshs[i];
+            if (!modelComponent.enabled || !drawable.castShadow) {
+                continue;
+            }
+            renderer.setShaderProgram(shader as Shader);
+            shader.setUniformValue('matrix_model', modelComponent.getWorldTransform().data);
+            renderer.draw(drawable);
         }
-        renderer.setShaderProgram(shader as Shader);
-        shader.setUniformValue('matrix_model', modelComponent.getWorldTransform().data);
-        renderer.draw(modelComponent);
     }
     light.shadowFrame.afterDraw();
     return { texture: light.shadowFrame.getTexture(), viewProjectionMatrix: camera.viewProjectionMatrix };
@@ -161,14 +169,26 @@ function rendererPointShadowMap(scene: Scene, light: LightComponent<PointLight>)
         shader.setUniformValue('light_range', light.range);
         light.shadowFrame.createFramebuffer3D(i);
         light.shadowFrame.beforeDraw(i);
+        // for (let i = 0; i < modelComponents.length; i++) {
+        //     let modelComponent = modelComponents[i];
+        //     if (!modelComponent.enabled || !modelComponent.instance || !modelComponent.instance.castShadow) {
+        //         continue;
+        //     }
+        //     renderer.setShaderProgram(shader as Shader);
+        //     shader.setUniformValue('matrix_model', modelComponent.getWorldTransform().data);
+        //     renderer.draw(modelComponent);
+        // }
         for (let i = 0; i < modelComponents.length; i++) {
             let modelComponent = modelComponents[i];
-            if (!modelComponent.enabled || !modelComponent.instance || !modelComponent.instance.castShadow) {
-                continue;
+            for (let i = 0; i < modelComponent.instance.meshs.length; i++) {
+                const drawable = modelComponent.instance.meshs[i];
+                if (!modelComponent.enabled || !drawable.castShadow) {
+                    continue;
+                }
+                renderer.setShaderProgram(shader as Shader);
+                shader.setUniformValue('matrix_model', modelComponent.getWorldTransform().data);
+                renderer.draw(drawable);
             }
-            renderer.setShaderProgram(shader as Shader);
-            shader.setUniformValue('matrix_model', modelComponent.getWorldTransform().data);
-            renderer.draw(modelComponent);
         }
         light.shadowFrame.afterDraw();
     }
@@ -212,14 +232,26 @@ function rendererSpotShadowMap(scene: Scene, light: LightComponent<SpotLight>) {
     shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
 
     light.shadowFrame.beforeDraw();
+    // for (let i = 0; i < modelComponents.length; i++) {
+    //     let modelComponent = modelComponents[i];
+    //     if (!modelComponent.enabled || !modelComponent.instance || !modelComponent.instance.castShadow) {
+    //         continue;
+    //     }
+    //     renderer.setShaderProgram(shader as Shader);
+    //     shader.setUniformValue('matrix_model', modelComponent.getWorldTransform().data);
+    //     renderer.draw(modelComponent);
+    // }
     for (let i = 0; i < modelComponents.length; i++) {
         let modelComponent = modelComponents[i];
-        if (!modelComponent.enabled || !modelComponent.instance || !modelComponent.instance.castShadow) {
-            continue;
+        for (let i = 0; i < modelComponent.instance.meshs.length; i++) {
+            const drawable = modelComponent.instance.meshs[i];
+            if (!modelComponent.enabled || !drawable.castShadow) {
+                continue;
+            }
+            renderer.setShaderProgram(shader as Shader);
+            shader.setUniformValue('matrix_model', modelComponent.getWorldTransform().data);
+            renderer.draw(drawable);
         }
-        renderer.setShaderProgram(shader as Shader);
-        shader.setUniformValue('matrix_model', modelComponent.getWorldTransform().data);
-        renderer.draw(modelComponent);
     }
     light.shadowFrame.afterDraw();
     return { texture: light.shadowFrame.getTexture(), viewProjectionMatrix: camera.viewProjectionMatrix };

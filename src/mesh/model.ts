@@ -5,14 +5,16 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, October 30th 2018, 12:12:22 pm
+ * Last Modified: Saturday, December 22nd 2018, 9:44:56 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Mesh } from './mesh';
+import { Drawable } from './drawable';
 export class Model {
-    meshs: Mesh[] = [];
+    constructor(public meshs: Drawable[]) {
+
+    }
 }
