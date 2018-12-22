@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 22nd 2018, 10:13:55 pm
+ * Last Modified: Sunday, December 23rd 2018, 1:49:27 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -27,15 +27,15 @@ export interface ModelInputs {
 }
 export class ModelComponent<T = StandardMaterial> extends Component<ModelInputs> {
     get material(): T {
-        return this._material || this.instance.meshs[0].material;
+        return this.instance.meshs[0].material as any;
     }
-    set material(x: T) {
-        this.instance.meshs[0].material = x as any;
-    }
+    // set material(x: T) {
+    //     this.instance.meshs[0].material = x as any;
+    // }
     entity!: Entity;
     instance: Model;
     name = 'model';
-    _material;
+    // _material;
     constructor(inputs: ModelInputs, entity: Entity, system: ComponentSystem) {
         super(inputs, entity, system);
         // let model = new Model();
@@ -54,7 +54,6 @@ export class ModelComponent<T = StandardMaterial> extends Component<ModelInputs>
                 mesh = this.inputs.model as Mesh;
                 break;
         }
-        this.instance = new Model([mesh!]);
         if (this.inputs.type === 'model') {
             if (this.inputs.model instanceof Model) {
                 this.instance = this.inputs.model;
@@ -63,6 +62,8 @@ export class ModelComponent<T = StandardMaterial> extends Component<ModelInputs>
             } else {
                 this.instance = new Model(this.inputs.model!);
             }
+        } else {
+            this.instance = new Model([mesh!]);
         }
         ['receiveShadow', 'castShadow'].forEach(key => {
             if (this.inputs[key] !== undefined) {
@@ -70,7 +71,9 @@ export class ModelComponent<T = StandardMaterial> extends Component<ModelInputs>
             }
         });
         if (this.inputs.material) {
-            this._material = this.inputs.material as any;
+            this.instance.meshs.forEach(drawable => {
+                drawable.material = this.inputs.material as any;
+            });
         }
 
     }

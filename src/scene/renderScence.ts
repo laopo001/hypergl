@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 22nd 2018, 10:13:55 pm
+ * Last Modified: Sunday, December 23rd 2018, 1:46:02 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -47,7 +47,7 @@ export function renderScence(scene: Scene) {
         const model = modelComponent.instance;
         for (let i = 0; i < model.meshs.length; i++) {
             const drawable = model.meshs[i];
-            const material = modelComponent._material || drawable.material;
+            const material = drawable.material;
             let attributes: { [s: string]: SEMANTIC } = {};
             drawable.vertexBuffer.format.elements.forEach(x => {
                 attributes[SEMANTICMAP[x.semantic]] = x.semantic;
@@ -111,8 +111,11 @@ function rendererDirectionalShadowMap(scene: Scene, light: LightComponent<Direct
     for (let i = 0; i < modelComponents.length; i++) {
         let modelComponent = modelComponents[i];
         for (let i = 0; i < modelComponent.instance.meshs.length; i++) {
+            if (!modelComponent.enabled) {
+                continue;
+            }
             const drawable = modelComponent.instance.meshs[i];
-            if (!modelComponent.enabled || !drawable.castShadow) {
+            if (!drawable.castShadow) {
                 continue;
             }
             renderer.setShaderProgram(shader as Shader);
@@ -181,8 +184,11 @@ function rendererPointShadowMap(scene: Scene, light: LightComponent<PointLight>)
         for (let i = 0; i < modelComponents.length; i++) {
             let modelComponent = modelComponents[i];
             for (let i = 0; i < modelComponent.instance.meshs.length; i++) {
+                if (!modelComponent.enabled) {
+                    continue;
+                }
                 const drawable = modelComponent.instance.meshs[i];
-                if (!modelComponent.enabled || !drawable.castShadow) {
+                if (!drawable.castShadow) {
                     continue;
                 }
                 renderer.setShaderProgram(shader as Shader);
@@ -244,8 +250,11 @@ function rendererSpotShadowMap(scene: Scene, light: LightComponent<SpotLight>) {
     for (let i = 0; i < modelComponents.length; i++) {
         let modelComponent = modelComponents[i];
         for (let i = 0; i < modelComponent.instance.meshs.length; i++) {
+            if (!modelComponent.enabled) {
+                continue;
+            }
             const drawable = modelComponent.instance.meshs[i];
-            if (!modelComponent.enabled || !drawable.castShadow) {
+            if (!drawable.castShadow) {
                 continue;
             }
             renderer.setShaderProgram(shader as Shader);
