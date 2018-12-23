@@ -329,10 +329,11 @@ void main(void) {
     // start
     vec3 result = ambientColor.xyz * dDiffuseColor.xyz;
     {{#each uniforms._directionalLightArr}}
-
+    vec3 color;
+    float shadow;
     {{#if this.castShadows}}
-        float shadow = CalcLightShadow({{this.lightSpaceMatrix}} * vec4(out_vertex_position, 1.0), {{this.shadowMap}}, {{this.shadowType}}, {{this.shadowMapSize}}, {{this.shadowBias}});    
-        vec3 color = CalcDirLight(norm, viewDir, vec3({{this.color}}), {{this.direction}});
+        shadow = CalcLightShadow({{this.lightSpaceMatrix}} * vec4(out_vertex_position, 1.0), {{this.shadowMap}}, {{this.shadowType}}, {{this.shadowMapSize}}, {{this.shadowBias}});    
+        color = CalcDirLight(norm, viewDir, vec3({{this.color}}), {{this.direction}});
         result += shadow * color;
     {{else}}
         result += CalcDirLight(norm, viewDir, vec3({{this.color}}), {{this.direction}} );
@@ -342,8 +343,8 @@ void main(void) {
     {{#each uniforms._pointLightArr}}
 
     {{#if this.castShadows}}
-        float shadow = CalcPointLightShadow({{this.shadowMap}}, {{this.position}}, {{this.range}}, {{this.shadowType}}, {{this.shadowMapSize}}, {{this.shadowBias}});    
-        vec3 color = CalcPointLight(norm, viewDir, vec3({{this.color}}), {{this.position}}, {{this.range}});
+        shadow = CalcPointLightShadow({{this.shadowMap}}, {{this.position}}, {{this.range}}, {{this.shadowType}}, {{this.shadowMapSize}}, {{this.shadowBias}});    
+        color = CalcPointLight(norm, viewDir, vec3({{this.color}}), {{this.position}}, {{this.range}});
         result += shadow * color;
     {{else}}
         result += CalcPointLight(norm, viewDir, vec3({{this.color}}), {{this.position}}, {{this.range}} );
@@ -353,8 +354,8 @@ void main(void) {
     {{#each uniforms._spotLightArr}}
 
     {{#if this.castShadows}}
-        vec3 color = CalcSpotLight(norm, viewDir, vec3({{this.color}}), {{this.position}}, {{this.direction}}, {{this.range}}, {{this.innerConeAngle}}, {{this.outerConeAngle}} );
-        float shadow = CalcLightShadow({{this.lightSpaceMatrix}} * vec4(out_vertex_position, 1.0), {{this.shadowMap}}, {{this.shadowType}}, {{this.shadowMapSize}}, {{this.shadowBias}});    
+        color = CalcSpotLight(norm, viewDir, vec3({{this.color}}), {{this.position}}, {{this.direction}}, {{this.range}}, {{this.innerConeAngle}}, {{this.outerConeAngle}} );
+        shadow = CalcLightShadow({{this.lightSpaceMatrix}} * vec4(out_vertex_position, 1.0), {{this.shadowMap}}, {{this.shadowType}}, {{this.shadowMapSize}}, {{this.shadowBias}});    
         result += shadow * color;
     {{else}}
         result += CalcSpotLight(norm, viewDir, vec3({{this.color}}), {{this.position}}, {{this.direction}}, {{this.range}}, {{this.innerConeAngle}}, {{this.outerConeAngle}} );
@@ -363,10 +364,6 @@ void main(void) {
     {{/each}}
     // end
     
-    // {{#ifEq uniforms.fog 1}}
-    // float fogFactor = (fogDist.y - out_Dist) / (fogDist.y - fogDist.x);
-    // result = mix(fogColor, vec3(result), clamp(fogFactor, 0.0, 1.0));
-    // {{/ifEq}}
     result = addFog(result);
     // result = ambient + diffuse + specular;
     gl_FragColor = vec4(result, opacity);

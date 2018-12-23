@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 23rd 2018, 9:02:22 pm
+ * Last Modified: Sunday, December 23rd 2018, 10:14:24 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -30,8 +30,8 @@ async function main() {
     let loadImage = app.plugins.loadImage.load;
     console.log(app);
 
-    // app.scene.fog = FOG.LINEAR;
-    // app.scene.fogEnd = 1000;
+    app.scene.fog = FOG.LINEAR;
+    app.scene.fogEnd = 50;
     let skycube = new Texture(true);
     let negx = await loadImage('assets/images/skybox_nx.jpg');
     let negy = await loadImage('assets/images/skybox_ny.jpg');
@@ -89,11 +89,20 @@ async function main() {
             type: 'directional',
             castShadows: true,
             shadowType: 'PCF',
-            range: 16
         })
         .setEulerAngles(-45, 0, 0)
         .setLocalPosition(0, 5, 0);
     app.scene.root.addChild(light);
+
+    let pointlight = new Entity('point')
+        .addComponent('light', {
+            type: 'point',
+            castShadows: true,
+
+            range: 16
+        })
+        .setLocalPosition(0, 5, 1);
+    app.scene.root.addChild(pointlight);
 
     let sphere1 = new Entity('sphere1')
         .addComponent('model', {

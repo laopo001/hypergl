@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 23rd 2018, 9:11:10 pm
+ * Last Modified: Sunday, December 23rd 2018, 10:13:58 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -70,6 +70,7 @@ export function renderScence(scene: Scene) {
                 });
             }
             material.setLights(LightsUniforms);
+            material.setShaderTempletes('fog', scene.fog);
             material.updateShader(attributes);
             let shader = material.shader as Shader;
             renderer.setShaderProgram(shader);
@@ -77,7 +78,7 @@ export function renderScence(scene: Scene) {
             shader.setUniformValue('matrix_model', modelComponent.getWorldTransform().data);
             shader.setUniformValue('matrix_normal', modelComponent.getWorldTransform().clone().invert().transpose().data);
             shader.setUniformValue('uCameraPosition', camera.getPosition().data);
-            shader.setUniformValue('fog', scene.fog);
+            // shader.setUniformValue('fog', scene.fog);
             shader.setUniformValue('fogColor', scene.fogColor.data3);
             shader.setUniformValue('fogDensity', scene.fogDensity);
             shader.setUniformValue('fogDist', new Float32Array([scene.fogStart, scene.fogEnd]));
@@ -135,6 +136,7 @@ export function renderDirectionalLightArr(name: string, data: LightComponent<Dir
     let res: string[][] = [];
 
     data.forEach((item, index) => {
+        if (!item.enabled) return;
         let obj: any = {};
         if (item.castShadows) {
             let { texture, viewProjectionMatrix } = rendererDirectionalShadowMap(scene, item);
@@ -166,8 +168,6 @@ function rendererPointShadowMap(scene: Scene, light: LightComponent<PointLight>)
         let camera = cameras[i];
         camera.updateRenderTarget(); // test
         modelComponents = camera.getList(temp);
-        // console.log(modelComponents);
-
         let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
         let shader = renderer.programGenerator.getShader('distance', attributes);
         shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
@@ -175,15 +175,6 @@ function rendererPointShadowMap(scene: Scene, light: LightComponent<PointLight>)
         shader.setUniformValue('light_range', light.range);
         light.shadowFrame.createFramebuffer3D(i);
         light.shadowFrame.beforeDraw(i);
-        // for (let i = 0; i < modelComponents.length; i++) {
-        //     let modelComponent = modelComponents[i];
-        //     if (!modelComponent.enabled || !modelComponent.instance || !modelComponent.instance.castShadow) {
-        //         continue;
-        //     }
-        //     renderer.setShaderProgram(shader as Shader);
-        //     shader.setUniformValue('matrix_model', modelComponent.getWorldTransform().data);
-        //     renderer.draw(modelComponent);
-        // }
         for (let i = 0; i < modelComponents.length; i++) {
             let modelComponent = modelComponents[i];
             for (let i = 0; i < modelComponent.instance.meshs.length; i++) {
@@ -208,6 +199,7 @@ export function renderPointLightArr(name: string, data: LightComponent<PointLigh
     let res: string[][] = [];
     let uniforms = {};
     data.forEach((item, index) => {
+        if (!item.enabled) return;
         let obj: any = {};
         if (item.castShadows) {
             let { texture } = rendererPointShadowMap(scene, item);
@@ -241,15 +233,6 @@ function rendererSpotShadowMap(scene: Scene, light: LightComponent<SpotLight>) {
     shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
 
     light.shadowFrame.beforeDraw();
-    // for (let i = 0; i < modelComponents.length; i++) {
-    //     let modelComponent = modelComponents[i];
-    //     if (!modelComponent.enabled || !modelComponent.instance || !modelComponent.instance.castShadow) {
-    //         continue;
-    //     }
-    //     renderer.setShaderProgram(shader as Shader);
-    //     shader.setUniformValue('matrix_model', modelComponent.getWorldTransform().data);
-    //     renderer.draw(modelComponent);
-    // }
     for (let i = 0; i < modelComponents.length; i++) {
         let modelComponent = modelComponents[i];
         for (let i = 0; i < modelComponent.instance.meshs.length; i++) {
@@ -274,6 +257,7 @@ export function renderSpotLightArr(name: string, data: LightComponent<SpotLight>
     let res: string[][] = [];
     let uniforms = {};
     data.forEach((item, index) => {
+        if (!item.enabled) return;
         let obj: any = {};
         if (item.castShadows) {
             let { texture, viewProjectionMatrix } = rendererSpotShadowMap(scene, item);
