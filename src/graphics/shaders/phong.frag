@@ -63,6 +63,7 @@ in vec3 out_vertex_position;
 {{> fog.frag}}
 
 vec3 dDiffuseColor;
+vec3 dSpecularColor;
 
 // {{#if attributes.vertex_color}}
 // in vec4 vColor;
@@ -200,7 +201,7 @@ vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirectio
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
     // 合并各个光照分量
     vec3 diffuse  = (lightColor - ambientColor.xyz) * diff * dDiffuseColor.xyz;
-    vec3 specular = (lightColor - ambientColor.xyz)  * spec * getOutSpecularColor().xyz;
+    vec3 specular = (lightColor)  * spec *  dSpecularColor.xyz;
     return diffuse + specular ;
 }  
 
@@ -323,6 +324,7 @@ void main(void) {
     float opacity = getOutOpacityColor();
     alphaTest(opacity);
     dDiffuseColor = getOutDiffuseColor();
+    dSpecularColor = getOutSpecularColor();
     vec3 norm = normalize(out_normal);
     vec3 viewDir = normalize(uCameraPosition - out_vertex_position);
 

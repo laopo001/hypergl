@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 23rd 2018, 10:14:24 pm
+ * Last Modified: Monday, December 24th 2018, 12:42:04 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -94,15 +94,14 @@ async function main() {
         .setLocalPosition(0, 5, 0);
     app.scene.root.addChild(light);
 
-    let pointlight = new Entity('point')
+    let pointlight = new Entity('pointlight')
         .addComponent('light', {
             type: 'point',
             castShadows: true,
-
             range: 16
         })
         .setLocalPosition(0, 5, 1);
-    app.scene.root.addChild(pointlight);
+    // app.scene.root.addChild(pointlight);
 
     let sphere1 = new Entity('sphere1')
         .addComponent('model', {

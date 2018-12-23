@@ -6,7 +6,7 @@ Todos:
   new: 
     ✔ support OffscreenCanvas ()@done(18-12-21 20:32)
     ✔ plugin features @done(18-12-20 00:01)
-    ☐ pbr material
+    ☐ pbr material @started(18-12-24 00:55)
     ✔ skybox @done(18-12-13 11:14)
     ✔ cubeTexture @started(18-12-11 01:08) @done(18-12-13 11:14) @lasted(2d10h6m41s)
     ✔ fog @done(18-12-08 02:05)
