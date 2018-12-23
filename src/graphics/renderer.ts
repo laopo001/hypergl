@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 22nd 2018, 10:45:36 pm
+ * Last Modified: Sunday, December 23rd 2018, 9:10:55 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -147,7 +147,7 @@ export class RendererPlatform {
                 //     old(uniform, value);
                 //     uniform.value = value;
                 // } else {
-                if (value.BYTES_PER_ELEMENT !== null) {
+                if (value.BYTES_PER_ELEMENT != null) {
                     if (uniform.value == null) {
                         old(uniform, value);
                         uniform.value = new Array(16);

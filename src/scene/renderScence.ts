@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 23rd 2018, 1:46:02 am
+ * Last Modified: Sunday, December 23rd 2018, 9:11:10 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -39,7 +39,10 @@ export function renderScence(scene: Scene) {
     let temp: Light[] = [];
     renderer.enableBLEND();
     for (let i = 0; i < modelComponents.length; i++) {
+
         let modelComponent = modelComponents[i];
+        // if (modelComponent.entity.name === 'sphere8') debugger;
+
         if (!modelComponent.enabled) {
             continue;
         }
