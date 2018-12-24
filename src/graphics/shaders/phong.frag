@@ -56,9 +56,9 @@ uniform float {{this.shadowBias}};
 // soptLight end
 
 //////////////
-in vec2 out_vertex_texCoord0;
-in vec3 out_normal;
-in vec3 out_vertex_position;
+in vec2 v_vertex_texCoord0;
+in vec3 v_normal;
+in vec3 v_vertex_position;
 
 {{> fog.frag}}
 
@@ -74,7 +74,7 @@ vec3 dSpecularColor;
 // {{/if}}
 vec3 getOutDiffuseColor() {
     {{#if uniforms.diffuseTexture}}
-    return texture2D(diffuseTexture, out_vertex_texCoord0 - diffuseMapOffset).rgb;
+    return texture2D(diffuseTexture, v_vertex_texCoord0 - diffuseMapOffset).rgb;
     {{else}}
     return diffuseColor.rgb;
     {{/if}}
@@ -82,7 +82,7 @@ vec3 getOutDiffuseColor() {
 
 vec3 getOutSpecularColor() {
     {{#if uniforms.specularTexture}}
-    return texture2D(specularTexture, out_vertex_texCoord0 - uSpecularMapOffset).rgb;
+    return texture2D(specularTexture, v_vertex_texCoord0 - uSpecularMapOffset).rgb;
     {{else}}
     return specularColor.rgb;
     {{/if}}
@@ -90,7 +90,7 @@ vec3 getOutSpecularColor() {
 
 float getOutOpacityColor() {
     {{#if uniforms.opacityTexture}}
-    return texture2D(opacityTexture, out_vertex_texCoord0 - uOpacityMapOffset).r;
+    return texture2D(opacityTexture, v_vertex_texCoord0 - uOpacityMapOffset).r;
     {{else}}
     return opacity;
     {{/if}}
@@ -208,7 +208,7 @@ vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirectio
 
 
 float CalcPointLightShadow(samplerCube shadowMap, vec3 lightPosition, float range, int shadowType, vec2 shadowMapSize, float shadowBias) {
-    vec3  fragToLight =  out_vertex_position - lightPosition;
+    vec3  fragToLight =  v_vertex_position - lightPosition;
     float size = shadowMapSize[0];
     float currentDepth =  length(fragToLight);
     float bias = shadowBias;
@@ -239,7 +239,7 @@ float CalcPointLightShadow(samplerCube shadowMap, vec3 lightPosition, float rang
 }
 
 float CalcPointLightShadowPCF3x3(samplerCube shadowMap, vec3 lightPosition, float range) {
-    vec3 dir = out_vertex_position - lightPosition;
+    vec3 dir = v_vertex_position - lightPosition;
     vec4 shadowParams = vec4(2048, 0.0500, -0.0020, 0.1250);
     vec3 tc = normalize(dir);
     vec3 tcAbs = abs(tc);
@@ -294,9 +294,9 @@ float CalcPointLightShadowPCF3x3(samplerCube shadowMap, vec3 lightPosition, floa
 
 // 计算定点光在确定位置的光照颜色
 vec3 CalcPointLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPosition, float range) {
-    vec3 lightDirection = normalize(out_vertex_position - lightPosition);
+    vec3 lightDirection = normalize(v_vertex_position - lightPosition);
     vec3 color = CalcDirLight(normal, viewDir, lightColor, lightDirection);
-    float distance = length(lightPosition - out_vertex_position);
+    float distance = length(lightPosition - v_vertex_position);
     if(distance > range){
         return vec3(0);
     } else {
@@ -306,7 +306,7 @@ vec3 CalcPointLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPositi
 
 
 vec3 CalcSpotLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPosition, vec3 direction, float range, float innerConeAngle, float outerConeAngle) {
-    vec3 lightDirection = out_vertex_position - lightPosition;
+    vec3 lightDirection = v_vertex_position - lightPosition;
     vec3 lightDirectionNorm = normalize(lightDirection);
     float cosAngle = dot(lightDirectionNorm, direction);
     float f = smoothstep(outerConeAngle, innerConeAngle, cosAngle);
@@ -325,8 +325,8 @@ void main(void) {
     alphaTest(opacity);
     dDiffuseColor = getOutDiffuseColor();
     dSpecularColor = getOutSpecularColor();
-    vec3 norm = normalize(out_normal);
-    vec3 viewDir = normalize(uCameraPosition - out_vertex_position);
+    vec3 norm = normalize(v_normal);
+    vec3 viewDir = normalize(uCameraPosition - v_vertex_position);
 
     // start
     vec3 result = ambientColor.xyz * dDiffuseColor.xyz;
@@ -334,7 +334,7 @@ void main(void) {
     vec3 color;
     float shadow;
     {{#if this.castShadows}}
-        shadow = CalcLightShadow({{this.lightSpaceMatrix}} * vec4(out_vertex_position, 1.0), {{this.shadowMap}}, {{this.shadowType}}, {{this.shadowMapSize}}, {{this.shadowBias}});    
+        shadow = CalcLightShadow({{this.lightSpaceMatrix}} * vec4(v_vertex_position, 1.0), {{this.shadowMap}}, {{this.shadowType}}, {{this.shadowMapSize}}, {{this.shadowBias}});    
         color = CalcDirLight(norm, viewDir, vec3({{this.color}}), {{this.direction}});
         result += shadow * color;
     {{else}}
@@ -357,7 +357,7 @@ void main(void) {
 
     {{#if this.castShadows}}
         color = CalcSpotLight(norm, viewDir, vec3({{this.color}}), {{this.position}}, {{this.direction}}, {{this.range}}, {{this.innerConeAngle}}, {{this.outerConeAngle}} );
-        shadow = CalcLightShadow({{this.lightSpaceMatrix}} * vec4(out_vertex_position, 1.0), {{this.shadowMap}}, {{this.shadowType}}, {{this.shadowMapSize}}, {{this.shadowBias}});    
+        shadow = CalcLightShadow({{this.lightSpaceMatrix}} * vec4(v_vertex_position, 1.0), {{this.shadowMap}}, {{this.shadowType}}, {{this.shadowMapSize}}, {{this.shadowBias}});    
         result += shadow * color;
     {{else}}
         result += CalcSpotLight(norm, viewDir, vec3({{this.color}}), {{this.position}}, {{this.direction}}, {{this.range}}, {{this.innerConeAngle}}, {{this.outerConeAngle}} );

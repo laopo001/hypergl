@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 17th 2018, 12:19:37 am
+ * Last Modified: Monday, December 24th 2018, 10:19:16 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -120,7 +120,7 @@ export class StandardMaterial extends ColorMaterial {
     updateShader(attributes: { [s: string]: SEMANTIC }) {
         let renderer = this.app.renderer;
         // if (this.shader == null) {
-        this.shader = renderer.programGenerator.getShader('PhoneMaterial', attributes, this.uniforms, this.shaderTempletes);
+        this.shader = renderer.programGenerator.getShader('PhoneMaterial', attributes, this.uniforms, this.shaderVars);
         // }
         this.shader.uniformScope = this.uniforms;
     }

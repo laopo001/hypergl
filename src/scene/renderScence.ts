@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 24th 2018, 7:44:54 pm
+ * Last Modified: Monday, December 24th 2018, 10:27:50 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -67,7 +67,7 @@ export function renderScence(scene: Scene) {
             });
         }
         material.setLights(LightsUniforms);
-        material.setShaderTempletes('fog', scene.fog);
+        material.setshaderVars('fog', scene.fog);
         material.updateShader(attributes);
         let shader = material.shader as Shader;
         renderer.setShaderProgram(shader);
@@ -124,7 +124,7 @@ function rendererDirectionalShadowMap(scene: Scene, light: LightComponent<Direct
 let o = { 'Normal': 0, 'PCF': 1, 'PCFSoft': 2 };
 export function renderDirectionalLightArr(name: string, data: LightComponent<DirectionalLight>[], scene: Scene) {
     let uniforms = {};
-    let res: string[][] = [];
+    let res: any[] = [];
 
     data.forEach((item, index) => {
         if (!item.enabled) return;
@@ -179,7 +179,7 @@ function rendererPointShadowMap(scene: Scene, light: LightComponent<PointLight>)
     return { texture: light.shadowFrame.getTexture() };
 }
 export function renderPointLightArr(name: string, data: LightComponent<PointLight>[], scene: Scene) {
-    let res: string[][] = [];
+    let res: any[] = [];
     let uniforms = {};
     data.forEach((item, index) => {
         if (!item.enabled) return;
@@ -231,7 +231,7 @@ function rendererSpotShadowMap(scene: Scene, light: LightComponent<SpotLight>) {
 
 export function renderSpotLightArr(name: string, data: LightComponent<SpotLight>[], scene: Scene) {
 
-    let res: string[][] = [];
+    let res: any[] = [];
     let uniforms = {};
     data.forEach((item, index) => {
         if (!item.enabled) return;
