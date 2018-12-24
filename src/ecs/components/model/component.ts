@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 23rd 2018, 1:49:27 am
+ * Last Modified: Monday, December 24th 2018, 7:48:33 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -39,7 +39,7 @@ export class ModelComponent<T = StandardMaterial> extends Component<ModelInputs>
     constructor(inputs: ModelInputs, entity: Entity, system: ComponentSystem) {
         super(inputs, entity, system);
         // let model = new Model();
-        let mesh: Mesh;
+        let mesh: Drawable;
         switch (this.inputs.type) {
             case 'box':
                 mesh = Mesh.createBox(this.inputs.options);
@@ -51,7 +51,7 @@ export class ModelComponent<T = StandardMaterial> extends Component<ModelInputs>
                 mesh = Mesh.createSphere(this.inputs.options);
                 break;
             case 'model':
-                mesh = this.inputs.model as Mesh;
+                mesh = this.inputs.model as Drawable;
                 break;
         }
         if (this.inputs.type === 'model') {

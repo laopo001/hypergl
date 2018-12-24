@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 5:20:00 pm
+ * Last Modified: Monday, December 24th 2018, 7:42:43 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -52,15 +52,18 @@ export const cameraData: CameraInputs = {
 };
 
 export class CameraComponent extends Component<CameraInputs> {
-    name = 'camera';
-    instance: Camera;
     get projectionMatrix() {
         return this.instance.projectionMatrix;
     }
-    private _viewProjectionMatrix = new Mat4();
-    get viewProjectionMatrix() {
-        return this._viewProjectionMatrix.mul2(this.projectionMatrix, this.entity.getWorldTransform().clone().invert());
+    get clearColor() {
+        return this.instance.clearColor;
     }
+    set clearColor(v) {
+        this.instance.clearColor = v;
+    }
+    name = 'camera';
+    instance: Camera;
+    private _viewProjectionMatrix = new Mat4();
 
     constructor(inputs: CameraInputs, entity: Entity, system: ComponentSystem) {
         super(inputs, entity, system);
@@ -83,6 +86,9 @@ export class CameraComponent extends Component<CameraInputs> {
         camera.clearColor = this.inputs.clearColor!;
         this.instance = camera;
     }
+    viewProjectionMatrix() {
+        return this._viewProjectionMatrix.mul2(this.projectionMatrix, this.entity.getWorldTransform().clone().invert());
+    }
     setPerspective(fov: number, aspect: number, near: number, far: number) {
         this.instance.projectionMatrix.setPerspective(fov, aspect, near, far);
         return this;
@@ -90,11 +96,5 @@ export class CameraComponent extends Component<CameraInputs> {
     setOrtho(left: number, right: number, bottom: number, top: number, near: number, far: number) {
         this.instance.projectionMatrix.setOrtho(left, right, bottom, top, near, far);
         return this;
-    }
-    get clearColor() {
-        return this.instance.clearColor;
-    }
-    set clearColor(v) {
-        this.instance.clearColor = v;
     }
 }

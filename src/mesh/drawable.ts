@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 7th 2018, 2:42:48 pm
+ * Last Modified: Monday, December 24th 2018, 7:40:20 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,7 +17,7 @@ import { StandardMaterial, Material } from '../material';
 import { SEMANTIC, BUFFER, DrawMode } from '../conf';
 import { VertexType, VertexFormat } from '../graphics/vertexFormat';
 import { CreateMeshOptions, CreateBoxOptions, CreateDrawabelOptions } from '../types';
-import { Vec3, Vec2 } from '../math';
+import { Vec3, Vec2, Mat4 } from '../math';
 import { BoundingBox } from '../shape/boundingBox';
 import { BoundingSphere } from '../shape/boundingSphere';
 
@@ -30,6 +30,13 @@ export class Drawable {
     castShadow = false;
     aabb!: BoundingSphere;
     receiveShadow = false;
+    cache: {
+        matrix_model?: Mat4;
+        position?: Vec3;
+        matrix_normal?: Mat4;
+        enabled?: boolean;
+    } = {
+        };
     get type() {
         if (this.mode === 1 || this.mode === 2 || this.mode === 3) {
             return 'line';

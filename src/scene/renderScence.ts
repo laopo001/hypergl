@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 23rd 2018, 10:13:58 pm
+ * Last Modified: Monday, December 24th 2018, 7:44:54 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -23,11 +23,11 @@ import { Vec3, DEG_TO_RAD } from '../math';
 
 
 export function renderScence(scene: Scene) {
-    let modelComponents = scene.systems.model!.components;
+    let drawables = scene.systems.model!.layers;
     let lights = scene.systems.light!;
     let camera = scene.activeCamera;
-    camera.instance.updateRenderTarget();
-    modelComponents = camera.instance.getList(modelComponents);
+    // camera.instance.updateRenderTarget();
+    // modelComponents = camera.instance.getList(modelComponents);
     let renderer = scene.app.renderer;
     let { r, b, g, a } = camera.clearColor;
     renderer.setClearColor(r, b, g, a);
@@ -36,96 +36,87 @@ export function renderScence(scene: Scene) {
     let pointLightsUniforms = renderPointLightArr('pointLightArr', lights.pointLights, scene);
     let spotLightsUniforms = renderSpotLightArr('spotLightArr', lights.spotLight, scene);
     let LightsUniforms: any = { ...directionalLightsUniforms, ...pointLightsUniforms, ...spotLightsUniforms };
+    let viewProjectionMatrixData = camera.viewProjectionMatrix().data;
     let temp: Light[] = [];
     renderer.enableBLEND();
-    for (let i = 0; i < modelComponents.length; i++) {
+    for (let i = 0; i < drawables.length; i++) {
 
-        let modelComponent = modelComponents[i];
         // if (modelComponent.entity.name === 'sphere8') debugger;
 
-        if (!modelComponent.enabled) {
+        const drawable = drawables[i];
+        if (!drawable.cache.enabled) {
             continue;
         }
-
-        const model = modelComponent.instance;
-        for (let i = 0; i < model.meshs.length; i++) {
-            const drawable = model.meshs[i];
-            const material = drawable.material;
-            let attributes: { [s: string]: SEMANTIC } = {};
-            drawable.vertexBuffer.format.elements.forEach(x => {
-                attributes[SEMANTICMAP[x.semantic]] = x.semantic;
+        const material = drawable.material;
+        let attributes: { [s: string]: SEMANTIC } = {};
+        drawable.vertexBuffer.format.elements.forEach(x => {
+            attributes[SEMANTICMAP[x.semantic]] = x.semantic;
+        });
+        if (!drawable.receiveShadow) {
+            LightsUniforms._directionalLightArr.forEach(item => {
+                item.castShadows = false;
+                temp.push(item);
             });
-            if (!drawable.receiveShadow) {
-                LightsUniforms._directionalLightArr.forEach(item => {
-                    item.castShadows = false;
-                    temp.push(item);
-                });
-                LightsUniforms._pointLightArr.forEach(item => {
-                    item.castShadows = false;
-                    temp.push(item);
-                });
-                LightsUniforms._spotLightArr.forEach(item => {
-                    item.castShadows = false;
-                    temp.push(item);
-                });
-            }
-            material.setLights(LightsUniforms);
-            material.setShaderTempletes('fog', scene.fog);
-            material.updateShader(attributes);
-            let shader = material.shader as Shader;
-            renderer.setShaderProgram(shader);
-            shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
-            shader.setUniformValue('matrix_model', modelComponent.getWorldTransform().data);
-            shader.setUniformValue('matrix_normal', modelComponent.getWorldTransform().clone().invert().transpose().data);
-            shader.setUniformValue('uCameraPosition', camera.getPosition().data);
-            // shader.setUniformValue('fog', scene.fog);
-            shader.setUniformValue('fogColor', scene.fogColor.data3);
-            shader.setUniformValue('fogDensity', scene.fogDensity);
-            shader.setUniformValue('fogDist', new Float32Array([scene.fogStart, scene.fogEnd]));
-
-            renderer.draw(drawable);
-
-            if (!drawable.receiveShadow) {
-                temp.forEach(item => {
-                    item.castShadows = true;
-                });
-                temp = [];
-            }
+            LightsUniforms._pointLightArr.forEach(item => {
+                item.castShadows = false;
+                temp.push(item);
+            });
+            LightsUniforms._spotLightArr.forEach(item => {
+                item.castShadows = false;
+                temp.push(item);
+            });
         }
+        material.setLights(LightsUniforms);
+        material.setShaderTempletes('fog', scene.fog);
+        material.updateShader(attributes);
+        let shader = material.shader as Shader;
+        renderer.setShaderProgram(shader);
+        shader.setUniformValue('matrix_viewProjection', viewProjectionMatrixData);
+        shader.setUniformValue('matrix_model', drawable.cache.matrix_model!.data);
+        shader.setUniformValue('matrix_normal', drawable.cache.matrix_normal!.data);
+        shader.setUniformValue('uCameraPosition', camera.getPosition().data);
+        // shader.setUniformValue('fog', scene.fog);
+        shader.setUniformValue('fogColor', scene.fogColor.data3);
+        shader.setUniformValue('fogDensity', scene.fogDensity);
+        shader.setUniformValue('fogDist', new Float32Array([scene.fogStart, scene.fogEnd]));
+
+        renderer.draw(drawable);
+
+        if (!drawable.receiveShadow) {
+            temp.forEach(item => {
+                item.castShadows = true;
+            });
+            temp = [];
+        }
+
 
     }
     renderer.disableBLEND();
 }
 
 function rendererDirectionalShadowMap(scene: Scene, light: LightComponent<DirectionalLight>) {
-    let modelComponents = scene.systems.model!.components;
+    let drawables = scene.systems.model!.layers;
     let renderer = scene.app.renderer;
     if (!light.shadowFrame) {
         light.shadowFrame = scene.createShadowFrame(light.shadowMapWidth, light.shadowMapHeight, false);
     }
     let camera = light.instance.camera;
-    camera.updateRenderTarget(); // test
-    modelComponents = camera.getList(modelComponents);
+    // camera.updateRenderTarget(); // test
+    // modelComponents = camera.getList(modelComponents);
 
     let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
     let shader = renderer.programGenerator.getShader('depth', attributes);
     shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
 
     light.shadowFrame.beforeDraw();
-    for (let i = 0; i < modelComponents.length; i++) {
-        let modelComponent = modelComponents[i];
-        for (let i = 0; i < modelComponent.instance.meshs.length; i++) {
-            if (!modelComponent.enabled) {
-                continue;
-            }
-            const drawable = modelComponent.instance.meshs[i];
-            if (!drawable.castShadow) {
-                continue;
-            }
-            renderer.setShaderProgram(shader as Shader);
-            shader.setUniformValue('matrix_model', modelComponent.getWorldTransform().data);
-            renderer.draw(drawable);
+    for (let i = 0; i < drawables.length; i++) {
+        const drawable = drawables[i];
+        if (!drawable.cache.enabled || !drawable.castShadow) {
+            continue;
         }
+        renderer.setShaderProgram(shader as Shader);
+        shader.setUniformValue('matrix_model', drawable.cache.matrix_model!.data);
+        renderer.draw(drawable);
     }
     light.shadowFrame.afterDraw();
     return { texture: light.shadowFrame.getTexture(), viewProjectionMatrix: camera.viewProjectionMatrix };
@@ -156,18 +147,16 @@ export function renderDirectionalLightArr(name: string, data: LightComponent<Dir
     return uniforms;
 }
 function rendererPointShadowMap(scene: Scene, light: LightComponent<PointLight>) {
-    let modelComponents = scene.systems.model!.components;
+    let drawables = scene.systems.model!.layers;
     let renderer = scene.app.renderer;
     if (!light.shadowFrame) {
         light.shadowFrame = scene.createShadowFrame(light.shadowMapWidth, light.shadowMapHeight, true);
     }
     let cameras = light.instance.cameras;
-    let temp = modelComponents;
-
     for (let i = 0; i < cameras.length; i++) {
         let camera = cameras[i];
-        camera.updateRenderTarget(); // test
-        modelComponents = camera.getList(temp);
+        // camera.updateRenderTarget(); // test
+        // modelComponents = camera.getList(temp);
         let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
         let shader = renderer.programGenerator.getShader('distance', attributes);
         shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
@@ -175,20 +164,14 @@ function rendererPointShadowMap(scene: Scene, light: LightComponent<PointLight>)
         shader.setUniformValue('light_range', light.range);
         light.shadowFrame.createFramebuffer3D(i);
         light.shadowFrame.beforeDraw(i);
-        for (let i = 0; i < modelComponents.length; i++) {
-            let modelComponent = modelComponents[i];
-            for (let i = 0; i < modelComponent.instance.meshs.length; i++) {
-                if (!modelComponent.enabled) {
-                    continue;
-                }
-                const drawable = modelComponent.instance.meshs[i];
-                if (!drawable.castShadow) {
-                    continue;
-                }
-                renderer.setShaderProgram(shader as Shader);
-                shader.setUniformValue('matrix_model', modelComponent.getWorldTransform().data);
-                renderer.draw(drawable);
+        for (let i = 0; i < drawables.length; i++) {
+            const drawable = drawables[i];
+            if (!drawable.cache.enabled || !drawable.castShadow) {
+                continue;
             }
+            renderer.setShaderProgram(shader as Shader);
+            shader.setUniformValue('matrix_model', drawable.cache.matrix_model!.data);
+            renderer.draw(drawable);
         }
         light.shadowFrame.afterDraw();
     }
@@ -219,34 +202,28 @@ export function renderPointLightArr(name: string, data: LightComponent<PointLigh
 }
 
 function rendererSpotShadowMap(scene: Scene, light: LightComponent<SpotLight>) {
-    let modelComponents = scene.systems.model!.components;
+    let drawables = scene.systems.model!.layers;
     let renderer = scene.app.renderer;
     if (!light.shadowFrame) {
         light.shadowFrame = scene.createShadowFrame(light.shadowMapWidth, light.shadowMapHeight, false);
     }
     let camera = light.instance.camera;
-    camera.updateRenderTarget(); // test
-    modelComponents = camera.getList(modelComponents);
+    // camera.updateRenderTarget(); // test
+    // modelComponents = camera.getList(modelComponents);
 
     let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
     let shader = renderer.programGenerator.getShader('depth', attributes);
     shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
 
     light.shadowFrame.beforeDraw();
-    for (let i = 0; i < modelComponents.length; i++) {
-        let modelComponent = modelComponents[i];
-        for (let i = 0; i < modelComponent.instance.meshs.length; i++) {
-            if (!modelComponent.enabled) {
-                continue;
-            }
-            const drawable = modelComponent.instance.meshs[i];
-            if (!drawable.castShadow) {
-                continue;
-            }
-            renderer.setShaderProgram(shader as Shader);
-            shader.setUniformValue('matrix_model', modelComponent.getWorldTransform().data);
-            renderer.draw(drawable);
+    for (let i = 0; i < drawables.length; i++) {
+        const drawable = drawables[i];
+        if (!drawable.cache.enabled || !drawable.castShadow) {
+            continue;
         }
+        renderer.setShaderProgram(shader as Shader);
+        shader.setUniformValue('matrix_model', drawable.cache.matrix_model!.data);
+        renderer.draw(drawable);
     }
     light.shadowFrame.afterDraw();
     return { texture: light.shadowFrame.getTexture(), viewProjectionMatrix: camera.viewProjectionMatrix };
