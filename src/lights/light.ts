@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, November 29th 2018, 1:49:49 am
+ * Last Modified: Monday, December 24th 2018, 11:25:54 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -24,12 +24,10 @@ export class Light {
     shadowFrame?: Frame;
     shadowUpdateMode: ShadowUpdateMode = ShadowUpdateMode.RealTime;
     shadowType: 'Normal' | 'PCF' | 'PCFSoft' = 'PCF';
-    shadowMapWidth = 2048;
-    shadowMapHeight = 2048;
+    shadowMapSize = 2048;
+    // shadowMapHeight = 2048;
     shadowBias = 0.001;
     // shadowDarkness = 0.05;
-    constructor(public node: SceneNode) {
-        // super();
-    }
+    constructor(public node: SceneNode) {}
 
 }

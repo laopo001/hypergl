@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 10th 2018, 2:15:33 am
+ * Last Modified: Monday, December 24th 2018, 11:11:06 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -136,7 +136,7 @@ export function loadShader(gl: WebGLRenderingContext | WebGL2RenderingContext, t
     const compiled = gl.getShaderParameter(shader!, gl.COMPILE_STATUS);
     if (!compiled) {
 
-        let str = source.split('\n').map((x, index) => { return (index) + ' ' + x + '\n'; }).join('');
+        let str = source.split('\n').map((x, index) => { return (index + 1) + ' ' + x + '\n'; }).join('');
         Log.error(`${gl.VERTEX_SHADER === type ? 'VERTEX_SHADER' : 'FRAGMENT_SHADER'}\n${gl.getShaderInfoLog(shader!) as string}\n${str}`);
         return false;
     }

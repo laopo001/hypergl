@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 1st 2018, 6:30:47 pm
+ * Last Modified: Monday, December 24th 2018, 11:25:54 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -18,8 +18,8 @@ import { Camera, SceneNode } from '../scene';
 import { Vec3 } from '../math';
 export class PointLight extends Light {
     range = 10;
-    shadowMapWidth = 512;
-    shadowMapHeight = 512;
+    shadowMapSize = 512;
+    // shadowMapHeight = 512;
     shadowBias = 0.05;
     cameras: Camera[] = [];
     constructor(node: SceneNode) {

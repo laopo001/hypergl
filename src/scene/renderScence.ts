@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 24th 2018, 10:27:50 pm
+ * Last Modified: Monday, December 24th 2018, 11:25:02 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -98,7 +98,7 @@ function rendererDirectionalShadowMap(scene: Scene, light: LightComponent<Direct
     let drawables = scene.systems.model!.layers;
     let renderer = scene.app.renderer;
     if (!light.shadowFrame) {
-        light.shadowFrame = scene.createShadowFrame(light.shadowMapWidth, light.shadowMapHeight, false);
+        light.shadowFrame = scene.createShadowFrame(light.shadowMapSize, light.shadowMapSize, false);
     }
     let camera = light.instance.camera;
     // camera.updateRenderTarget(); // test
@@ -135,7 +135,7 @@ export function renderDirectionalLightArr(name: string, data: LightComponent<Dir
             setLight(name, 'lightSpaceMatrix', index, obj, uniforms, viewProjectionMatrix.data);
             setLight(name, 'castShadows', index, obj, uniforms, item.castShadows);
             setLight(name, 'shadowType', index, obj, uniforms, o[item.shadowType]);
-            setLight(name, 'shadowMapSize', index, obj, uniforms, new Float32Array([item.shadowMapWidth, item.shadowMapHeight]));
+            setLight(name, 'shadowMapSize', index, obj, uniforms, item.shadowMapSize);
             setLight(name, 'shadowBias', index, obj, uniforms, item.shadowBias);
         }
         setLight(name, 'position', index, obj, uniforms, item.getPosition().data);
@@ -150,7 +150,7 @@ function rendererPointShadowMap(scene: Scene, light: LightComponent<PointLight>)
     let drawables = scene.systems.model!.layers;
     let renderer = scene.app.renderer;
     if (!light.shadowFrame) {
-        light.shadowFrame = scene.createShadowFrame(light.shadowMapWidth, light.shadowMapHeight, true);
+        light.shadowFrame = scene.createShadowFrame(light.shadowMapSize, light.shadowMapSize, true);
     }
     let cameras = light.instance.cameras;
     for (let i = 0; i < cameras.length; i++) {
@@ -189,7 +189,7 @@ export function renderPointLightArr(name: string, data: LightComponent<PointLigh
             setLight(name, 'shadowMap', index, obj, uniforms, texture);
             setLight(name, 'castShadows', index, obj, uniforms, item.castShadows);
             setLight(name, 'shadowType', index, obj, uniforms, o[item.shadowType]);
-            setLight(name, 'shadowMapSize', index, obj, uniforms, new Float32Array([item.shadowMapWidth, item.shadowMapHeight]));
+            setLight(name, 'shadowMapSize', index, obj, uniforms, item.shadowMapSize);
             setLight(name, 'shadowBias', index, obj, uniforms, item.shadowBias);
         }
         setLight(name, 'position', index, obj, uniforms, item.getPosition().data);
@@ -205,7 +205,7 @@ function rendererSpotShadowMap(scene: Scene, light: LightComponent<SpotLight>) {
     let drawables = scene.systems.model!.layers;
     let renderer = scene.app.renderer;
     if (!light.shadowFrame) {
-        light.shadowFrame = scene.createShadowFrame(light.shadowMapWidth, light.shadowMapHeight, false);
+        light.shadowFrame = scene.createShadowFrame(light.shadowMapSize, light.shadowMapSize, false);
     }
     let camera = light.instance.camera;
     // camera.updateRenderTarget(); // test
@@ -242,7 +242,7 @@ export function renderSpotLightArr(name: string, data: LightComponent<SpotLight>
             setLight(name, 'lightSpaceMatrix', index, obj, uniforms, viewProjectionMatrix.data);
             setLight(name, 'castShadows', index, obj, uniforms, item.castShadows);
             setLight(name, 'shadowType', index, obj, uniforms, o[item.shadowType]);
-            setLight(name, 'shadowMapSize', index, obj, uniforms, new Float32Array([item.shadowMapWidth, item.shadowMapHeight]));
+            setLight(name, 'shadowMapSize', index, obj, uniforms, item.shadowMapSize);
             setLight(name, 'shadowBias', index, obj, uniforms, item.shadowBias);
         }
         setLight(name, 'position', index, obj, uniforms, item.getPosition().data);

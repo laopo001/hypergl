@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 1:15:04 am
+ * Last Modified: Monday, December 24th 2018, 11:25:54 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -95,18 +95,18 @@ export class LightComponent<T extends Light = Light> extends Component<LigthInpu
     get range(): number {
         return (this.instance as any).range;
     }
-    get shadowMapWidth() {
-        return this.instance.shadowMapWidth;
+    get shadowMapSize() {
+        return this.instance.shadowMapSize;
     }
-    set shadowMapWidth(v) {
-        this.instance.shadowMapWidth = v;
+    set shadowMapSize(v) {
+        this.instance.shadowMapSize = v;
     }
-    get shadowMapHeight() {
-        return this.instance.shadowMapHeight;
-    }
-    set shadowMapHeight(v) {
-        this.instance.shadowMapHeight = v;
-    }
+    // get shadowMapHeight() {
+    //     return this.instance.shadowMapHeight;
+    // }
+    // set shadowMapHeight(v) {
+    //     this.instance.shadowMapHeight = v;
+    // }
     get outerConeAngle(): number {
         return (this.instance as any).outerConeAngle;
     }

@@ -24,7 +24,7 @@ uniform vec3 {{this.direction}};
 uniform sampler2D {{this.shadowMap}};
 uniform mat4 {{this.lightSpaceMatrix}};
 uniform int {{this.shadowType}};
-uniform vec2 {{this.shadowMapSize}};
+uniform float {{this.shadowMapSize}};
 uniform float {{this.shadowBias}};
 {{/each}}
 // directionalLight end
@@ -35,7 +35,7 @@ uniform vec4 {{this.color}};
 uniform float {{this.range}};
 uniform samplerCube {{this.shadowMap}};
 uniform int {{this.shadowType}};
-uniform vec2 {{this.shadowMapSize}};
+uniform float {{this.shadowMapSize}};
 uniform float {{this.shadowBias}};
 {{/each}}
 // pointLight end
@@ -50,7 +50,7 @@ uniform float {{this.outerConeAngle}};
 uniform sampler2D {{this.shadowMap}};
 uniform mat4 {{this.lightSpaceMatrix}};
 uniform int {{this.shadowType}};
-uniform vec2 {{this.shadowMapSize}};
+uniform float {{this.shadowMapSize}};
 uniform float {{this.shadowBias}};
 {{/each}}
 // soptLight end
@@ -112,7 +112,6 @@ float unpackRGBAToDepth( const in vec4 v ) {
 }
 vec3 lessThan2(vec3 a, vec3 b) {
     return clamp((b - a)*1000.0, 0.0, 1.0);
-    // softer version
 }
 
 float texture2DCompare( sampler2D depths, vec2 uv, float compare ) {
@@ -134,7 +133,7 @@ float texture2DShadowLerp( sampler2D depths, vec2 size, vec2 uv, float compare )
     return c;
 }
 // DirLight or SpotLight
-float CalcLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, int shadowType, vec2 shadowMapSize, float shadowBias) {
+float CalcLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, int shadowType, float shadowMapSize, float shadowBias) {
     // 执行透视除法
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
       // 变换到[0,1]的范围
@@ -148,7 +147,7 @@ float CalcLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, int shadowTyp
     // if(frustumTest) {
         if(shadowType == 1) {
             float shadowRadius = 1.0;
-            vec2 texelSize = vec2( 1.0 ) / shadowMapSize;
+            vec2 texelSize = vec2( 1.0 ) / vec2( shadowMapSize );
             float dx0 = - texelSize.x * shadowRadius;
             float dy0 = - texelSize.y * shadowRadius;
             float dx1 = + texelSize.x * shadowRadius;
@@ -166,21 +165,23 @@ float CalcLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, int shadowTyp
             ) * ( 1.0 / 9.0 );
         } else if (shadowType==2) {
             float shadowRadius = 1.0;
-            vec2 texelSize = vec2( 1.0 ) / shadowMapSize;
+            vec2 sizeVec2 = vec2( shadowMapSize );
+            vec2 texelSize = vec2( 1.0 ) / sizeVec2;
             float dx0 = - texelSize.x * shadowRadius;
             float dy0 = - texelSize.y * shadowRadius;
             float dx1 = + texelSize.x * shadowRadius;
             float dy1 = + texelSize.y * shadowRadius;
+            // vec2 sizeVec2 = vec2( shadowMapSize );
             shadow = (
-                texture2DShadowLerp( shadowMap, shadowMapSize, projCoords.xy + vec2( dx0, dy0 ), currentDepth ) +
-                texture2DShadowLerp( shadowMap, shadowMapSize, projCoords.xy + vec2( 0.0, dy0 ), currentDepth ) +
-                texture2DShadowLerp( shadowMap, shadowMapSize, projCoords.xy + vec2( dx1, dy0 ), currentDepth ) +
-                texture2DShadowLerp( shadowMap, shadowMapSize, projCoords.xy + vec2( dx0, 0.0 ), currentDepth ) +
-                texture2DShadowLerp( shadowMap, shadowMapSize, projCoords.xy, currentDepth ) +
-                texture2DShadowLerp( shadowMap, shadowMapSize, projCoords.xy + vec2( dx1, 0.0 ), currentDepth ) +
-                texture2DShadowLerp( shadowMap, shadowMapSize, projCoords.xy + vec2( dx0, dy1 ), currentDepth ) +
-                texture2DShadowLerp( shadowMap, shadowMapSize, projCoords.xy + vec2( 0.0, dy1 ), currentDepth ) +
-                texture2DShadowLerp( shadowMap, shadowMapSize, projCoords.xy + vec2( dx1, dy1 ), currentDepth )
+                texture2DShadowLerp( shadowMap, sizeVec2, projCoords.xy + vec2( dx0, dy0 ), currentDepth ) +
+                texture2DShadowLerp( shadowMap, sizeVec2, projCoords.xy + vec2( 0.0, dy0 ), currentDepth ) +
+                texture2DShadowLerp( shadowMap, sizeVec2, projCoords.xy + vec2( dx1, dy0 ), currentDepth ) +
+                texture2DShadowLerp( shadowMap, sizeVec2, projCoords.xy + vec2( dx0, 0.0 ), currentDepth ) +
+                texture2DShadowLerp( shadowMap, sizeVec2, projCoords.xy, currentDepth ) +
+                texture2DShadowLerp( shadowMap, sizeVec2, projCoords.xy + vec2( dx1, 0.0 ), currentDepth ) +
+                texture2DShadowLerp( shadowMap, sizeVec2, projCoords.xy + vec2( dx0, dy1 ), currentDepth ) +
+                texture2DShadowLerp( shadowMap, sizeVec2, projCoords.xy + vec2( 0.0, dy1 ), currentDepth ) +
+                texture2DShadowLerp( shadowMap, sizeVec2, projCoords.xy + vec2( dx1, dy1 ), currentDepth )
             ) * ( 1.0 / 9.0 );
         } else {
             shadow = texture2DCompare( shadowMap, projCoords.xy, currentDepth );
@@ -207,14 +208,14 @@ vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirectio
 
 
 
-float CalcPointLightShadow(samplerCube shadowMap, vec3 lightPosition, float range, int shadowType, vec2 shadowMapSize, float shadowBias) {
+float CalcPointLightShadow(samplerCube shadowMap, vec3 lightPosition, float range, int shadowType, float shadowMapSize, float shadowBias) {
     vec3  fragToLight =  v_vertex_position - lightPosition;
-    float size = shadowMapSize[0];
+    float size = shadowMapSize;
     float currentDepth =  length(fragToLight);
     float bias = shadowBias;
     float shadow = 0.0;
     if(shadowType == 1 || shadowType == 2) {
-        float offset = 1.0 / size; // 2048.0
+        float offset = 1.0 / size;
         for(float x = -offset; x <= offset; x += offset)
         {
             for(float y = -offset; y <= offset; y += offset)

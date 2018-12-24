@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 28th 2018, 8:27:46 pm
+ * Last Modified: Monday, December 24th 2018, 11:25:54 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -26,8 +26,8 @@ export class SpotLight extends Light {
     range = 20;
     innerConeAngle = 70;
     outerConeAngle = 75;
-    shadowMapWidth = 512;
-    shadowMapHeight = 512;
+    shadowMapSize = 512;
+    // shadowMapHeight = 512;
     camera: Camera;
     private _direction = new Vec3(0, -1, 0);
     constructor(node: SceneNode) {
