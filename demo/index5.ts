@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 2nd 2018, 12:20:10 pm
+ * Last Modified: Monday, December 24th 2018, 11:56:04 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -43,18 +43,18 @@ let vert = `
 attribute vec3 aPosition;
 attribute vec2 aUv0;
 
-uniform mat4 matrix_model;
-uniform mat4 matrix_viewProjection;
+uniform mat4 uModelMatrix;
+uniform mat4 uViewProjectionMatrix;
 uniform float uTime;
 
 varying vec2 vUv0;
 
 void main(void)
 {
-    vec4 pos = matrix_model * vec4(aPosition, 1.0);
+    vec4 pos = uModelMatrix * vec4(aPosition, 1.0);
     pos.x += sin(uTime + pos.y * 4.0) * 0.1;
     vUv0 = aUv0;
-    gl_Position = matrix_viewProjection * pos;
+    gl_Position = uViewProjectionMatrix * pos;
 }`;
 
 let frag = `

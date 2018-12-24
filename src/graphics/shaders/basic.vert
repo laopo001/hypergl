@@ -1,6 +1,6 @@
 {{#if data.GL2}}{{> gles3.vert}}{{/if}}
-uniform mat4 matrix_model;
-uniform mat4 matrix_viewProjection;
+uniform mat4 uModelMatrix;
+uniform mat4 uViewProjectionMatrix;
 
 attribute vec3 vertex_position;
 {{#if attributes.vertex_color}}
@@ -13,8 +13,8 @@ varying vec2 out_vertex_texCoord0;
 {{/if}}
 
 vec4 getPosition() {
-    vec4 posW = matrix_model * vec4(vertex_position, 1.0);
-    return matrix_viewProjection * posW;
+    vec4 posW = uModelMatrix * vec4(vertex_position, 1.0);
+    return uViewProjectionMatrix * posW;
 }
 
 

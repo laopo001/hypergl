@@ -4,9 +4,9 @@ precision highp float;
 precision highp sampler2DShadow;
 #endif
 
-uniform float opacity;
-{{#if uniforms.diffuseColor}}
-uniform vec4 diffuseColor;
+uniform float uOpacity;
+{{#if uniforms.uDiffuseColor}}
+uniform vec4 uDiffuseColor;
 {{/if}}
 
 
@@ -16,15 +16,15 @@ vec4 getOutColor() {
     return vColor;
 }
 {{else}}
-// uniform vec4 diffuseColor;
+// uniform vec4 uDiffuseColor;
 vec4 getOutColor() {
-    return diffuseColor;
+    return uDiffuseColor;
 }
 {{/if}}
 
 
 float getOutOpacityColor() {
-    return opacity;
+    return uOpacity;
 }
 
 void main(void)

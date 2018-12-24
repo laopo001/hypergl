@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 12th 2018, 3:15:47 pm
+ * Last Modified: Tuesday, December 25th 2018, 12:14:57 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -24,14 +24,14 @@ export class ColorMaterial extends Material {
     }
     set diffuseColor(value: Color) {
         this._diffuseColor = value;
-        this.setUniform('diffuseColor', this.diffuseColor.data);
+        this.setUniform('uDiffuseColor', this.diffuseColor.data);
     }
     get opacity() {
         return this._opacity;
     }
     set opacity(value) {
         this._opacity = value;
-        this.setUniform('opacity', this.opacity);
+        this.setUniform('uOpacity', this.opacity);
     }
 
     shader?: Shader;
@@ -39,8 +39,8 @@ export class ColorMaterial extends Material {
     protected _opacity: number = 1;
     constructor(name?: string) {
         super(name);
-        this.setUniform('diffuseColor', this.diffuseColor.data);
-        this.setUniform('opacity', this.opacity);
+        this.setUniform('uDiffuseColor', this.diffuseColor.data);
+        this.setUniform('uOpacity', this.opacity);
         // this.update();
     }
     // update() {

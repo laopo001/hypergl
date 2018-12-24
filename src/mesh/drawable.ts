@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 24th 2018, 7:40:20 pm
+ * Last Modified: Monday, December 24th 2018, 11:56:58 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -31,9 +31,9 @@ export class Drawable {
     aabb!: BoundingSphere;
     receiveShadow = false;
     cache: {
-        matrix_model?: Mat4;
+        uModelMatrix?: Mat4;
         position?: Vec3;
-        matrix_normal?: Mat4;
+        uNormalMatrix?: Mat4;
         enabled?: boolean;
     } = {
         };

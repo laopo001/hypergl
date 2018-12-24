@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 24th 2018, 7:40:20 pm
+ * Last Modified: Monday, December 24th 2018, 11:56:58 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -35,13 +35,13 @@ export class ModelComponentSystem extends ComponentSystem {
                 this.opacityLayers = [];
                 this.normalLayers = [];
                 this.components.forEach(item => {
-                    let matrix_model = item.getWorldTransform();
+                    let uModelMatrix = item.getWorldTransform();
                     let position = item.getPosition();
-                    let matrix_normal = item.getWorldTransform().clone().invert().transpose();
+                    let uNormalMatrix = item.getWorldTransform().clone().invert().transpose();
                     item.instance.meshs.forEach(drawable => {
-                        drawable.cache.matrix_model = matrix_model;
+                        drawable.cache.uModelMatrix = uModelMatrix;
                         drawable.cache.position = position;
-                        drawable.cache.matrix_normal = matrix_normal;
+                        drawable.cache.uNormalMatrix = uNormalMatrix;
                         drawable.cache.enabled = item.enabled;
                         if ((drawable.material as StandardMaterial).opacity < 1 || (drawable.material as StandardMaterial).opacityMap) {
                             this.opacityLayers.push(drawable);

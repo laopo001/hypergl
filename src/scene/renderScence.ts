@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 24th 2018, 11:25:02 pm
+ * Last Modified: Tuesday, December 25th 2018, 12:18:39 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -71,14 +71,14 @@ export function renderScence(scene: Scene) {
         material.updateShader(attributes);
         let shader = material.shader as Shader;
         renderer.setShaderProgram(shader);
-        shader.setUniformValue('matrix_viewProjection', viewProjectionMatrixData);
-        shader.setUniformValue('matrix_model', drawable.cache.matrix_model!.data);
-        shader.setUniformValue('matrix_normal', drawable.cache.matrix_normal!.data);
+        shader.setUniformValue('uViewProjectionMatrix', viewProjectionMatrixData);
+        shader.setUniformValue('uModelMatrix', drawable.cache.uModelMatrix!.data);
+        shader.setUniformValue('uNormalMatrix', drawable.cache.uNormalMatrix!.data);
         shader.setUniformValue('uCameraPosition', camera.getPosition().data);
         // shader.setUniformValue('fog', scene.fog);
-        shader.setUniformValue('fogColor', scene.fogColor.data3);
-        shader.setUniformValue('fogDensity', scene.fogDensity);
-        shader.setUniformValue('fogDist', new Float32Array([scene.fogStart, scene.fogEnd]));
+        shader.setUniformValue('uFogColor', scene.fogColor.data3);
+        shader.setUniformValue('uFogDensity', scene.fogDensity);
+        shader.setUniformValue('uFogDist', new Float32Array([scene.fogStart, scene.fogEnd]));
 
         renderer.draw(drawable);
 
@@ -106,7 +106,7 @@ function rendererDirectionalShadowMap(scene: Scene, light: LightComponent<Direct
 
     let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
     let shader = renderer.programGenerator.getShader('depth', attributes);
-    shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
+    shader.setUniformValue('uViewProjectionMatrix', camera.viewProjectionMatrix.data);
 
     light.shadowFrame.beforeDraw();
     for (let i = 0; i < drawables.length; i++) {
@@ -115,7 +115,7 @@ function rendererDirectionalShadowMap(scene: Scene, light: LightComponent<Direct
             continue;
         }
         renderer.setShaderProgram(shader as Shader);
-        shader.setUniformValue('matrix_model', drawable.cache.matrix_model!.data);
+        shader.setUniformValue('uModelMatrix', drawable.cache.uModelMatrix!.data);
         renderer.draw(drawable);
     }
     light.shadowFrame.afterDraw();
@@ -159,7 +159,7 @@ function rendererPointShadowMap(scene: Scene, light: LightComponent<PointLight>)
         // modelComponents = camera.getList(temp);
         let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
         let shader = renderer.programGenerator.getShader('distance', attributes);
-        shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
+        shader.setUniformValue('uViewProjectionMatrix', camera.viewProjectionMatrix.data);
         shader.setUniformValue('view_position', camera.node.getPosition().data);
         shader.setUniformValue('light_range', light.range);
         light.shadowFrame.createFramebuffer3D(i);
@@ -170,7 +170,7 @@ function rendererPointShadowMap(scene: Scene, light: LightComponent<PointLight>)
                 continue;
             }
             renderer.setShaderProgram(shader as Shader);
-            shader.setUniformValue('matrix_model', drawable.cache.matrix_model!.data);
+            shader.setUniformValue('uModelMatrix', drawable.cache.uModelMatrix!.data);
             renderer.draw(drawable);
         }
         light.shadowFrame.afterDraw();
@@ -213,7 +213,7 @@ function rendererSpotShadowMap(scene: Scene, light: LightComponent<SpotLight>) {
 
     let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
     let shader = renderer.programGenerator.getShader('depth', attributes);
-    shader.setUniformValue('matrix_viewProjection', camera.viewProjectionMatrix.data);
+    shader.setUniformValue('uViewProjectionMatrix', camera.viewProjectionMatrix.data);
 
     light.shadowFrame.beforeDraw();
     for (let i = 0; i < drawables.length; i++) {
@@ -222,7 +222,7 @@ function rendererSpotShadowMap(scene: Scene, light: LightComponent<SpotLight>) {
             continue;
         }
         renderer.setShaderProgram(shader as Shader);
-        shader.setUniformValue('matrix_model', drawable.cache.matrix_model!.data);
+        shader.setUniformValue('uModelMatrix', drawable.cache.uModelMatrix!.data);
         renderer.draw(drawable);
     }
     light.shadowFrame.afterDraw();
