@@ -53,7 +53,7 @@ uniform vec3 uLightColor;
 
 uniform vec2 uMetallicRoughnessValues;
 uniform vec4 uBaseColorFactor;
-uniform vec3 uCamera;
+uniform vec3 uCameraPosition;
 // debugging flags used for shader output of intermediate PBR variables
 uniform vec4 uScaleDiffBaseMR;
 uniform vec4 uScaleFGDSpec;
@@ -83,9 +83,9 @@ struct PBRInfo {
     float VdotH;
     // cos angle between view direction and half vector
     float perceptualRoughness;
-    // roughness value, as authored by the model creator (input to shader)
+    // roughness value, as authored by the model creator (input to shader) 粗糙度
     float metalness;
-    // metallic value at the surface
+    // metallic value at the surface 金属度
     vec3 reflectance0;
     // full reflectance color (normal incidence angle)
     vec3 reflectance90;
@@ -238,7 +238,7 @@ void main() {
     vec3 specularEnvironmentR90 = vec3(1.0, 1.0, 1.0) * reflectance90;
     vec3 n = getNormal();
     // normal at surface point
-    vec3 v = normalize(uCamera - v_vertex_position);
+    vec3 v = normalize(uCameraPosition - v_vertex_position);
     // Vector from surface point to camera
     vec3 l = normalize(uLightDirection);
     // Vector from surface point to light
