@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 24th 2018, 7:48:33 pm
+ * Last Modified: Wednesday, December 26th 2018, 12:55:58 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -26,9 +26,9 @@ export interface ModelInputs {
     material?: Material;
 }
 export class ModelComponent<T = StandardMaterial> extends Component<ModelInputs> {
-    get material(): T {
-        return this.instance.meshs[0].material as any;
-    }
+    // get material(): T {
+    //     return this.instance.meshs[0].material as any;
+    // }
     // set material(x: T) {
     //     this.instance.meshs[0].material = x as any;
     // }
@@ -76,5 +76,14 @@ export class ModelComponent<T = StandardMaterial> extends Component<ModelInputs>
             });
         }
 
+    }
+    drawable(index = 0) {
+        return this.instance.meshs[index];
+    }
+    material(index = 0): T {
+        return this.instance.meshs[index].material as any;
+    }
+    get length() {
+        return this.instance.meshs.length;
     }
 }

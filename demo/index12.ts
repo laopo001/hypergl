@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 26th 2018, 12:22:06 am
+ * Last Modified: Wednesday, December 26th 2018, 12:52:38 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -108,8 +108,8 @@ async function main() {
             type: 'sphere',
         })
         .setLocalPosition(3, 0, 0);
-    sphere1.model.material.opacity = 0.3;
-    sphere1.model.material.diffuseColor = new Color(1, 0, 0);
+    sphere1.model.material().opacity = 0.3;
+    sphere1.model.material().diffuseColor = new Color(1, 0, 0);
     app.scene.root.addChild(sphere1);
 
     let sphere2 = new Entity('sphere2')
@@ -119,7 +119,7 @@ async function main() {
         .setLocalPosition(1.5, 0, 0);
     let misc = new Texture();
     misc.setSource(await loadImage('assets/images/misc.jpg'));
-    sphere2.model.material.diffuseMap = misc;
+    sphere2.model.material().diffuseMap = misc;
     app.scene.root.addChild(sphere2);
 
     let sphere3 = new Entity('sphere3')
@@ -128,8 +128,8 @@ async function main() {
         })
         .setLocalPosition(0, 0, 0);
 
-    sphere3.model.material.diffuseMap = misc;
-    sphere3.model.material.diffuseMapOffset = new Vec2(0.5, 0.5);
+    sphere3.model.material().diffuseMap = misc;
+    sphere3.model.material().diffuseMapOffset = new Vec2(0.5, 0.5);
     app.scene.root.addChild(sphere3);
 
     let sphere4 = new Entity('sphere4')
@@ -139,8 +139,8 @@ async function main() {
         .setLocalPosition(-1.5, 0, 0);
     let tree = new Texture();
     tree.setSource(await loadImage('assets/images/tree.png'));
-    sphere4.model.material.diffuseMap = misc;
-    sphere4.model.material.opacityMap = flare;
+    sphere4.model.material().diffuseMap = misc;
+    sphere4.model.material().opacityMap = flare;
     app.scene.root.addChild(sphere4);
 
     let sphere5 = new Entity('sphere5')
@@ -156,10 +156,10 @@ async function main() {
             type: 'sphere',
         })
         .setLocalPosition(0, 0, -1.5);
-    sphere6.model.material.diffuseMap = misc;
-    sphere6.model.material.opacityMap = flare;
-    // sphere6.model.material.opacityMapOffset = new Vec2(0.3, 0.1);
-    sphere6.model.material.alphaTest = 0.9;
+    sphere6.model.material().diffuseMap = misc;
+    sphere6.model.material().opacityMap = flare;
+    // sphere6.model.material().opacityMapOffset = new Vec2(0.3, 0.1);
+    sphere6.model.material().alphaTest = 0.9;
     app.scene.root.addChild(sphere6);
 
     let sphere7 = new Entity('sphere7')
@@ -167,10 +167,10 @@ async function main() {
             type: 'sphere',
         })
         .setLocalPosition(1.5, 0, -1.5);
-    // sphere7.model.material.diffuseMap = misc;
-    // sphere7.model.material.specularMap = misc;
-    sphere7.model.material.specularColor = new Color(1, 0, 1);
-    sphere7.model.material.shininess = 3;
+    // sphere7.model.material().diffuseMap = misc;
+    // sphere7.model.material().specularMap = misc;
+    sphere7.model.material().specularColor = new Color(1, 0, 1);
+    sphere7.model.material().shininess = 3;
     app.scene.root.addChild(sphere7);
 
     let sphere8 = new Entity('sphere8')
