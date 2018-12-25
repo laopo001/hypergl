@@ -17,6 +17,7 @@ uniform float uAlphaTest;
 uniform float uFogDensity;
 uniform vec3 uFogColor;
 uniform vec2 uFogDist;
+// uniform float uExposure
 // directionalLight start
 {{#each uniforms._directionalLightArr}}
 uniform vec4 {{this.color}};
@@ -61,6 +62,8 @@ in vec3 v_normal;
 in vec3 v_vertex_position;
 
 {{> fog.frag}}
+{{> hdr.frag}}
+{{> gamma.frag}}
 
 vec3 dDiffuseColor;
 vec3 duSpecularColor;
@@ -323,8 +326,8 @@ void main(void) {
     // vec4 outColor = getOutColor();
     float opacity = getOutOpacityColor();
     alphaTest(opacity);
-    dDiffuseColor = getOutDiffuseColor();
-    duSpecularColor = getOutuSpecularColor();
+    dDiffuseColor = GammaToLinear( getOutDiffuseColor() );
+    duSpecularColor = GammaToLinear( getOutuSpecularColor() );
     vec3 norm = normalize(v_normal);
     vec3 viewDir = normalize(uCameraPosition - v_vertex_position);
 
@@ -367,6 +370,8 @@ void main(void) {
     // end
     
     result = addFog(result);
+    result = toneMap(result);
+    result = LinearToGamma(result);
     gl_FragColor = vec4(result, opacity);
 
 }

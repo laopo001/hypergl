@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 16th 2018, 2:41:45 am
+ * Last Modified: Tuesday, December 25th 2018, 10:50:45 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -40,7 +40,16 @@ export class Scene {
     fogDensity = 0.01;
     fogStart = 1;
     fogEnd = 1000;
-    baseMaterial;
+    /**
+     * HDR 色调映射
+     * @memberof Scene
+     */
+    exposure = 1;
+    /**
+     * Gamma校正
+     * @memberof Scene
+     */
+    gammaCorrection = 2.2;
     readonly lights: {
         directionalLights: DirectionalLight[],
         pointLights: PointLight[],
@@ -53,7 +62,6 @@ export class Scene {
 
     app!: Application;
     entitys: Entity[] = [];
-
     root: Entity = new Entity('root');
     // readonly cameras: Camera[] = [];
     systems: SystemRegistry;

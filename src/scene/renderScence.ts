@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 25th 2018, 12:18:39 am
+ * Last Modified: Tuesday, December 25th 2018, 11:59:38 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -68,6 +68,7 @@ export function renderScence(scene: Scene) {
         }
         material.setLights(LightsUniforms);
         material.setshaderVars('fog', scene.fog);
+        material.setshaderVars('exposure', scene.exposure);
         material.updateShader(attributes);
         let shader = material.shader as Shader;
         renderer.setShaderProgram(shader);
@@ -76,6 +77,8 @@ export function renderScence(scene: Scene) {
         shader.setUniformValue('uNormalMatrix', drawable.cache.uNormalMatrix!.data);
         shader.setUniformValue('uCameraPosition', camera.getPosition().data);
         // shader.setUniformValue('fog', scene.fog);
+        shader.setUniformValue('uExposure', scene.exposure);
+        shader.setUniformValue('uGammaCorrection', scene.gammaCorrection);
         shader.setUniformValue('uFogColor', scene.fogColor.data3);
         shader.setUniformValue('uFogDensity', scene.fogDensity);
         shader.setUniformValue('uFogDist', new Float32Array([scene.fogStart, scene.fogEnd]));

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 24th 2018, 11:09:36 pm
+ * Last Modified: Wednesday, December 26th 2018, 12:22:06 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -81,7 +81,7 @@ async function main() {
         .addComponent('listener', {})
         .setPosition(0, 5, 5)
         .lookAt(new Vec3(0, 0, 0))
-        .addComponent('script', [new FirstPersonCamera({ speed: 0.1 })]);
+        .addComponent('script', [new FirstPersonCamera({ speed: 0.05 })]);
     app.scene.root.addChild(camera);
 
     let light = new Entity('light')
