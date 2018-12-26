@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 26th 2018, 12:52:38 am
+ * Last Modified: Thursday, December 27th 2018, 12:24:46 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,7 +13,10 @@
 
 
 
-import { Entity, StandardMaterial, Config, SkyMaterial, Application, Vec3, Color, Texture, Mesh, Line, ColorMaterial, FOG, GltfAssetLoader, Vec2 } from 'hypergl';
+import {
+    Entity, StandardMaterial, Config, SkyMaterial, Application, Vec3, Color, Texture,
+    PBRMaterial, Mesh, Line, ColorMaterial, FOG, GltfAssetLoader, Vec2
+} from 'hypergl';
 import { FirstPersonCamera } from './utils/first_person_camera';
 import { Rotate } from './utils/rotate';
 // tslint:disable-next-line:no-duplicate-imports
@@ -179,6 +182,17 @@ async function main() {
         })
         .setLocalPosition(3, 0, -1.5);
     app.scene.root.addChild(sphere8);
+
+
+    let pbr_m = new PBRMaterial();
+    pbr_m.baseColor = new Color(1, 0, 0);
+    let sphere9 = new Entity('sphere8')
+        .addComponent('model', {
+            type: 'sphere',
+            material: pbr_m
+        })
+        .setLocalPosition(3, 0, 3);
+    app.scene.root.addChild(sphere9);
 
 
     let plane = new Entity('plane')

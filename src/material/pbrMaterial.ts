@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 26th 2018, 9:39:54 pm
+ * Last Modified: Thursday, December 27th 2018, 12:25:28 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,13 +17,14 @@ import { Vec3 } from '../math';
 import { Texture } from '../texture';
 import { Nullable } from '../types';
 import { SEMANTIC } from '../conf';
+import { Color } from '../core';
 
 export class PBRMaterial extends Material {
     /**
     * 反照率 Albedo
     * @memberof PBRMaterial
     */
-    private _baseColor = new Vec3();
+    private _baseColor = new Color();
     get baseColor() {
         return this._baseColor;
     }
@@ -87,7 +88,7 @@ export class PBRMaterial extends Material {
     }
     updateShader(attributes: { [s: string]: SEMANTIC }) {
         let renderer = this.app.renderer;
-        this.shader = renderer.programGenerator.getShader('PhoneMaterial', attributes, this.uniforms, this.shaderVars);
+        this.shader = renderer.programGenerator.getShader('PBRMaterial', attributes, this.uniforms, this.shaderVars);
         this.shader.uniformScope = this.uniforms;
     }
 }

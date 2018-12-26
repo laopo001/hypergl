@@ -1,11 +1,12 @@
-#define USE_IBL 1
+{{#if data.GL2}}{{> gles3.frag}}{{else}}{{> gles2.frag}}{{/if}}
+// #define USE_IBL 1
 #define HAS_NORMALS 1
 #define HAS_UV 1
 {{#if uniforms.uBaseColorSampler}}
 #define HAS_METALROUGHNESSMAP 1
 {{/if}}
-{{#if uniforms.uDiffuseSampler}}
-#define uMetallicRoughnessSampler 1
+{{#if uniforms.uMetallicRoughnessSampler}}
+#define HAS_METALROUGHNESSMAP 1
 {{/if}}
 {{#if uniforms.uNormalSampler}}
 #define HAS_NORMALMAP 1
@@ -30,8 +31,8 @@
 //     https://github.com/KhronosGroup/glTF-WebGL-PBR/#environment-maps
 // [4] "An Inexpensive BRDF Model for Physically based Rendering" by Christophe Schlick
 //     https://www.cs.virginia.edu/~jdl/bib/appearance/analytic%20models/schlick94b.pdf
-#extension GL_EXT_shader_texture_lod: enable
-#extension GL_OES_standard_derivatives : enable
+// #extension GL_EXT_shader_texture_lod: enable
+// #extension GL_OES_standard_derivatives : enable
 
 precision highp float;
 uniform vec3 uLightDirection;
@@ -68,13 +69,13 @@ uniform vec3 uCameraPosition;
 uniform vec4 uScaleDiffBaseMR;
 uniform vec4 uScaleFGDSpec;
 uniform vec4 uScaleIBLAmbient;
-varying vec3 v_vertex_position;
-varying vec2 v_vertex_texCoord0;
+in vec3 v_vertex_position;
+in vec2 v_vertex_texCoord0;
 #ifdef HAS_NORMALS
     #ifdef HAS_TANGENTS
-        varying mat3 v_TBN;
+        in mat3 v_TBN;
     #else
-        varying vec3 v_normal;
+        in vec3 v_normal;
     #endif
 #endif
 
@@ -246,20 +247,20 @@ void main() {
     float reflectance90 = clamp(reflectance * 25.0, 0.0, 1.0);
     vec3 specularEnvironmentR0 = uSpecularColor.rgb;
     vec3 specularEnvironmentR90 = vec3(1.0, 1.0, 1.0) * reflectance90;
-    vec3 n = getNormal();
+    vec3 normal = getNormal();
     // normal at surface point
-    vec3 v = normalize(uCameraPosition - v_vertex_position);
+    vec3 dViewDirNorm = normalize(uCameraPosition - v_vertex_position);
     // Vector from surface point to camera
-    vec3 l = normalize(uLightDirection);
+    vec3 lightDirNorm = normalize(uLightDirection);
     // Vector from surface point to light
-    vec3 h = normalize(l+v);
-    // Half vector between both l and v
-    vec3 reflection = -normalize(reflect(v, n));
-    float NdotL = clamp(dot(n, l), 0.001, 1.0);
-    float NdotV = clamp(abs(dot(n, v)), 0.001, 1.0);
-    float NdotH = clamp(dot(n, h), 0.0, 1.0);
-    float LdotH = clamp(dot(l, h), 0.0, 1.0);
-    float VdotH = clamp(dot(v, h), 0.0, 1.0);
+    vec3 halfwayDir  = normalize(lightDirNorm+dViewDirNorm);
+    // Half vector between both lightDirNorm and dViewDirNorm
+    vec3 reflection = -normalize(reflect(dViewDirNorm, normal));
+    float NdotL = clamp(dot(normal, lightDirNorm), 0.001, 1.0);
+    float NdotV = clamp(abs(dot(normal, dViewDirNorm)), 0.001, 1.0);
+    float NdotH = clamp(dot(normal, halfwayDir ), 0.0, 1.0);
+    float LdotH = clamp(dot(lightDirNorm, halfwayDir ), 0.0, 1.0);
+    float VdotH = clamp(dot(dViewDirNorm, halfwayDir ), 0.0, 1.0);
     PBRInfo pbrInputs = PBRInfo(
     NdotL, NdotV, NdotH, LdotH, VdotH, perceptualRoughness, metallic, specularEnvironmentR0, specularEnvironmentR90, alphaRoughness, diffuseColor, uSpecularColor
     );
@@ -274,7 +275,7 @@ void main() {
     vec3 color = NdotL * uLightColor * (diffuseContrib + specContrib);
     // Calculate lighting contribution from image based lighting source (IBL)
     #ifdef USE_IBL
-        color += getIBLContribution(pbrInputs, n, reflection);
+        color += getIBLContribution(pbrInputs, normal, reflection);
     #endif
     
     // Apply optional PBR terms for additional (optional) shading

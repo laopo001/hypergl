@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 23rd 2018, 9:10:55 pm
+ * Last Modified: Thursday, December 27th 2018, 12:33:32 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -61,6 +61,7 @@ export class RendererPlatform {
             }
         }
         this.init();
+        this.initExtension();
     }
     init() {
         let gl = this.gl;
@@ -236,6 +237,11 @@ export class RendererPlatform {
         // gl.polygonOffset(2, 2);
         gl.clearColor(r, g, b, a);
     }
+    initExtension() {
+        let gl = this.gl;
+        gl.getExtension('EXT_shader_texture_lod');
+        gl.getExtension('OES_standard_derivatives');
+    }
     get contextAttributes() {
         return this.gl.getContextAttributes();
     }
@@ -352,9 +358,6 @@ export class RendererPlatform {
                 // CUBE
                 gl.activeTexture(gl['TEXTURE' + t]);
                 gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture.webglTexture);
-                // gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-                // gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-                // gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_R, gl.CLAMP_TO_EDGE);
                 gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, this.glFilter[texture.minFilter]);
                 gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MAG_FILTER, this.glFilter[texture.magFilter]);
                 gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, this.glAddress[texture.wrapU]);
@@ -368,59 +371,6 @@ export class RendererPlatform {
             texture.webglTexture = this.initTexture(gl, texture);
             this.loadTexture(gl, program, variable, texture, t);
         }
-        ////////////////////////
-        /*
-        if (texture.isCube) {
-            if (texture.webglTexture) {
-                let u_Sampler = gl.getUniformLocation(program, name);
-                gl.activeTexture(gl['TEXTURE' + t]);
-                gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-                gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-                gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_R, gl.CLAMP_TO_EDGE);
-                // gl.texParameterf(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_COMPARE_FUNC, gl.LESS);
-                // 向target绑定纹理对象
-                gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture.webglTexture);
-                // gl.generateMipmap(gl.TEXTURE_2D);
-                gl.uniform1i(u_Sampler, t);
-                return;
-            }
-            return;
-        }
-        if (texture.webglTexture) {
-            let u_Sampler = gl.getUniformLocation(program, name);
-            gl.activeTexture(gl['TEXTURE' + t]);
-            gl.bindTexture(gl.TEXTURE_2D, texture.webglTexture);
-            gl.generateMipmap(gl.TEXTURE_2D);
-            gl.uniform1i(u_Sampler, t);
-            return;
-        }
-        if (texture.source == null) { Log.error('texture 设置 source' + texture); return; }
-        let u_Sampler = gl.getUniformLocation(program, name);
-        const webglTexture = gl.createTexture();
-        if (texture.flipY) {
-            // 对纹理图像进行Y轴反转
-            gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
-        }
-        // 开启0号纹理单元
-        gl.activeTexture(gl['TEXTURE' + t]);
-        // 向target绑定纹理对象
-        gl.bindTexture(gl.TEXTURE_2D, webglTexture);
-        // 配置纹理图像
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, texture.source);
-        if (texture.isPowerOf2()) {
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, this.glFilter[texture.minFilter]);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, this.glFilter[texture.magFilter]);
-            gl.generateMipmap(gl.TEXTURE_2D);
-        } else {
-            // 配置纹理参数
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, this.glFilter[texture.minFilter]);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, this.glFilter[texture.magFilter]);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, this.glAddress[texture.wrapU]);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, this.glAddress[texture.wrapV]);
-        }
-        // 将0号纹理传递给着色器
-        gl.uniform1i(u_Sampler, t);
-        */
     }
     draw(drawable: Drawable) {
         const gl = this.gl;
