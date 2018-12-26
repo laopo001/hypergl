@@ -1,8 +1,12 @@
 #define USE_IBL 1
 #define HAS_NORMALS 1
 #define HAS_UV 1
-#define HAS_BASECOLORMAP 1
+{{#if uniforms.uBaseColorSampler}}
 #define HAS_METALROUGHNESSMAP 1
+{{/if}}
+{{#if uniforms.uDiffuseTexture}}
+#define HAS_METALROUGHNESSMAP 1
+{{/if}}
 #define HAS_NORMALMAP 1
 #define HAS_EMISSIVEMAP 1
 #define HAS_OCCLUSIONMAP 1

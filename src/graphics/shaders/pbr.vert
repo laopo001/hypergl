@@ -1,12 +1,12 @@
-#define USE_IBL 1
+// #define USE_IBL 1
 #define HAS_NORMALS 1
 #define HAS_UV 1
-#define HAS_BASECOLORMAP 1
-#define HAS_METALROUGHNESSMAP 1
-#define HAS_NORMALMAP 1
-#define HAS_EMISSIVEMAP 1
-#define HAS_OCCLUSIONMAP 1
-#define USE_TEX_LOD 1
+// #define HAS_BASECOLORMAP 1
+// #define HAS_METALROUGHNESSMAP 1
+// #define HAS_NORMALMAP 1
+// #define HAS_EMISSIVEMAP 1
+// #define HAS_OCCLUSIONMAP 1
+// #define USE_TEX_LOD 1
 attribute vec4 vertex_position;
 #ifdef HAS_NORMALS
     attribute vec3 normal;

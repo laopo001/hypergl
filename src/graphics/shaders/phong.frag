@@ -194,7 +194,7 @@ float CalcLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, int shadowTyp
 
 
 
-// 计算方向
+// 计算方向 Phong
 vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirection) {
     vec3 lightDir = normalize(lightDirection);
     // 计算漫反射强度
@@ -205,10 +205,22 @@ vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirectio
     // 合并各个光照分量
     vec3 diffuse  = (lightColor - uAmbientColor.xyz) * diff * dDiffuseColor.xyz;
     vec3 specular = (lightColor)  * spec *  duSpecularColor.xyz;
-    return diffuse + specular ;
+    return diffuse + specular;
 }  
 
-
+// 计算方向 Blinn-Phong
+vec3 CalcDirLightBlinn(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirection) {
+    vec3 lightDir = normalize(lightDirection);
+    // 计算漫反射强度
+    float diff = max(dot(normal, -lightDir), 0.0);
+    // 计算镜面反射强度
+    vec3 halfwayDir = normalize(lightDir + viewDir);  
+    float spec = pow(max(dot(normal, halfwayDir), 0.0), 16.0);
+    // 合并各个光照分量
+    vec3 diffuse  = (lightColor - uAmbientColor.xyz) * diff * dDiffuseColor.xyz;
+    vec3 specular = (lightColor)  * spec *  duSpecularColor.xyz;
+    return diffuse + specular;
+}  
 
 float CalcPointLightShadow(samplerCube shadowMap, vec3 lightPosition, float range, int shadowType, float shadowMapSize, float shadowBias) {
     vec3  fragToLight =  v_vertex_position - lightPosition;
