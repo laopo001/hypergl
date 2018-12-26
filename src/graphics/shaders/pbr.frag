@@ -4,12 +4,18 @@
 {{#if uniforms.uBaseColorSampler}}
 #define HAS_METALROUGHNESSMAP 1
 {{/if}}
-{{#if uniforms.uDiffuseTexture}}
-#define HAS_METALROUGHNESSMAP 1
+{{#if uniforms.uDiffuseSampler}}
+#define uMetallicRoughnessSampler 1
 {{/if}}
+{{#if uniforms.uNormalSampler}}
 #define HAS_NORMALMAP 1
+{{/if}}
+{{#if uniforms.uEmissiveSampler}}
 #define HAS_EMISSIVEMAP 1
+{{/if}}
+{{#if uniforms.uOcclusionSampler}}
 #define HAS_OCCLUSIONMAP 1
+{{/if}}
 #define USE_TEX_LOD 1
 //
 // This fragment shader defines a reference implementation for Physically Based Shading of

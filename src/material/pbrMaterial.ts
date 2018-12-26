@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 26th 2018, 5:27:05 pm
+ * Last Modified: Wednesday, December 26th 2018, 9:39:54 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -16,6 +16,7 @@ import { Material } from './material';
 import { Vec3 } from '../math';
 import { Texture } from '../texture';
 import { Nullable } from '../types';
+import { SEMANTIC } from '../conf';
 
 export class PBRMaterial extends Material {
     /**
@@ -84,7 +85,9 @@ export class PBRMaterial extends Material {
     constructor() {
         super();
     }
-    updateShader() {
-
+    updateShader(attributes: { [s: string]: SEMANTIC }) {
+        let renderer = this.app.renderer;
+        this.shader = renderer.programGenerator.getShader('PhoneMaterial', attributes, this.uniforms, this.shaderVars);
+        this.shader.uniformScope = this.uniforms;
     }
 }

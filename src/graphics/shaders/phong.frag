@@ -67,6 +67,9 @@ in vec3 v_vertex_position;
 
 vec3 dDiffuseColor;
 vec3 duSpecularColor;
+vec3 dVertexNormal;
+vec3 dViewDirNorm;
+#define Blinn 1;
 
 // {{#if attributes.vertex_color}}
 // in vec4 vColor;
@@ -195,32 +198,24 @@ float CalcLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, int shadowTyp
 
 
 // 计算方向 Phong
-vec3 CalcDirLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirection) {
-    vec3 lightDir = normalize(lightDirection);
+vec3 CalcDirLight( vec3 lightColor, vec3 lightDirection) {
+    vec3 lightDirNorm = normalize(lightDirection);
     // 计算漫反射强度
-    float diff = max(dot(normal, -lightDir), 0.0);
+    float diff = max(dot(dVertexNormal, -lightDirNorm), 0.0);
     // 计算镜面反射强度
-    vec3 reflectDir = reflect(lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), uShininess);
+    #ifdef Blinn
+        // Blinn-Phong
+        vec3 halfwayDir = normalize(-lightDirNorm + dViewDirNorm);  
+        float spec = pow(max(dot(dVertexNormal, halfwayDir), 0.0), uShininess);
+    #else
+        vec3 reflectDir = reflect(lightDirNorm, dVertexNormal);
+        float spec = pow(max(dot(dViewDirNorm, reflectDir), 0.0), uShininess);
+    #endif
     // 合并各个光照分量
     vec3 diffuse  = (lightColor - uAmbientColor.xyz) * diff * dDiffuseColor.xyz;
     vec3 specular = (lightColor)  * spec *  duSpecularColor.xyz;
     return diffuse + specular;
-}  
-
-// 计算方向 Blinn-Phong
-vec3 CalcDirLightBlinn(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightDirection) {
-    vec3 lightDir = normalize(lightDirection);
-    // 计算漫反射强度
-    float diff = max(dot(normal, -lightDir), 0.0);
-    // 计算镜面反射强度
-    vec3 halfwayDir = normalize(lightDir + viewDir);  
-    float spec = pow(max(dot(normal, halfwayDir), 0.0), 16.0);
-    // 合并各个光照分量
-    vec3 diffuse  = (lightColor - uAmbientColor.xyz) * diff * dDiffuseColor.xyz;
-    vec3 specular = (lightColor)  * spec *  duSpecularColor.xyz;
-    return diffuse + specular;
-}  
+}
 
 float CalcPointLightShadow(samplerCube shadowMap, vec3 lightPosition, float range, int shadowType, float shadowMapSize, float shadowBias) {
     vec3  fragToLight =  v_vertex_position - lightPosition;
@@ -308,9 +303,9 @@ float CalcPointLightShadowPCF3x3(samplerCube shadowMap, vec3 lightPosition, floa
 
 
 // 计算定点光在确定位置的光照颜色
-vec3 CalcPointLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPosition, float range) {
+vec3 CalcPointLight( vec3 lightColor, vec3 lightPosition, float range) {
     vec3 lightDirection = normalize(v_vertex_position - lightPosition);
-    vec3 color = CalcDirLight(normal, viewDir, lightColor, lightDirection);
+    vec3 color = CalcDirLight( lightColor, lightDirection);
     float distance = length(lightPosition - v_vertex_position);
     if(distance > range){
         return vec3(0);
@@ -320,12 +315,12 @@ vec3 CalcPointLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPositi
 }
 
 
-vec3 CalcSpotLight(vec3 normal, vec3 viewDir, vec3 lightColor, vec3 lightPosition, vec3 direction, float range, float innerConeAngle, float outerConeAngle) {
+vec3 CalcSpotLight(vec3 lightColor, vec3 lightPosition, vec3 direction, float range, float innerConeAngle, float outerConeAngle) {
     vec3 lightDirection = v_vertex_position - lightPosition;
     vec3 lightDirectionNorm = normalize(lightDirection);
     float cosAngle = dot(lightDirectionNorm, direction);
     float f = smoothstep(outerConeAngle, innerConeAngle, cosAngle);
-    vec3 color = CalcPointLight(normal, viewDir, lightColor, lightPosition, range) * f;    
+    vec3 color = CalcPointLight( lightColor, lightPosition, range) * f;    
     return color;
 }  
 
@@ -340,8 +335,8 @@ void main(void) {
     alphaTest(opacity);
     dDiffuseColor = GammaToLinear( getOutDiffuseColor() );
     duSpecularColor = GammaToLinear( getOutuSpecularColor() );
-    vec3 norm = normalize(v_normal);
-    vec3 viewDir = normalize(uCameraPosition - v_vertex_position);
+    dVertexNormal = v_normal;
+    dViewDirNorm = normalize(uCameraPosition - v_vertex_position);
 
     // start
     vec3 result = uAmbientColor.xyz * dDiffuseColor.xyz;
@@ -350,10 +345,10 @@ void main(void) {
     float shadow;
     {{#if this.castShadows}}
         shadow = CalcLightShadow({{this.lightSpaceMatrix}} * vec4(v_vertex_position, 1.0), {{this.shadowMap}}, {{this.shadowType}}, {{this.shadowMapSize}}, {{this.shadowBias}});    
-        color = CalcDirLight(norm, viewDir, vec3({{this.color}}), {{this.direction}});
+        color = CalcDirLight( vec3({{this.color}}), {{this.direction}});
         result += shadow * color;
     {{else}}
-        result += CalcDirLight(norm, viewDir, vec3({{this.color}}), {{this.direction}} );
+        result += CalcDirLight( vec3({{this.color}}), {{this.direction}} );
     {{/if}}
 
     {{/each}}
@@ -361,21 +356,21 @@ void main(void) {
 
     {{#if this.castShadows}}
         shadow = CalcPointLightShadow({{this.shadowMap}}, {{this.position}}, {{this.range}}, {{this.shadowType}}, {{this.shadowMapSize}}, {{this.shadowBias}});    
-        color = CalcPointLight(norm, viewDir, vec3({{this.color}}), {{this.position}}, {{this.range}});
+        color = CalcPointLight( vec3({{this.color}}), {{this.position}}, {{this.range}});
         result += shadow * color;
     {{else}}
-        result += CalcPointLight(norm, viewDir, vec3({{this.color}}), {{this.position}}, {{this.range}} );
+        result += CalcPointLight( vec3({{this.color}}), {{this.position}}, {{this.range}} );
     {{/if}}
     
     {{/each}}
     {{#each uniforms._spotLightArr}}
 
     {{#if this.castShadows}}
-        color = CalcSpotLight(norm, viewDir, vec3({{this.color}}), {{this.position}}, {{this.direction}}, {{this.range}}, {{this.innerConeAngle}}, {{this.outerConeAngle}} );
+        color = CalcSpotLight( vec3({{this.color}}), {{this.position}}, {{this.direction}}, {{this.range}}, {{this.innerConeAngle}}, {{this.outerConeAngle}} );
         shadow = CalcLightShadow({{this.lightSpaceMatrix}} * vec4(v_vertex_position, 1.0), {{this.shadowMap}}, {{this.shadowType}}, {{this.shadowMapSize}}, {{this.shadowBias}});    
         result += shadow * color;
     {{else}}
-        result += CalcSpotLight(norm, viewDir, vec3({{this.color}}), {{this.position}}, {{this.direction}}, {{this.range}}, {{this.innerConeAngle}}, {{this.outerConeAngle}} );
+        result += CalcSpotLight( vec3({{this.color}}), {{this.position}}, {{this.direction}}, {{this.range}}, {{this.innerConeAngle}}, {{this.outerConeAngle}} );
     {{/if}}
     
     {{/each}}

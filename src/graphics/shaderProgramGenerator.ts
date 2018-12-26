@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 24th 2018, 10:19:16 pm
+ * Last Modified: Wednesday, December 26th 2018, 9:38:57 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -25,6 +25,8 @@ import colorVert from './shaders/color.vert';
 import colorFrag from './shaders/color.frag';
 import skyVert from './shaders/sky.vert';
 import skyFrag from './shaders/sky.frag';
+import pbrVert from './shaders/pbr.vert';
+import pbrFrag from './shaders/pbr.frag';
 
 import { RendererPlatform } from './renderer';
 import { Shader } from './shader';
@@ -106,6 +108,10 @@ function createShaderDefinition(name: string, renderer: RendererPlatform, option
         case 'SkyMaterial':
             vertStr = skyVert(options);
             fragStr = skyFrag(options);
+            break;
+        case 'PBRMaterial':
+            vertStr = pbrVert(options);
+            fragStr = pbrFrag(options);
             break;
         default:
             Log.error('没有找到 ' + name);
