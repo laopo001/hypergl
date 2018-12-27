@@ -13,6 +13,9 @@ uniform vec3 uCameraPosition;
 uniform float uOpacity;
 uniform sampler2D uOpacityTexture;
 uniform vec2 uOpacityMapOffset;
+
+uniform sampler2D uNormalTexture;
+
 uniform float uAlphaTest;
 uniform float uFogDensity;
 uniform vec3 uFogColor;
@@ -105,6 +108,13 @@ float getOutOpacityColor() {
     {{/if}}
 }
 
+vec3 getNormal() {
+    {{#if uniforms.uNormalTexture}}
+    return texture2D(uNormalTexture, v_vertex_texCoord0).rgb;
+    {{else}}
+    return v_normal;
+    {{/if}}
+}
 
 const float PackUpscale = 256. / 255.;
 const float UnpackDownscale = 255. / 256.;
@@ -198,7 +208,7 @@ void main(void) {
     alphaTest(opacity);
     dDiffuseColor = GammaToLinear( getOutDiffuseColor() );
     duSpecularColor = GammaToLinear( getOutuSpecularColor() );
-    dVertexNormal = v_normal;
+    dVertexNormal = getNormal();
     dViewDirNorm = normalize(uCameraPosition - v_vertex_position);
 
     // start

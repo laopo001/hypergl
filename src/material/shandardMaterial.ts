@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 25th 2018, 12:16:22 am
+ * Last Modified: Thursday, December 27th 2018, 5:17:37 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,15 +20,15 @@ import { RendererPlatform } from '../graphics/renderer';
 import { SEMANTIC } from '../conf';
 import { event } from '../core';
 import { Vec3, Vec2 } from '../math';
-import { Undefinedable } from '../types';
+import { Undefinedable, Nullable } from '../types';
 import { ColorMaterial } from './colorMaterial';
 
 export class StandardMaterial extends ColorMaterial {
-    private _opacityMap?: Texture;
-    get opacityMap(): Undefinedable<Texture> {
+    private _opacityMap: Nullable<Texture>;
+    get opacityMap() {
         return this._opacityMap;
     }
-    set opacityMap(value: Undefinedable<Texture>) {
+    set opacityMap(value) {
         this._opacityMap = value;
         this.setUniform('uOpacityTexture', this.opacityMap);
     }
@@ -77,6 +77,16 @@ export class StandardMaterial extends ColorMaterial {
         this._specularMap = value;
         this.setUniform('uSpecularTexture', this.specularMap);
     }
+
+    private _normalTexture: Nullable<Texture>;
+    get normalTexture(): Nullable<Texture> {
+        return this._normalTexture;
+    }
+    set normalTexture(v: Nullable<Texture>) {
+        this._normalTexture = v;
+        this.setUniform('uNormalTexture', this.normalTexture);
+    }
+
     private _specularMapOffset = new Vec2(0, 0);
     get specularMapOffset(): Vec2 {
         return this._specularMapOffset;
@@ -103,9 +113,9 @@ export class StandardMaterial extends ColorMaterial {
     }
     private _diffuseMapOffset = new Vec2(0, 0);
     private _shininess = 64;
-    private _specularMap?: Texture;
+    private _specularMap: Nullable<Texture>;
     private _specularColor = new Color(1, 1, 1);
-    private _diffuseMap?: Texture;
+    private _diffuseMap: Nullable<Texture>;
     private _ambientColor = Scene.ambientColor;
     constructor(name?: string) {
         super(name);
