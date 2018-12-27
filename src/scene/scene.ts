@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 25th 2018, 10:50:45 pm
+ * Last Modified: Thursday, December 27th 2018, 12:18:40 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -34,7 +34,7 @@ import { AudioComponentSystem } from '../ecs/components/audio';
 import { ListenerComponentSystem } from '../ecs/components/listener';
 import { FOG } from '../conf';
 export class Scene {
-    static ambientColor = new Color(0.3, 0.3, 0.3);
+    static ambientColor = new Color(0.2, 0.2, 0.2);
     fog: FOG = FOG.NONE;
     fogColor = new Color(0, 0, 0);
     fogDensity = 0.01;

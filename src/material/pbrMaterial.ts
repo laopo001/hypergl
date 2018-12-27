@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, December 27th 2018, 12:25:28 am
+ * Last Modified: Thursday, December 27th 2018, 12:09:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -85,6 +85,10 @@ export class PBRMaterial extends Material {
     }
     constructor() {
         super();
+        this.setUniform('uMetallicRoughnessValues', new Float32Array([this.metallicFactor, this.roughnessFactor]));
+        this.setUniform('uScaleDiffBaseMR', new Float32Array([0, 0, 0, 0]));
+        this.setUniform('uScaleFGDSpec', new Float32Array([0, 0, 0, 0]));
+        this.setUniform('uScaleIBLAmbient', new Float32Array([1, 1, 0, 0]));
     }
     updateShader(attributes: { [s: string]: SEMANTIC }) {
         let renderer = this.app.renderer;

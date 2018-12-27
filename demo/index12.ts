@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, December 27th 2018, 12:24:46 am
+ * Last Modified: Thursday, December 27th 2018, 4:37:47 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -104,7 +104,7 @@ async function main() {
             range: 16
         })
         .setLocalPosition(0, 5, 1);
-    app.scene.root.addChild(pointlight);
+    // app.scene.root.addChild(pointlight);
 
     let sphere1 = new Entity('sphere1')
         .addComponent('model', {
@@ -202,6 +202,7 @@ async function main() {
         })
         .setPosition(0, -2, 0).setLocalScale(10, 1, 10);
     app.scene.root.addChild(plane);
+    plane.model.drawable().receiveShadow = false;
 
     app.start();
 }

@@ -35,8 +35,8 @@
 // #extension GL_OES_standard_derivatives : enable
 
 precision highp float;
-uniform vec3 uLightDirection;
-uniform vec3 uLightColor;
+uniform vec3 directionalLightArr0_direction;
+uniform vec3 directionalLightArr0_color;
 #ifdef USE_IBL
     uniform samplerCube uDiffuseEnvSampler;
     uniform samplerCube uSpecularEnvSampler;
@@ -251,7 +251,7 @@ void main() {
     // normal at surface point
     vec3 dViewDirNorm = normalize(uCameraPosition - v_vertex_position);
     // Vector from surface point to camera
-    vec3 lightDirNorm = normalize(uLightDirection);
+    vec3 lightDirNorm = normalize(directionalLightArr0_direction);
     // Vector from surface point to light
     vec3 halfwayDir  = normalize(lightDirNorm+dViewDirNorm);
     // Half vector between both lightDirNorm and dViewDirNorm
@@ -272,7 +272,7 @@ void main() {
     vec3 diffuseContrib = (1.0 - F) * diffuse(pbrInputs);
     vec3 specContrib = F * G * D / (4.0 * NdotL * NdotV);
     // Obtain final intensity as reflectance (BRDF) scaled by the energy of the light (cosine law)
-    vec3 color = NdotL * uLightColor * (diffuseContrib + specContrib);
+    vec3 color = NdotL * directionalLightArr0_color * (diffuseContrib + specContrib);
     // Calculate lighting contribution from image based lighting source (IBL)
     #ifdef USE_IBL
         color += getIBLContribution(pbrInputs, normal, reflection);

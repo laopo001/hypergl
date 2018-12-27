@@ -1,5 +1,5 @@
 // DirLight or SpotLight
-float CalcLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, int shadowType, float shadowMapSize, float shadowBias) {
+float CalcLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, float shadowType, float shadowMapSize, float shadowBias) {
     // 执行透视除法
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
       // 变换到[0,1]的范围
@@ -11,7 +11,7 @@ float CalcLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, int shadowTyp
     bool frustumTest = all( frustumTestVec );
     float shadow = 0.0;
     if(frustumTest) {
-        if(shadowType == 1) {
+        if(shadowType == 1.0) {
             float shadowRadius = 1.0;
             vec2 texelSize = vec2( 1.0 ) / vec2( shadowMapSize );
             float dx0 = - texelSize.x * shadowRadius;
@@ -29,7 +29,7 @@ float CalcLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, int shadowTyp
                 texture2DCompare( shadowMap, projCoords.xy + vec2( 0.0, dy1 ), currentDepth ) +
                 texture2DCompare( shadowMap, projCoords.xy + vec2( dx1, dy1 ), currentDepth )
             ) * ( 1.0 / 9.0 );
-        } else if (shadowType == 2) {
+        } else if (shadowType == 2.0) {
             float shadowRadius = 1.0;
             vec2 sizeVec2 = vec2( shadowMapSize );
             vec2 texelSize = vec2( 1.0 ) / sizeVec2;
@@ -55,13 +55,13 @@ float CalcLightShadow(vec4 fragPosLightSpace, sampler2D shadowMap, int shadowTyp
     return shadow;
 }
 
-float CalcPointLightShadow(samplerCube shadowMap, vec3 lightPosition, float range, int shadowType, float shadowMapSize, float shadowBias) {
+float CalcPointLightShadow(samplerCube shadowMap, vec3 lightPosition, float range, float shadowType, float shadowMapSize, float shadowBias) {
     vec3  fragToLight =  v_vertex_position - lightPosition;
     float size = shadowMapSize;
     float currentDepth =  length(fragToLight);
     float bias = shadowBias;
     float shadow = 0.0;
-    if(shadowType == 1 || shadowType == 2) {
+    if(shadowType == 1.0 || shadowType == 2.0) {
         float offset = 1.0 / size;
         for(float x = -offset; x <= offset; x += offset)
         {

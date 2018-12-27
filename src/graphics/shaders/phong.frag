@@ -17,42 +17,45 @@ uniform float uAlphaTest;
 uniform float uFogDensity;
 uniform vec3 uFogColor;
 uniform vec2 uFogDist;
-// uniform float uExposure
+uniform bool uReceiveShadow;
 // directionalLight start
 {{#each uniforms._directionalLightArr}}
-uniform vec4 {{this.color}};
+uniform vec3 {{this.color}};
 uniform vec3 {{this.direction}};
 uniform sampler2D {{this.shadowMap}};
 uniform mat4 {{this.lightSpaceMatrix}};
-uniform int {{this.shadowType}};
+uniform float {{this.shadowType}};
 uniform float {{this.shadowMapSize}};
 uniform float {{this.shadowBias}};
+uniform float {{this.castShadows}};
 {{/each}}
 // directionalLight end
 // pointLight start
 {{#each uniforms._pointLightArr}}
 uniform vec3 {{this.position}};
-uniform vec4 {{this.color}};
+uniform vec3 {{this.color}};
 uniform float {{this.range}};
 uniform samplerCube {{this.shadowMap}};
-uniform int {{this.shadowType}};
+uniform float {{this.shadowType}};
 uniform float {{this.shadowMapSize}};
 uniform float {{this.shadowBias}};
+uniform float {{this.castShadows}};
 {{/each}}
 // pointLight end
 // soptLight start
 {{#each uniforms._spotLightArr}} 
 uniform vec3 {{this.position}};
 uniform vec3 {{this.direction}};
-uniform vec4 {{this.color}};
+uniform vec3 {{this.color}};
 uniform float {{this.range}};
 uniform float {{this.innerConeAngle}};
 uniform float {{this.outerConeAngle}};
 uniform sampler2D {{this.shadowMap}};
 uniform mat4 {{this.lightSpaceMatrix}};
-uniform int {{this.shadowType}};
+uniform float {{this.shadowType}};
 uniform float {{this.shadowMapSize}};
 uniform float {{this.shadowBias}};
+uniform float {{this.castShadows}};
 {{/each}}
 // soptLight end
 
@@ -139,7 +142,7 @@ float texture2DShadowLerp( sampler2D depths, vec2 size, vec2 uv, float compare )
     return c;
 }
 
-// 计算方向 Phong
+// 计算方向
 vec3 CalcDirLight( vec3 lightColor, vec3 lightDirNorm) {
     // 计算漫反射强度
     float diff = max(dot(dVertexNormal, lightDirNorm), 0.0);
@@ -148,7 +151,8 @@ vec3 CalcDirLight( vec3 lightColor, vec3 lightDirNorm) {
         // Blinn-Phong
         vec3 halfwayDir = normalize(lightDirNorm + dViewDirNorm);  
         float spec = pow(max(dot(dVertexNormal, halfwayDir), 0.0), uShininess);
-    #else
+    #else 
+        // Phong
         vec3 reflectDir = reflect(-lightDirNorm, dVertexNormal);
         float spec = pow(max(dot(dViewDirNorm, reflectDir), 0.0), uShininess);
     #endif
@@ -199,39 +203,35 @@ void main(void) {
 
     // start
     vec3 result = uAmbientColor.xyz * dDiffuseColor.xyz;
-    {{#each uniforms._directionalLightArr}}
     vec3 color;
     float shadow;
-    {{#if this.castShadows}}
+    {{#each uniforms._directionalLightArr}}
+    color = CalcDirLight( {{this.color}}, {{this.direction}});
+    // {{#if this.castShadows}}
+    if( uReceiveShadow && {{this.castShadows}} == 1.0 ) {
         shadow = CalcLightShadow({{this.lightSpaceMatrix}} * vec4(v_vertex_position, 1.0), {{this.shadowMap}}, {{this.shadowType}}, {{this.shadowMapSize}}, {{this.shadowBias}});    
-        color = CalcDirLight( vec3({{this.color}}), -{{this.direction}});
-        result += shadow * color;
-    {{else}}
-        result += CalcDirLight( vec3({{this.color}}), -{{this.direction}} );
-    {{/if}}
-
+        color = shadow * color;
+    }
+    // {{/if}}
+    result += color;
     {{/each}}
+
     {{#each uniforms._pointLightArr}}
-
-    {{#if this.castShadows}}
+    color = CalcPointLight( {{this.color}}, {{this.position}}, {{this.range}});
+    if( uReceiveShadow && {{this.castShadows}} == 1.0 ) {
         shadow = CalcPointLightShadow({{this.shadowMap}}, {{this.position}}, {{this.range}}, {{this.shadowType}}, {{this.shadowMapSize}}, {{this.shadowBias}});    
-        color = CalcPointLight( vec3({{this.color}}), {{this.position}}, {{this.range}});
-        result += shadow * color;
-    {{else}}
-        result += CalcPointLight( vec3({{this.color}}), {{this.position}}, {{this.range}} );
-    {{/if}}
-    
+        color = shadow * color;
+    }
+    result += color;
     {{/each}}
-    {{#each uniforms._spotLightArr}}
 
-    {{#if this.castShadows}}
-        color = CalcSpotLight( vec3({{this.color}}), {{this.position}}, {{this.direction}}, {{this.range}}, {{this.innerConeAngle}}, {{this.outerConeAngle}} );
+    {{#each uniforms._spotLightArr}}
+    color = CalcSpotLight( {{this.color}}, {{this.position}}, {{this.direction}}, {{this.range}}, {{this.innerConeAngle}}, {{this.outerConeAngle}} );
+    if( uReceiveShadow && {{this.castShadows}} == 1.0 ) {
         shadow = CalcLightShadow({{this.lightSpaceMatrix}} * vec4(v_vertex_position, 1.0), {{this.shadowMap}}, {{this.shadowType}}, {{this.shadowMapSize}}, {{this.shadowBias}});    
-        result += shadow * color;
-    {{else}}
-        result += CalcSpotLight( vec3({{this.color}}), {{this.position}}, {{this.direction}}, {{this.range}}, {{this.innerConeAngle}}, {{this.outerConeAngle}} );
-    {{/if}}
-    
+        color = shadow * color;
+    }
+    result += color;
     {{/each}}
     // end
     

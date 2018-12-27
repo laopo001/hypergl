@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 25th 2018, 11:59:38 pm
+ * Last Modified: Thursday, December 27th 2018, 4:49:15 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -37,7 +37,7 @@ export function renderScence(scene: Scene) {
     let spotLightsUniforms = renderSpotLightArr('spotLightArr', lights.spotLight, scene);
     let LightsUniforms: any = { ...directionalLightsUniforms, ...pointLightsUniforms, ...spotLightsUniforms };
     let viewProjectionMatrixData = camera.viewProjectionMatrix().data;
-    let temp: Light[] = [];
+    // let temp: any[] = [];
     renderer.enableBLEND();
     for (let i = 0; i < drawables.length; i++) {
 
@@ -52,23 +52,24 @@ export function renderScence(scene: Scene) {
         drawable.vertexBuffer.format.elements.forEach(x => {
             attributes[SEMANTICMAP[x.semantic]] = x.semantic;
         });
-        if (!drawable.receiveShadow) {
-            LightsUniforms._directionalLightArr.forEach(item => {
-                item.castShadows = false;
-                temp.push(item);
-            });
-            LightsUniforms._pointLightArr.forEach(item => {
-                item.castShadows = false;
-                temp.push(item);
-            });
-            LightsUniforms._spotLightArr.forEach(item => {
-                item.castShadows = false;
-                temp.push(item);
-            });
-        }
+        // if (!drawable.receiveShadow) {
+        //     LightsUniforms._directionalLightArr.forEach(item => {
+        //         item.castShadows = 0;
+        //         temp.push(item);
+        //     });
+        //     LightsUniforms._pointLightArr.forEach(item => {
+        //         item.castShadows = 0;
+        //         temp.push(item);
+        //     });
+        //     LightsUniforms._spotLightArr.forEach(item => {
+        //         item.castShadows = 0;
+        //         temp.push(item);
+        //     });
+        // }
         material.setLights(LightsUniforms);
         material.setshaderVars('fog', scene.fog);
-        material.setshaderVars('exposure', scene.exposure);
+        // material.setshaderVars('exposure', scene.exposure);
+        // material.setshaderVars('receiveShadow', drawable.receiveShadow);
         material.updateShader(attributes);
         let shader = material.shader as Shader;
         renderer.setShaderProgram(shader);
@@ -82,15 +83,15 @@ export function renderScence(scene: Scene) {
         shader.setUniformValue('uFogColor', scene.fogColor.data3);
         shader.setUniformValue('uFogDensity', scene.fogDensity);
         shader.setUniformValue('uFogDist', new Float32Array([scene.fogStart, scene.fogEnd]));
-
+        shader.setUniformValue('uReceiveShadow', drawable.receiveShadow);
         renderer.draw(drawable);
 
-        if (!drawable.receiveShadow) {
-            temp.forEach(item => {
-                item.castShadows = true;
-            });
-            temp = [];
-        }
+        // if (!drawable.receiveShadow) {
+        //     temp.forEach(item => {
+        //         item.castShadows = 1;
+        //     });
+        //     temp = [];
+        // }
 
 
     }
@@ -125,24 +126,24 @@ function rendererDirectionalShadowMap(scene: Scene, light: LightComponent<Direct
     return { texture: light.shadowFrame.getTexture(), viewProjectionMatrix: camera.viewProjectionMatrix };
 }
 let o = { 'Normal': 0, 'PCF': 1, 'PCFSoft': 2 };
-export function renderDirectionalLightArr(name: string, data: LightComponent<DirectionalLight>[], scene: Scene) {
+export function renderDirectionalLightArr(name: string, lights: LightComponent<DirectionalLight>[], scene: Scene) {
     let uniforms = {};
     let res: any[] = [];
 
-    data.forEach((item, index) => {
+    lights.forEach((item, index) => {
         if (!item.enabled) return;
         let obj: any = {};
         if (item.castShadows) {
             let { texture, viewProjectionMatrix } = rendererDirectionalShadowMap(scene, item);
             setLight(name, 'shadowMap', index, obj, uniforms, texture);
             setLight(name, 'lightSpaceMatrix', index, obj, uniforms, viewProjectionMatrix.data);
-            setLight(name, 'castShadows', index, obj, uniforms, item.castShadows);
+            setLight(name, 'castShadows', index, obj, uniforms, item.castShadows ? 1 : 0);
             setLight(name, 'shadowType', index, obj, uniforms, o[item.shadowType]);
             setLight(name, 'shadowMapSize', index, obj, uniforms, item.shadowMapSize);
             setLight(name, 'shadowBias', index, obj, uniforms, item.shadowBias);
         }
         setLight(name, 'position', index, obj, uniforms, item.getPosition().data);
-        setLight(name, 'color', index, obj, uniforms, item.color.data);
+        setLight(name, 'color', index, obj, uniforms, item.color.data3);
         setLight(name, 'direction', index, obj, uniforms, item.direction.normalize().data);
         res.push(obj);
     });
@@ -181,22 +182,22 @@ function rendererPointShadowMap(scene: Scene, light: LightComponent<PointLight>)
 
     return { texture: light.shadowFrame.getTexture() };
 }
-export function renderPointLightArr(name: string, data: LightComponent<PointLight>[], scene: Scene) {
+export function renderPointLightArr(name: string, lights: LightComponent<PointLight>[], scene: Scene) {
     let res: any[] = [];
     let uniforms = {};
-    data.forEach((item, index) => {
+    lights.forEach((item, index) => {
         if (!item.enabled) return;
         let obj: any = {};
         if (item.castShadows) {
             let { texture } = rendererPointShadowMap(scene, item);
             setLight(name, 'shadowMap', index, obj, uniforms, texture);
-            setLight(name, 'castShadows', index, obj, uniforms, item.castShadows);
+            setLight(name, 'castShadows', index, obj, uniforms, item.castShadows ? 1 : 0);
             setLight(name, 'shadowType', index, obj, uniforms, o[item.shadowType]);
             setLight(name, 'shadowMapSize', index, obj, uniforms, item.shadowMapSize);
             setLight(name, 'shadowBias', index, obj, uniforms, item.shadowBias);
         }
         setLight(name, 'position', index, obj, uniforms, item.getPosition().data);
-        setLight(name, 'color', index, obj, uniforms, item.color.data);
+        setLight(name, 'color', index, obj, uniforms, item.color.data3);
         setLight(name, 'range', index, obj, uniforms, item.range);
         res.push(obj);
     });
@@ -232,18 +233,18 @@ function rendererSpotShadowMap(scene: Scene, light: LightComponent<SpotLight>) {
     return { texture: light.shadowFrame.getTexture(), viewProjectionMatrix: camera.viewProjectionMatrix };
 }
 
-export function renderSpotLightArr(name: string, data: LightComponent<SpotLight>[], scene: Scene) {
+export function renderSpotLightArr(name: string, lights: LightComponent<SpotLight>[], scene: Scene) {
 
     let res: any[] = [];
     let uniforms = {};
-    data.forEach((item, index) => {
+    lights.forEach((item, index) => {
         if (!item.enabled) return;
         let obj: any = {};
         if (item.castShadows) {
             let { texture, viewProjectionMatrix } = rendererSpotShadowMap(scene, item);
             setLight(name, 'shadowMap', index, obj, uniforms, texture);
             setLight(name, 'lightSpaceMatrix', index, obj, uniforms, viewProjectionMatrix.data);
-            setLight(name, 'castShadows', index, obj, uniforms, item.castShadows);
+            setLight(name, 'castShadows', index, obj, uniforms, item.castShadows ? 1 : 0);
             setLight(name, 'shadowType', index, obj, uniforms, o[item.shadowType]);
             setLight(name, 'shadowMapSize', index, obj, uniforms, item.shadowMapSize);
             setLight(name, 'shadowBias', index, obj, uniforms, item.shadowBias);
@@ -252,7 +253,7 @@ export function renderSpotLightArr(name: string, data: LightComponent<SpotLight>
         setLight(name, 'direction', index, obj, uniforms, item.direction.normalize().data);
         setLight(name, 'innerConeAngle', index, obj, uniforms, Math.cos(item.innerConeAngle * DEG_TO_RAD));
         setLight(name, 'outerConeAngle', index, obj, uniforms, Math.cos(item.outerConeAngle * DEG_TO_RAD));
-        setLight(name, 'color', index, obj, uniforms, item.color.data);
+        setLight(name, 'color', index, obj, uniforms, item.color.data3);
         setLight(name, 'range', index, obj, uniforms, item.range);
         res.push(obj);
     });

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 10th 2018, 10:05:44 pm
+ * Last Modified: Thursday, December 27th 2018, 12:22:26 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -408,7 +408,7 @@ export class SceneNode extends IElement {
         return this.getWorldTransform().getY(this._up).normalize();
     }
     get forward() {
-        return this.getWorldTransform().getZ(this._forward).normalize().scale(-1);
+        return this.getWorldTransform().getZ(this._forward).normalize();
     }
     get right() {
         return this.getWorldTransform().getX(this._right).normalize();
