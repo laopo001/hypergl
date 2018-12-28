@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 21st 2018, 10:10:45 pm
+ * Last Modified: Friday, December 28th 2018, 10:57:48 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -26,6 +26,7 @@ export class Texture {
     wrapU = WRAP.REPEAT;
     wrapV = WRAP.REPEAT;
     wrapR = WRAP.REPEAT;
+    isGenerateMipmap = false;
     // isCube = false;
     level = 0;
     minFilter = FILTER.LINEAR; // 纹理在缩小时的过滤方式

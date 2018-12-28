@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 4:07:48 pm
+ * Last Modified: Friday, December 28th 2018, 10:40:07 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -22,7 +22,7 @@ export abstract class Script<Inputs, T= {}> {
     }
     entity!: Entity;
     inputs!: Inputs;
-    constructor(inputs: Inputs) {
+    constructor(inputs?: Inputs) {
         this.inputs = inputs!;
     }
     static default() {

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 28th 2018, 9:40:24 pm
+ * Last Modified: Friday, December 28th 2018, 10:40:07 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -66,6 +66,7 @@ async function main() {
 
     let gltf = new GltfAssetLoader('./assets/models/DamagedHelmet.gltf');
     let node = await gltf.loadSenceRoot();
+    node.addComponent('script', [ new Rotate()]);
     app.scene.root.addChild(node);
 
     let light = new Entity('light')
