@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 10th 2018, 2:15:16 am
+ * Last Modified: Friday, December 28th 2018, 5:23:45 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,7 +14,7 @@
 
 import { VertexBuffer } from '../graphics/vertexBuffer';
 import { IndexBuffer } from '../graphics/indexBuffer';
-import { StandardMaterial } from '../material';
+import { StandardMaterial, Material, PBRMaterial } from '../material';
 import { SEMANTIC, BUFFER, DrawMode } from '../conf';
 import { VertexType, VertexFormat } from '../graphics/vertexFormat';
 import { CreateMeshOptions, CreateBoxOptions } from '../types';
@@ -30,7 +30,7 @@ export class Mesh extends Drawable {
     // static createLines = createLines;
     castShadow = true;
     receiveShadow = true;
-    material = new StandardMaterial();
+    material: StandardMaterial | PBRMaterial = new StandardMaterial();
     // private _material = Mesh.defaultMaterial;
     constructor() {
         super();

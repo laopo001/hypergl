@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 24th 2018, 11:56:58 pm
+ * Last Modified: Friday, December 28th 2018, 5:21:17 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -21,7 +21,7 @@ import { Vec3, Vec2, Mat4 } from '../math';
 import { BoundingBox } from '../shape/boundingBox';
 import { BoundingSphere } from '../shape/boundingSphere';
 
-export class Drawable {
+export class Drawable<T= Material> {
     name?: string;
     mode = DrawMode.TRIANGLES; // 默认绘制模式 为 三角形
     // tslint:disable-next-line:member-ordering
@@ -46,7 +46,7 @@ export class Drawable {
             return 'mesh';
         }
     }
-    material!: Material;
+    material!: T;
     constructor() {
         // TODO
     }

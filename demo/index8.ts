@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 7th 2018, 2:52:52 pm
+ * Last Modified: Friday, December 28th 2018, 5:03:09 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -110,7 +110,7 @@ async function main() {
             receiveShadow: false
         })
         .setLocalPosition(-1, 0, 0);
-    box.model.material = material;
+    box.model.drawable(0).material = material;
 
     let lines = Line.createLines([
         new Vec3(-2, 0, 0), new Vec3(2, 0, 0)

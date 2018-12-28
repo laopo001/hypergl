@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 28th 2018, 4:39:15 pm
+ * Last Modified: Friday, December 28th 2018, 6:44:16 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -90,7 +90,7 @@ export class PBRMaterial extends Material {
     }
     public set emissiveFactor(v: Color) {
         this._emissiveFactor = v;
-        this.setUniform('uEmissiveFactor', v);
+        this.setUniform('uEmissiveFactor', v.data3);
     }
 
     private _enissiveTexture: Nullable<Texture>;
@@ -102,7 +102,8 @@ export class PBRMaterial extends Material {
         this.setUniform('uEmissiveSampler', v);
         this.setshaderVars('HAS_EMISSIVEMAP', !!v);
     }
-
+    // tslint:disable-next-line:member-ordering
+    normalScale = 1;
     private _normalTexture: Nullable<Texture>;
     get normalTexture(): Nullable<Texture> {
         return this._normalTexture;
@@ -112,7 +113,8 @@ export class PBRMaterial extends Material {
         this.setUniform('uNormalSampler', v);
         this.setshaderVars('HAS_NORMALMAP', !!v);
     }
-
+    // tslint:disable-next-line:member-ordering
+    occlusionStrength = 1;
     private _occlusionTexture: Nullable<Texture>;
     public get occlusionTexture(): Nullable<Texture> {
         return this._occlusionTexture;
@@ -122,15 +124,17 @@ export class PBRMaterial extends Material {
         this.setUniform('uOcclusionSampler', v);
         this.setshaderVars('HAS_OCCLUSIONMAP', !!v);
     }
-
-
     constructor() {
         super();
         this.setUniform('uMetallicRoughnessValues', new Float32Array([this.metallicFactor, this.roughnessFactor]));
         this.setUniform('uScaleDiffBaseMR', new Float32Array([0, 0, 0, 0]));
+        this.setUniform('uBaseColorFactor', this.baseColor.data);
         this.setUniform('uScaleFGDSpec', new Float32Array([0, 0, 0, 0]));
         this.setUniform('uScaleIBLAmbient', new Float32Array([1, 1, 0, 0]));
-        this.setUniform('uEmissiveFactor', this.emissiveFactor);
+        this.setUniform('uEmissiveFactor', this.emissiveFactor.data3);
+        this.setUniform('uNormalScale', this.normalScale);
+        this.setUniform('uOcclusionStrength', this.occlusionStrength);
+
     }
     updateShader(attributes: { [s: string]: SEMANTIC }) {
         let renderer = this.app.renderer;

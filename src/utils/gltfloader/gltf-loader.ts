@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, December 13th 2018, 2:29:49 pm
+ * Last Modified: Friday, December 28th 2018, 7:17:37 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,7 +14,7 @@
 import { GltfLoader, GltfAsset } from 'gltf-loader-ts';
 import { Log } from '../util';
 import { Mesh } from '../../mesh';
-import { StandardMaterial } from '../../material';
+import { StandardMaterial, PBRMaterial } from '../../material';
 import { Color } from '../../core';
 import { Texture } from '../../texture';
 import { FILTER, WRAP } from '../../conf';
@@ -147,7 +147,7 @@ export class GltfAssetLoader {
                 m.name = model.name;
                 // tslint:disable-next-line:no-unused-expression
                 mesh.mode && (m.mode = mesh.mode);
-                m.material = await this.loadMaterial(mesh.material as any);
+                m.material = await this.loadMaterial(mesh.material!);
                 return m;
             }
         } else {
@@ -158,19 +158,39 @@ export class GltfAssetLoader {
     async loadMaterial(index: number) {
         let assets = await this.assets;
         let { gltf } = assets;
-        let standardmaterial = new StandardMaterial();
+        let standardmaterial = new PBRMaterial();
         if (gltf.materials) {
             let material = gltf.materials[index];
             standardmaterial.name = material.name;
             if (material.pbrMetallicRoughness) {
                 let colors = material.pbrMetallicRoughness.baseColorFactor;
                 if (colors) {
-                    standardmaterial.diffuseColor = new Color(colors[0], colors[1], colors[2]);
+                    standardmaterial.baseColor = new Color(colors[0], colors[1], colors[2]);
                 }
                 let texture = material.pbrMetallicRoughness.baseColorTexture;
                 if (texture) {
                     let t = await this.loadTexture(texture.index);
-                    standardmaterial.diffuseMap = t;
+                    standardmaterial.baseColorTexture = t;
+                }
+                let metallicRoughnessTexture = material.pbrMetallicRoughness.metallicRoughnessTexture;
+                if (metallicRoughnessTexture) {
+                    let t = await this.loadTexture(metallicRoughnessTexture.index);
+                    standardmaterial.metallicRoughnessTexture = t;
+                }
+                if (material.emissiveFactor) {
+                    standardmaterial.emissiveFactor = new Color(...material.emissiveFactor);
+                }
+                if (material.emissiveTexture) {
+                    let t = await this.loadTexture(material.emissiveTexture.index);
+                    standardmaterial.enissiveTexture = t;
+                }
+                if (material.normalTexture) {
+                    let t = await this.loadTexture(material.normalTexture.index);
+                    standardmaterial.normalTexture = t;
+                }
+                if (material.occlusionTexture) {
+                    let t = await this.loadTexture(material.occlusionTexture.index);
+                    standardmaterial.occlusionTexture = t;
                 }
             }
         } else {
@@ -227,16 +247,24 @@ export class GltfAssetLoader {
         let { gltf } = assets;
         let textureData = gltf.textures![index];
         let texture = new Texture();
-        let img = await assets.imageData.get(textureData.source!);
+        let img = await this.loadImage(textureData.source!);
         let samplerData = gltf.samplers![textureData.sampler!];
-        texture.magFilter = gltf_filter[samplerData.magFilter!];
-        texture.minFilter = gltf_filter[samplerData.minFilter!];
-
-        texture.wrapU = gltf_wrap[samplerData.wrapT!];
-        texture.wrapV = gltf_wrap[samplerData.wrapS!];
+        // tslint:disable-next-line:no-unused-expression
+        samplerData.magFilter && (texture.magFilter = gltf_filter[samplerData.magFilter]);
+        // tslint:disable-next-line:no-unused-expression
+        samplerData.minFilter && (texture.minFilter = gltf_filter[samplerData.minFilter]);
+        // tslint:disable-next-line:no-unused-expression
+        samplerData.wrapT && (texture.wrapU = gltf_wrap[samplerData.wrapT]);
+        // tslint:disable-next-line:no-unused-expression
+        samplerData.wrapS && (texture.wrapV = gltf_wrap[samplerData.wrapS]);
         texture.flipY = false;
         texture.setSource(img);
         return texture;
+    }
+    async loadImage(index: number) {
+        let assets = await this.assets;
+        // tslint:disable-next-line:no-return-await
+        return assets.imageData.get(index);
     }
     private async loadSampler(index: number) {
         let assets = await this.assets;
