@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 21st 2018, 10:04:56 pm
+ * Last Modified: Friday, December 28th 2018, 9:38:52 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,7 +15,7 @@
 import { Scene } from './scene/scene';
 import { RendererPlatform } from './graphics/renderer';
 import { AppOption, FnVoid, Constructor } from './types';
-import { event, Timer } from './core';
+import { event, timer } from './core';
 import { Mesh } from './mesh/mesh';
 import { SystemRegistry } from './ecs/system-register';
 import { CameraComponentSystem } from './ecs/components/camera/system';
@@ -31,7 +31,7 @@ export class Plugin {
 }
 
 let app;
-const timer = new Timer();
+
 export class Application<T= {}> {
     get scene() {
         return this.sceneInstances[this.activeIndex];

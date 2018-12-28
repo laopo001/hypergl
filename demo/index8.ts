@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 28th 2018, 5:03:09 pm
+ * Last Modified: Friday, December 28th 2018, 9:38:52 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -18,7 +18,6 @@ import { Rotate } from './utils/rotate';
 import { Vec3 } from '../src/math';
 import { Color } from '../src/core';
 import { loadImage } from './utils';
-import { getUp } from '../src/utils/util';
 
 function createCoordinateSystem() {
     let temp = new Entity();

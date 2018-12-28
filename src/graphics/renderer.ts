@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, December 27th 2018, 12:33:32 am
+ * Last Modified: Friday, December 28th 2018, 9:40:50 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -24,7 +24,7 @@ import { Texture } from '../texture';
 import { ShaderVariable } from './shaderVariable';
 import { VertexAttribData } from './vertexFormat';
 import { ModelComponent } from 'src/ecs/components/model';
-import { cache } from '../utils/decorators';
+import { cache, time } from '../utils/decorators';
 import { Line, Drawable } from '../mesh';
 export type Platform = 'webgl' | 'webgl2';
 export class RendererPlatform {
@@ -372,6 +372,7 @@ export class RendererPlatform {
             this.loadTexture(gl, program, variable, texture, t);
         }
     }
+    // @time
     draw(drawable: Drawable) {
         const gl = this.gl;
         const mesh = drawable;

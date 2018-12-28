@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 28th 2018, 6:44:16 pm
+ * Last Modified: Friday, December 28th 2018, 8:07:11 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -24,7 +24,7 @@ export class PBRMaterial extends Material {
     * 反照率 Albedo
     * @memberof PBRMaterial
     */
-    private _baseColor = new Color();
+    private _baseColor = new Color(1, 1, 1);
     get baseColor() {
         return this._baseColor;
     }

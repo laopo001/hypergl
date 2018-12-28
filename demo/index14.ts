@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 28th 2018, 5:26:33 pm
+ * Last Modified: Friday, December 28th 2018, 9:40:24 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -71,7 +71,7 @@ async function main() {
     let light = new Entity('light')
         .addComponent('light', {
             type: 'directional',
-            // castShadows: true,
+            castShadows: false,
             shadowType: 'PCF',
             range: 16
         })

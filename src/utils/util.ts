@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, December 6th 2018, 5:20:33 pm
+ * Last Modified: Friday, December 28th 2018, 9:38:52 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,7 +14,6 @@
 import 'reflect-metadata';
 import { Constructor } from '../types';
 import { Vec3 } from '../math';
-
 
 /**
  * 日志
@@ -55,7 +54,6 @@ export function copy(ref, source) {
     }
 }
 
-
 export function saveClosure(obj: any) {
     // tslint:disable-next-line:only-arrow-functions
     return function () {
@@ -81,16 +79,16 @@ export function validate<T>(target: any, propertyKey: string, descriptor: TypedP
     const set = descriptor.set!;
     // tslint:disable-next-line:only-arrow-functions
     descriptor.set = function (value: T) {
-      let type = Reflect.getMetadata('design:type', target, propertyKey);
-      if (!(value instanceof type)) {
-        throw new TypeError('Invalid type. ' + propertyKey + ' not ' + type.name);
-      }
-      set(value);
+        let type = Reflect.getMetadata('design:type', target, propertyKey);
+        if (!(value instanceof type)) {
+            throw new TypeError('Invalid type. ' + propertyKey + ' not ' + type.name);
+        }
+        set(value);
     };
-  }
+}
 
 
-  function classDecorator(arr: string[]) {
+function classDecorator(arr: string[]) {
     return function fn(c: Constructor<Greeter>) {
         return class extends c {
             constructor() {
@@ -118,13 +116,3 @@ class Greeter implements I {
 
 // let g = new Greeter();
 // console.log(g);
-
-export function getUp(v: Vec3) {
-    let up = new Vec3();
-    if (v.z === 0) {
-        up.set(0, 0, 1);
-    } else {
-        up.set(0, -v.z / v.y, 1);
-    }
-    return up;
-}

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, December 27th 2018, 12:22:26 pm
+ * Last Modified: Friday, December 28th 2018, 9:38:52 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,7 +14,7 @@
 
 import { IElement } from '../core/element';
 import { Vec3, Quat, Mat4, Vec2 } from '../math';
-import { Log, getUp } from '../utils/util';
+import { Log } from '../utils/util';
 import { Scene } from './scene';
 import { Entity } from '../ecs';
 
