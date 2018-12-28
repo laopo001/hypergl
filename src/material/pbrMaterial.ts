@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, December 27th 2018, 12:09:08 pm
+ * Last Modified: Friday, December 28th 2018, 4:39:15 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -38,23 +38,23 @@ export class PBRMaterial extends Material {
     */
 
     private _baseColorTexture?: Nullable<Texture>;
-    public get baseColorTexture(): Nullable<Texture> {
+    get baseColorTexture(): Nullable<Texture> {
         return this._baseColorTexture;
     }
-    public set baseColorTexture(value: Nullable<Texture>) {
+    set baseColorTexture(value: Nullable<Texture>) {
         this._baseColorTexture = value;
-        this.setUniform('uBaseColorSampler', this.baseColorTexture);
-        this.setshaderVars('uBaseColorSampler', this.metallicRoughnessTexture);
+        this.setUniform('uBaseColorSampler', value);
+        this.setshaderVars('HAS_BASECOLORMAP', !!value);
     }
     /**
     * 金属度
     * @memberof PBRMaterial
     */
     private _metallicFactor = 1;
-    public get metallicFactor() {
+    get metallicFactor() {
         return this._metallicFactor;
     }
-    public set metallicFactor(value) {
+    set metallicFactor(value) {
         this._metallicFactor = value;
         this.setUniform('uMetallicRoughnessValues', new Float32Array([this.metallicFactor, this.roughnessFactor]));
     }
@@ -63,10 +63,10 @@ export class PBRMaterial extends Material {
      * @memberof PBRMaterial
      */
     private _roughnessFactor = 1;
-    public get roughnessFactor() {
+    get roughnessFactor() {
         return this._roughnessFactor;
     }
-    public set roughnessFactor(value) {
+    set roughnessFactor(value) {
         this._roughnessFactor = value;
         this.setUniform('uMetallicRoughnessValues', new Float32Array([this.metallicFactor, this.roughnessFactor]));
     }
@@ -75,20 +75,62 @@ export class PBRMaterial extends Material {
      * @memberof PBRMaterial
      */
     private _metallicRoughnessTexture: Nullable<Texture>;
-    public get metallicRoughnessTexture(): Nullable<Texture> {
+    get metallicRoughnessTexture(): Nullable<Texture> {
         return this._metallicRoughnessTexture;
     }
-    public set metallicRoughnessTexture(value: Nullable<Texture>) {
+    set metallicRoughnessTexture(value: Nullable<Texture>) {
         this._metallicRoughnessTexture = value;
-        this.setUniform('uMetallicRoughnessSampler', this.metallicRoughnessTexture);
-        this.setshaderVars('uMetallicRoughnessSampler', this.metallicRoughnessTexture);
+        this.setUniform('uMetallicRoughnessSampler', value);
+        this.setshaderVars('HAS_METALROUGHNESSMAP', !!value);
     }
+
+    private _emissiveFactor = new Color(0, 0, 0);
+    public get emissiveFactor(): Color {
+        return this._emissiveFactor;
+    }
+    public set emissiveFactor(v: Color) {
+        this._emissiveFactor = v;
+        this.setUniform('uEmissiveFactor', v);
+    }
+
+    private _enissiveTexture: Nullable<Texture>;
+    get enissiveTexture(): Nullable<Texture> {
+        return this._enissiveTexture;
+    }
+    set enissiveTexture(v: Nullable<Texture>) {
+        this._enissiveTexture = v;
+        this.setUniform('uEmissiveSampler', v);
+        this.setshaderVars('HAS_EMISSIVEMAP', !!v);
+    }
+
+    private _normalTexture: Nullable<Texture>;
+    get normalTexture(): Nullable<Texture> {
+        return this._normalTexture;
+    }
+    set normalTexture(v: Nullable<Texture>) {
+        this._normalTexture = v;
+        this.setUniform('uNormalSampler', v);
+        this.setshaderVars('HAS_NORMALMAP', !!v);
+    }
+
+    private _occlusionTexture: Nullable<Texture>;
+    public get occlusionTexture(): Nullable<Texture> {
+        return this._occlusionTexture;
+    }
+    public set occlusionTexture(v: Nullable<Texture>) {
+        this._occlusionTexture = v;
+        this.setUniform('uOcclusionSampler', v);
+        this.setshaderVars('HAS_OCCLUSIONMAP', !!v);
+    }
+
+
     constructor() {
         super();
         this.setUniform('uMetallicRoughnessValues', new Float32Array([this.metallicFactor, this.roughnessFactor]));
         this.setUniform('uScaleDiffBaseMR', new Float32Array([0, 0, 0, 0]));
         this.setUniform('uScaleFGDSpec', new Float32Array([0, 0, 0, 0]));
         this.setUniform('uScaleIBLAmbient', new Float32Array([1, 1, 0, 0]));
+        this.setUniform('uEmissiveFactor', this.emissiveFactor);
     }
     updateShader(attributes: { [s: string]: SEMANTIC }) {
         let renderer = this.app.renderer;

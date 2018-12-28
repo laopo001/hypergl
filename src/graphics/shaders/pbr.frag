@@ -2,19 +2,19 @@
 // #define USE_IBL 1
 #define HAS_NORMALS 1
 #define HAS_UV 1
-{{#if uniforms.uBaseColorSampler}}
+{{#if shaderVars.HAS_BASECOLORMAP}}
+#define HAS_BASECOLORMAP 1
+{{/if}}
+{{#if shaderVars.HAS_METALROUGHNESSMAP}}
 #define HAS_METALROUGHNESSMAP 1
 {{/if}}
-{{#if uniforms.uMetallicRoughnessSampler}}
-#define HAS_METALROUGHNESSMAP 1
-{{/if}}
-{{#if uniforms.uNormalSampler}}
+{{#if shaderVars.HAS_NORMALMAP}}
 #define HAS_NORMALMAP 1
 {{/if}}
-{{#if uniforms.uEmissiveSampler}}
+{{#if shaderVars.HAS_EMISSIVEMAP}}
 #define HAS_EMISSIVEMAP 1
 {{/if}}
-{{#if uniforms.uOcclusionSampler}}
+{{#if shaderVars.HAS_OCCLUSIONMAP}}
 #define HAS_OCCLUSIONMAP 1
 {{/if}}
 #define USE_TEX_LOD 1
@@ -190,13 +190,13 @@ vec3 diffuse(PBRInfo pbrInputs) {
 }
 // The following equation models the Fresnel reflectance term of the spec equation (aka F())
 // Implementation of fresnel from [4], Equation 15
-vec3 specularReflection(PBRInfo pbrInputs) {
+vec3 specularReflection(PBRInfo pbrInputs) { // 菲涅尔方程
     return pbrInputs.reflectance0 + (pbrInputs.reflectance90 - pbrInputs.reflectance0) * pow(clamp(1.0 - pbrInputs.VdotH, 0.0, 1.0), 5.0);
 }
 // This calculates the specular geometric attenuation (aka G()), // where rougher material will reflect less light back to the viewer.
 // This implementation is based on [1] Equation 4, and we adopt their modifications to
 // alphaRoughness as input as originally proposed in [2].
-float geometricOcclusion(PBRInfo pbrInputs) {
+float geometricOcclusion(PBRInfo pbrInputs) { // 几何函数
     float NdotL = pbrInputs.NdotL;
     float NdotV = pbrInputs.NdotV;
     float r = pbrInputs.alphaRoughness;
@@ -207,7 +207,7 @@ float geometricOcclusion(PBRInfo pbrInputs) {
 // The following equation(s) model the distribution of microfacet normals across the area being drawn (aka D())
 // Implementation from "Average Irregularity Representation of a Roughened Surface for Ray Reflection" by T. S. Trowbridge, and K. P. Reitz
 // Follows the distribution function recommended in the SIGGRAPH 2013 course notes from EPIC Games [1], Equation 3.
-float microfacetDistribution(PBRInfo pbrInputs) {
+float microfacetDistribution(PBRInfo pbrInputs) { // 正态分布函数
     float roughnessSq = pbrInputs.alphaRoughness * pbrInputs.alphaRoughness;
     float f = (pbrInputs.NdotH * roughnessSq - pbrInputs.NdotH) * pbrInputs.NdotH + 1.0;
     return roughnessSq / (M_PI * f * f);
@@ -265,9 +265,9 @@ void main() {
     NdotL, NdotV, NdotH, LdotH, VdotH, perceptualRoughness, metallic, specularEnvironmentR0, specularEnvironmentR90, alphaRoughness, diffuseColor, uSpecularColor
     );
     // Calculate the shading terms for the microfacet specular shading model
-    vec3 F = specularReflection(pbrInputs);
-    float G = geometricOcclusion(pbrInputs);
-    float D = microfacetDistribution(pbrInputs);
+    vec3 F = specularReflection(pbrInputs); // 菲涅尔方程
+    float G = geometricOcclusion(pbrInputs); // 几何函数
+    float D = microfacetDistribution(pbrInputs); // 正态分布函数
     // Calculation of analytical lighting contribution
     vec3 diffuseContrib = (1.0 - F) * diffuse(pbrInputs);
     vec3 specContrib = F * G * D / (4.0 * NdotL * NdotV);
