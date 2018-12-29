@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 28th 2018, 7:17:37 pm
+ * Last Modified: Saturday, December 29th 2018, 4:58:06 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -78,7 +78,7 @@ export class GltfAssetLoader {
         let assets = await this.assets;
         let { gltf } = assets;
         let nodeData = gltf.nodes![index];
-        let entity = new Entity();
+        let entity = new Entity(nodeData.name);
         if (typeof nodeData.mesh === 'number') {
             let mesh = await this.loadMesh(nodeData.mesh);
             entity.addComponent('model', {

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 29th 2018, 1:14:09 pm
+ * Last Modified: Saturday, December 29th 2018, 5:22:22 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,10 +14,12 @@
 
 import { Material } from './material';
 import { Vec3 } from '../math';
-import { Texture } from '../texture';
+import { Texture, CubeTexture } from '../texture';
 import { Nullable } from '../types';
 import { SEMANTIC } from '../conf';
 import { Color } from '../core';
+import { get_ubrdfLUT } from './data';
+
 
 export class PBRMaterial extends Material {
     /**
@@ -85,10 +87,10 @@ export class PBRMaterial extends Material {
     }
 
     private _emissiveFactor = new Color(0, 0, 0);
-    public get emissiveFactor(): Color {
+    get emissiveFactor(): Color {
         return this._emissiveFactor;
     }
-    public set emissiveFactor(v: Color) {
+    set emissiveFactor(v: Color) {
         this._emissiveFactor = v;
         this.setUniform('uEmissiveFactor', v.data3);
     }
@@ -116,13 +118,33 @@ export class PBRMaterial extends Material {
     // tslint:disable-next-line:member-ordering
     occlusionStrength = 1;
     private _occlusionTexture: Nullable<Texture>;
-    public get occlusionTexture(): Nullable<Texture> {
+    get occlusionTexture(): Nullable<Texture> {
         return this._occlusionTexture;
     }
-    public set occlusionTexture(v: Nullable<Texture>) {
+    set occlusionTexture(v: Nullable<Texture>) {
         this._occlusionTexture = v;
         this.setUniform('uOcclusionSampler', v);
         this.setshaderVars('HAS_OCCLUSIONMAP', !!v);
+    }
+
+    private _diffuseEnvSampler: Nullable<CubeTexture>;
+    public get diffuseEnvTexture(): Nullable<CubeTexture> {
+        return this._diffuseEnvSampler;
+    }
+    public set diffuseEnvTexture(v: Nullable<CubeTexture>) {
+        this._diffuseEnvSampler = v;
+        this.setUniform('uDiffuseEnvSampler', v);
+        this.setshaderVars('HAS_DiffuseEnvSampler', !!v);
+    }
+
+    private _specularEnvSampler: Nullable<CubeTexture>;
+    public get specularEnvTexture(): Nullable<CubeTexture> {
+        return this._specularEnvSampler;
+    }
+    public set specularEnvTexture(v: Nullable<CubeTexture>) {
+        this._diffuseEnvSampler = v;
+        this.setUniform('uSpecularEnvSampler', v);
+        this.setshaderVars('HAS_SpecularEnvSampler', !!v);
     }
     constructor() {
         super();
@@ -134,7 +156,7 @@ export class PBRMaterial extends Material {
         this.setUniform('uEmissiveFactor', this.emissiveFactor.data3);
         this.setUniform('uNormalScale', this.normalScale);
         this.setUniform('uOcclusionStrength', this.occlusionStrength);
-
+        this.setUniform('ubrdfLUT', get_ubrdfLUT());
     }
     updateShader(attributes: { [s: string]: SEMANTIC }) {
         let renderer = this.app.renderer;

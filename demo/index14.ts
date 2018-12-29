@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 29th 2018, 3:40:59 pm
+ * Last Modified: Saturday, December 29th 2018, 5:07:58 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,7 +13,7 @@
 
 
 
-import { Entity, StandardMaterial, Config, SkyMaterial, Application, Vec3, Color, Texture, Mesh, Line, ColorMaterial, FOG, GltfAssetLoader, Vec2, CubeTexture } from 'hypergl';
+import { Entity, StandardMaterial, Config, SkyMaterial, Application, Vec3, Color, Texture, Mesh, Line, ColorMaterial, FOG, GltfAssetLoader, Vec2, CubeTexture, PBRMaterial } from 'hypergl';
 import { FirstPersonCamera } from './utils/first_person_camera';
 import { Rotate } from './utils/rotate';
 // tslint:disable-next-line:no-duplicate-imports
@@ -41,9 +41,11 @@ async function main() {
     // let posz = await loadImage('assets/images/skybox_pz.jpg');
     // skycube.setSource(posx, negx, posy, negy, posz, negz);
 
-    let skym = new SkyMaterial();
-    skym.cubeTexture = CubeTexture.loadImage('assets/images/skybox_nx.jpg', 'assets/images/skybox_ny.jpg',
+    let cubeTexture = CubeTexture.loadImage('assets/images/skybox_nx.jpg', 'assets/images/skybox_ny.jpg',
         'assets/images/skybox_nz.jpg', 'assets/images/skybox_px.jpg', 'assets/images/skybox_py.jpg', 'assets/images/skybox_pz.jpg');
+
+    let skym = new SkyMaterial();
+    skym.cubeTexture = cubeTexture;
 
     // let material = new StandardMaterial();
     // material.diffuseMap = skycube;
@@ -69,6 +71,11 @@ async function main() {
     let node = await gltf.loadSenceRoot();
     node.addComponent('script', [new Rotate()]);
     app.scene.root.addChild(node);
+
+    let entity = app.scene.root.findByName('node_damagedHelmet_-6514');
+    entity!.model.material<PBRMaterial>().diffuseEnvTexture = cubeTexture;
+    console.log(entity);
+
 
     let light = new Entity('light')
         .addComponent('light', {

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 28th 2018, 9:38:52 pm
+ * Last Modified: Saturday, December 29th 2018, 5:22:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -50,9 +50,7 @@ export class Application<T= {}> {
         this.canvas = canvas;
         this.renderer = new RendererPlatform(this.canvas, option);
         this.addScene(new Scene());
-        // document.addEventListener('pointerlockchange', e => {
-        //     this._isPointerLock = !this._isPointerLock;
-        // }, false);
+        event.fire('application-new', this);
         app = this;
     }
     static getApp<T>(): Application<T> {

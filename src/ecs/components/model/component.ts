@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 26th 2018, 12:55:58 am
+ * Last Modified: Saturday, December 29th 2018, 5:02:16 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -80,7 +80,7 @@ export class ModelComponent<T = StandardMaterial> extends Component<ModelInputs>
     drawable(index = 0) {
         return this.instance.meshs[index];
     }
-    material(index = 0): T {
+    material<K = T>(index = 0): K {
         return this.instance.meshs[index].material as any;
     }
     get length() {

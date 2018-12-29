@@ -1,10 +1,11 @@
 {{#if data.GL2}}{{> gles3.frag}}{{else}}{{> gles2.frag}}{{/if}}
-// #define USE_IBL 1
+
 #define HAS_NORMALS 1
 #define HAS_UV 1
-{{#if shaderVars.USE_IBL}}
 #define USE_IBL 1
-{{/if}}
+// {{#if shaderVars.USE_IBL}}
+
+// {{/if}}
 {{#if shaderVars.HAS_BASECOLORMAP}}
 #define HAS_BASECOLORMAP 1
 {{/if}}
@@ -20,6 +21,13 @@
 {{#if shaderVars.HAS_OCCLUSIONMAP}}
 #define HAS_OCCLUSIONMAP 1
 {{/if}}
+{{#if shaderVars.HAS_DiffuseEnvSampler}}
+#define HAS_DiffuseEnvSampler 1
+{{/if}}
+{{#if shaderVars.HAS_SpecularEnvSampler}}
+#define HAS_SpecularEnvSampler 1
+{{/if}}
+
 // #define USE_TEX_LOD 1
 //
 // This fragment shader defines a reference implementation for Physically Based Shading of
@@ -40,8 +48,17 @@
 precision highp float;
 uniform vec3 directionalLightArr0_direction;
 uniform vec3 directionalLightArr0_color;
-#ifdef USE_IBL
+// #ifdef USE_IBL
+//     uniform samplerCube uDiffuseEnvSampler;
+//     uniform samplerCube uSpecularEnvSampler;
+//     uniform sampler2D ubrdfLUT;
+// #endif
+
+#ifdef HAS_DiffuseEnvSampler
     uniform samplerCube uDiffuseEnvSampler;
+#endif
+
+#ifdef HAS_SpecularEnvSampler
     uniform samplerCube uSpecularEnvSampler;
     uniform sampler2D ubrdfLUT;
 #endif
@@ -168,13 +185,27 @@ vec3 getNormal() {
         // resolution of 512x512
         float lod = (pbrInputs.perceptualRoughness * mipCount);
         // retrieve a scale and bias to F0. See [1], Figure 3
-        vec3 brdf = SRGBtoLINEAR(texture2D(ubrdfLUT, vec2(pbrInputs.NdotV, 1.0 - pbrInputs.perceptualRoughness))).rgb;
-        vec3 diffuseLight = SRGBtoLINEAR(textureCube(uDiffuseEnvSampler, n)).rgb;
-        #ifdef USE_TEX_LOD
-            vec3 specularLight = SRGBtoLINEAR(textureCubeLodEXT(uSpecularEnvSampler, reflection, lod)).rgb;
-        #else
-            vec3 specularLight = SRGBtoLINEAR(textureCube(uSpecularEnvSampler, reflection)).rgb;
+        vec3 brdf = vec3(0, 0, 0);
+        vec3 diffuseLight = vec3(0, 0, 0);
+        #ifdef HAS_DiffuseEnvSampler
+            diffuseLight = SRGBtoLINEAR(textureCube(uDiffuseEnvSampler, n)).rgb;
         #endif
+
+        vec3 specularLight = vec3(0, 0, 0);
+        #ifdef HAS_SpecularEnvSampler
+            brdf = SRGBtoLINEAR(texture2D(ubrdfLUT, vec2(pbrInputs.NdotV, 1.0 - pbrInputs.perceptualRoughness))).rgb;
+            #ifdef USE_TEX_LOD
+                specularLight = SRGBtoLINEAR(textureCubeLodEXT(uSpecularEnvSampler, reflection, lod)).rgb;
+            #else
+                specularLight = SRGBtoLINEAR(textureCube(uSpecularEnvSampler, reflection)).rgb;
+            #endif
+        #endif
+
+        // #ifdef USE_TEX_LOD
+        //     vec3 specularLight = SRGBtoLINEAR(textureCubeLodEXT(uSpecularEnvSampler, reflection, lod)).rgb;
+        // #else
+        //     vec3 specularLight = SRGBtoLINEAR(textureCube(uSpecularEnvSampler, reflection)).rgb;
+        // #endif
         
         vec3 diffuse = diffuseLight * pbrInputs.diffuseColor;
         vec3 specular = specularLight * (pbrInputs.uSpecularColor * brdf.x + brdf.y);
