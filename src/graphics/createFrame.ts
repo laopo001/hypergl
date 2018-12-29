@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 11th 2018, 7:00:29 pm
+ * Last Modified: Saturday, December 29th 2018, 3:01:23 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,7 +15,7 @@
 import { RendererPlatform } from './renderer';
 import { Log } from '../utils/util';
 import { Scene } from '../scene/scene';
-import { Texture } from '../texture';
+import { Texture, CubeTexture } from '../texture';
 import { WRAP } from '../conf';
 export class Frame {
     framebuffer!: WebGLFramebuffer;
@@ -32,9 +32,9 @@ export class Frame {
     }
     getTexture() {
         if (this.is3d) {
-            return new Texture(true, this.textureCube);
+            return new CubeTexture(this.textureCube);
         } else {
-            return new Texture(false, this.texture);
+            return new Texture(this.texture);
         }
 
     }

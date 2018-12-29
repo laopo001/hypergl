@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 28th 2018, 10:57:48 pm
+ * Last Modified: Saturday, December 29th 2018, 2:57:04 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -392,12 +392,9 @@ export class RendererPlatform {
         for (let i = 0; i < attributes.length; i++) {
             let attrbute = attributes[i];
             let element: Undefinedable<VertexAttribData>;
-            // if (attrbute.element) {
-            //     element = attrbute.element;
-            // } else {
+
             element = format.elements.find(x => x.semantic === attrbute.name);
             attrbute.element = element;
-            // }
 
             if (element) {
                 gl.vertexAttribPointer(attrbute.locationId, element.size, this.AttrbuteType[(element.dataType as any).name], element.normalize, element.stride, element.offset);

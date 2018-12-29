@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 12th 2018, 5:00:04 pm
+ * Last Modified: Saturday, December 29th 2018, 2:56:06 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,17 +13,17 @@
 
 import { Material } from './material';
 import { SEMANTIC, FACE } from '../conf';
-import { Texture } from '../texture';
+import { CubeTexture } from '../texture';
 export class SkyMaterial extends Material {
-    get cubeTexture(): Texture {
+    get cubeTexture(): CubeTexture {
         return this._cubeTexture!;
     }
-    set cubeTexture(value: Texture) {
+    set cubeTexture(value: CubeTexture) {
         this._cubeTexture = value;
         this.setUniform('uSkyBox', this.cubeTexture);
     }
     cullFace = FACE.NONE;
-    private _cubeTexture?: Texture;
+    private _cubeTexture?: CubeTexture;
 
     updateShader(attributes: { [s: string]: SEMANTIC }) {
         let renderer = this.app.renderer;

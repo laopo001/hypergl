@@ -2,6 +2,9 @@
 // #define USE_IBL 1
 #define HAS_NORMALS 1
 #define HAS_UV 1
+{{#if shaderVars.USE_IBL}}
+#define USE_IBL 1
+{{/if}}
 {{#if shaderVars.HAS_BASECOLORMAP}}
 #define HAS_BASECOLORMAP 1
 {{/if}}
@@ -17,7 +20,7 @@
 {{#if shaderVars.HAS_OCCLUSIONMAP}}
 #define HAS_OCCLUSIONMAP 1
 {{/if}}
-#define USE_TEX_LOD 1
+// #define USE_TEX_LOD 1
 //
 // This fragment shader defines a reference implementation for Physically Based Shading of
 // a microfacet surface material defined by a glTF model.
@@ -253,7 +256,7 @@ void main() {
     // Vector from surface point to camera
     vec3 lightDirNorm = normalize(directionalLightArr0_direction);
     // Vector from surface point to light
-    vec3 halfwayDir  = normalize(lightDirNorm+dViewDirNorm);
+    vec3 halfwayDir  = normalize(lightDirNorm + dViewDirNorm);
     // Half vector between both lightDirNorm and dViewDirNorm
     vec3 reflection = -normalize(reflect(dViewDirNorm, normal));
     float NdotL = clamp(dot(normal, lightDirNorm), 0.001, 1.0);

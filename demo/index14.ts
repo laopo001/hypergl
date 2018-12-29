@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 28th 2018, 10:40:07 pm
+ * Last Modified: Saturday, December 29th 2018, 3:00:00 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,7 +13,7 @@
 
 
 
-import { Entity, StandardMaterial, Config, SkyMaterial, Application, Vec3, Color, Texture, Mesh, Line, ColorMaterial, FOG, GltfAssetLoader, Vec2 } from 'hypergl';
+import { Entity, StandardMaterial, Config, SkyMaterial, Application, Vec3, Color, Texture, Mesh, Line, ColorMaterial, FOG, GltfAssetLoader, Vec2, CubeTexture } from 'hypergl';
 import { FirstPersonCamera } from './utils/first_person_camera';
 import { Rotate } from './utils/rotate';
 // tslint:disable-next-line:no-duplicate-imports
@@ -32,7 +32,7 @@ async function main() {
 
     // app.scene.fog = FOG.LINEAR;
     // app.scene.fogEnd = 1000;
-    let skycube = new Texture(true);
+    let skycube = new CubeTexture();
     let negx = await loadImage('assets/images/skybox_nx.jpg');
     let negy = await loadImage('assets/images/skybox_ny.jpg');
     let negz = await loadImage('assets/images/skybox_nz.jpg');
@@ -46,8 +46,8 @@ async function main() {
     let skym = new SkyMaterial();
     skym.cubeTexture = skycube;
 
-    let material = new StandardMaterial();
-    material.diffuseMap = skycube;
+    // let material = new StandardMaterial();
+    // material.diffuseMap = skycube;
 
     let material2 = new StandardMaterial();
     let texture = new Texture();
