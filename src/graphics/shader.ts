@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 24th 2018, 11:11:06 pm
+ * Last Modified: Saturday, December 29th 2018, 3:55:12 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,7 +15,11 @@
 import { RendererPlatform } from './renderer';
 import { Log } from '../utils/util';
 import { ShaderVariable } from './shaderVariable';
+import { TypeArray } from '../types';
 import { UNIFORM_TYPE, SEMANTIC } from '../conf';
+import { Texture, CubeTexture } from '../texture';
+
+export type UniformValueType = TypeArray | Texture | CubeTexture | null | number | boolean | undefined;
 
 let ShaderID = 0;
 export class Shader {
@@ -26,7 +30,7 @@ export class Shader {
     samplers: ShaderVariable[] = [];
     uniforms: ShaderVariable[] = [];
     attributes: ShaderVariable[] = [];
-    uniformScope: { [s: string]: any; } = {};
+    uniformScope!: { [s: string]: UniformValueType; };
     ready = false;
     constructor(private renderer: RendererPlatform, private definition: {
         attributes: { [s: string]: SEMANTIC };
@@ -36,7 +40,7 @@ export class Shader {
     }) {
         this.compile();
     }
-    setUniformValue(name: string, value) {
+    setUniformValue(name: string, value: UniformValueType) {
         this.uniformScope[name] = value;
     }
     getUniformValue(name: string) {

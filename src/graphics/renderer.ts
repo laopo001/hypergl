@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 29th 2018, 2:57:04 pm
+ * Last Modified: Saturday, December 29th 2018, 3:30:57 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,7 +20,7 @@ import { Shader } from './shader';
 import { IndexBuffer } from './indexBuffer';
 import { VertexBuffer } from './vertexBuffer';
 import { Entity } from '../ecs/entity';
-import { Texture } from '../texture';
+import { Texture, BaseTexture } from '../texture';
 import { ShaderVariable } from './shaderVariable';
 import { VertexAttribData } from './vertexFormat';
 import { ModelComponent } from 'src/ecs/components/model';
@@ -322,9 +322,10 @@ export class RendererPlatform {
         gl.clearColor(r, g, b, a);
         this.clear();
     }
-    initTexture(gl: WebGL2RenderingContext, texture: Texture) {
+    initTexture(texture: BaseTexture) {
+        let gl = this.gl;
         if (texture.source == null) { Log.error('texture 设置 source' + texture); return; }
-        const webglTexture = gl.createTexture() as WebGLTexture;
+        const webglTexture = texture.webglTexture || gl.createTexture() as WebGLTexture;
         if (!texture.isCube) {
             gl.bindTexture(gl.TEXTURE_2D, webglTexture);
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, texture.source as any);
@@ -337,7 +338,8 @@ export class RendererPlatform {
         }
         return webglTexture;
     }
-    loadTexture(gl: WebGL2RenderingContext, program: WebGLProgram, variable: ShaderVariable, texture: Texture, t = 0) {
+    loadTexture(program: WebGLProgram, variable: ShaderVariable, texture: BaseTexture, t = 0) {
+        let gl = this.gl;
         if (texture.webglTexture) {
             if (!texture.isCube) {
                 gl.activeTexture(gl['TEXTURE' + t]);
@@ -369,8 +371,8 @@ export class RendererPlatform {
                 gl.uniform1i(variable.locationId, t);
             }
         } else {
-            texture.webglTexture = this.initTexture(gl, texture);
-            this.loadTexture(gl, program, variable, texture, t);
+            texture.webglTexture = this.initTexture(texture);
+            this.loadTexture(program, variable, texture, t);
         }
     }
     // @time
@@ -418,8 +420,8 @@ export class RendererPlatform {
 
         for (let i = 0; i < samplers.length; i++) {
             let sampler = samplers[i];
-            let value = shader.getUniformValue(sampler.name) as Texture;
-            this.loadTexture(gl, shader.program as WebGLProgram, sampler, value, i);
+            let value = shader.getUniformValue(sampler.name) as BaseTexture;
+            this.loadTexture(shader.program as WebGLProgram, sampler, value, i);
         }
         if (material.cullFace === FACE.NONE) {
             gl.disable(gl.CULL_FACE);

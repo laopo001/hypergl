@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 28th 2018, 5:16:13 pm
+ * Last Modified: Saturday, December 29th 2018, 3:14:40 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,7 +14,7 @@
 
 import { RendererPlatform } from '../graphics/renderer';
 import { SEMANTIC, FACE } from '../conf';
-import { Shader } from '../graphics/shader';
+import { Shader, UniformValueType } from '../graphics/shader';
 import { Mesh } from '../mesh/mesh';
 import { Application } from '../application';
 import { ModelComponent } from '../ecs/components/model';
@@ -25,7 +25,7 @@ export abstract class Material {
     get app() {
         return Application.getApp();
     }
-    uniforms: { [s: string]: any } = {};
+    uniforms: { [s: string]: UniformValueType } = {};
     shaderVars: { [s: string]: any } = {};
     shader?: Shader;
     // cullFace = FACE.BACK;
@@ -34,7 +34,7 @@ export abstract class Material {
     constructor(public name?: string) {
 
     }
-    setUniform(name: string, data: any) {
+    setUniform(name: string, data: UniformValueType) {
         this.uniforms[name] = data;
     }
     getUniform(name: string) {

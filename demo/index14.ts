@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 29th 2018, 3:00:00 pm
+ * Last Modified: Saturday, December 29th 2018, 3:40:59 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -32,41 +32,42 @@ async function main() {
 
     // app.scene.fog = FOG.LINEAR;
     // app.scene.fogEnd = 1000;
-    let skycube = new CubeTexture();
-    let negx = await loadImage('assets/images/skybox_nx.jpg');
-    let negy = await loadImage('assets/images/skybox_ny.jpg');
-    let negz = await loadImage('assets/images/skybox_nz.jpg');
-    let posx = await loadImage('assets/images/skybox_px.jpg');
-    let posy = await loadImage('assets/images/skybox_py.jpg');
-    let posz = await loadImage('assets/images/skybox_pz.jpg');
-    skycube.setSource(posx, negx, posy, negy, posz, negz);
-    skycube.wrapU = Config.WRAP.CLAMP_TO_EDGE;
-    skycube.wrapV = Config.WRAP.CLAMP_TO_EDGE;
-    skycube.wrapR = Config.WRAP.CLAMP_TO_EDGE;
+    // let skycube = new CubeTexture();
+    // let negx = await loadImage('assets/images/skybox_nx.jpg');
+    // let negy = await loadImage('assets/images/skybox_ny.jpg');
+    // let negz = await loadImage('assets/images/skybox_nz.jpg');
+    // let posx = await loadImage('assets/images/skybox_px.jpg');
+    // let posy = await loadImage('assets/images/skybox_py.jpg');
+    // let posz = await loadImage('assets/images/skybox_pz.jpg');
+    // skycube.setSource(posx, negx, posy, negy, posz, negz);
+
     let skym = new SkyMaterial();
-    skym.cubeTexture = skycube;
+    skym.cubeTexture = CubeTexture.loadImage('assets/images/skybox_nx.jpg', 'assets/images/skybox_ny.jpg',
+        'assets/images/skybox_nz.jpg', 'assets/images/skybox_px.jpg', 'assets/images/skybox_py.jpg', 'assets/images/skybox_pz.jpg');
 
     // let material = new StandardMaterial();
     // material.diffuseMap = skycube;
 
     let material2 = new StandardMaterial();
-    let texture = new Texture();
-    let img2 = await loadImage('assets/images/flare-2.png');
-    texture.setSource(img2);
+    // let texture = new Texture();
+    // let img2 = await loadImage('assets/images/flare-2.png');
+    // texture.setSource(img2);
+    let texture = Texture.loadImage('assets/images/flare-2.png');
+
     material2.diffuseMap = texture;
 
-    let debug = new Entity('debug')
+    let sky = new Entity('debug')
         .addComponent('model', {
             type: 'box',
             material: skym
         })
         // .setLocalPosition(10, 20, 30)
         .setLocalScale(100, 100, 100);
-    app.scene.root.addChild(debug);
+    app.scene.root.addChild(sky);
 
     let gltf = new GltfAssetLoader('./assets/models/DamagedHelmet.gltf');
     let node = await gltf.loadSenceRoot();
-    node.addComponent('script', [ new Rotate()]);
+    node.addComponent('script', [new Rotate()]);
     app.scene.root.addChild(node);
 
     let light = new Entity('light')
@@ -84,7 +85,8 @@ async function main() {
 
     let plane = new Entity('plane')
         .addComponent('model', {
-            type: 'plane'
+            type: 'plane',
+            material: material2
         })
         .setPosition(0, -2, 0).setLocalScale(10, 1, 10);
     app.scene.root.addChild(plane);
