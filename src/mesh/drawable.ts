@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 28th 2018, 5:21:17 pm
+ * Last Modified: Saturday, December 29th 2018, 5:42:10 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,11 +17,12 @@ import { StandardMaterial, Material } from '../material';
 import { SEMANTIC, BUFFER, DrawMode } from '../conf';
 import { VertexType, VertexFormat } from '../graphics/vertexFormat';
 import { CreateMeshOptions, CreateBoxOptions, CreateDrawabelOptions } from '../types';
+import { Application } from '../application';
 import { Vec3, Vec2, Mat4 } from '../math';
 import { BoundingBox } from '../shape/boundingBox';
 import { BoundingSphere } from '../shape/boundingSphere';
 
-export class Drawable<T= Material> {
+export class Drawable<T extends Material= Material> {
     name?: string;
     mode = DrawMode.TRIANGLES; // 默认绘制模式 为 三角形
     // tslint:disable-next-line:member-ordering
@@ -48,7 +49,7 @@ export class Drawable<T= Material> {
     }
     material!: T;
     constructor() {
-        // TODO
+        Application.getApp().scene.drawables.push(this);
     }
     // tslint:disable-next-line:cyclomatic-complexity
     create(opts: CreateDrawabelOptions) {

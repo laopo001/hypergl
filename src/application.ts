@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 29th 2018, 5:22:08 pm
+ * Last Modified: Saturday, December 29th 2018, 5:51:17 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -32,7 +32,7 @@ export class Plugin {
 
 let app;
 
-export class Application<T= {}> {
+export class Application<T= Plugin> {
     get scene() {
         return this.sceneInstances[this.activeIndex];
     }
@@ -50,11 +50,18 @@ export class Application<T= {}> {
         this.canvas = canvas;
         this.renderer = new RendererPlatform(this.canvas, option);
         this.addScene(new Scene());
-        event.fire('application-new', this);
         app = this;
+        event.fire('application-new', this);
     }
     static getApp<T>(): Application<T> {
         return app;
+    }
+    static getAsyncApp<T>(): Promise<Application<T>> {
+        return new Promise((resolve, reject) => {
+            event.on('application-new', () => {
+                resolve(app);
+            });
+        });
     }
     start() {
         this.renderer.setViewport(0, 0, this.canvas.width, this.canvas.height);

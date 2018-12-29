@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 28th 2018, 5:23:45 pm
+ * Last Modified: Saturday, December 29th 2018, 5:46:49 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -23,6 +23,8 @@ import { BoundingBox } from '../shape/boundingBox';
 import { Line } from './line';
 import { Drawable } from './drawable';
 
+
+
 export class Mesh extends Drawable {
     static createBox = createBox;
     static createPlane = createPlane;
@@ -30,7 +32,7 @@ export class Mesh extends Drawable {
     // static createLines = createLines;
     castShadow = true;
     receiveShadow = true;
-    material: StandardMaterial | PBRMaterial = new StandardMaterial();
+    material: StandardMaterial | PBRMaterial = StandardMaterial.defaultMaterial();
     // private _material = Mesh.defaultMaterial;
     constructor() {
         super();

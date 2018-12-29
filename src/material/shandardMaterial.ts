@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, December 27th 2018, 5:17:37 pm
+ * Last Modified: Saturday, December 29th 2018, 5:46:49 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -22,9 +22,9 @@ import { event } from '../core';
 import { Vec3, Vec2 } from '../math';
 import { Undefinedable, Nullable } from '../types';
 import { ColorMaterial } from './colorMaterial';
+import { cache } from '../utils/decorators';
 
 export class StandardMaterial extends ColorMaterial {
-    private _opacityMap: Nullable<Texture>;
     get opacityMap() {
         return this._opacityMap;
     }
@@ -32,7 +32,6 @@ export class StandardMaterial extends ColorMaterial {
         this._opacityMap = value;
         this.setUniform('uOpacityTexture', this.opacityMap);
     }
-    private _opacityMapOffset = new Vec2(0, 0);
     public get opacityMapOffset(): Vec2 {
         return this._opacityMapOffset;
     }
@@ -77,8 +76,6 @@ export class StandardMaterial extends ColorMaterial {
         this._specularMap = value;
         this.setUniform('uSpecularTexture', this.specularMap);
     }
-
-    private _normalTexture: Nullable<Texture>;
     get normalTexture(): Nullable<Texture> {
         return this._normalTexture;
     }
@@ -86,8 +83,6 @@ export class StandardMaterial extends ColorMaterial {
         this._normalTexture = v;
         this.setUniform('uNormalTexture', this.normalTexture);
     }
-
-    private _specularMapOffset = new Vec2(0, 0);
     get specularMapOffset(): Vec2 {
         return this._specularMapOffset;
     }
@@ -102,8 +97,6 @@ export class StandardMaterial extends ColorMaterial {
         this._shininess = value;
         this.setUniform('uShininess', this.shininess);
     }
-    // alphaWrite = true;
-    private _alphaTest = 0;
     get alphaTest() {
         return this._alphaTest;
     }
@@ -111,6 +104,14 @@ export class StandardMaterial extends ColorMaterial {
         this._alphaTest = value;
         this.setUniform('uAlphaTest', this.alphaTest);
     }
+    private _opacityMap: Nullable<Texture>;
+    private _opacityMapOffset = new Vec2(0, 0);
+
+    private _normalTexture: Nullable<Texture>;
+
+    private _specularMapOffset = new Vec2(0, 0);
+    // alphaWrite = true;
+    private _alphaTest = 0;
     private _diffuseMapOffset = new Vec2(0, 0);
     private _shininess = 64;
     private _specularMap: Nullable<Texture>;
@@ -126,6 +127,10 @@ export class StandardMaterial extends ColorMaterial {
         this.setUniform('uOpacityMapOffset', this.opacityMapOffset.data);
         this.setUniform('uSpecularMapOffset', this.specularMapOffset.data);
         this.setUniform('uAlphaTest', this.alphaTest);
+    }
+    @cache
+    static defaultMaterial() {
+        return new StandardMaterial('defaultMaterial');
     }
     updateShader(attributes: { [s: string]: SEMANTIC }) {
         let renderer = this.app.renderer;

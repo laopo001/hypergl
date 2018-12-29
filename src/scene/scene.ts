@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, December 27th 2018, 12:18:40 pm
+ * Last Modified: Saturday, December 29th 2018, 5:33:12 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -33,6 +33,7 @@ import { CameraComponent } from '../ecs/components/camera';
 import { AudioComponentSystem } from '../ecs/components/audio';
 import { ListenerComponentSystem } from '../ecs/components/listener';
 import { FOG } from '../conf';
+import { Drawable } from '../mesh';
 export class Scene {
     static ambientColor = new Color(0.2, 0.2, 0.2);
     fog: FOG = FOG.NONE;
@@ -62,6 +63,8 @@ export class Scene {
 
     app!: Application;
     entitys: Entity[] = [];
+    materials: Material[] = [];
+    drawables: Drawable[] = [];
     root: Entity = new Entity('root');
     // readonly cameras: Camera[] = [];
     systems: SystemRegistry;
@@ -74,7 +77,6 @@ export class Scene {
     set activeCamera(x) {
         this._activeCamera = x;
     }
-    private materials: Material[] = [];
     constructor() {
         this.root.enabled = true;
         this.systems = new SystemRegistry();
