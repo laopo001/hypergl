@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 28th 2018, 9:38:46 pm
+ * Last Modified: Sunday, December 30th 2018, 9:24:51 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -18,9 +18,10 @@ export function cache(target: any, key: string, description: PropertyDescriptor)
     let t;
     // tslint:disable-next-line:only-arrow-functions
     description.value = function (arg1) {
-        if (arg1 !== t) {
-            old(arg1);
+        if (arg1 !== t || arg1 == null) {
+            let res = old(arg1);
             t = arg1;
+            return res;
         }
     };
 }

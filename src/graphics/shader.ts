@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 29th 2018, 3:55:12 pm
+ * Last Modified: Sunday, December 30th 2018, 9:29:01 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -30,7 +30,7 @@ export class Shader {
     samplers: ShaderVariable[] = [];
     uniforms: ShaderVariable[] = [];
     attributes: ShaderVariable[] = [];
-    uniformScope!: { [s: string]: UniformValueType; };
+    uniformScope: { [s: string]: UniformValueType; } = {};
     ready = false;
     constructor(private renderer: RendererPlatform, private definition: {
         attributes: { [s: string]: SEMANTIC };

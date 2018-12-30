@@ -197,7 +197,7 @@ vec3 getNormal() {
         float lod = (pbrInputs.perceptualRoughness * mipCount);
         // retrieve a scale and bias to F0. See [1], Figure 3
         vec3 brdf = vec3(0, 0, 0);
-        vec3 diffuseLight = vec3(0, 0, 0);
+        vec3 diffuseLight = vec3(1, 1, 1);
         #ifdef HAS_DiffuseEnvSampler
             diffuseLight = SRGBtoLINEAR(textureCube(uDiffuseEnvSampler, n)).rgb;
         #endif
