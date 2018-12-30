@@ -125,7 +125,7 @@ struct PBRInfo {
     // roughness mapped to a more linear change in the roughness (proposed by [2])
     vec3 diffuseColor;
     // color contribution from diffuse lighting
-    vec3 uSpecularColor;
+    vec3 specularColor;
     // color contribution from specular lighting
 };
 const float M_PI = 3.141592653589793;
@@ -209,7 +209,7 @@ vec3 getNormal() {
         // #endif
         
         vec3 diffuse = diffuseLight * pbrInputs.diffuseColor;
-        vec3 specular = specularLight * (pbrInputs.uSpecularColor * brdf.x + brdf.y);
+        vec3 specular = specularLight * (pbrInputs.specularColor * brdf.x + brdf.y);
         // For presentation, this allows us to disable IBL terms
         diffuse *= uScaleIBLAmbient.x;
         specular *= uScaleIBLAmbient.y;
@@ -274,13 +274,13 @@ void main() {
     vec3 f0 = vec3(0.04);
     vec3 diffuseColor = baseColor.rgb * (vec3(1.0) - f0);
     diffuseColor *= 1.0 - metallic;
-    vec3 uSpecularColor = mix(f0, baseColor.rgb, metallic);
+    vec3 specularColor = mix(f0, baseColor.rgb, metallic);
     // Compute reflectance.
-    float reflectance = max(max(uSpecularColor.r, uSpecularColor.g), uSpecularColor.b);
+    float reflectance = max(max(specularColor.r, specularColor.g), specularColor.b);
     // For typical incident reflectance range (between 4% to 100%) set the grazing reflectance to 100% for typical fresnel effect.
     // For very low reflectance range on highly diffuse objects (below 4%), incrementally reduce grazing reflecance to 0%.
     float reflectance90 = clamp(reflectance * 25.0, 0.0, 1.0);
-    vec3 specularEnvironmentR0 = uSpecularColor.rgb;
+    vec3 specularEnvironmentR0 = specularColor.rgb;
     vec3 specularEnvironmentR90 = vec3(1.0, 1.0, 1.0) * reflectance90;
     vec3 normal = getNormal();
     // normal at surface point
@@ -297,7 +297,7 @@ void main() {
     float LdotH = clamp(dot(lightDirNorm, halfwayDir ), 0.0, 1.0);
     float VdotH = clamp(dot(dViewDirNorm, halfwayDir ), 0.0, 1.0);
     PBRInfo pbrInputs = PBRInfo(
-    NdotL, NdotV, NdotH, LdotH, VdotH, perceptualRoughness, metallic, specularEnvironmentR0, specularEnvironmentR90, alphaRoughness, diffuseColor, uSpecularColor
+    NdotL, NdotV, NdotH, LdotH, VdotH, perceptualRoughness, metallic, specularEnvironmentR0, specularEnvironmentR90, alphaRoughness, diffuseColor, specularColor
     );
     // Calculate the shading terms for the microfacet specular shading model
     vec3 F = specularReflection(pbrInputs); // 菲涅尔方程
