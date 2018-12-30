@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 30th 2018, 6:33:23 pm
+ * Last Modified: Sunday, December 30th 2018, 9:37:53 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -75,8 +75,9 @@ async function main() {
     app.scene.root.addChild(node);
 
     let entity = app.scene.root.findByName('node_damagedHelmet_-6514');
-    entity!.model.material<PBRMaterial>().diffuseEnvTexture = cubeTexture;
-    entity!.model.material<PBRMaterial>().specularEnvTexture = cubeTexture;
+    // entity!.model.material<PBRMaterial>().baseColor = new Color(5, 5, 5);
+    // entity!.model.material<PBRMaterial>().diffuseEnvTexture = cubeTexture;
+    // entity!.model.material<PBRMaterial>().specularEnvTexture = cubeTexture;
     console.log(entity);
 
 
@@ -91,7 +92,16 @@ async function main() {
         .setLocalPosition(0, 5, 0);
     app.scene.root.addChild(light);
 
+    let sphere1 = new Entity('sphere1')
+        .addComponent('model', {
+            type: 'sphere',
+        })
+        .setLocalPosition(3, 0, 0);
 
+    let pbr_sphere1 = new PBRMaterial();
+    pbr_sphere1.baseColor = new Color(1, 0, 0);
+    sphere1.model.drawable(0).material = pbr_sphere1;
+    app.scene.root.addChild(sphere1);
 
     let plane = new Entity('plane')
         .addComponent('model', {
