@@ -99,6 +99,17 @@ in vec2 v_vertex_texCoord0;
     #endif
 #endif
 
+
+vec3 dViewDirNorm;
+vec3 dVertexNormal;
+float dPerceptualRoughness;
+float dMetallic;
+vec3 d_specularEnvironmentR0;
+vec3 d_specularEnvironmentR90;
+float d_alphaRoughness;
+vec3 d_diffuseColor;
+vec3 d_specularColor;
+
 // Encapsulate the various inputs used by the various functions in the shading equation
 // We store values in this struct to simplify the integration of alternative implementations
 // of the shading terms, outlined in the Readme.MD Appendix.
@@ -125,7 +136,7 @@ struct PBRInfo {
     // roughness mapped to a more linear change in the roughness (proposed by [2])
     vec3 diffuseColor;
     // color contribution from diffuse lighting
-    vec3 uSpecularColor;
+    vec3 specularColor;
     // color contribution from specular lighting
 };
 const float M_PI = 3.141592653589793;
@@ -209,7 +220,7 @@ vec3 getNormal() {
         // #endif
         
         vec3 diffuse = diffuseLight * pbrInputs.diffuseColor;
-        vec3 specular = specularLight * (pbrInputs.uSpecularColor * brdf.x + brdf.y);
+        vec3 specular = specularLight * (pbrInputs.specularColor * brdf.x + brdf.y);
         // For presentation, this allows us to disable IBL terms
         diffuse *= uScaleIBLAmbient.x;
         specular *= uScaleIBLAmbient.y;
@@ -231,7 +242,7 @@ vec3 specularReflection(PBRInfo pbrInputs) { // 菲涅尔方程
 // This calculates the specular geometric attenuation (aka G()), // where rougher material will reflect less light back to the viewer.
 // This implementation is based on [1] Equation 4, and we adopt their modifications to
 // alphaRoughness as input as originally proposed in [2].
-float geometricOcclusion(PBRInfo pbrInputs) { // 几何函数
+float geometricOcclusion(PBRInfo pbrInputs) { // 几何函数 light
     float NdotL = pbrInputs.NdotL;
     float NdotV = pbrInputs.NdotV;
     float r = pbrInputs.alphaRoughness;
@@ -247,23 +258,57 @@ float microfacetDistribution(PBRInfo pbrInputs) { // 正态分布函数
     float f = (pbrInputs.NdotH * roughnessSq - pbrInputs.NdotH) * pbrInputs.NdotH + 1.0;
     return roughnessSq / (M_PI * f * f);
 }
+
+// 计算方向
+vec3 CalcDirLight( vec3 lightColor, vec3 lightDir) {
+    // Vector from surface point to camera
+    vec3 lightDirNorm = normalize(lightDir); // light
+    // Vector from surface point to light
+    vec3 halfwayDir  = normalize(lightDirNorm + dViewDirNorm); // light
+    // Half vector between both lightDirNorm and dViewDirNorm
+    vec3 reflection = -normalize(reflect(dViewDirNorm, dVertexNormal));
+    float NdotL = clamp(dot(dVertexNormal, lightDirNorm), 0.001, 1.0); // light
+    float NdotV = clamp(abs(dot(dVertexNormal, dViewDirNorm)), 0.001, 1.0);
+    float NdotH = clamp(dot(dVertexNormal, halfwayDir ), 0.0, 1.0); // light
+    float LdotH = clamp(dot(lightDirNorm, halfwayDir ), 0.0, 1.0); // light
+    float VdotH = clamp(dot(dViewDirNorm, halfwayDir ), 0.0, 1.0); // light
+    PBRInfo pbrInputs = PBRInfo(
+    NdotL, NdotV, NdotH, LdotH, VdotH, dPerceptualRoughness, dMetallic, d_specularEnvironmentR0, d_specularEnvironmentR90, d_alphaRoughness, d_diffuseColor, d_specularColor
+    );
+    // Calculate the shading terms for the microfacet specular shading model
+    vec3 F = specularReflection(pbrInputs); // 菲涅尔方程
+    float G = geometricOcclusion(pbrInputs); // 几何函数
+    float D = microfacetDistribution(pbrInputs); // 正态分布函数
+    // Calculation of analytical lighting contribution
+    vec3 diffuseContrib = (1.0 - F) * diffuse(pbrInputs);
+    vec3 specContrib = F * G * D / (4.0 * NdotL * NdotV); // light
+    // Obtain final intensity as reflectance (BRDF) scaled by the energy of the light (cosine law)
+    vec3 color = NdotL * lightColor * (diffuseContrib + specContrib);
+
+    // Calculate lighting contribution from image based lighting source (IBL)
+    #ifdef USE_IBL
+        color += getIBLContribution(pbrInputs, dViewDirNorm, reflection);
+    #endif
+    return color;
+}
+
 void main() {
     // Metallic and Roughness material properties are packed together
     // In glTF, these factors can be specified by fixed scalar values
     // or from a metallic-roughness map
-    float perceptualRoughness = uMetallicRoughnessValues.y;
-    float metallic = uMetallicRoughnessValues.x;
+    dPerceptualRoughness = uMetallicRoughnessValues.y;
+    dMetallic = uMetallicRoughnessValues.x;
     #ifdef HAS_METALROUGHNESSMAP
         // Roughness is stored in the 'g' channel, metallic is stored in the 'b' channel.
         // This layout intentionally reserves the 'r' channel for (optional) occlusion map data
         vec4 mrSample = texture2D(uMetallicRoughnessSampler, v_vertex_texCoord0);
-        perceptualRoughness = mrSample.g * perceptualRoughness;
-        metallic = mrSample.b * metallic;
+        dPerceptualRoughness = mrSample.g * dPerceptualRoughness;
+        dMetallic = mrSample.b * dMetallic;
     #endif
-    perceptualRoughness = clamp(perceptualRoughness, c_MinRoughness, 1.0);
-    metallic = clamp(metallic, 0.0, 1.0);
+    dPerceptualRoughness = clamp(dPerceptualRoughness, c_MinRoughness, 1.0);
+    dMetallic = clamp(dMetallic, 0.0, 1.0);
     // Roughness is authored as perceptual roughness; as is convention, // convert to material roughness by squaring the perceptual roughness [2].
-    float alphaRoughness = perceptualRoughness * perceptualRoughness;
+    d_alphaRoughness = dPerceptualRoughness * dPerceptualRoughness;
     // The albedo may be defined from a base texture or a flat color
     #ifdef HAS_BASECOLORMAP
         vec4 baseColor = SRGBtoLINEAR(texture2D(uBaseColorSampler, v_vertex_texCoord0)) * uBaseColorFactor;
@@ -272,46 +317,45 @@ void main() {
     #endif
     
     vec3 f0 = vec3(0.04);
-    vec3 diffuseColor = baseColor.rgb * (vec3(1.0) - f0);
-    diffuseColor *= 1.0 - metallic;
-    vec3 uSpecularColor = mix(f0, baseColor.rgb, metallic);
+    d_diffuseColor = baseColor.rgb * (vec3(1.0) - f0);
+    d_diffuseColor *= 1.0 - dMetallic;
+    d_specularColor = mix(f0, baseColor.rgb, dMetallic);
     // Compute reflectance.
-    float reflectance = max(max(uSpecularColor.r, uSpecularColor.g), uSpecularColor.b);
+    float reflectance = max(max(d_specularColor.r, d_specularColor.g), d_specularColor.b);
     // For typical incident reflectance range (between 4% to 100%) set the grazing reflectance to 100% for typical fresnel effect.
     // For very low reflectance range on highly diffuse objects (below 4%), incrementally reduce grazing reflecance to 0%.
     float reflectance90 = clamp(reflectance * 25.0, 0.0, 1.0);
-    vec3 specularEnvironmentR0 = uSpecularColor.rgb;
-    vec3 specularEnvironmentR90 = vec3(1.0, 1.0, 1.0) * reflectance90;
-    vec3 normal = getNormal();
+    d_specularEnvironmentR0 = d_specularColor.rgb;
+    d_specularEnvironmentR90 = vec3(1.0, 1.0, 1.0) * reflectance90;
+    dVertexNormal = getNormal();
     // normal at surface point
-    vec3 dViewDirNorm = normalize(uCameraPosition - v_vertex_position);
-    // Vector from surface point to camera
-    vec3 lightDirNorm = normalize(directionalLightArr0_direction);
-    // Vector from surface point to light
-    vec3 halfwayDir  = normalize(lightDirNorm + dViewDirNorm);
-    // Half vector between both lightDirNorm and dViewDirNorm
-    vec3 reflection = -normalize(reflect(dViewDirNorm, normal));
-    float NdotL = clamp(dot(normal, lightDirNorm), 0.001, 1.0);
-    float NdotV = clamp(abs(dot(normal, dViewDirNorm)), 0.001, 1.0);
-    float NdotH = clamp(dot(normal, halfwayDir ), 0.0, 1.0);
-    float LdotH = clamp(dot(lightDirNorm, halfwayDir ), 0.0, 1.0);
-    float VdotH = clamp(dot(dViewDirNorm, halfwayDir ), 0.0, 1.0);
-    PBRInfo pbrInputs = PBRInfo(
-    NdotL, NdotV, NdotH, LdotH, VdotH, perceptualRoughness, metallic, specularEnvironmentR0, specularEnvironmentR90, alphaRoughness, diffuseColor, uSpecularColor
-    );
-    // Calculate the shading terms for the microfacet specular shading model
-    vec3 F = specularReflection(pbrInputs); // 菲涅尔方程
-    float G = geometricOcclusion(pbrInputs); // 几何函数
-    float D = microfacetDistribution(pbrInputs); // 正态分布函数
-    // Calculation of analytical lighting contribution
-    vec3 diffuseContrib = (1.0 - F) * diffuse(pbrInputs);
-    vec3 specContrib = F * G * D / (4.0 * NdotL * NdotV);
-    // Obtain final intensity as reflectance (BRDF) scaled by the energy of the light (cosine law)
-    vec3 color = NdotL * directionalLightArr0_color * (diffuseContrib + specContrib);
-    // Calculate lighting contribution from image based lighting source (IBL)
-    #ifdef USE_IBL
-        color += getIBLContribution(pbrInputs, normal, reflection);
-    #endif
+    dViewDirNorm = normalize(uCameraPosition - v_vertex_position);
+
+    // // Vector from surface point to camera
+    // vec3 lightDirNorm = normalize(directionalLightArr0_direction); // light
+    // // Vector from surface point to light
+    // vec3 halfwayDir  = normalize(lightDirNorm + dViewDirNorm); // light
+    // // Half vector between both lightDirNorm and dViewDirNorm
+    // vec3 reflection = -normalize(reflect(dViewDirNorm, normal));
+    // float NdotL = clamp(dot(normal, lightDirNorm), 0.001, 1.0); // light
+    // float NdotV = clamp(abs(dot(normal, dViewDirNorm)), 0.001, 1.0);
+    // float NdotH = clamp(dot(normal, halfwayDir ), 0.0, 1.0); // light
+    // float LdotH = clamp(dot(lightDirNorm, halfwayDir ), 0.0, 1.0); // light
+    // float VdotH = clamp(dot(dViewDirNorm, halfwayDir ), 0.0, 1.0); // light
+    // PBRInfo pbrInputs = PBRInfo(
+    // NdotL, NdotV, NdotH, LdotH, VdotH, perceptualRoughness, metallic, specularEnvironmentR0, specularEnvironmentR90, alphaRoughness, diffuseColor, specularColor
+    // );
+    // // Calculate the shading terms for the microfacet specular shading model
+    // vec3 F = specularReflection(pbrInputs); // 菲涅尔方程
+    // float G = geometricOcclusion(pbrInputs); // 几何函数
+    // float D = microfacetDistribution(pbrInputs); // 正态分布函数
+    // // Calculation of analytical lighting contribution
+    // vec3 diffuseContrib = (1.0 - F) * diffuse(pbrInputs);
+    // vec3 specContrib = F * G * D / (4.0 * NdotL * NdotV); // light
+    // // Obtain final intensity as reflectance (BRDF) scaled by the energy of the light (cosine law)
+    // vec3 color = NdotL * directionalLightArr0_color * (diffuseContrib + specContrib);
+
+    vec3 color = CalcDirLight(directionalLightArr0_direction, directionalLightArr0_color);
     
     // Apply optional PBR terms for additional (optional) shading
     #ifdef HAS_OCCLUSIONMAP
@@ -326,13 +370,13 @@ void main() {
     
     // This section uses mix to override final color for reference app visualization
     // of various parameters in the lighting equation.
-    color = mix(color, F, uScaleFGDSpec.x);
-    color = mix(color, vec3(G), uScaleFGDSpec.y);
-    color = mix(color, vec3(D), uScaleFGDSpec.z);
-    color = mix(color, specContrib, uScaleFGDSpec.w);
-    color = mix(color, diffuseContrib, uScaleDiffBaseMR.x);
-    color = mix(color, baseColor.rgb, uScaleDiffBaseMR.y);
-    color = mix(color, vec3(metallic), uScaleDiffBaseMR.z);
-    color = mix(color, vec3(perceptualRoughness), uScaleDiffBaseMR.w);
+    // color = mix(color, F, uScaleFGDSpec.x);
+    // color = mix(color, vec3(G), uScaleFGDSpec.y);
+    // color = mix(color, vec3(D), uScaleFGDSpec.z);
+    // color = mix(color, specContrib, uScaleFGDSpec.w);
+    // color = mix(color, diffuseContrib, uScaleDiffBaseMR.x);
+    // color = mix(color, baseColor.rgb, uScaleDiffBaseMR.y);
+    // color = mix(color, vec3(dMetallic), uScaleDiffBaseMR.z);
+    // color = mix(color, vec3(dPerceptualRoughness), uScaleDiffBaseMR.w);
     gl_FragColor = vec4(pow(color, vec3(1.0/2.2)), baseColor.a);
 }
