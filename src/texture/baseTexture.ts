@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 29th 2018, 2:53:18 pm
+ * Last Modified: Sunday, December 30th 2018, 6:38:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,6 +15,7 @@
 import { FILTER, WRAP, PIXELFORMAT } from '../conf';
 import { Log } from '../utils/util';
 import { powerOfTwo, Vec2 } from '../math';
+import { Nullable } from 'src/types';
 
 export type SourceElement = HTMLVideoElement | HTMLImageElement | HTMLCanvasElement | ImageBitmap;
 let TextureID = 0;
@@ -34,7 +35,7 @@ export abstract class BaseTexture {
     _width?: number;
     _height?: number;
     isCube = false;
-    constructor(public webglTexture?: WebGLTexture) {}
+    constructor(public webglTexture?: WebGLTexture) { }
     abstract setSource(left: SourceElement, right: SourceElement, top: SourceElement, bottom: SourceElement, front: SourceElement, end: SourceElement);
     // abstract setSource(source: SourceElement);
     // setSource(...source) {

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, December 27th 2018, 11:23:02 pm
+ * Last Modified: Sunday, December 30th 2018, 6:35:27 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,7 +15,7 @@
 
 import {
     Entity, StandardMaterial, Config, SkyMaterial, Application, Vec3, Color, Texture,
-    PBRMaterial, Mesh, Line, ColorMaterial, FOG, GltfAssetLoader, Vec2
+    PBRMaterial, Mesh, Line, ColorMaterial, FOG, GltfAssetLoader, Vec2, CubeTexture
 } from 'hypergl';
 import { FirstPersonCamera } from './utils/first_person_camera';
 import { Rotate } from './utils/rotate';
@@ -35,7 +35,7 @@ async function main() {
 
     app.scene.fog = FOG.LINEAR;
     app.scene.fogEnd = 50;
-    let skycube = new Texture(true);
+    let skycube = new CubeTexture();
     let negx = await loadImage('assets/images/skybox_nx.jpg');
     let negy = await loadImage('assets/images/skybox_ny.jpg');
     let negz = await loadImage('assets/images/skybox_nz.jpg');

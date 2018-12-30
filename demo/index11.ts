@@ -5,14 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 26th 2018, 12:53:23 am
+ * Last Modified: Sunday, December 30th 2018, 6:35:09 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Entity, StandardMaterial, Config, SkyMaterial, Application, Vec3, Color, Texture, Mesh, Line, ColorMaterial, FOG, GltfAssetLoader, Vec2 } from 'hypergl';
+import { Entity, StandardMaterial, Config, SkyMaterial, Application, Vec3, Color, Texture, CubeTexture, Mesh, Line, ColorMaterial, FOG, GltfAssetLoader, Vec2 } from 'hypergl';
 import { FirstPersonCamera } from './utils/first_person_camera';
 import { Rotate } from './utils/rotate';
 // tslint:disable-next-line:no-duplicate-imports
@@ -31,7 +31,7 @@ async function main() {
 
     // app.scene.fog = FOG.LINEAR;
     // app.scene.fogEnd = 1000;
-    let skycube = new Texture(true);
+    let skycube = new CubeTexture(true);
     let negx = await loadImage('assets/images/skybox_nx.jpg');
     let negy = await loadImage('assets/images/skybox_ny.jpg');
     let negz = await loadImage('assets/images/skybox_nz.jpg');
