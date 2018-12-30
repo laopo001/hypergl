@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 29th 2018, 6:40:22 pm
+ * Last Modified: Sunday, December 30th 2018, 3:02:29 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -76,6 +76,7 @@ async function main() {
 
     let entity = app.scene.root.findByName('node_damagedHelmet_-6514');
     entity!.model.material<PBRMaterial>().diffuseEnvTexture = cubeTexture;
+    entity!.model.material<PBRMaterial>().specularEnvTexture = cubeTexture;
     console.log(entity);
 
 

@@ -160,7 +160,7 @@ vec3 CalcDirLight( vec3 lightColor, vec3 lightDirNorm) {
     #ifdef Blinn
         // Blinn-Phong
         vec3 halfwayDir = normalize(lightDirNorm + dViewDirNorm);  
-        float spec = pow(max(dot(dVertexNormal, halfwayDir), 0.0), uShininess);
+        float spec = pow(max(dot(dVertexNormal, halfwayDir), 0.0), uShininess * 2.0);
     #else 
         // Phong
         vec3 reflectDir = reflect(-lightDirNorm, dVertexNormal);

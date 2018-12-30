@@ -194,6 +194,7 @@ vec3 getNormal() {
         vec3 specularLight = vec3(0, 0, 0);
         #ifdef HAS_SpecularEnvSampler
             brdf = SRGBtoLINEAR(texture2D(ubrdfLUT, vec2(pbrInputs.NdotV, 1.0 - pbrInputs.perceptualRoughness))).rgb;
+            // brdf = texture2D(uBaseColorSampler, vec2(0.0, 0.0)).rgb;
             #ifdef USE_TEX_LOD
                 specularLight = SRGBtoLINEAR(textureCubeLodEXT(uSpecularEnvSampler, reflection, lod)).rgb;
             #else

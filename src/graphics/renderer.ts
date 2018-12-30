@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 29th 2018, 3:30:57 pm
+ * Last Modified: Sunday, December 30th 2018, 6:30:03 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -331,7 +331,6 @@ export class RendererPlatform {
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, texture.source as any);
         } else {
             gl.bindTexture(gl.TEXTURE_CUBE_MAP, webglTexture); // Bind the object to target
-            // gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
             for (let face = 0; face < 6; face++) {
                 gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, texture.source[face]);
             }
