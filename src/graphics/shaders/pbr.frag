@@ -260,7 +260,7 @@ float microfacetDistribution(PBRInfo pbrInputs) { // 正态分布函数
 }
 
 // 计算方向
-vec3 CalcDirLight( vec3 lightColor, vec3 lightDir) {
+vec3 CalcDirLight( vec3 lightDir, vec3 lightColor) {
     // Vector from surface point to camera
     vec3 lightDirNorm = normalize(lightDir); // light
     // Vector from surface point to light
