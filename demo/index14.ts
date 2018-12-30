@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 30th 2018, 8:28:26 pm
+ * Last Modified: Sunday, December 30th 2018, 8:53:18 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -43,9 +43,13 @@ async function main() {
 
     let cubeTexture = CubeTexture.loadImage('assets/images/skybox_px.jpg', 'assets/images/skybox_nx.jpg', 'assets/images/skybox_py.jpg', 'assets/images/skybox_ny.jpg',
         'assets/images/skybox_pz.jpg', 'assets/images/skybox_nz.jpg');
-    cubeTexture.wrapU = Config.WRAP.CLAMP_TO_EDGE;
-    cubeTexture.wrapV = Config.WRAP.CLAMP_TO_EDGE;
-    cubeTexture.wrapR = Config.WRAP.CLAMP_TO_EDGE;
+
+    let cubeTexture2 = CubeTexture.loadImage('assets/images/diffuse_left_0.jpg', 'assets/images/diffuse_right_0.jpg',
+        'assets/images/diffuse_top_0.jpg', 'assets/images/diffuse_bottom_0.jpg',
+        'assets/images/diffuse_front_0.jpg', 'assets/images/diffuse_back_0.jpg');
+    // cubeTexture.wrapU = Config.WRAP.CLAMP_TO_EDGE;
+    // cubeTexture.wrapV = Config.WRAP.CLAMP_TO_EDGE;
+    // cubeTexture.wrapR = Config.WRAP.CLAMP_TO_EDGE;
     let skym = new SkyMaterial();
     skym.cubeTexture = cubeTexture;
 
