@@ -100,10 +100,10 @@ in vec2 v_vertex_texCoord0;
 #endif
 
 
-vec3 dViewDirNorm;
-vec3 dVertexNormal;
-float dPerceptualRoughness;
-float dMetallic;
+vec3 d_viewDirNorm;
+vec3 d_vertexNormal;
+float d_perceptualRoughness;
+float d_metallic;
 vec3 d_specularEnvironmentR0;
 vec3 d_specularEnvironmentR90;
 float d_alphaRoughness;
@@ -197,7 +197,7 @@ vec3 getNormal() {
         float lod = (pbrInputs.perceptualRoughness * mipCount);
         // retrieve a scale and bias to F0. See [1], Figure 3
         vec3 brdf = vec3(0, 0, 0);
-        vec3 diffuseLight = vec3(1, 1, 1);
+        vec3 diffuseLight = vec3(0.1, 0.1, 0.1);
         #ifdef HAS_DiffuseEnvSampler
             diffuseLight = SRGBtoLINEAR(textureCube(uDiffuseEnvSampler, n)).rgb;
         #endif
@@ -264,16 +264,16 @@ vec3 CalcDirLight( vec3 lightColor, vec3 lightDir) {
     // Vector from surface point to camera
     vec3 lightDirNorm = normalize(lightDir); // light
     // Vector from surface point to light
-    vec3 halfwayDir  = normalize(lightDirNorm + dViewDirNorm); // light
-    // Half vector between both lightDirNorm and dViewDirNorm
-    vec3 reflection = -normalize(reflect(dViewDirNorm, dVertexNormal));
-    float NdotL = clamp(dot(dVertexNormal, lightDirNorm), 0.001, 1.0); // light
-    float NdotV = clamp(abs(dot(dVertexNormal, dViewDirNorm)), 0.001, 1.0);
-    float NdotH = clamp(dot(dVertexNormal, halfwayDir ), 0.0, 1.0); // light
+    vec3 halfwayDir  = normalize(lightDirNorm + d_viewDirNorm); // light
+    // Half vector between both lightDirNorm and d_viewDirNorm
+    vec3 reflection = -normalize(reflect(d_viewDirNorm, d_vertexNormal));
+    float NdotL = clamp(dot(d_vertexNormal, lightDirNorm), 0.001, 1.0); // light
+    float NdotV = clamp(abs(dot(d_vertexNormal, d_viewDirNorm)), 0.001, 1.0);
+    float NdotH = clamp(dot(d_vertexNormal, halfwayDir ), 0.0, 1.0); // light
     float LdotH = clamp(dot(lightDirNorm, halfwayDir ), 0.0, 1.0); // light
-    float VdotH = clamp(dot(dViewDirNorm, halfwayDir ), 0.0, 1.0); // light
+    float VdotH = clamp(dot(d_viewDirNorm, halfwayDir ), 0.0, 1.0); // light
     PBRInfo pbrInputs = PBRInfo(
-    NdotL, NdotV, NdotH, LdotH, VdotH, dPerceptualRoughness, dMetallic, d_specularEnvironmentR0, d_specularEnvironmentR90, d_alphaRoughness, d_diffuseColor, d_specularColor
+    NdotL, NdotV, NdotH, LdotH, VdotH, d_perceptualRoughness, d_metallic, d_specularEnvironmentR0, d_specularEnvironmentR90, d_alphaRoughness, d_diffuseColor, d_specularColor
     );
     // Calculate the shading terms for the microfacet specular shading model
     vec3 F = specularReflection(pbrInputs); // 菲涅尔方程
@@ -287,8 +287,9 @@ vec3 CalcDirLight( vec3 lightColor, vec3 lightDir) {
 
     // Calculate lighting contribution from image based lighting source (IBL)
     #ifdef USE_IBL
-        color += getIBLContribution(pbrInputs, dViewDirNorm, reflection);
+        color += getIBLContribution(pbrInputs, d_viewDirNorm, reflection);
     #endif
+
     return color;
 }
 
@@ -296,19 +297,19 @@ void main() {
     // Metallic and Roughness material properties are packed together
     // In glTF, these factors can be specified by fixed scalar values
     // or from a metallic-roughness map
-    dPerceptualRoughness = uMetallicRoughnessValues.y;
-    dMetallic = uMetallicRoughnessValues.x;
+    d_perceptualRoughness = uMetallicRoughnessValues.y;
+    d_metallic = uMetallicRoughnessValues.x;
     #ifdef HAS_METALROUGHNESSMAP
         // Roughness is stored in the 'g' channel, metallic is stored in the 'b' channel.
         // This layout intentionally reserves the 'r' channel for (optional) occlusion map data
         vec4 mrSample = texture2D(uMetallicRoughnessSampler, v_vertex_texCoord0);
-        dPerceptualRoughness = mrSample.g * dPerceptualRoughness;
-        dMetallic = mrSample.b * dMetallic;
+        d_perceptualRoughness = mrSample.g * d_perceptualRoughness;
+        d_metallic = mrSample.b * d_metallic;
     #endif
-    dPerceptualRoughness = clamp(dPerceptualRoughness, c_MinRoughness, 1.0);
-    dMetallic = clamp(dMetallic, 0.0, 1.0);
+    d_perceptualRoughness = clamp(d_perceptualRoughness, c_MinRoughness, 1.0);
+    d_metallic = clamp(d_metallic, 0.0, 1.0);
     // Roughness is authored as perceptual roughness; as is convention, // convert to material roughness by squaring the perceptual roughness [2].
-    d_alphaRoughness = dPerceptualRoughness * dPerceptualRoughness;
+    d_alphaRoughness = d_perceptualRoughness * d_perceptualRoughness;
     // The albedo may be defined from a base texture or a flat color
     #ifdef HAS_BASECOLORMAP
         vec4 baseColor = SRGBtoLINEAR(texture2D(uBaseColorSampler, v_vertex_texCoord0)) * uBaseColorFactor;
@@ -318,8 +319,8 @@ void main() {
     
     vec3 f0 = vec3(0.04);
     d_diffuseColor = baseColor.rgb * (vec3(1.0) - f0);
-    d_diffuseColor *= 1.0 - dMetallic;
-    d_specularColor = mix(f0, baseColor.rgb, dMetallic);
+    d_diffuseColor *= 1.0 - d_metallic;
+    d_specularColor = mix(f0, baseColor.rgb, d_metallic);
     // Compute reflectance.
     float reflectance = max(max(d_specularColor.r, d_specularColor.g), d_specularColor.b);
     // For typical incident reflectance range (between 4% to 100%) set the grazing reflectance to 100% for typical fresnel effect.
@@ -327,21 +328,21 @@ void main() {
     float reflectance90 = clamp(reflectance * 25.0, 0.0, 1.0);
     d_specularEnvironmentR0 = d_specularColor.rgb;
     d_specularEnvironmentR90 = vec3(1.0, 1.0, 1.0) * reflectance90;
-    dVertexNormal = getNormal();
+    d_vertexNormal = getNormal();
     // normal at surface point
-    dViewDirNorm = normalize(uCameraPosition - v_vertex_position);
+    d_viewDirNorm = normalize(uCameraPosition - v_vertex_position);
 
     // // Vector from surface point to camera
     // vec3 lightDirNorm = normalize(directionalLightArr0_direction); // light
     // // Vector from surface point to light
-    // vec3 halfwayDir  = normalize(lightDirNorm + dViewDirNorm); // light
-    // // Half vector between both lightDirNorm and dViewDirNorm
-    // vec3 reflection = -normalize(reflect(dViewDirNorm, normal));
+    // vec3 halfwayDir  = normalize(lightDirNorm + d_viewDirNorm); // light
+    // // Half vector between both lightDirNorm and d_viewDirNorm
+    // vec3 reflection = -normalize(reflect(d_viewDirNorm, normal));
     // float NdotL = clamp(dot(normal, lightDirNorm), 0.001, 1.0); // light
-    // float NdotV = clamp(abs(dot(normal, dViewDirNorm)), 0.001, 1.0);
+    // float NdotV = clamp(abs(dot(normal, d_viewDirNorm)), 0.001, 1.0);
     // float NdotH = clamp(dot(normal, halfwayDir ), 0.0, 1.0); // light
     // float LdotH = clamp(dot(lightDirNorm, halfwayDir ), 0.0, 1.0); // light
-    // float VdotH = clamp(dot(dViewDirNorm, halfwayDir ), 0.0, 1.0); // light
+    // float VdotH = clamp(dot(d_viewDirNorm, halfwayDir ), 0.0, 1.0); // light
     // PBRInfo pbrInputs = PBRInfo(
     // NdotL, NdotV, NdotH, LdotH, VdotH, perceptualRoughness, metallic, specularEnvironmentR0, specularEnvironmentR90, alphaRoughness, diffuseColor, specularColor
     // );
@@ -376,7 +377,7 @@ void main() {
     // color = mix(color, specContrib, uScaleFGDSpec.w);
     // color = mix(color, diffuseContrib, uScaleDiffBaseMR.x);
     // color = mix(color, baseColor.rgb, uScaleDiffBaseMR.y);
-    // color = mix(color, vec3(dMetallic), uScaleDiffBaseMR.z);
-    // color = mix(color, vec3(dPerceptualRoughness), uScaleDiffBaseMR.w);
+    // color = mix(color, vec3(d_metallic), uScaleDiffBaseMR.z);
+    // color = mix(color, vec3(d_perceptualRoughness), uScaleDiffBaseMR.w);
     gl_FragColor = vec4(pow(color, vec3(1.0/2.2)), baseColor.a);
 }
