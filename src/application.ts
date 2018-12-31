@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 29th 2018, 5:51:17 pm
+ * Last Modified: Monday, December 31st 2018, 10:16:35 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,6 +20,7 @@ import { Mesh } from './mesh/mesh';
 import { SystemRegistry } from './ecs/system-register';
 import { CameraComponentSystem } from './ecs/components/camera/system';
 import { Log } from './utils/util';
+import { util } from 'hypergl';
 
 
 export interface PluginClass<T= Plugin> {
@@ -63,9 +64,10 @@ export class Application<T= Plugin> {
             });
         });
     }
-    start() {
+    async start() {
         this.renderer.setViewport(0, 0, this.canvas.width, this.canvas.height);
         this.renderer.setScissor(0, 0, this.canvas.width, this.canvas.height);
+        await util.sleep(10);
         this.tick();
     }
     addScene(scene: Scene) {

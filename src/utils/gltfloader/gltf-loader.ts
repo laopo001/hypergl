@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 29th 2018, 4:58:06 pm
+ * Last Modified: Monday, December 31st 2018, 7:59:51 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,15 +14,13 @@
 import { GltfLoader, GltfAsset } from 'gltf-loader-ts';
 import { Log } from '../util';
 import { Mesh } from '../../mesh';
-import { StandardMaterial, PBRMaterial } from '../../material';
+import { PBRMaterial } from '../../material';
 import { Color } from '../../core';
 import { Texture } from '../../texture';
 import { FILTER, WRAP } from '../../conf';
-import { Camera } from '../../scene/camera';
 import { Entity } from '../../ecs';
 import { Mat4, Quat, RAD_TO_DEG } from '../../math';
 import { Scene } from '../../scene/scene';
-import { SceneNode } from '../../scene';
 
 let loader = new GltfLoader();
 
@@ -64,8 +62,11 @@ export class GltfAssetLoader {
             // tslint:disable-next-line:no-parameter-reassignment
             index = gltf.scene;
         }
-        Log.assert(gltf.scene != null, `${this.url}的gltf没有meshs属性`);
+        // Log.assert(gltf.scene != null, `${this.url}的gltf没有meshs属性`);
         let sceneData = gltf.scenes![index!];
+        if (sceneData == null) {
+            throw new Error(`${this.url}的gltf没有找到该索引的scene`);
+        }
         let entity = new Entity();
         for (let i = 0; i < sceneData.nodes!.length; i++) {
             const nodeIndex = sceneData.nodes![i];
@@ -126,121 +127,116 @@ export class GltfAssetLoader {
     async loadMesh(index: number) {
         let assets = await this.assets;
         let { gltf } = assets;
-        if (gltf.meshes) {
-            let model = gltf.meshes[index];
-            for (let j = 0; j < model.primitives.length; j++) {
-                const mesh = model.primitives[j];
-                let positions = await assets.accessorData<any>(mesh.attributes.POSITION);
-
-                let normals = await assets.accessorData<any>(mesh.attributes.NORMAL);
-                let uvs;
-                if (typeof mesh.attributes.TEXCOORD_0 === 'number') {
-                    uvs = await assets.accessorData<any>(mesh.attributes.TEXCOORD_0);
-                }
-                let indices;
-                if (typeof mesh.indices === 'number') {
-                    indices = await assets.accessorData<any>(mesh.indices);
-                }
-                let m = Mesh.createMesh({
-                    positions, normals, uvs, indices
-                });
-                m.name = model.name;
-                // tslint:disable-next-line:no-unused-expression
-                mesh.mode && (m.mode = mesh.mode);
-                m.material = await this.loadMaterial(mesh.material!);
-                return m;
-            }
-        } else {
-            Log.error(`${this.url}的gltf没有meshs属性`);
+        if (!gltf.meshes) {
+            throw new Error(`${this.url}的gltf没有meshs属性`);
         }
+        let model = gltf.meshes[index];
+        for (let j = 0; j < model.primitives.length; j++) {
+            const mesh = model.primitives[j];
+            let positions = await assets.accessorData<any>(mesh.attributes.POSITION);
+
+            let normals = await assets.accessorData<any>(mesh.attributes.NORMAL);
+            let uvs;
+            if (typeof mesh.attributes.TEXCOORD_0 === 'number') {
+                uvs = await assets.accessorData<any>(mesh.attributes.TEXCOORD_0);
+            }
+            let indices;
+            if (typeof mesh.indices === 'number') {
+                indices = await assets.accessorData<any>(mesh.indices);
+            }
+            let m = Mesh.createMesh({
+                positions, normals, uvs, indices
+            });
+            m.name = model.name;
+            // tslint:disable-next-line:no-unused-expression
+            mesh.mode && (m.mode = mesh.mode);
+            m.material = await this.loadMaterial(mesh.material!);
+            return m;
+        }
+
 
     }
     async loadMaterial(index: number) {
         let assets = await this.assets;
         let { gltf } = assets;
         let standardmaterial = new PBRMaterial();
-        if (gltf.materials) {
-            let material = gltf.materials[index];
-            standardmaterial.name = material.name;
-            if (material.pbrMetallicRoughness) {
-                let colors = material.pbrMetallicRoughness.baseColorFactor;
-                if (colors) {
-                    standardmaterial.baseColor = new Color(colors[0], colors[1], colors[2]);
-                }
-                let texture = material.pbrMetallicRoughness.baseColorTexture;
-                if (texture) {
-                    let t = await this.loadTexture(texture.index);
-                    standardmaterial.baseColorTexture = t;
-                }
-                let metallicRoughnessTexture = material.pbrMetallicRoughness.metallicRoughnessTexture;
-                if (metallicRoughnessTexture) {
-                    let t = await this.loadTexture(metallicRoughnessTexture.index);
-                    standardmaterial.metallicRoughnessTexture = t;
-                }
-                if (material.emissiveFactor) {
-                    standardmaterial.emissiveFactor = new Color(...material.emissiveFactor);
-                }
-                if (material.emissiveTexture) {
-                    let t = await this.loadTexture(material.emissiveTexture.index);
-                    standardmaterial.enissiveTexture = t;
-                }
-                if (material.normalTexture) {
-                    let t = await this.loadTexture(material.normalTexture.index);
-                    standardmaterial.normalTexture = t;
-                }
-                if (material.occlusionTexture) {
-                    let t = await this.loadTexture(material.occlusionTexture.index);
-                    standardmaterial.occlusionTexture = t;
-                }
-            }
-        } else {
-            Log.error(`${this.url}的gltf没有materials属性`);
+        if (!gltf.materials) {
+            // Log.error(`${this.url}的gltf没有materials属性`);
+            throw new Error(`${this.url}的gltf没有materials属性`);
         }
+        let material = gltf.materials[index];
+        standardmaterial.name = material.name;
+        if (material.pbrMetallicRoughness) {
+            let baseColorFactor = material.pbrMetallicRoughness.baseColorFactor;
+            if (baseColorFactor) {
+                standardmaterial.baseColor = new Color(baseColorFactor[0], baseColorFactor[1], baseColorFactor[2]);
+            }
+            let baseColorTexture = material.pbrMetallicRoughness.baseColorTexture;
+            if (baseColorTexture) {
+                let t = await this.loadTexture(baseColorTexture.index);
+                standardmaterial.baseColorTexture = t;
+            }
+            let metallicRoughnessTexture = material.pbrMetallicRoughness.metallicRoughnessTexture;
+            if (metallicRoughnessTexture) {
+                let t = await this.loadTexture(metallicRoughnessTexture.index);
+                standardmaterial.metallicRoughnessTexture = t;
+            }
+            if (material.emissiveFactor) {
+                standardmaterial.emissiveFactor = new Color(...material.emissiveFactor);
+            }
+            if (material.emissiveTexture) {
+                let t = await this.loadTexture(material.emissiveTexture.index);
+                standardmaterial.enissiveTexture = t;
+            }
+            if (material.normalTexture) {
+                let t = await this.loadTexture(material.normalTexture.index);
+                standardmaterial.normalTexture = t;
+            }
+            if (material.occlusionTexture) {
+                let t = await this.loadTexture(material.occlusionTexture.index);
+                standardmaterial.occlusionTexture = t;
+            }
+        }
+
         return standardmaterial;
     }
     async loadCamera(index: number) {
         let assets = await this.assets;
         let { gltf } = assets;
-
-        if (gltf.cameras) {
-            let cameraData = gltf.cameras[index];
-            switch (cameraData.type) {
-                case 'perspective':
-                    {
-                        let { aspectRatio, zfar, znear, yfov } = cameraData.perspective!;
-                        return {
-                            type: 'perspective',
-                            perspective: {
-                                fov: yfov * RAD_TO_DEG,
-                                aspectRatio,
-                                near: znear,
-                                far: zfar
-                            }
-                        };
-                        break;
-                    }
-                case 'orthographic':
-                    {
-                        let { xmag, ymag, zfar, znear } = cameraData.orthographic!;
-                        return {
-                            type: 'orthographic',
-                            orthographic: {
-                                left: -xmag,
-                                right: xmag,
-                                bottom: -ymag,
-                                top: ymag,
-                                near: znear,
-                                far: zfar,
-                            }
-                        };
-                        break;
-                    }
-            }
-
-        } else {
-            Log.error(`${this.url}的gltf没有cameras属性`);
+        if (!gltf.cameras) {
+            throw new Error(`${this.url}的gltf没有cameras属性`);
         }
-
+        let cameraData = gltf.cameras[index];
+        switch (cameraData.type) {
+            case 'perspective':
+                {
+                    let { aspectRatio, zfar, znear, yfov } = cameraData.perspective!;
+                    return {
+                        type: 'perspective',
+                        perspective: {
+                            fov: yfov * RAD_TO_DEG,
+                            aspectRatio,
+                            near: znear,
+                            far: zfar
+                        }
+                    };
+                }
+            case 'orthographic':
+                {
+                    let { xmag, ymag, zfar, znear } = cameraData.orthographic!;
+                    return {
+                        type: 'orthographic',
+                        orthographic: {
+                            left: -xmag,
+                            right: xmag,
+                            bottom: -ymag,
+                            top: ymag,
+                            near: znear,
+                            far: zfar,
+                        }
+                    };
+                }
+        }
     }
     async loadTexture(index: number) {
         let assets = await this.assets;

@@ -5,14 +5,13 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 31st 2018, 5:55:08 pm
+ * Last Modified: Monday, December 31st 2018, 8:57:20 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
-
-// export * from './loader';
+import { loadImage } from './util';
 export * from './gltfloader/gltf-loader';
 
 export function sleep(time: number) {
@@ -20,3 +19,4 @@ export function sleep(time: number) {
         setTimeout(resolve, time);
     });
 }
+export { loadImage };

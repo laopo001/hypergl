@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 31st 2018, 7:48:05 pm
+ * Last Modified: Monday, December 31st 2018, 10:23:55 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -343,9 +343,12 @@ export class RendererPlatform {
     loadTexture(program: WebGLProgram, variable: ShaderVariable, texture: BaseTexture, t = 0) {
         let gl = this.gl;
         if (texture.webglTexture) {
-            if (!texture.isInitialized) {
-                return;
-            }
+            // if (!texture.isInitialized) {
+            //     gl.activeTexture(gl['TEXTURE' + t]);
+            //     gl.bindTexture(gl.TEXTURE_2D, texture.webglTexture);
+            //     gl.uniform1i(variable.locationId, t);
+            //     return;
+            // }
             if (!texture.isCube) {
                 gl.activeTexture(gl['TEXTURE' + t]);
                 gl.bindTexture(gl.TEXTURE_2D, texture.webglTexture);
@@ -432,7 +435,6 @@ export class RendererPlatform {
                 console.log(uniform.name, uniform.type);
             }
         }
-
         for (let i = 0; i < samplers.length; i++) {
             let sampler = samplers[i];
             let value = shader.getUniformValue(sampler.name) as BaseTexture;

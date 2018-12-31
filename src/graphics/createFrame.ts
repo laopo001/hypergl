@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 29th 2018, 3:01:23 pm
+ * Last Modified: Monday, December 31st 2018, 10:11:47 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -30,13 +30,15 @@ export class Frame {
     constructor(private scene: Scene, private width = scene.app.canvas.width, private height = scene.app.canvas.height, public is3d = false) {
         this.renderer = scene.app.renderer;
     }
-    getTexture() {
+    getTexture(): CubeTexture | Texture {
+        let t;
         if (this.is3d) {
-            return new CubeTexture(this.textureCube);
+            t = new CubeTexture(this.textureCube);
         } else {
-            return new Texture(this.texture);
+            t = new Texture(this.texture);
         }
-
+        t.isInitialized = true;
+        return t;
     }
     createFramebuffer() {
         let { width, height } = this;

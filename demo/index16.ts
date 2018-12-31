@@ -1,11 +1,11 @@
 /*
  * ProjectName: hypergl
- * FilePath: \demo\index15.ts
- * Created Date: Monday, December 31st 2018, 1:34:26 pm
+ * FilePath: \demo\index16.ts
+ * Created Date: Monday, December 31st 2018, 10:00:26 pm
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 31st 2018, 10:15:43 pm
+ * Last Modified: Monday, December 31st 2018, 10:00:36 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
