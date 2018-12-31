@@ -5,17 +5,18 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 21st 2018, 9:49:11 pm
+ * Last Modified: Monday, December 31st 2018, 10:55:18 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { LoadImagePlugin } from 'hypergl/plugins/load';
+import { LoadImagePlugin, GltfPlugin } from 'hypergl/plugins/load';
 import { PointerPlugin } from 'hypergl/plugins/pointer';
 
 export interface AppPlugin {
     loadImage: LoadImagePlugin,
-    pointer: PointerPlugin
+    pointer: PointerPlugin,
+    gltf: GltfPlugin
 }

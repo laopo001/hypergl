@@ -53,12 +53,12 @@
   "include": [
     "src",
     "typings",
-    "plugins",
     "demo"
   ],
   "exclude": [
     "node_modules",
     "src/third_party/gltf-loader-ts",
+    "plugins/load/gltf-loader-ts",
     "demo/gltfloader.ts",
     "demo/index2.ts",
     "demo/index3.ts",

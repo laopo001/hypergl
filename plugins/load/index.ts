@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 11:13:34 pm
+ * Last Modified: Monday, December 31st 2018, 11:38:42 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,3 +13,4 @@
 
 
 export * from './loadImage';
+export * from './gltf-loader';

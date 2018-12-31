@@ -5,22 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 31st 2018, 10:38:34 pm
+ * Last Modified: Monday, December 31st 2018, 10:51:05 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
-import { GltfLoader, GltfAsset } from '../../third_party/gltf-loader-ts/source';
-import { Log } from '../util';
-import { Mesh } from '../../mesh';
-import { PBRMaterial } from '../../material';
-import { Color } from '../../core';
-import { Texture } from '../../texture';
-import { FILTER, WRAP } from '../../conf';
-import { Entity } from '../../ecs';
-import { Mat4, Quat, RAD_TO_DEG } from '../../math';
-import { Scene } from '../../scene/scene';
+import { GltfLoader, GltfAsset } from './gltf-loader-ts/source';
+import { Application, Plugin, Mesh, PBRMaterial, Color, Texture, FILTER, WRAP, Entity, Mat4, Quat, RAD_TO_DEG, Scene } from 'hypergl';
 
 let loader = new GltfLoader();
 
@@ -266,5 +258,17 @@ export class GltfAssetLoader {
         let assets = await this.assets;
         let { gltf } = assets;
         return gltf.samplers![index];
+    }
+}
+
+
+export class GltfPlugin implements Plugin {
+    static pname = 'gltf';
+    // name = 'pointer';
+    constructor(private app: Application) {
+
+    }
+    createLoader(url: string) {
+        return new GltfAssetLoader(url);
     }
 }

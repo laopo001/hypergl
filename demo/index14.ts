@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 31st 2018, 12:14:53 pm
+ * Last Modified: Monday, December 31st 2018, 10:59:27 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,11 +13,11 @@
 
 
 
-import { Entity, StandardMaterial, Config, SkyMaterial, Application, Vec3, Color, Texture, Mesh, Line, ColorMaterial, FOG, GltfAssetLoader, Vec2, CubeTexture, PBRMaterial } from 'hypergl';
+import { Entity, StandardMaterial, Config, SkyMaterial, Application, Vec3, Color, Texture, Mesh, util, Line, ColorMaterial, FOG, GltfAssetLoader, Vec2, CubeTexture, PBRMaterial } from 'hypergl';
 import { FirstPersonCamera } from './utils/first_person_camera';
 import { Rotate } from './utils/rotate';
 // tslint:disable-next-line:no-duplicate-imports
-import { LoadImagePlugin } from 'hypergl/plugins/load';
+import { GltfPlugin } from 'hypergl/plugins/load';
 import { StatsPlugin } from 'hypergl/plugins/stat';
 import { PointerPlugin } from 'hypergl/plugins/pointer';
 import { AppPlugin } from './types';
@@ -26,20 +26,9 @@ async function main() {
     const app = new Application<AppPlugin>(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
-    app.registerPlugins([LoadImagePlugin, StatsPlugin, PointerPlugin]);
-    let loadImage = app.plugins.loadImage.load;
+    app.registerPlugins([StatsPlugin, PointerPlugin, GltfPlugin]);
+    let loadImage = util.loadImage;
     console.log(app);
-
-    // app.scene.fog = FOG.LINEAR;
-    // app.scene.fogEnd = 1000;
-    // let skycube = new CubeTexture();
-    // let negx = await loadImage('assets/images/skybox_nx.jpg');
-    // let negy = await loadImage('assets/images/skybox_ny.jpg');
-    // let negz = await loadImage('assets/images/skybox_nz.jpg');
-    // let posx = await loadImage('assets/images/skybox_px.jpg');
-    // let posy = await loadImage('assets/images/skybox_py.jpg');
-    // let posz = await loadImage('assets/images/skybox_pz.jpg');
-    // skycube.setSource(posx, negx, posy, negy, posz, negz);
 
     let cubeTexture = CubeTexture.loadImage('assets/images/skybox_px.jpg', 'assets/images/skybox_nx.jpg', 'assets/images/skybox_py.jpg', 'assets/images/skybox_ny.jpg',
         'assets/images/skybox_pz.jpg', 'assets/images/skybox_nz.jpg');
@@ -47,6 +36,8 @@ async function main() {
     let cubeTexture2 = CubeTexture.loadImage('assets/images/diffuse_left_0.jpg', 'assets/images/diffuse_right_0.jpg',
         'assets/images/diffuse_top_0.jpg', 'assets/images/diffuse_bottom_0.jpg',
         'assets/images/diffuse_front_0.jpg', 'assets/images/diffuse_back_0.jpg');
+
+
     // cubeTexture.wrapU = Config.WRAP.CLAMP_TO_EDGE;
     // cubeTexture.wrapV = Config.WRAP.CLAMP_TO_EDGE;
     // cubeTexture.wrapR = Config.WRAP.CLAMP_TO_EDGE;
@@ -73,7 +64,7 @@ async function main() {
         .setLocalScale(100, 100, 100);
     app.scene.root.addChild(sky);
 
-    let gltf = new GltfAssetLoader('./assets/models/DamagedHelmet.gltf');
+    let gltf = app.plugins.gltf.createLoader('./assets/models/DamagedHelmet.gltf');
     let node = await gltf.loadSenceRoot();
     node.addComponent('script', [new Rotate()]);
     app.scene.root.addChild(node);
