@@ -34,10 +34,13 @@
     "baseUrl": "./",
     "paths": {
       "hypergl": [
-        "../src"
+        "../lib"
       ],
     }
   },
+  "files": [
+    "index.ts"
+  ],
   "include": [
     "load",
     "physics",
