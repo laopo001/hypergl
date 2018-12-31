@@ -28,14 +28,14 @@
       "./node_modules/@types",
       "./typings"
     ],
-    "outDir": "build/output",
+    "outDir": "lib",
     "types": [],
     "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
-      "gltf-loader-ts": [
-        "./src/third_party/gltf-loader-ts/source"
-      ],
+      // "gltf-loader-ts": [
+      //   "./src/third_party/gltf-loader-ts/source"
+      // ],
       "hypergl": [
         "./src"
       ],

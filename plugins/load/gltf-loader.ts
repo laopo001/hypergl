@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 31st 2018, 10:51:05 pm
+ * Last Modified: Tuesday, January 1st 2019, 1:23:52 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -174,7 +174,7 @@ export class GltfAssetLoader {
                 standardmaterial.metallicRoughnessTexture = t;
             }
             if (material.emissiveFactor) {
-                standardmaterial.emissiveFactor = new Color(...material.emissiveFactor);
+                standardmaterial.emissiveFactor = new Color(material.emissiveFactor[0], material.emissiveFactor[1], material.emissiveFactor[2]);
             }
             if (material.emissiveTexture) {
                 let t = await this.loadTexture(material.emissiveTexture.index);
