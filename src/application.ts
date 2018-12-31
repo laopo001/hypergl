@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 31st 2018, 10:16:35 pm
+ * Last Modified: Tuesday, January 1st 2019, 2:24:44 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -19,9 +19,7 @@ import { event, timer } from './core';
 import { Mesh } from './mesh/mesh';
 import { SystemRegistry } from './ecs/system-register';
 import { CameraComponentSystem } from './ecs/components/camera/system';
-import { Log } from './utils/util';
-import { util } from 'hypergl';
-
+import { sleep, Log } from './utils';
 
 export interface PluginClass<T= Plugin> {
     pname: string;
@@ -67,7 +65,6 @@ export class Application<T= Plugin> {
     async start() {
         this.renderer.setViewport(0, 0, this.canvas.width, this.canvas.height);
         this.renderer.setScissor(0, 0, this.canvas.width, this.canvas.height);
-        await util.sleep(10);
         this.tick();
     }
     addScene(scene: Scene) {
