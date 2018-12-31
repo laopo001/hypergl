@@ -75,7 +75,7 @@
         "start": "webpack --config webpack.demo.js --colors --watch",
         "test": "jest",
         "test:karma": "webpack --colors && gulp replaceTests && karma start",
-        "tsc": "tsc -p tsconfig.compiler.json && tsc --target es6 --lib ES2015,dom plugins/index.ts",
+        "tsc": "tsc -p tsconfig.compiler.json && tsc -p plugins/tsconfig.json",
         "version": "gulp version",
         "commit": "gulp commit"
     },
