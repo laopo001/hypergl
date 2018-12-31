@@ -25,8 +25,8 @@
     ],
     "noImplicitAny": false,
     "typeRoots": [
-      "./node_modules/@types",
-      "./typings"
+      "../node_modules/@types",
+      "../typings"
     ],
     "outDir": "lib",
     "types": [],
@@ -43,7 +43,8 @@
     "physics",
     "pointer",
     "sceneSetting",
-    "stat"
+    "stat",
+    "../typings"
   ],
   "exclude": [
   ]

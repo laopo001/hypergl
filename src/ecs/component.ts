@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 1:32:10 am
+ * Last Modified: Tuesday, January 1st 2019, 2:14:58 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,7 +13,7 @@
 
 
 import { Entity, Application } from '..';
-import { ComponentSystem } from 'src/ecs/system';
+import { ComponentSystem } from '../ecs/system';
 export abstract class Component<Inputs> {
     initialized = false;
     get enabled() {

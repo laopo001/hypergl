@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 31st 2018, 7:48:05 pm
+ * Last Modified: Tuesday, January 1st 2019, 2:13:11 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,7 +15,7 @@
 import { FILTER, WRAP, PIXELFORMAT } from '../conf';
 import { Log } from '../utils/util';
 import { powerOfTwo, Vec2 } from '../math';
-import { Nullable } from 'src/types';
+import { Nullable } from '../types';
 
 export type SourceElement = HTMLVideoElement | HTMLImageElement | HTMLCanvasElement | ImageBitmap;
 let TextureID = 0;

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 31st 2018, 10:23:55 pm
+ * Last Modified: Tuesday, January 1st 2019, 2:15:02 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -23,7 +23,7 @@ import { Entity } from '../ecs/entity';
 import { Texture, BaseTexture } from '../texture';
 import { ShaderVariable } from './shaderVariable';
 import { VertexAttribData } from './vertexFormat';
-import { ModelComponent } from 'src/ecs/components/model';
+import { ModelComponent } from '../ecs/components/model';
 import { cache, time } from '../utils/decorators';
 import { Line, Drawable } from '../mesh';
 export type Platform = 'webgl' | 'webgl2';

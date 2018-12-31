@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 1:09:21 am
+ * Last Modified: Tuesday, January 1st 2019, 2:14:51 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,7 +15,7 @@
 import { Application } from '../application';
 import { Entity } from './entity';
 import { Component } from './component';
-import { Constructor } from 'src/types';
+import { Constructor } from '../types';
 let id = 0;
 export abstract class ComponentSystem {
     get app() {
