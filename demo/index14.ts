@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 31st 2018, 10:59:27 pm
+ * Last Modified: Tuesday, January 1st 2019, 12:08:19 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,7 +13,7 @@
 
 
 
-import { Entity, StandardMaterial, Config, SkyMaterial, Application, Vec3, Color, Texture, Mesh, util, Line, ColorMaterial, FOG, GltfAssetLoader, Vec2, CubeTexture, PBRMaterial } from 'hypergl';
+import { Entity, StandardMaterial, Config, SkyMaterial, Application, Vec3, Color, Texture, Mesh, util, Line, ColorMaterial, FOG, Vec2, CubeTexture, PBRMaterial } from 'hypergl';
 import { FirstPersonCamera } from './utils/first_person_camera';
 import { Rotate } from './utils/rotate';
 // tslint:disable-next-line:no-duplicate-imports

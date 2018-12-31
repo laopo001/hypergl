@@ -5,14 +5,13 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 31st 2018, 8:57:20 pm
+ * Last Modified: Tuesday, January 1st 2019, 12:09:33 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 import { loadImage } from './util';
-export * from './gltfloader/gltf-loader';
 
 export function sleep(time: number) {
     return new Promise((resolve, reject) => {
