@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 30th 2018, 6:30:03 pm
+ * Last Modified: Monday, December 31st 2018, 7:48:05 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -329,17 +329,23 @@ export class RendererPlatform {
         if (!texture.isCube) {
             gl.bindTexture(gl.TEXTURE_2D, webglTexture);
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, texture.source as any);
+            // gl.bindTexture(gl.TEXTURE_2D, null);
         } else {
             gl.bindTexture(gl.TEXTURE_CUBE_MAP, webglTexture); // Bind the object to target
             for (let face = 0; face < 6; face++) {
                 gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, texture.source[face]);
             }
+            // gl.bindTexture(gl.TEXTURE_CUBE_MAP, null);
         }
+        texture.isInitialized = true;
         return webglTexture;
     }
     loadTexture(program: WebGLProgram, variable: ShaderVariable, texture: BaseTexture, t = 0) {
         let gl = this.gl;
         if (texture.webglTexture) {
+            if (!texture.isInitialized) {
+                return;
+            }
             if (!texture.isCube) {
                 gl.activeTexture(gl['TEXTURE' + t]);
                 gl.bindTexture(gl.TEXTURE_2D, texture.webglTexture);
@@ -347,24 +353,34 @@ export class RendererPlatform {
                     // 对纹理图像进行Y轴反转
                     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
                 }
-                if (!texture.isGenerateMipmap && texture.isPowerOf2()) {
-                    gl.generateMipmap(gl.TEXTURE_2D);
-                    texture.isGenerateMipmap = true;
+                if (texture.isPowerOf2()) {
+                    if (!texture.isGenerateMipmap) {
+                        gl.generateMipmap(gl.TEXTURE_2D);
+                        texture.isGenerateMipmap = true;
+                    }
+                } else {
+                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, this.glFilter[texture.minFilter]);
+                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, this.glFilter[texture.magFilter]);
+                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, this.glAddress[texture.wrapU]);
+                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, this.glAddress[texture.wrapV]);
                 }
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, this.glFilter[texture.minFilter]);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, this.glFilter[texture.magFilter]);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, this.glAddress[texture.wrapU]);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, this.glAddress[texture.wrapV]);
                 gl.uniform1i(variable.locationId, t);
             } else {
                 // CUBE
                 gl.activeTexture(gl['TEXTURE' + t]);
                 gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture.webglTexture);
-                gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, this.glFilter[texture.minFilter]);
-                gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MAG_FILTER, this.glFilter[texture.magFilter]);
-                gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, this.glAddress[texture.wrapU]);
-                gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, this.glAddress[texture.wrapV]);
-                gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_R, this.glAddress[texture.wrapR]);
+                if (texture.isPowerOf2()) {
+                    if (!texture.isGenerateMipmap) {
+                        gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
+                        texture.isGenerateMipmap = true;
+                    }
+                } else {
+                    gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, this.glAddress[texture.wrapU]);
+                    gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, this.glAddress[texture.wrapV]);
+                    gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_R, this.glAddress[texture.wrapR]);
+                    gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, this.glFilter[texture.minFilter]);
+                    gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MAG_FILTER, this.glFilter[texture.magFilter]);
+                }
                 // gl.texParameterf(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_COMPARE_FUNC, gl.LESS);
                 // gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
                 gl.uniform1i(variable.locationId, t);

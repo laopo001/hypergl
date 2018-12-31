@@ -5,12 +5,18 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, November 2nd 2018, 5:46:02 pm
+ * Last Modified: Monday, December 31st 2018, 5:55:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-export * from './loader';
+// export * from './loader';
 export * from './gltfloader/gltf-loader';
+
+export function sleep(time: number) {
+    return new Promise((resolve, reject) => {
+        setTimeout(resolve, time);
+    });
+}

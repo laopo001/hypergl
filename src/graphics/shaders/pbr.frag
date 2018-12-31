@@ -47,15 +47,6 @@
 
 precision highp float;
 
-#ifdef HAS_DiffuseEnvSampler
-    uniform samplerCube uDiffuseEnvSampler;
-#endif
-
-#ifdef HAS_SpecularEnvSampler
-    uniform samplerCube uSpecularEnvSampler;
-    uniform sampler2D ubrdfLUT;
-#endif
-
 #ifdef HAS_BASECOLORMAP
     uniform sampler2D uBaseColorSampler;
 #endif
@@ -73,6 +64,13 @@ precision highp float;
 #ifdef HAS_OCCLUSIONMAP
     uniform sampler2D uOcclusionSampler;
     uniform float uOcclusionStrength;
+#endif
+#ifdef HAS_DiffuseEnvSampler
+    uniform samplerCube uDiffuseEnvSampler;
+#endif
+#ifdef HAS_SpecularEnvSampler
+    uniform samplerCube uSpecularEnvSampler;
+    uniform sampler2D ubrdfLUT;
 #endif
 
 uniform vec2 uMetallicRoughnessValues;

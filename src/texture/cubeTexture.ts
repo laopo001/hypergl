@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 29th 2018, 6:40:22 pm
+ * Last Modified: Monday, December 31st 2018, 7:33:09 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,7 +13,7 @@
 
 import { BaseTexture, SourceElement } from './baseTexture';
 import { Application } from '../application';
-
+import { loadImage } from '../utils/util';
 export class CubeTexture extends BaseTexture {
     source?: Array<SourceElement>;
     isCube = true;
@@ -21,12 +21,12 @@ export class CubeTexture extends BaseTexture {
         let app = Application.getApp();
         let texture = new CubeTexture(app.renderer.gl.createTexture()!);
         Promise.all([
-            fetch(left_px).then(b => b.blob()).then(blob => createImageBitmap(blob)),
-            fetch(right_nx).then(b => b.blob()).then(blob => createImageBitmap(blob)),
-            fetch(top_py).then(b => b.blob()).then(blob => createImageBitmap(blob)),
-            fetch(bottom_ny).then(b => b.blob()).then(blob => createImageBitmap(blob)),
-            fetch(front_pz).then(b => b.blob()).then(blob => createImageBitmap(blob)),
-            fetch(end_nz).then(b => b.blob()).then(blob => createImageBitmap(blob))
+            loadImage(left_px),
+            loadImage(right_nx),
+            loadImage(top_py),
+            loadImage(bottom_ny),
+            loadImage(front_pz),
+            loadImage(end_nz)
         ]).then(img => {
             texture.setSource(...img);
             app.renderer.initTexture(texture);
@@ -35,5 +35,7 @@ export class CubeTexture extends BaseTexture {
     }
     setSource(left: SourceElement, right: SourceElement, top: SourceElement, bottom: SourceElement, front: SourceElement, end: SourceElement) {
         this.source = [left, right, top, bottom, front, end];
+        this._width = left.width;
+        this._height = left.height;
     }
 }

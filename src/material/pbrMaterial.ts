@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 31st 2018, 1:44:25 am
+ * Last Modified: Monday, December 31st 2018, 7:13:39 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -142,12 +142,12 @@ export class PBRMaterial extends Material {
         return this._specularEnvSampler;
     }
     public set specularEnvTexture(v: Nullable<CubeTexture>) {
-        this._diffuseEnvSampler = v;
+        this._specularEnvSampler = v;
         this.setUniform('uSpecularEnvSampler', v);
         this.setshaderVars('HAS_SpecularEnvSampler', !!v);
     }
-    constructor() {
-        super();
+    constructor(name?: string) {
+        super(name);
         this.setUniform('uMetallicRoughnessValues', new Float32Array([this.metallicFactor, this.roughnessFactor]));
         this.setUniform('uScaleDiffBaseMR', new Float32Array([0, 0, 0, 0]));
         this.setUniform('uBaseColorFactor', this.baseColor.data);

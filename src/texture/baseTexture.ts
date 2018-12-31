@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 31st 2018, 1:47:54 am
+ * Last Modified: Monday, December 31st 2018, 7:48:05 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,12 +20,13 @@ import { Nullable } from 'src/types';
 export type SourceElement = HTMLVideoElement | HTMLImageElement | HTMLCanvasElement | ImageBitmap;
 let TextureID = 0;
 export abstract class BaseTexture {
-    id = TextureID++;
+    textureID = TextureID++;
     source?: SourceElement | Array<SourceElement>;
     wrapU = WRAP.REPEAT;
     wrapV = WRAP.REPEAT;
     wrapR = WRAP.REPEAT;
     isGenerateMipmap = false;
+    isInitialized = false;
     level = 0;
     minFilter = FILTER.LINEAR; // 纹理在缩小时的过滤方式
     magFilter = FILTER.LINEAR; // 纹理在放大时的过滤方式
@@ -37,16 +38,6 @@ export abstract class BaseTexture {
     isCube = false;
     constructor(public webglTexture?: WebGLTexture) { }
     abstract setSource(left: SourceElement, right: SourceElement, top: SourceElement, bottom: SourceElement, front: SourceElement, end: SourceElement);
-    // abstract setSource(source: SourceElement);
-    // setSource(...source) {
-    //     if (!this.isCube) {
-    //         this.source = source[0];
-    //         this._width = source[0].width;
-    //         this._height = source[0].height;
-    //     } else {
-    //         this.source = source;
-    //     }
-    // }
     isPowerOf2() {
         if (this._width == null || this._height == null) { return false; }
         return powerOfTwo(this._width) && powerOfTwo(this._height);
