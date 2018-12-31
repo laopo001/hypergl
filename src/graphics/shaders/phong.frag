@@ -21,7 +21,7 @@ uniform float uFogDensity;
 uniform vec3 uFogColor;
 uniform vec2 uFogDist;
 uniform bool uReceiveShadow;
-// directionalLight start
+
 {{#each uniforms._directionalLightArr}}
 uniform vec3 {{this.color}};
 uniform vec3 {{this.direction}};
@@ -32,8 +32,7 @@ uniform float {{this.shadowMapSize}};
 uniform float {{this.shadowBias}};
 uniform float {{this.castShadows}};
 {{/each}}
-// directionalLight end
-// pointLight start
+
 {{#each uniforms._pointLightArr}}
 uniform vec3 {{this.position}};
 uniform vec3 {{this.color}};
@@ -44,8 +43,7 @@ uniform float {{this.shadowMapSize}};
 uniform float {{this.shadowBias}};
 uniform float {{this.castShadows}};
 {{/each}}
-// pointLight end
-// soptLight start
+
 {{#each uniforms._spotLightArr}} 
 uniform vec3 {{this.position}};
 uniform vec3 {{this.direction}};
@@ -60,7 +58,7 @@ uniform float {{this.shadowMapSize}};
 uniform float {{this.shadowBias}};
 uniform float {{this.castShadows}};
 {{/each}}
-// soptLight end
+
 
 //////////////
 in vec2 v_vertex_texCoord0;
@@ -217,12 +215,10 @@ void main(void) {
     float shadow;
     {{#each uniforms._directionalLightArr}}
     color = CalcDirLight( {{this.color}}, {{this.direction}});
-    // {{#if this.castShadows}}
     if( uReceiveShadow && {{this.castShadows}} == 1.0 ) {
         shadow = CalcLightShadow({{this.lightSpaceMatrix}} * vec4(v_vertex_position, 1.0), {{this.shadowMap}}, {{this.shadowType}}, {{this.shadowMapSize}}, {{this.shadowBias}});    
         color = shadow * color;
     }
-    // {{/if}}
     result += color;
     {{/each}}
 

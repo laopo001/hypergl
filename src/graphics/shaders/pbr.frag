@@ -27,8 +27,8 @@
 {{#if shaderVars.HAS_SpecularEnvSampler}}
 #define HAS_SpecularEnvSampler 1
 {{/if}}
-
 // #define USE_TEX_LOD 1
+
 //
 // This fragment shader defines a reference implementation for Physically Based Shading of
 // a microfacet surface material defined by a glTF model.
@@ -46,13 +46,6 @@
 // #extension GL_OES_standard_derivatives : enable
 
 precision highp float;
-uniform vec3 directionalLightArr0_direction;
-uniform vec3 directionalLightArr0_color;
-// #ifdef USE_IBL
-//     uniform samplerCube uDiffuseEnvSampler;
-//     uniform samplerCube uSpecularEnvSampler;
-//     uniform sampler2D ubrdfLUT;
-// #endif
 
 #ifdef HAS_DiffuseEnvSampler
     uniform samplerCube uDiffuseEnvSampler;
@@ -86,8 +79,6 @@ uniform vec2 uMetallicRoughnessValues;
 uniform vec4 uBaseColorFactor;
 uniform vec3 uCameraPosition;
 // debugging flags used for shader output of intermediate PBR variables
-uniform vec4 uScaleDiffBaseMR;
-uniform vec4 uScaleFGDSpec;
 uniform vec4 uScaleIBLAmbient;
 in vec3 v_vertex_position;
 in vec2 v_vertex_texCoord0;
@@ -99,6 +90,42 @@ in vec2 v_vertex_texCoord0;
     #endif
 #endif
 
+{{#each uniforms._directionalLightArr}}
+uniform vec3 {{this.color}};
+uniform vec3 {{this.direction}};
+uniform sampler2D {{this.shadowMap}};
+uniform mat4 {{this.lightSpaceMatrix}};
+uniform float {{this.shadowType}};
+uniform float {{this.shadowMapSize}};
+uniform float {{this.shadowBias}};
+uniform float {{this.castShadows}};
+{{/each}}
+
+{{#each uniforms._pointLightArr}}
+uniform vec3 {{this.position}};
+uniform vec3 {{this.color}};
+uniform float {{this.range}};
+uniform samplerCube {{this.shadowMap}};
+uniform float {{this.shadowType}};
+uniform float {{this.shadowMapSize}};
+uniform float {{this.shadowBias}};
+uniform float {{this.castShadows}};
+{{/each}}
+
+{{#each uniforms._spotLightArr}} 
+uniform vec3 {{this.position}};
+uniform vec3 {{this.direction}};
+uniform vec3 {{this.color}};
+uniform float {{this.range}};
+uniform float {{this.innerConeAngle}};
+uniform float {{this.outerConeAngle}};
+uniform sampler2D {{this.shadowMap}};
+uniform mat4 {{this.lightSpaceMatrix}};
+uniform float {{this.shadowType}};
+uniform float {{this.shadowMapSize}};
+uniform float {{this.shadowBias}};
+uniform float {{this.castShadows}};
+{{/each}}
 
 vec3 d_viewDirNorm;
 vec3 d_vertexNormal;
@@ -253,7 +280,7 @@ float microfacetDistribution(PBRInfo pbrInputs) { // 正态分布函数
 }
 
 // 计算方向
-vec3 CalcDirLight( vec3 lightDir, vec3 lightColor) {
+vec3 CalcDirLight(vec3 lightColor ,  vec3 lightDir) {
     // Vector from surface point to camera
     vec3 lightDirNorm = normalize(lightDir); // light
     // Vector from surface point to light
@@ -285,6 +312,28 @@ vec3 CalcDirLight( vec3 lightDir, vec3 lightColor) {
 
     return color;
 }
+
+// 计算定点光在确定位置的光照颜色
+vec3 CalcPointLight( vec3 lightColor, vec3 lightPosition, float range) {
+    vec3 lightDirNorm = normalize(lightPosition - v_vertex_position);
+    vec3 color = CalcDirLight( lightColor, lightDirNorm);
+    float distance = length(lightPosition - v_vertex_position);
+    if(distance > range){
+        return vec3(0);
+    } else {
+        return color * (1.0 - distance / range);
+    }
+}
+
+
+vec3 CalcSpotLight(vec3 lightColor, vec3 lightPosition, vec3 direction, float range, float innerConeAngle, float outerConeAngle) {
+    vec3 lightDir = lightPosition - v_vertex_position;
+    vec3 lightDirNorm = normalize(lightDir);
+    float cosAngle = dot(lightDirNorm, direction);
+    float f = smoothstep(outerConeAngle, innerConeAngle, cosAngle);
+    vec3 color = CalcPointLight( lightColor, lightPosition, range) * f;    
+    return color;
+}  
 
 void main() {
     // Metallic and Roughness material properties are packed together
@@ -325,8 +374,25 @@ void main() {
     // normal at surface point
     d_viewDirNorm = normalize(uCameraPosition - v_vertex_position);
 
-    vec3 color = CalcDirLight(directionalLightArr0_direction, directionalLightArr0_color);
-    
+
+    vec3 color = vec3(0.0);
+    vec3 temp;
+    float shadow;
+    {{#each uniforms._directionalLightArr}}
+        temp = CalcDirLight( {{this.color}}, {{this.direction}} );
+        color += temp;
+    {{/each}}
+
+    {{#each uniforms._pointLightArr}}
+        temp = CalcPointLight( {{this.color}}, {{this.position}}, {{this.range}});
+        color += temp;
+    {{/each}}
+
+    {{#each uniforms._spotLightArr}}
+        temp = CalcSpotLight( {{this.color}}, {{this.position}}, {{this.direction}}, {{this.range}}, {{this.innerConeAngle}}, {{this.outerConeAngle}} );
+        color += temp;
+    {{/each}}
+
     // Apply optional PBR terms for additional (optional) shading
     #ifdef HAS_OCCLUSIONMAP
         float ao = texture2D(uOcclusionSampler, v_vertex_texCoord0).r;
@@ -340,13 +406,6 @@ void main() {
     
     // This section uses mix to override final color for reference app visualization
     // of various parameters in the lighting equation.
-    // color = mix(color, F, uScaleFGDSpec.x);
-    // color = mix(color, vec3(G), uScaleFGDSpec.y);
-    // color = mix(color, vec3(D), uScaleFGDSpec.z);
-    // color = mix(color, specContrib, uScaleFGDSpec.w);
-    // color = mix(color, diffuseContrib, uScaleDiffBaseMR.x);
-    // color = mix(color, baseColor.rgb, uScaleDiffBaseMR.y);
-    // color = mix(color, vec3(d_metallic), uScaleDiffBaseMR.z);
-    // color = mix(color, vec3(d_perceptualRoughness), uScaleDiffBaseMR.w);
+
     gl_FragColor = vec4(pow(color, vec3(1.0/2.2)), baseColor.a);
 }
