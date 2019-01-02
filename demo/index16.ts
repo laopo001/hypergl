@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 31st 2018, 10:00:36 pm
+ * Last Modified: Wednesday, January 2nd 2019, 9:18:00 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,13 +20,14 @@ import { Rotate } from './utils/rotate';
 import { LoadImagePlugin } from 'hypergl/plugins/load';
 import { StatsPlugin } from 'hypergl/plugins/stat';
 import { PointerPlugin } from 'hypergl/plugins/pointer';
+import { PhysicsPlugin } from 'hypergl/plugins/physics';
 import { AppPlugin } from './types';
 
 async function main() {
     const app = new Application<AppPlugin>(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
-    app.registerPlugins([LoadImagePlugin, StatsPlugin, PointerPlugin]);
+    app.registerPlugins([LoadImagePlugin, StatsPlugin, PointerPlugin, PhysicsPlugin]);
     let loadImage = app.plugins.loadImage.load;
     console.log(app);
 

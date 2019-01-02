@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 1st 2019, 2:24:44 am
+ * Last Modified: Wednesday, January 2nd 2019, 9:21:08 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -65,6 +65,7 @@ export class Application<T= Plugin> {
     async start() {
         this.renderer.setViewport(0, 0, this.canvas.width, this.canvas.height);
         this.renderer.setScissor(0, 0, this.canvas.width, this.canvas.height);
+        await sleep(10);
         this.tick();
     }
     addScene(scene: Scene) {

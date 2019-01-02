@@ -33,11 +33,11 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
     "paths": {
-      // "gltf-loader-ts": [
-      //   "./src/third_party/gltf-loader-ts/source"
-      // ],
       "hypergl": [
         "./src"
+      ],
+      "hypergl/plugins/physics": [
+        "./plugins/physics"
       ],
       "hypergl/plugins/load": [
         "./plugins/load"
