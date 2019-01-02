@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 2nd 2019, 9:18:13 pm
+ * Last Modified: Thursday, January 3rd 2019, 12:48:39 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -93,6 +93,7 @@ module.exports = function (env, webpackConfig) {
         externals: [],
         devtool: 'source-map',
         mode: 'development',
-        performance: { hints: false }
+        performance: { hints: false },
+        target: 'node'
     };
 }

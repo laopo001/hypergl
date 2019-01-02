@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 2nd 2019, 10:04:14 pm
+ * Last Modified: Thursday, January 3rd 2019, 12:48:56 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,10 +13,12 @@
 
 
 import { Application, Plugin } from 'hypergl';
-// import * as ammo from './ammo';
+import * as Ammo from './ammo';
+// tslint:disable-next-line:one-variable-per-declaration
+// declare const Ammo;
 export class PhysicsPlugin implements Plugin {
     static pname = 'physics';
     constructor(private app: Application) {
-        // console.log(ammo);
+        console.log(Ammo);
     }
 }
