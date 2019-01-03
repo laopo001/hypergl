@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, January 4th 2019, 1:04:38 am
+ * Last Modified: Friday, January 4th 2019, 1:10:09 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -35,7 +35,7 @@ export class CannonPhysicsPlugin implements Plugin {
         // console.log(CANNON.Body.DYNAMIC);
         // console.log(CANNON.Body.KINEMATIC);
         this.app.on('update', (dt) => {
-            this.world.step(fixedTimeStep, dt / 1000, maxSubSteps);
+            this.world.step(fixedTimeStep, dt / 100, maxSubSteps);
         });
     }
     addBody(o: {

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, January 4th 2019, 12:50:44 am
+ * Last Modified: Friday, January 4th 2019, 1:08:58 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -112,6 +112,7 @@ async function main() {
         })
         .addComponent('rigidbody', {
             type: 'static',
+            mass: 0
         })
         .setPosition(0, -2, 0).setLocalScale(10, 1, 10);
     app.scene.root.addChild(plane);
