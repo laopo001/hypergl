@@ -34,7 +34,7 @@
     "baseUrl": "./",
     "paths": {
       "hypergl": [
-        "../lib"
+        "../src"
       ],
     }
   },

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 2nd 2019, 9:18:00 pm
+ * Last Modified: Thursday, January 3rd 2019, 7:46:33 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,20 +20,24 @@ import { Rotate } from './utils/rotate';
 import { LoadImagePlugin } from 'hypergl/plugins/load';
 import { StatsPlugin } from 'hypergl/plugins/stat';
 import { PointerPlugin } from 'hypergl/plugins/pointer';
-import { PhysicsPlugin } from 'hypergl/plugins/physics';
+import { CannonPhysicsPlugin } from 'hypergl/plugins/physics';
 import { AppPlugin } from './types';
 
 async function main() {
     const app = new Application<AppPlugin>(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
-    app.registerPlugins([LoadImagePlugin, StatsPlugin, PointerPlugin, PhysicsPlugin]);
+    app.registerPlugins([LoadImagePlugin, StatsPlugin, PointerPlugin, CannonPhysicsPlugin]);
     let loadImage = app.plugins.loadImage.load;
     console.log(app);
 
     // app.scene.fog = FOG.LINEAR;
     // app.scene.fogEnd = 1000;
-
+    let shape = app.plugins.physics.createShape('Box', { halfExtents: new Vec3(10, 0.1, 10) });
+    let body = app.plugins.physics.addBody({ mass: 1, shape });
+    // app.on('update', () => {
+    //     console.log(body!.position.y);
+    // });
     let cubeTexture = new CubeTexture();
     let negx = await loadImage('assets/images/skybox_nx.jpg');
     let negy = await loadImage('assets/images/skybox_ny.jpg');
@@ -66,29 +70,12 @@ async function main() {
     grassMaterial.diffuseMap = grassTexture;
 
 
-    for (let i = 0; i < 5; i++) {
-        for (let j = 0; j < 5; j++) {
-            let sphere1 = new Entity('sphere' + i + j)
-                .addComponent('model', {
-                    type: 'sphere',
-                })
-                .setLocalPosition(i - 2, 0, j - 2);
-            let pbr_sphere1 = new PBRMaterial('sphere' + i + j);
-            pbr_sphere1.baseColor = new Color(1, 1, 1);
-            pbr_sphere1.metallicFactor = (i / 4);
-            pbr_sphere1.roughnessFactor = (j / 4);
-            // pbr_sphere1.diffuseEnvTexture = cubeTexture;
-            pbr_sphere1.specularEnvTexture = cubeTexture;
-            sphere1.model.drawable(0).material = pbr_sphere1;
-            app.scene.root.addChild(sphere1);
-        }
-    }
 
     let sphere1 = new Entity('sphere')
         .addComponent('model', {
             type: 'sphere',
         })
-        .setLocalPosition(3, 0, 3);
+        .setLocalPosition(0, 0, 0);
     let pbr_sphere1 = new PBRMaterial();
     pbr_sphere1.baseColor = new Color(1, 1, 0);
     pbr_sphere1.metallicFactor = 0.3;

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 31st 2018, 10:55:18 pm
+ * Last Modified: Thursday, January 3rd 2019, 7:46:33 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,9 +14,10 @@
 
 import { LoadImagePlugin, GltfPlugin } from 'hypergl/plugins/load';
 import { PointerPlugin } from 'hypergl/plugins/pointer';
-
+import { CannonPhysicsPlugin } from 'hypergl/plugins/physics';
 export interface AppPlugin {
     loadImage: LoadImagePlugin,
     pointer: PointerPlugin,
-    gltf: GltfPlugin
+    gltf: GltfPlugin,
+    physics: CannonPhysicsPlugin
 }
