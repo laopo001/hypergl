@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 29th 2018, 5:33:12 pm
+ * Last Modified: Friday, January 4th 2019, 12:40:50 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -32,6 +32,8 @@ import { ModelComponentSystem } from '../ecs/components/model/system';
 import { CameraComponent } from '../ecs/components/camera';
 import { AudioComponentSystem } from '../ecs/components/audio';
 import { ListenerComponentSystem } from '../ecs/components/listener';
+import { CollisionComponentSystem } from '../ecs/components/collision';
+import { RigidbodyComponentSystem } from '../ecs/components/rigidbody';
 import { FOG } from '../conf';
 import { Drawable } from '../mesh';
 export class Scene {
@@ -86,6 +88,8 @@ export class Scene {
         this.systems.add(new ModelComponentSystem());
         this.systems.add(new AudioComponentSystem());
         this.systems.add(new ListenerComponentSystem());
+        this.systems.add(new CollisionComponentSystem());
+        this.systems.add(new RigidbodyComponentSystem());
     }
     render() {
         this.root.syncHierarchy();

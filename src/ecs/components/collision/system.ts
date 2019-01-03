@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, January 3rd 2019, 11:25:19 pm
+ * Last Modified: Friday, January 4th 2019, 12:37:44 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -17,5 +17,5 @@ import { CollisionComponent } from './component';
 
 export class CollisionComponentSystem extends ComponentSystem {
     componentConstructor = CollisionComponent;
-    name = 'audio';
+    name = 'collision';
 }

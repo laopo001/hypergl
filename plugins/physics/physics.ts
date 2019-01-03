@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, January 4th 2019, 12:34:01 am
+ * Last Modified: Friday, January 4th 2019, 1:04:38 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -45,7 +45,7 @@ export class CannonPhysicsPlugin implements Plugin {
         quaternion?: Quat;
         mass?: number;
         // material?: CANNON.Material;
-        type?: number;
+        type?: string;
         linearDamping?: number;
         angularDamping?: number;
         allowSleep?: boolean;
@@ -56,6 +56,8 @@ export class CannonPhysicsPlugin implements Plugin {
         fixedRotation?: boolean;
         shape?: CANNON.Shape;
     }) {
+        console.log(o);
+
         let t = this.format(o);
         switch (t.type) {
             case 'static': t.type = CANNON.Body.STATIC; break;

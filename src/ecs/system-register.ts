@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 4th 2018, 5:24:39 pm
+ * Last Modified: Friday, January 4th 2019, 12:39:36 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -19,6 +19,9 @@ import { LightComponentSystem } from './components/light';
 import { ScriptComponentSystem } from './components/script';
 import { AudioComponentSystem } from './components/audio';
 import { ListenerComponentSystem } from './components/listener';
+import { CollisionComponentSystem } from './components/collision';
+import { RigidbodyComponentSystem } from './components/rigidbody';
+
 export class SystemRegistry {
     // [s: string]: any;
     camera?: CameraComponentSystem;
@@ -27,6 +30,8 @@ export class SystemRegistry {
     script?: ScriptComponentSystem;
     audio?: AudioComponentSystem;
     listener?: ListenerComponentSystem;
+    collision?: CollisionComponentSystem;
+    rigidbody?: RigidbodyComponentSystem;
     list: ComponentSystem[] = [];
     add(system: ComponentSystem) {
         if (this[system.name]) {

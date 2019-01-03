@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, January 4th 2019, 12:25:15 am
+ * Last Modified: Friday, January 4th 2019, 1:04:47 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -22,32 +22,44 @@ import { event } from '../../../core';
 import { Application } from '../../../application';
 import { CannonPhysicsPlugin } from 'hypergl/plugins/physics';
 
-interface CollisionInputs {
+export interface RigidbodyInputs {
     type: 'static' | 'dynamic' | 'kinematic';
-    mass: number;
+    mass?: number;
+    friction?: number;
+    restitution?: number;
 }
 
-export const CollisionData: Partial<CollisionInputs> = {
-
+export const RigidbodyData: Partial<RigidbodyInputs> = {
+    type: 'dynamic',
+    friction: 0.5,
+    mass: 1,
+    restitution: 0
 };
 
-export class CollisionComponent extends Component<CollisionInputs> {
-    name = 'collision';
+export class RigidbodyComponent extends Component<RigidbodyInputs> {
+    name = 'rigidbody';
     instance!: any;
-    constructor(inputs: CollisionInputs, entity: Entity, system: ComponentSystem) {
+    constructor(inputs: RigidbodyInputs, entity: Entity, system: ComponentSystem) {
         super(inputs, entity, system);
-        copy(inputs, CollisionData);
+        copy(inputs, RigidbodyData);
     }
 
     initialize() {
         super.initialize();
         let app = this.entity.app as Application<{ physics: CannonPhysicsPlugin }>;
         let physics = app.plugins.physics;
-        this.instance = physics.addBody({
+        let body = physics.addBody({
+            type: this.inputs.type,
             mass: this.inputs.mass,
             position: this.entity.getPosition(),
-
+            shape: this.entity.collision.instance
         });
+        event.on('update', () => {
+            let { x, y, z } = body.position;
+            this.entity.setPosition(x, y, z);
+        });
+        this.instance = body;
+
     }
     destroy() {
         super.destroy();

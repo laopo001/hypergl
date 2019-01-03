@@ -5,10 +5,12 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, January 3rd 2019, 11:28:08 pm
+ * Last Modified: Friday, January 4th 2019, 12:38:38 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
  */
 
 
+export * from './component';
+export * from './system';

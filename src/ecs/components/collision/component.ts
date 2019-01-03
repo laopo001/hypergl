@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, January 4th 2019, 12:03:39 am
+ * Last Modified: Friday, January 4th 2019, 12:42:18 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -22,7 +22,7 @@ import { event } from '../../../core';
 import { Application } from '../../../application';
 import { CannonPhysicsPlugin } from 'hypergl/plugins/physics';
 
-type CollisionInputs = {
+export type CollisionInputs = {
     type: 'sphere',
     radius: number;
 } | {

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, January 3rd 2019, 7:46:33 pm
+ * Last Modified: Friday, January 4th 2019, 12:50:44 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -33,8 +33,8 @@ async function main() {
 
     // app.scene.fog = FOG.LINEAR;
     // app.scene.fogEnd = 1000;
-    let shape = app.plugins.physics.createShape('Box', { halfExtents: new Vec3(10, 0.1, 10) });
-    let body = app.plugins.physics.addBody({ mass: 1, shape });
+    // let shape = app.plugins.physics.createShape('box', { halfExtents: new Vec3(10, 0.1, 10) });
+    // let body = app.plugins.physics.addBody({ mass: 1, shape });
     // app.on('update', () => {
     //     console.log(body!.position.y);
     // });
@@ -75,6 +75,13 @@ async function main() {
         .addComponent('model', {
             type: 'sphere',
         })
+        .addComponent('collision', {
+            type: 'sphere',
+            radius: 0.5
+        })
+        .addComponent('rigidbody', {
+            type: 'dynamic',
+        })
         .setLocalPosition(0, 0, 0);
     let pbr_sphere1 = new PBRMaterial();
     pbr_sphere1.baseColor = new Color(1, 1, 0);
@@ -98,6 +105,13 @@ async function main() {
     let plane = new Entity('plane')
         .addComponent('model', {
             type: 'plane',
+        })
+        .addComponent('collision', {
+            type: 'box',
+            halfExtents: new Vec3(10, 0.1, 10)
+        })
+        .addComponent('rigidbody', {
+            type: 'static',
         })
         .setPosition(0, -2, 0).setLocalScale(10, 1, 10);
     app.scene.root.addChild(plane);

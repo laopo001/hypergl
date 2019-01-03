@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 22nd 2018, 10:02:09 pm
+ * Last Modified: Friday, January 4th 2019, 12:44:18 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -18,6 +18,8 @@ import { LightComponent, LigthInputs } from './components/light';
 import { ScriptInputs, Script, ScriptComponent } from './components/script';
 import { ModelInputs, ModelComponent } from './components/model';
 import { AudioComponent, AudioInputs } from './components/audio';
+import { CollisionComponent, CollisionInputs } from './components/collision';
+import { RigidbodyComponent, RigidbodyInputs } from './components/rigidbody';
 import { Component } from './component';
 import { Shader } from '../graphics/shader';
 import { Log } from '../utils/util';
@@ -38,6 +40,8 @@ export interface ComponentInputs {
     'script': ScriptInputs,
     'audio': AudioInputs,
     'listener': ListenerInputs,
+    'collision': CollisionInputs,
+    'rigidbody': RigidbodyInputs
 }
 
 export type componentName = keyof ComponentInputs;
@@ -66,6 +70,8 @@ export class Entity extends SceneNode {
     script!: ScriptComponent;
     audio!: AudioComponent;
     listener!: ListenerComponent;
+    collision!: CollisionComponent;
+    rigidbody!: RigidbodyComponent;
     boundingBox: any;
     parent?: Entity;
     readonly children: Entity[] = [];
