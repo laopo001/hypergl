@@ -1,11 +1,11 @@
 /*
  * ProjectName: hypergl
- * FilePath: \src\ecs\components\collision\component.ts
- * Created Date: Thursday, January 3rd 2019, 8:55:12 pm
+ * FilePath: \src\ecs\components\rigidbody\component.ts
+ * Created Date: Thursday, January 3rd 2019, 11:27:39 pm
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, January 4th 2019, 12:03:39 am
+ * Last Modified: Friday, January 4th 2019, 12:25:15 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -22,23 +22,13 @@ import { event } from '../../../core';
 import { Application } from '../../../application';
 import { CannonPhysicsPlugin } from 'hypergl/plugins/physics';
 
-type CollisionInputs = {
-    type: 'sphere',
-    radius: number;
-} | {
-    type: 'box',
-    halfExtents: Vec3
-} | {
-    type: 'cylinder',
-    radiusTop: number,
-    radiusBottom: number,
-    height: number,
-    numSegments: number
-};
+interface CollisionInputs {
+    type: 'static' | 'dynamic' | 'kinematic';
+    mass: number;
+}
 
 export const CollisionData: Partial<CollisionInputs> = {
-    type: 'box',
-    halfExtents: new Vec3(1, 1, 1)
+
 };
 
 export class CollisionComponent extends Component<CollisionInputs> {
@@ -53,7 +43,11 @@ export class CollisionComponent extends Component<CollisionInputs> {
         super.initialize();
         let app = this.entity.app as Application<{ physics: CannonPhysicsPlugin }>;
         let physics = app.plugins.physics;
-        this.instance = physics.createShape(this.inputs.type, this.inputs);
+        this.instance = physics.addBody({
+            mass: this.inputs.mass,
+            position: this.entity.getPosition(),
+
+        });
     }
     destroy() {
         super.destroy();

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, January 3rd 2019, 7:46:33 pm
+ * Last Modified: Friday, January 4th 2019, 12:34:01 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -16,9 +16,9 @@ import { Application, Plugin, Vec3, Quat } from 'hypergl';
 // import * as Ammo from './ammo';
 import * as CANNON from 'cannon';
 export interface CreateShapeOptions {
-    'Sphere': { radius: number; };
-    'Box': { halfExtents: Vec3 };
-    'Cylinder': { radiusTop: number, radiusBottom: number, height: number, numSegments: number };
+    'sphere': { radius: number; };
+    'box': { halfExtents: Vec3 };
+    'cylinder': { radiusTop: number, radiusBottom: number, height: number, numSegments: number };
     // 'Plane': null,
 }
 // tslint:disable-next-line:one-variable-per-declaration
@@ -31,6 +31,9 @@ export class CannonPhysicsPlugin implements Plugin {
         let fixedTimeStep = 1.0 / 60.0; // seconds
         let maxSubSteps = 3;
         this.world.gravity.set(0, -10, 0);
+        // console.log(CANNON.Body.STATIC);
+        // console.log(CANNON.Body.DYNAMIC);
+        // console.log(CANNON.Body.KINEMATIC);
         this.app.on('update', (dt) => {
             this.world.step(fixedTimeStep, dt / 1000, maxSubSteps);
         });
@@ -53,18 +56,24 @@ export class CannonPhysicsPlugin implements Plugin {
         fixedRotation?: boolean;
         shape?: CANNON.Shape;
     }) {
-        let body = new CANNON.Body(this.format(o));
+        let t = this.format(o);
+        switch (t.type) {
+            case 'static': t.type = CANNON.Body.STATIC; break;
+            case 'dynamic': t.type = CANNON.Body.DYNAMIC; break;
+            case 'kinematic': t.type = CANNON.Body.KINEMATIC; break;
+        }
+        let body = new CANNON.Body(t);
         this.world.addBody(body);
         return body;
     }
     createShape<T extends keyof CreateShapeOptions>(name: T, options: CreateShapeOptions[T]) {
-        if (name === 'Box') {
+        if (name === 'box') {
             return new CANNON.Box(this.format(options).halfExtents);
         }
-        if (name === 'Sphere') {
+        if (name === 'sphere') {
             return new CANNON.Sphere(this.format(options).radius);
         }
-        if (name === 'Cylinder') {
+        if (name === 'cylinder') {
             let o = this.format(options);
             return new CANNON.Cylinder(o.radiusTop, o.radiusBottom, o.height, o.numSegments);
         }
