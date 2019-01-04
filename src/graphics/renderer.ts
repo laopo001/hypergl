@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 1st 2019, 2:15:02 am
+ * Last Modified: Saturday, January 5th 2019, 2:01:25 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -144,10 +144,6 @@ export class RendererPlatform {
         for (let k in this.uniformFunction) {
             let old = this.uniformFunction[k];
             this.uniformFunction[k] = (uniform, value) => {
-                // if (uniform.value !== value) {
-                //     old(uniform, value);
-                //     uniform.value = value;
-                // } else {
                 if (value.BYTES_PER_ELEMENT != null) {
                     if (uniform.value == null) {
                         old(uniform, value);
@@ -204,10 +200,8 @@ export class RendererPlatform {
                         old(uniform, value);
                         uniform.value = value;
                     }
-                    // old(uniform, value);
                 }
             };
-            // };
         }
         this.glFilter = [
             gl.LINEAR,
@@ -255,13 +249,9 @@ export class RendererPlatform {
         this.gl.useProgram(shader.program as WebGLProgram);
     }
     setVertexBuffer(vertexBuffer: VertexBuffer) {
-        // const gl = this.gl;
-        // gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer.bufferId as WebGLBuffer);
         vertexBuffer.bind(this);
     }
     setIndexBuffer(indexBuffer: IndexBuffer) {
-        // const gl = this.gl;
-        // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer.bufferId as WebGLBuffer);
         indexBuffer.bind(this);
     }
     // tslint:disable-next-line:member-ordering
@@ -300,8 +290,7 @@ export class RendererPlatform {
     }
     gerViewport() {
         return this._last_viewport;
-        // const gl = this.gl;
-        // return gl.getParameter(gl.VIEWPORT);
+
     }
     @cache
     setLineWidth(width: number) {
@@ -343,14 +332,25 @@ export class RendererPlatform {
     loadTexture(program: WebGLProgram, variable: ShaderVariable, texture: BaseTexture, t = 0) {
         let gl = this.gl;
         if (texture.webglTexture) {
-            // if (!texture.isInitialized) {
-            //     gl.activeTexture(gl['TEXTURE' + t]);
-            //     gl.bindTexture(gl.TEXTURE_2D, texture.webglTexture);
-            //     gl.uniform1i(variable.locationId, t);
-            //     return;
-            // }
+            if (!texture.isInitialized) {
+                if (!texture.isCube) {
+                    gl.bindTexture(gl.TEXTURE_2D, texture.webglTexture);
+                    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, 1, 1, 0, gl.RGB, gl.UNSIGNED_BYTE, new Uint8Array([255, 255, 255, 255]));
+                    // gl.bindTexture(gl.TEXTURE_2D, null);
+                } else {
+                    gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture.webglTexture); // Bind the object to target
+                    for (let face = 0; face < 6; face++) {
+                        gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, gl.RGB, 1, 1, 0, gl.RGB, gl.UNSIGNED_BYTE, new Uint8Array([255, 255, 255, 255]) as any);
+                        // gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, texture.source[face]);
+                    }
+                    // gl.bindTexture(gl.TEXTURE_CUBE_MAP, null);
+                }
+                // gl.bindTexture(gl.TEXTURE_2D, texture.webglTexture);
+                // gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, 1, 1, 0, gl.RGB, gl.UNSIGNED_BYTE, new Uint8Array([255, 255, 255, 255]) as any);
+                texture.isInitialized = true;
+            }
             if (!texture.isCube) {
-                gl.activeTexture(gl['TEXTURE' + t]);
+                gl.activeTexture(gl.TEXTURE0 + t);
                 gl.bindTexture(gl.TEXTURE_2D, texture.webglTexture);
                 if (texture.flipY) {
                     // 对纹理图像进行Y轴反转
@@ -370,7 +370,7 @@ export class RendererPlatform {
                 gl.uniform1i(variable.locationId, t);
             } else {
                 // CUBE
-                gl.activeTexture(gl['TEXTURE' + t]);
+                gl.activeTexture(gl.TEXTURE0 + t);
                 gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture.webglTexture);
                 if (texture.isPowerOf2()) {
                     if (!texture.isGenerateMipmap) {

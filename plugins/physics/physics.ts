@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, January 4th 2019, 1:10:09 am
+ * Last Modified: Saturday, January 5th 2019, 12:52:41 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -31,11 +31,8 @@ export class CannonPhysicsPlugin implements Plugin {
         let fixedTimeStep = 1.0 / 60.0; // seconds
         let maxSubSteps = 3;
         this.world.gravity.set(0, -10, 0);
-        // console.log(CANNON.Body.STATIC);
-        // console.log(CANNON.Body.DYNAMIC);
-        // console.log(CANNON.Body.KINEMATIC);
         this.app.on('update', (dt) => {
-            this.world.step(fixedTimeStep, dt / 100, maxSubSteps);
+            this.world.step(fixedTimeStep, dt, maxSubSteps);
         });
     }
     addBody(o: {
@@ -56,11 +53,10 @@ export class CannonPhysicsPlugin implements Plugin {
         fixedRotation?: boolean;
         shape?: CANNON.Shape;
     }) {
-        console.log(o);
-
+        // console.log(o);
         let t = this.format(o);
         switch (t.type) {
-            case 'static': t.type = CANNON.Body.STATIC; break;
+            case 'static': t.type = CANNON.Body.STATIC; t.mass = 0; break;
             case 'dynamic': t.type = CANNON.Body.DYNAMIC; break;
             case 'kinematic': t.type = CANNON.Body.KINEMATIC; break;
         }

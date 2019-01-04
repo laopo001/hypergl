@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, January 4th 2019, 12:42:18 am
+ * Last Modified: Saturday, January 5th 2019, 12:50:00 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -37,8 +37,8 @@ export type CollisionInputs = {
 };
 
 export const CollisionData: Partial<CollisionInputs> = {
-    type: 'box',
-    halfExtents: new Vec3(1, 1, 1)
+    // type: 'box',
+    // halfExtents: new Vec3(1, 1, 1)
 };
 
 export class CollisionComponent extends Component<CollisionInputs> {

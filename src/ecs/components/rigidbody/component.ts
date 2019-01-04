@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, January 4th 2019, 1:04:47 am
+ * Last Modified: Saturday, January 5th 2019, 12:48:23 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -21,6 +21,7 @@ import { ComponentSystem } from '../../system';
 import { event } from '../../../core';
 import { Application } from '../../../application';
 import { CannonPhysicsPlugin } from 'hypergl/plugins/physics';
+// import {} from 'hypergl/'
 
 export interface RigidbodyInputs {
     type: 'static' | 'dynamic' | 'kinematic';

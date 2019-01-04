@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, January 4th 2019, 1:08:58 am
+ * Last Modified: Saturday, January 5th 2019, 2:02:21 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -38,19 +38,17 @@ async function main() {
     // app.on('update', () => {
     //     console.log(body!.position.y);
     // });
-    let cubeTexture = new CubeTexture();
-    let negx = await loadImage('assets/images/skybox_nx.jpg');
-    let negy = await loadImage('assets/images/skybox_ny.jpg');
-    let negz = await loadImage('assets/images/skybox_nz.jpg');
-    let posx = await loadImage('assets/images/skybox_px.jpg');
-    let posy = await loadImage('assets/images/skybox_py.jpg');
-    let posz = await loadImage('assets/images/skybox_pz.jpg');
-    cubeTexture.setSource(posx, negx, posy, negy, posz, negz);
-    // cubeTexture.wrapU = Config.WRAP.CLAMP_TO_EDGE;
-    // cubeTexture.wrapV = Config.WRAP.CLAMP_TO_EDGE;
-    // cubeTexture.wrapR = Config.WRAP.CLAMP_TO_EDGE;
-    // let cubeTexture = CubeTexture.loadImage('assets/images/skybox_px.jpg', 'assets/images/skybox_nx.jpg', 'assets/images/skybox_py.jpg', 'assets/images/skybox_ny.jpg',
-    //     'assets/images/skybox_pz.jpg', 'assets/images/skybox_nz.jpg');
+    // let cubeTexture = new CubeTexture();
+    // let negx = await loadImage('assets/images/skybox_nx.jpg');
+    // let negy = await loadImage('assets/images/skybox_ny.jpg');
+    // let negz = await loadImage('assets/images/skybox_nz.jpg');
+    // let posx = await loadImage('assets/images/skybox_px.jpg');
+    // let posy = await loadImage('assets/images/skybox_py.jpg');
+    // let posz = await loadImage('assets/images/skybox_pz.jpg');
+    // cubeTexture.setSource(posx, negx, posy, negy, posz, negz);
+
+    let cubeTexture = CubeTexture.loadImage('assets/images/skybox_px.jpg', 'assets/images/skybox_nx.jpg', 'assets/images/skybox_py.jpg', 'assets/images/skybox_ny.jpg',
+        'assets/images/skybox_pz.jpg', 'assets/images/skybox_nz.jpg');
     let skym = new SkyMaterial();
     skym.cubeTexture = cubeTexture;
 
@@ -64,10 +62,10 @@ async function main() {
     app.scene.root.addChild(sky);
 
     let grassMaterial = new StandardMaterial();
-    let grassTexture = new Texture();
-    let grassImage = await loadImage('assets/images/grass.jpg');
-    grassTexture.setSource(grassImage);
-    grassMaterial.diffuseMap = grassTexture;
+    // let grassTexture = new Texture();
+    // let grassImage = await loadImage('assets/images/grass.jpg');
+    // grassTexture.setSource(grassImage);
+    grassMaterial.diffuseMap = Texture.loadImage('assets/images/grass.jpg');
 
 
 
@@ -105,10 +103,11 @@ async function main() {
     let plane = new Entity('plane')
         .addComponent('model', {
             type: 'plane',
+            material: grassMaterial
         })
         .addComponent('collision', {
             type: 'box',
-            halfExtents: new Vec3(10, 0.1, 10)
+            halfExtents: new Vec3(10, 0.01, 10)
         })
         .addComponent('rigidbody', {
             type: 'static',
@@ -128,13 +127,11 @@ async function main() {
             }
         })
         .addComponent('listener', {})
-        .setPosition(-
-            5, 5, 0)
+        .setPosition(-5, 5, 0)
         .lookAt(new Vec3(0, 0, 0))
         .addComponent('script', [new FirstPersonCamera({ speed: 0.05 })]);
     app.scene.root.addChild(camera);
 
-    // await util.sleep(3000);
     app.start();
 }
 

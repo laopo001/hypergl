@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 2nd 2019, 9:21:08 pm
+ * Last Modified: Saturday, January 5th 2019, 12:28:53 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -66,7 +66,7 @@ export class Application<T= Plugin> {
         this.renderer.setViewport(0, 0, this.canvas.width, this.canvas.height);
         this.renderer.setScissor(0, 0, this.canvas.width, this.canvas.height);
         await sleep(10);
-        this.tick();
+        this.tick(0);
     }
     addScene(scene: Scene) {
         let i = this.sceneInstances.push(scene);
@@ -90,12 +90,17 @@ export class Application<T= Plugin> {
             this.plugins[c.pname] = p;
         });
     }
-    private tick = () => {
+    // tslint:disable-next-line:member-ordering
+    private _start = 0;
+    private tick = (timestamp: number) => {
+        if (!this._start) this._start = timestamp;
+        let progress = timestamp - this._start;
         event.fire('beforeRender');
-        timer.start();
+        // timer.start();
         this.scene.render();
-        timer.end();
-        event.fire('update', timer.getDuration());
+        // timer.end();
+        // console.log(timer.getDuration(), progress);
+        event.fire('update', progress / 1000);
         event.fire('afterRender');
         requestAnimationFrame(this.tick);
     }
