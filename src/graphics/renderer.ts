@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, January 5th 2019, 2:01:25 am
+ * Last Modified: Saturday, January 5th 2019, 2:07:31 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -335,12 +335,12 @@ export class RendererPlatform {
             if (!texture.isInitialized) {
                 if (!texture.isCube) {
                     gl.bindTexture(gl.TEXTURE_2D, texture.webglTexture);
-                    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, 1, 1, 0, gl.RGB, gl.UNSIGNED_BYTE, new Uint8Array([255, 255, 255, 255]));
+                    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, 1, 1, 0, gl.RGB, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 0, 255]));
                     // gl.bindTexture(gl.TEXTURE_2D, null);
                 } else {
                     gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture.webglTexture); // Bind the object to target
                     for (let face = 0; face < 6; face++) {
-                        gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, gl.RGB, 1, 1, 0, gl.RGB, gl.UNSIGNED_BYTE, new Uint8Array([255, 255, 255, 255]) as any);
+                        gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, gl.RGB, 1, 1, 0, gl.RGB, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 0, 255]) as any);
                         // gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, texture.source[face]);
                     }
                     // gl.bindTexture(gl.TEXTURE_CUBE_MAP, null);

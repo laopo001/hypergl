@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, January 5th 2019, 2:02:21 am
+ * Last Modified: Saturday, January 5th 2019, 2:11:44 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -47,7 +47,7 @@ async function main() {
     // let posz = await loadImage('assets/images/skybox_pz.jpg');
     // cubeTexture.setSource(posx, negx, posy, negy, posz, negz);
 
-    let cubeTexture = CubeTexture.loadImage('assets/images/skybox_px.jpg', 'assets/images/skybox_nx.jpg', 'assets/images/skybox_py.jpg', 'assets/images/skybox_ny.jpg',
+    let cubeTexture = await CubeTexture.loadImageAsync('assets/images/skybox_px.jpg', 'assets/images/skybox_nx.jpg', 'assets/images/skybox_py.jpg', 'assets/images/skybox_ny.jpg',
         'assets/images/skybox_pz.jpg', 'assets/images/skybox_nz.jpg');
     let skym = new SkyMaterial();
     skym.cubeTexture = cubeTexture;

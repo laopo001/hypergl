@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 31st 2018, 7:33:09 pm
+ * Last Modified: Saturday, January 5th 2019, 2:10:34 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -23,6 +23,17 @@ export class Texture extends BaseTexture {
         let texture = new Texture(app.renderer.gl.createTexture()!);
         // loadImage
         loadImage(url).then(img => {
+            texture.setSource(img);
+            app.renderer.initTexture(texture);
+        });
+        return texture;
+        // app.renderer.loadTexture
+    }
+    static async loadImageAsync(url: string) {
+        let app = Application.getApp();
+        let texture = new Texture(app.renderer.gl.createTexture()!);
+        // loadImage
+        await loadImage(url).then(img => {
             texture.setSource(img);
             app.renderer.initTexture(texture);
         });
