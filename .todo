@@ -12,7 +12,7 @@ Todos:
     ✔ fog @done(18-12-08 02:05)
     ✔ bounding-sphere @done(18-12-07 02:06)
     ☐ physical system and rigid-body
-      ✔ 添加cannon.js 物理引擎。已插件的形式引入。 @done(19-01-03 19:51)
+      ✔ 添加cannon.js 物理引擎。以插件的形式引入。 @done(19-01-03 19:51)
     ✔ audio-component and listener-component @done(18-12-06 15:53)
     ✔ createLines 和 drawLine @started(18-12-01 18:49) @done(18-12-06 15:52) @lasted(4d21h3m39s)
     ✔ 相机裁剪 @started(18-11-22 16:37) @done(18-12-01 15:33) @lasted(1w1d22h56m3s)
