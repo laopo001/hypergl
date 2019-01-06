@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, January 5th 2019, 6:05:47 pm
+ * Last Modified: Sunday, January 6th 2019, 11:47:09 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -95,6 +95,7 @@ export class Application<T= Plugin> {
     private tick = (timestamp: number) => {
         if (!this._start) this._start = timestamp;
         let dt = timestamp - this._start;
+        event.fire('beforeRender2');
         event.fire('beforeRender');
         // timer.start();
         this.scene.render();

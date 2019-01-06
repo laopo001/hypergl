@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 29th 2018, 5:02:16 pm
+ * Last Modified: Monday, January 7th 2019, 12:52:05 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -26,12 +26,6 @@ export interface ModelInputs {
     material?: Material;
 }
 export class ModelComponent<T = StandardMaterial> extends Component<ModelInputs> {
-    // get material(): T {
-    //     return this.instance.meshs[0].material as any;
-    // }
-    // set material(x: T) {
-    //     this.instance.meshs[0].material = x as any;
-    // }
     entity!: Entity;
     instance: Model;
     name = 'model';

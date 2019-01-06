@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, January 6th 2019, 6:00:20 pm
+ * Last Modified: Monday, January 7th 2019, 12:58:12 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -75,7 +75,8 @@ async function main() {
         })
         .addComponent('collision', {
             type: 'sphere',
-            radius: 0.5
+            radius: 0.5,
+            debugger: true
         })
         .addComponent('rigidbody', {
             type: 'dynamic',
@@ -108,6 +109,7 @@ async function main() {
         })
         .addComponent('collision', {
             type: 'box',
+            debugger: true,
             halfExtents: new Vec3(10, 0.01, 10)
         })
         .addComponent('rigidbody', {

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 30th 2018, 9:24:51 pm
+ * Last Modified: Monday, January 7th 2019, 12:25:17 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -23,6 +23,20 @@ export function cache(target: any, key: string, description: PropertyDescriptor)
             t = arg1;
             return res;
         }
+    };
+}
+
+export function once(target: any, key: string, description: PropertyDescriptor) {
+    let old = description.value;
+    let t;
+    // tslint:disable-next-line:only-arrow-functions
+    description.value = function (...args) {
+        if (t) {
+            return t;
+        }
+        let res = old.apply(this, args);
+        t = res;
+        return res;
     };
 }
 

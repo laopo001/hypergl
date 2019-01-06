@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 29th 2018, 5:46:49 pm
+ * Last Modified: Monday, January 7th 2019, 12:34:33 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -30,8 +30,8 @@ export class Mesh extends Drawable {
     static createPlane = createPlane;
     static createSphere = createSphere;
     // static createLines = createLines;
-    castShadow = true;
-    receiveShadow = true;
+    castShadow = false;
+    receiveShadow = false;
     material: StandardMaterial | PBRMaterial = StandardMaterial.defaultMaterial();
     // private _material = Mesh.defaultMaterial;
     constructor() {
@@ -298,4 +298,20 @@ export function createSphere(opts?: CreateSphereOptions) {
     // }
 
     return Mesh.createMesh(options);
+}
+
+export function createCollisionMesh(type: 'box' | 'sphere' |  'cylinder') {
+    let mesh: Mesh;
+    switch (type) {
+        case 'box':
+            mesh = createBox();
+            break;
+        case 'sphere':
+            mesh = createSphere();
+            break;
+        // case 'cylinder':
+        //     mesh = createBox();
+        //     break;
+    }
+    return mesh!;
 }

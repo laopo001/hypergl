@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 28th 2018, 5:17:56 pm
+ * Last Modified: Monday, January 7th 2019, 1:34:45 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -39,10 +39,14 @@ export class ModelComponentSystem extends ComponentSystem {
                     let position = item.getPosition();
                     let uNormalMatrix = item.getWorldTransform().clone().invert().transpose();
                     item.instance.meshs.forEach(drawable => {
-                        drawable.cache.uModelMatrix = uModelMatrix;
-                        drawable.cache.position = position;
-                        drawable.cache.uNormalMatrix = uNormalMatrix;
                         drawable.cache.enabled = item.enabled;
+                        drawable.cache.position = position;
+                        if (!drawable.debugger) {
+                            drawable.cache.uModelMatrix = uModelMatrix;
+                            drawable.cache.uNormalMatrix = uNormalMatrix;
+                        } else {
+                            //
+                        }
                         if ((drawable.material as StandardMaterial).opacity < 1 || (drawable.material as StandardMaterial).opacityMap) {
                             this.opacityLayers.push(drawable);
                         } else {

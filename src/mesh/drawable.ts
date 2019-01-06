@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 29th 2018, 5:42:10 pm
+ * Last Modified: Monday, January 7th 2019, 1:08:28 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -22,7 +22,9 @@ import { Vec3, Vec2, Mat4 } from '../math';
 import { BoundingBox } from '../shape/boundingBox';
 import { BoundingSphere } from '../shape/boundingSphere';
 
+let id = 0;
 export class Drawable<T extends Material= Material> {
+    debugger = false;
     name?: string;
     mode = DrawMode.TRIANGLES; // 默认绘制模式 为 三角形
     // tslint:disable-next-line:member-ordering
@@ -36,8 +38,7 @@ export class Drawable<T extends Material= Material> {
         position?: Vec3;
         uNormalMatrix?: Mat4;
         enabled?: boolean;
-    } = {
-        };
+    } = {};
     get type() {
         if (this.mode === 1 || this.mode === 2 || this.mode === 3) {
             return 'line';
@@ -48,6 +49,7 @@ export class Drawable<T extends Material= Material> {
         }
     }
     material!: T;
+    meshID = id++;
     constructor() {
         Application.getApp().scene.drawables.push(this);
     }
