@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, January 5th 2019, 12:28:53 am
+ * Last Modified: Saturday, January 5th 2019, 6:05:47 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -94,13 +94,13 @@ export class Application<T= Plugin> {
     private _start = 0;
     private tick = (timestamp: number) => {
         if (!this._start) this._start = timestamp;
-        let progress = timestamp - this._start;
+        let dt = timestamp - this._start;
         event.fire('beforeRender');
         // timer.start();
         this.scene.render();
         // timer.end();
         // console.log(timer.getDuration(), progress);
-        event.fire('update', progress / 1000);
+        event.fire('update', dt / 1000);
         event.fire('afterRender');
         requestAnimationFrame(this.tick);
     }

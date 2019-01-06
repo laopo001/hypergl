@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, January 5th 2019, 12:48:23 am
+ * Last Modified: Sunday, January 6th 2019, 5:59:47 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -28,13 +28,14 @@ export interface RigidbodyInputs {
     mass?: number;
     friction?: number;
     restitution?: number;
+    velocity?: Vec3;
 }
 
 export const RigidbodyData: Partial<RigidbodyInputs> = {
     type: 'dynamic',
     friction: 0.5,
     mass: 1,
-    restitution: 0
+    restitution: 0.5
 };
 
 export class RigidbodyComponent extends Component<RigidbodyInputs> {
@@ -49,15 +50,23 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
         super.initialize();
         let app = this.entity.app as Application<{ physics: CannonPhysicsPlugin }>;
         let physics = app.plugins.physics;
+        let material = physics.createMaterial(this.inputs.friction!, this.inputs.restitution!);
         let body = physics.addBody({
             type: this.inputs.type,
             mass: this.inputs.mass,
+            material,
             position: this.entity.getPosition(),
+            velocity: this.inputs.velocity,
             shape: this.entity.collision.instance
         });
         event.on('update', () => {
             let { x, y, z } = body.position;
             this.entity.setPosition(x, y, z);
+            x = body.quaternion.x;
+            y = body.quaternion.y;
+            z = body.quaternion.z;
+            let w = body.quaternion.w;
+            this.entity.setRotation(x, y, z, w);
         });
         this.instance = body;
 

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, January 5th 2019, 2:11:44 am
+ * Last Modified: Sunday, January 6th 2019, 6:00:20 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -79,6 +79,7 @@ async function main() {
         })
         .addComponent('rigidbody', {
             type: 'dynamic',
+            velocity: new Vec3(0, 10, 0)
         })
         .setLocalPosition(0, 0, 0);
     let pbr_sphere1 = new PBRMaterial();

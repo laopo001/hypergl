@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, January 5th 2019, 12:52:41 am
+ * Last Modified: Sunday, January 6th 2019, 6:05:53 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,6 +15,7 @@
 import { Application, Plugin, Vec3, Quat } from 'hypergl';
 // import * as Ammo from './ammo';
 import * as CANNON from 'cannon';
+
 export interface CreateShapeOptions {
     'sphere': { radius: number; };
     'box': { halfExtents: Vec3 };
@@ -28,12 +29,18 @@ export class CannonPhysicsPlugin implements Plugin {
     CANNON = CANNON;
     world = new CANNON.World();
     constructor(private app: Application) {
+        this.initWorld();
+    }
+    initWorld(g: [number, number, number] = [0, -10, 0]) {
         let fixedTimeStep = 1.0 / 60.0; // seconds
         let maxSubSteps = 3;
-        this.world.gravity.set(0, -10, 0);
+        this.world.gravity.set(...g);
         this.app.on('update', (dt) => {
             this.world.step(fixedTimeStep, dt, maxSubSteps);
         });
+    }
+    setGravity(g: [number, number, number] = [0, -10, 0]) {
+        this.world.gravity.set(...g);
     }
     addBody(o: {
         position?: Vec3;
@@ -41,7 +48,7 @@ export class CannonPhysicsPlugin implements Plugin {
         angularVelocity?: Vec3;
         quaternion?: Quat;
         mass?: number;
-        // material?: CANNON.Material;
+        material?: CANNON.Material;
         type?: string;
         linearDamping?: number;
         angularDamping?: number;
@@ -63,6 +70,12 @@ export class CannonPhysicsPlugin implements Plugin {
         let body = new CANNON.Body(t);
         this.world.addBody(body);
         return body;
+    }
+    createMaterial(friction: number, restitution: number, name = '') {
+        let m = new CANNON.Material(name);
+        m.friction = friction;
+        m.restitution = restitution;
+        return m;
     }
     createShape<T extends keyof CreateShapeOptions>(name: T, options: CreateShapeOptions[T]) {
         if (name === 'box') {
