@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, January 7th 2019, 1:08:28 am
+ * Last Modified: Tuesday, January 8th 2019, 5:01:35 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -38,6 +38,7 @@ export class Drawable<T extends Material= Material> {
         position?: Vec3;
         uNormalMatrix?: Mat4;
         enabled?: boolean;
+        setScale?: Vec3;
     } = {};
     get type() {
         if (this.mode === 1 || this.mode === 2 || this.mode === 3) {

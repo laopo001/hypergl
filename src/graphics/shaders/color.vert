@@ -15,7 +15,8 @@ vec4 getPosition() {
 
 
 void main(void) {
-    gl_Position = getPosition();
+    vec4 posW = uModelMatrix * vec4(vertex_position, 1.0);
+    gl_Position = uViewProjectionMatrix * posW;
     {{#if attributes.vertex_color}}
     vColor = vertex_color;
     {{/if}}

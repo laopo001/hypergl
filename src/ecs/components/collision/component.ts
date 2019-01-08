@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, January 7th 2019, 1:34:57 am
+ * Last Modified: Tuesday, January 8th 2019, 5:36:51 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -22,7 +22,7 @@ import { event } from '../../../core';
 import { Application } from '../../../application';
 import { CannonPhysicsPlugin } from 'hypergl/plugins/physics';
 import { Mesh } from '../../../mesh';
-import { StandardMaterial } from '../../../material';
+import { ColorMaterial, StandardMaterial } from '../../../material';
 import { once } from '../../../utils/decorators';
 
 export type CollisionInputs = {
@@ -68,23 +68,20 @@ export class CollisionComponent extends Component<CollisionInputs> {
             switch (this.inputs.type) {
                 case 'box':
                     mesh = Mesh.createBox();
-                    // let { x, y, z } = this.inputs.halfExtents;
-                    // let m = new Mat4().setScale(x, y, z);
-                    // mesh.cache.uModelMatrix2 = m;
-
+                    let { x, y, z } = this.inputs.halfExtents;
+                    mesh.cache.setScale = new Vec3(x, y, z);
                     break;
                 case 'sphere':
                     mesh = Mesh.createSphere();
-                    // x = this.inputs.radius * 2;
-                    // m = new Mat4().setScale(x, x, x);
-                    // mesh.cache.uModelMatrix2 = m;
+                    x = this.inputs.radius * 2;
+                    mesh.cache.setScale = new Vec3(x, x, x);
 
                     break;
             }
             this._uuid = mesh!.meshID;
-            // mesh!.debugger = true;
+            mesh!.debugger = true;
             mesh!.name = this.name + 'debugger' + this._uuid!;
-            mesh!.material = this.createMaterial();
+            mesh!.material = this.createMaterial() as any;
             this.entity.model.instance.meshs.push(mesh!);
             // app.scene.systems.collision!.createEntity().model.instance.meshs.push(mesh!);
         }
@@ -99,9 +96,9 @@ export class CollisionComponent extends Component<CollisionInputs> {
     }
     @once
     private createMaterial() {
-        let material = new StandardMaterial();
+        let material = new ColorMaterial();
         material.diffuseColor.set(1, 0, 0);
-        material.opacity = 0.5;
+        material.opacity = 0.1;
         return material;
     }
 }
