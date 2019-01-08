@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 8th 2019, 5:46:37 pm
+ * Last Modified: Tuesday, January 8th 2019, 10:42:04 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -132,7 +132,7 @@ async function main() {
         .addComponent('listener', {})
         .setPosition(-5, 5, 0)
         .lookAt(new Vec3(0, 0, 0))
-        .addComponent('script', [new FirstPersonCamera({ speed: 0.05 })]);
+        .addComponent('script', [new FirstPersonCamera({ speed: 1 })]);
     app.scene.root.addChild(camera);
 
     app.start();

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, January 6th 2019, 11:47:09 pm
+ * Last Modified: Tuesday, January 8th 2019, 10:40:21 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -93,9 +93,10 @@ export class Application<T= Plugin> {
     // tslint:disable-next-line:member-ordering
     private _start = 0;
     private tick = (timestamp: number) => {
-        if (!this._start) this._start = timestamp;
+        // if (this._start) {
+
+        // }
         let dt = timestamp - this._start;
-        event.fire('beforeRender2');
         event.fire('beforeRender');
         // timer.start();
         this.scene.render();
@@ -103,6 +104,7 @@ export class Application<T= Plugin> {
         // console.log(timer.getDuration(), progress);
         event.fire('update', dt / 1000);
         event.fire('afterRender');
+        this._start = timestamp;
         requestAnimationFrame(this.tick);
     }
 }
