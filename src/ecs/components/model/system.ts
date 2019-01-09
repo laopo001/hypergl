@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 8th 2019, 5:45:53 pm
+ * Last Modified: Wednesday, January 9th 2019, 11:50:29 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -36,6 +36,7 @@ export class ModelComponentSystem extends ComponentSystem {
                 this.normalLayers = [];
                 this.components.forEach(item => {
                     let uModelMatrix = item.getWorldTransform();
+                    let scale = item.entity.localScale;
                     let position = item.getPosition();
                     let uNormalMatrix = item.getWorldTransform().clone().invert().transpose();
                     item.instance.meshs.forEach(drawable => {
@@ -49,9 +50,12 @@ export class ModelComponentSystem extends ComponentSystem {
                             let { x, y, z } = drawable.cache.setScale!;
                             let clone = uModelMatrix.clone();
                             let m = clone.data;
-                            m[0] = x;
-                            m[5] = y;
-                            m[10] = z;
+                            m[0] /= scale.x;
+                            m[5] /= scale.y;
+                            m[10] /= scale.z;
+                            m[0] *= x;
+                            m[5] *= y;
+                            m[10] *= z;
                             drawable.cache.uModelMatrix = clone;
                             // console.log(drawable.cache.uModelMatrix.getTranslation().data);
                             // drawable.cache.uModelMatrix = uModelMatrix;

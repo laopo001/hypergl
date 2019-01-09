@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 8th 2019, 5:36:51 pm
+ * Last Modified: Thursday, January 10th 2019, 12:00:19 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -69,13 +69,21 @@ export class CollisionComponent extends Component<CollisionInputs> {
                 case 'box':
                     mesh = Mesh.createBox();
                     let { x, y, z } = this.inputs.halfExtents;
-                    mesh.cache.setScale = new Vec3(x, y, z);
+                    mesh.cache.setScale = new Vec3(x * 2, y * 2, z * 2);
                     break;
                 case 'sphere':
                     mesh = Mesh.createSphere();
                     x = this.inputs.radius * 2;
                     mesh.cache.setScale = new Vec3(x, x, x);
-
+                    break;
+                case 'cylinder':
+                    mesh = Mesh.createCylinder({
+                        baseRadius: this.inputs.radiusBottom,
+                        peakRadius: this.inputs.radiusTop,
+                        height: this.inputs.height,
+                        heightSegments : 20
+                    });
+                    mesh.cache.setScale = new Vec3(1, 1, 1);
                     break;
             }
             this._uuid = mesh!.meshID;

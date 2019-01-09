@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 9th 2019, 5:35:29 pm
+ * Last Modified: Thursday, January 10th 2019, 12:15:39 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -86,7 +86,12 @@ export class CannonPhysicsPlugin implements Plugin {
         }
         if (name === 'cylinder') {
             let o = this.format(options);
-            return new CANNON.Cylinder(o.radiusTop, o.radiusBottom, o.height, o.numSegments);
+            let cylinder = new CANNON.Cylinder(o.radiusTop, o.radiusBottom, o.height, o.numSegments);
+            let q = new CANNON.Quaternion();
+            q.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), Math.PI / 2 * 3);
+            // q.setFromAxisAngle(new CANNON.Vec3(0, 0, 1), Math.PI);
+            (cylinder as any).transformAllPoints(new CANNON.Vec3(), q);
+            return cylinder;
         }
     }
     private format<T= any>(o): T {

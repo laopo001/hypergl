@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 9th 2019, 3:22:53 pm
+ * Last Modified: Thursday, January 10th 2019, 12:16:10 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -95,15 +95,43 @@ async function main() {
         .addComponent('model', {
             type: 'cylinder',
             options: {
-                baseRadius: 0.5,
-                peakRadius: 0.0
+                baseRadius: 0.01,
+                peakRadius: 0.5
             }
         })
-
+        .addComponent('collision', {
+            type: 'cylinder',
+            radiusBottom: 0.01,
+            radiusTop: 0.5,
+            height: 1,
+            numSegments: 20,
+            debugger: true
+        })
+        .addComponent('rigidbody', {
+            type: 'dynamic',
+            // velocity: new Vec3(0, 0, 1)
+        })
         .setLocalPosition(3, 0, 0);
-
     cylinder.model.drawable(0).material = grassMaterial;
     app.scene.root.addChild(cylinder);
+
+    let box = new Entity('box')
+        .addComponent('model', {
+            type: 'box',
+        })
+        .addComponent('collision', {
+            type: 'box',
+            halfExtents: new Vec3(0.5, 0.5, 0.5),
+            debugger: true
+        })
+        .addComponent('rigidbody', {
+            type: 'dynamic',
+            // velocity: new Vec3(0, 0, 6)
+        })
+        .setLocalPosition(-3, 0, 0);
+    box.model.drawable(0).material = grassMaterial;
+    app.scene.root.addChild(box);
+
 
 
     let light = new Entity('light')
@@ -125,7 +153,7 @@ async function main() {
         .addComponent('collision', {
             type: 'box',
             debugger: true,
-            halfExtents: new Vec3(10, 0.01, 10)
+            halfExtents: new Vec3(5, 0.1, 5)
         })
         .addComponent('rigidbody', {
             type: 'static',
@@ -147,7 +175,7 @@ async function main() {
         .addComponent('listener', {})
         .setPosition(-5, 5, 0)
         .lookAt(new Vec3(0, 0, 0))
-        .addComponent('script', [new FirstPersonCamera({ speed: 1 })]);
+        .addComponent('script', [new FirstPersonCamera({ speed: 2 })]);
     app.scene.root.addChild(camera);
 
     app.start();
