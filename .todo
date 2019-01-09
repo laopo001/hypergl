@@ -4,6 +4,7 @@ Projects:
 Todos:
   实现基本功能
   new: 
+    ✔ Mesh.createCylinder @done(19-01-09 15:31)
     ✔ support OffscreenCanvas ()@done(18-12-21 20:32)
     ✔ plugin features @done(18-12-20 00:01)
     ✔ pbr material 完成基础的渲染 @started(18-12-24 00:55) @done(19-01-03 19:50) @lasted(1w3d18h55m5s)
@@ -11,7 +12,7 @@ Todos:
     ✔ cubeTexture @started(18-12-11 01:08) @done(18-12-13 11:14) @lasted(2d10h6m41s)
     ✔ fog @done(18-12-08 02:05)
     ✔ bounding-sphere @done(18-12-07 02:06)
-    ☐ physical system and rigid-body
+    ✔ physical system and rigid-body @done(19-01-09 15:31)
       ✔ 添加cannon.js 物理引擎。以插件的形式引入。 @done(19-01-03 19:51)
     ✔ audio-component and listener-component @done(18-12-06 15:53)
     ✔ createLines 和 drawLine @started(18-12-01 18:49) @done(18-12-06 15:52) @lasted(4d21h3m39s)

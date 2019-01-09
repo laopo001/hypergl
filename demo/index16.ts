@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 8th 2019, 10:42:04 pm
+ * Last Modified: Wednesday, January 9th 2019, 3:22:53 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -28,7 +28,7 @@ async function main() {
         // webgl1:true
     });
     app.registerPlugins([LoadImagePlugin, StatsPlugin, PointerPlugin, CannonPhysicsPlugin]);
-    let loadImage = app.plugins.loadImage.load;
+
     console.log(app);
 
     // app.scene.fog = FOG.LINEAR;
@@ -53,7 +53,7 @@ async function main() {
     skym.cubeTexture = cubeTexture;
 
 
-    let sky = new Entity('debug')
+    let sky = new Entity('sky')
         .addComponent('model', {
             type: 'box',
             material: skym
@@ -90,6 +90,21 @@ async function main() {
     pbr_sphere1.specularEnvTexture = cubeTexture;
     sphere1.model.drawable(0).material = pbr_sphere1;
     app.scene.root.addChild(sphere1);
+
+    let cylinder = new Entity('cylinder')
+        .addComponent('model', {
+            type: 'cylinder',
+            options: {
+                baseRadius: 0.5,
+                peakRadius: 0.0
+            }
+        })
+
+        .setLocalPosition(3, 0, 0);
+
+    cylinder.model.drawable(0).material = grassMaterial;
+    app.scene.root.addChild(cylinder);
+
 
     let light = new Entity('light')
         .addComponent('light', {

@@ -5,26 +5,74 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, January 7th 2019, 12:52:05 am
+ * Last Modified: Wednesday, January 9th 2019, 3:14:21 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Entity, Application, math, Mesh, StandardMaterial, Material } from '../../..';
+import { Entity, Application, math, Mesh, StandardMaterial, Material, Vec3, Vec2 } from '../../..';
 import { Component } from '../../component';
 import { ComponentSystem } from '../../system';
 import { Drawable, Model } from '../../../mesh';
 
-export interface ModelInputs {
-    type: 'box' | 'plane' | 'sphere' | 'model',
-    model?: Drawable | Drawable[] | Model;
-    options?: any;
+interface Common {
     castShadow?: boolean,
     receiveShadow?: boolean,
     material?: Material;
 }
+
+export type ModelInputs = Common & ({
+    type: 'cylinder',
+    options?: {
+        baseRadius?: number;
+        peakRadius?: number;
+        height?: number;
+        heightSegments?: number;
+        capSegments?: number;
+        calculateTangents?: boolean;
+    };
+} | {
+    type: 'model',
+    model?: Drawable | Drawable[] | Model;
+} | {
+    type: 'sphere',
+    options?: {
+        radius?: number;
+        segments?: number;
+    }
+} | {
+    type: 'plane',
+    options?: {
+        halfExtents?: Vec2,
+        widthSegments?: number,
+        lengthSegments?: number
+    }
+} | {
+    type: 'box',
+    options?: {
+        halfExtents?: Vec3;
+        widthSegments?: number;
+        lengthSegments?: number;
+        heightSegments?: number;
+    }
+});
+
+// interface a {
+//     name: 'cylinder';
+// }
+// interface b {
+//     name: 'sphere';
+// }
+// interface age {
+//     age: string;
+// }
+// type c = age & (a | b);
+// let o: c = {
+//     name: 'sphere',
+//     age: '123'
+// };
 export class ModelComponent<T = StandardMaterial> extends Component<ModelInputs> {
     entity!: Entity;
     instance: Model;
@@ -43,6 +91,9 @@ export class ModelComponent<T = StandardMaterial> extends Component<ModelInputs>
                 break;
             case 'sphere':
                 mesh = Mesh.createSphere(this.inputs.options);
+                break;
+            case 'cylinder':
+                mesh = Mesh.createCylinder(this.inputs.options);
                 break;
             case 'model':
                 mesh = this.inputs.model as Drawable;
