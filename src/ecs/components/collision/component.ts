@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, January 10th 2019, 12:00:19 am
+ * Last Modified: Thursday, January 10th 2019, 11:14:39 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -20,27 +20,27 @@ import { Mat4, Vec3 } from '../../../math';
 import { ComponentSystem } from '../../system';
 import { event } from '../../../core';
 import { Application } from '../../../application';
-import { CannonPhysicsPlugin } from 'hypergl/plugins/physics';
+import { CannonPhysicsPlugin, EVENT } from 'hypergl/plugins/physics';
 import { Mesh } from '../../../mesh';
 import { ColorMaterial, StandardMaterial } from '../../../material';
 import { once } from '../../../utils/decorators';
 
 export type CollisionInputs = {
+    debugger?: boolean;
+    onCollide?: (e: EVENT) => void
+} & ({
     type: 'sphere',
     radius: number,
-    debugger?: boolean;
 } | {
     type: 'box',
     halfExtents: Vec3,
-    debugger?: boolean;
 } | {
     type: 'cylinder',
     radiusTop: number,
     radiusBottom: number,
     height: number,
     numSegments: number,
-    debugger?: boolean;
-};
+});
 
 export const CollisionData: Partial<CollisionInputs> = {
     debugger: false
@@ -81,7 +81,7 @@ export class CollisionComponent extends Component<CollisionInputs> {
                         baseRadius: this.inputs.radiusBottom,
                         peakRadius: this.inputs.radiusTop,
                         height: this.inputs.height,
-                        heightSegments : 20
+                        heightSegments: 20
                     });
                     mesh.cache.setScale = new Vec3(1, 1, 1);
                     break;

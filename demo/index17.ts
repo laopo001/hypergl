@@ -1,14 +1,14 @@
 /*
  * ProjectName: hypergl
- * FilePath: \demo\index16.ts
- * Created Date: Monday, December 31st 2018, 10:00:26 pm
+ * FilePath: \demo\index17.ts
+ * Created Date: Friday, January 11th 2019, 12:01:41 am
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, January 11th 2019, 12:14:24 am
+ * Last Modified: Friday, January 11th 2019, 12:14:06 am
  * Modified By: dadigua
  * -----
- * Copyright (c) 2018 dadigua
+ * Copyright (c) 2019 dadigua
  */
 
 
@@ -31,21 +31,6 @@ async function main() {
 
     console.log(app);
 
-    // app.scene.fog = FOG.LINEAR;
-    // app.scene.fogEnd = 1000;
-    // let shape = app.plugins.physics.createShape('box', { halfExtents: new Vec3(10, 0.1, 10) });
-    // let body = app.plugins.physics.addBody({ mass: 1, shape });
-    // app.on('update', () => {
-    //     console.log(body!.position.y);
-    // });
-    // let cubeTexture = new CubeTexture();
-    // let negx = await loadImage('assets/images/skybox_nx.jpg');
-    // let negy = await loadImage('assets/images/skybox_ny.jpg');
-    // let negz = await loadImage('assets/images/skybox_nz.jpg');
-    // let posx = await loadImage('assets/images/skybox_px.jpg');
-    // let posy = await loadImage('assets/images/skybox_py.jpg');
-    // let posz = await loadImage('assets/images/skybox_pz.jpg');
-    // cubeTexture.setSource(posx, negx, posy, negy, posz, negz);
 
     let cubeTexture = await CubeTexture.loadImageAsync('assets/images/skybox_px.jpg', 'assets/images/skybox_nx.jpg', 'assets/images/skybox_py.jpg', 'assets/images/skybox_ny.jpg',
         'assets/images/skybox_pz.jpg', 'assets/images/skybox_nz.jpg');
@@ -68,53 +53,6 @@ async function main() {
     grassMaterial.diffuseMap = Texture.loadImage('assets/images/grass.jpg');
 
 
-
-    let sphere1 = new Entity('sphere')
-        .addComponent('model', {
-            type: 'sphere',
-        })
-        .addComponent('collision', {
-            type: 'sphere',
-            radius: 1,
-            debugger: true
-        })
-        .addComponent('rigidbody', {
-            type: 'dynamic',
-            velocity: new Vec3(0, 10, 0)
-        })
-        .setLocalPosition(0, 0, 0);
-    let pbr_sphere1 = new PBRMaterial();
-    pbr_sphere1.baseColor = new Color(1, 1, 0);
-    pbr_sphere1.metallicFactor = 0.3;
-    pbr_sphere1.roughnessFactor = 0.3;
-    pbr_sphere1.specularEnvTexture = cubeTexture;
-    sphere1.model.drawable<PBRMaterial>(0).material = pbr_sphere1;
-    app.scene.root.addChild(sphere1);
-
-    let cylinder = new Entity('cylinder')
-        .addComponent('model', {
-            type: 'cylinder',
-            options: {
-                baseRadius: 0.5,
-                peakRadius: 0.5
-            }
-        })
-        .addComponent('collision', {
-            type: 'cylinder',
-            radiusBottom: 0.5,
-            radiusTop: 0.5,
-            height: 1,
-            numSegments: 20,
-            debugger: true
-        })
-        .addComponent('rigidbody', {
-            type: 'dynamic',
-            // velocity: new Vec3(0, 0, 1)
-        })
-        .setLocalPosition(3, 0, 0);
-    cylinder.model.drawable(0).material = grassMaterial;
-    app.scene.root.addChild(cylinder);
-
     let box = new Entity('box')
         .addComponent('model', {
             type: 'box',
@@ -122,14 +60,14 @@ async function main() {
         .addComponent('collision', {
             type: 'box',
             halfExtents: new Vec3(0.5, 0.5, 0.5),
-            debugger: true
+            // debugger: true
         })
         .addComponent('rigidbody', {
             type: 'dynamic',
             // velocity: new Vec3(0, 0, 6)
         })
-        .setLocalPosition(-3, 0, 0);
-    box.model.drawable(0).material = grassMaterial;
+        .setLocalPosition(0, 0, 0);
+    box.model.drawable<StandardMaterial>(0).material.diffuseColor = new Color(0.5, 0, 0);
     app.scene.root.addChild(box);
 
 
@@ -174,9 +112,9 @@ async function main() {
             }
         })
         .addComponent('listener', {})
-        .setPosition(-5, 5, 0)
-        .lookAt(new Vec3(0, 0, 0))
-        .addComponent('script', [new FirstPersonCamera({ speed: 2 })]);
+        .setPosition(-10, 10, 0)
+        .lookAt(new Vec3(0, 0, 0));
+        // .addComponent('script', [new FirstPersonCamera({ speed: 2 })]);
     app.scene.root.addChild(camera);
 
     app.start();

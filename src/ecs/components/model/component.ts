@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 9th 2019, 3:14:21 pm
+ * Last Modified: Friday, January 11th 2019, 12:09:32 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -73,7 +73,7 @@ export type ModelInputs = Common & ({
 //     name: 'sphere',
 //     age: '123'
 // };
-export class ModelComponent<T = StandardMaterial> extends Component<ModelInputs> {
+export class ModelComponent<T extends Material = StandardMaterial> extends Component<ModelInputs> {
     entity!: Entity;
     instance: Model;
     name = 'model';
@@ -122,10 +122,10 @@ export class ModelComponent<T = StandardMaterial> extends Component<ModelInputs>
         }
 
     }
-    drawable(index = 0) {
-        return this.instance.meshs[index];
+    drawable<K extends Material = T>(index = 0): Drawable<K> {
+        return this.instance.meshs[index] as any;
     }
-    material<K = T>(index = 0): K {
+    material<K extends Material= T>(index = 0): K {
         return this.instance.meshs[index].material as any;
     }
     get length() {

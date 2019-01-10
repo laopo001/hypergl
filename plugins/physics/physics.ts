@@ -5,16 +5,24 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, January 10th 2019, 12:15:39 am
+ * Last Modified: Friday, January 11th 2019, 12:01:07 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Application, Plugin, Vec3, Quat } from 'hypergl';
+import { Application, Plugin, Vec3, Quat, Entity } from 'hypergl';
 // import * as Ammo from './ammo';
 import * as CANNON from 'cannon';
+
+export interface EVENT {
+    body: CANNON.Body & { entity: Entity },
+    contact: CANNON.ContactEquation,
+    target: CANNON.Body & { entity: Entity },
+    type: string,
+}
+export type BODY = CANNON.Body;
 
 export interface CreateShapeOptions {
     'sphere': { radius: number; };
@@ -93,6 +101,21 @@ export class CannonPhysicsPlugin implements Plugin {
             (cylinder as any).transformAllPoints(new CANNON.Vec3(), q);
             return cylinder;
         }
+    }
+    applyForce(body: CANNON.Body, options: {
+        force: Vec3, point: Vec3
+    }) {
+        let t = this.format(options);
+        body.applyForce(t.force, t.point);
+    }
+    applyImpulse(body: CANNON.Body, options: {
+        impulse: Vec3, point: Vec3
+    }) {
+        let t = this.format(options);
+        body.applyImpulse(t.impulse, t.point);
+    }
+    teleport() {
+        //
     }
     private format<T= any>(o): T {
         let t: any = {};
