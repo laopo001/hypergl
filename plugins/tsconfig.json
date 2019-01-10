@@ -42,6 +42,7 @@
     "index.ts"
   ],
   "include": [
+    "key",
     "load",
     "physics",
     "pointer",

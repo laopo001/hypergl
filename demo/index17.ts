@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, January 11th 2019, 12:14:06 am
+ * Last Modified: Friday, January 11th 2019, 12:43:03 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -21,13 +21,14 @@ import { LoadImagePlugin } from 'hypergl/plugins/load';
 import { StatsPlugin } from 'hypergl/plugins/stat';
 import { PointerPlugin } from 'hypergl/plugins/pointer';
 import { CannonPhysicsPlugin } from 'hypergl/plugins/physics';
+import { KeyPlugin } from 'hypergl/plugins/key';
 import { AppPlugin } from './types';
 
 async function main() {
     const app = new Application<AppPlugin>(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
-    app.registerPlugins([LoadImagePlugin, StatsPlugin, PointerPlugin, CannonPhysicsPlugin]);
+    app.registerPlugins([LoadImagePlugin, StatsPlugin, PointerPlugin, CannonPhysicsPlugin, KeyPlugin]);
 
     console.log(app);
 
@@ -70,7 +71,12 @@ async function main() {
     box.model.drawable<StandardMaterial>(0).material.diffuseColor = new Color(0.5, 0, 0);
     app.scene.root.addChild(box);
 
-
+    app.on('update', () => {
+        // console.log(app.plugins.key.KeyA);
+        if (app.plugins.key.ArrowUp) {
+            box.rigidbody.applyImpulse(new Vec3(0, 1, 0), new Vec3(0, 0, 0));
+        }
+    });
 
     let light = new Entity('light')
         .addComponent('light', {
@@ -114,7 +120,7 @@ async function main() {
         .addComponent('listener', {})
         .setPosition(-10, 10, 0)
         .lookAt(new Vec3(0, 0, 0));
-        // .addComponent('script', [new FirstPersonCamera({ speed: 2 })]);
+    // .addComponent('script', [new FirstPersonCamera({ speed: 2 })]);
     app.scene.root.addChild(camera);
 
     app.start();

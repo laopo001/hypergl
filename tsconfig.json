@@ -36,6 +36,9 @@
       "hypergl": [
         "./src"
       ],
+      "hypergl/plugins/key": [
+        "./plugins/key"
+      ],
       "hypergl/plugins/physics": [
         "./plugins/physics"
       ],
