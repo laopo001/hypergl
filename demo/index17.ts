@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, January 11th 2019, 12:43:03 am
+ * Last Modified: Saturday, January 12th 2019, 2:26:14 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -65,16 +65,42 @@ async function main() {
         })
         .addComponent('rigidbody', {
             type: 'dynamic',
-            // velocity: new Vec3(0, 0, 6)
+            // velocity: new Vec3(0, 0, 0),
+            // linearFactor: new Vec3(0, 0, 1),
+            linearDamping: 0,
+            // angularFactor: new Vec3(0, 0, 0),
         })
         .setLocalPosition(0, 0, 0);
     box.model.drawable<StandardMaterial>(0).material.diffuseColor = new Color(0.5, 0, 0);
     app.scene.root.addChild(box);
-
     app.on('update', () => {
-        // console.log(app.plugins.key.KeyA);
-        if (app.plugins.key.ArrowUp) {
-            box.rigidbody.applyImpulse(new Vec3(0, 1, 0), new Vec3(0, 0, 0));
+        let position = new Vec3(0, 0, 0);
+        // box.rigidbody.setAngularVelocity(0, 0, 0);
+        if (app.plugins.key.isPressed('ArrowUp')) {
+            box.rigidbody.applyImpulse(new Vec3(0, 5, 0), position);
+        }
+        if (app.plugins.key.isPressed('ArrowDown')) {
+            box.rigidbody.applyImpulse(new Vec3(0, -5, 0), position);
+        }
+        if (app.plugins.key.isPressed('ArrowLeft')) {
+            box.rigidbody.applyImpulse(new Vec3(0, 0, -5), position);
+        }
+        if (app.plugins.key.isPressed('ArrowRight')) {
+            box.rigidbody.applyImpulse(new Vec3(0, 0, 5), position);
+        }
+        if (app.plugins.key.isPressed('KeyR')) {
+            box.rigidbody.teleport(0, 0, 0);
+            box.rigidbody.setVelocity(0, 0, 0);
+            box.rigidbody.setAngularVelocity(0, 0, 0);
+        }
+        if (box.getPosition().z > 5) {
+            box.rigidbody.teleport(0, box.getPosition().y, -5);
+        }
+        if (box.getPosition().z < -5) {
+            box.rigidbody.teleport(0, box.getPosition().y, 5);
+        }
+        if (app.plugins.key.KeyF) {
+            box.rigidbody.applyForce(new Vec3(0, 9.8, 0), position);
         }
     });
 
@@ -102,10 +128,29 @@ async function main() {
         })
         .addComponent('rigidbody', {
             type: 'static',
+            mass: 0,
+            friction: 0
+        })
+        .setPosition(0, -4, 0).setLocalScale(10, 1, 10);
+    app.scene.root.addChild(plane);
+
+    let plane2 = new Entity('plane2')
+        .addComponent('model', {
+            type: 'plane',
+            material: grassMaterial
+        })
+        .addComponent('collision', {
+            type: 'box',
+            debugger: true,
+            halfExtents: new Vec3(5, 0.1, 5),
+            // onCollide: (e) => { console.log(e.target.entity.name); }
+        })
+        .addComponent('rigidbody', {
+            type: 'static',
             mass: 0
         })
-        .setPosition(0, -2, 0).setLocalScale(10, 1, 10);
-    app.scene.root.addChild(plane);
+        .setPosition(0, 4, 0).setLocalScale(10, 1, 10);
+    app.scene.root.addChild(plane2);
 
     let camera = new Entity('camera')
         .addComponent('camera', {
@@ -118,7 +163,7 @@ async function main() {
             }
         })
         .addComponent('listener', {})
-        .setPosition(-10, 10, 0)
+        .setPosition(-15, 0, 0)
         .lookAt(new Vec3(0, 0, 0));
     // .addComponent('script', [new FirstPersonCamera({ speed: 2 })]);
     app.scene.root.addChild(camera);

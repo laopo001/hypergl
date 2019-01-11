@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, January 11th 2019, 12:00:22 am
+ * Last Modified: Saturday, January 12th 2019, 2:01:46 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -29,6 +29,10 @@ export interface RigidbodyInputs {
     friction?: number;
     restitution?: number;
     velocity?: Vec3;
+    linearDamping?: number;
+    angularDamping?: number;
+    linearFactor?: Vec3;
+    angularFactor?: Vec3;
 }
 
 export const RigidbodyData: Partial<RigidbodyInputs> = {
@@ -51,13 +55,13 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
         let app = this.entity.app as Application<{ physics: CannonPhysicsPlugin }>;
         let physics = app.plugins.physics;
         let material = physics.createMaterial(this.inputs.friction!, this.inputs.restitution!);
+        let { type, mass, velocity, linearDamping, angularDamping, linearFactor, angularFactor } = this.inputs;
         let body = physics.addBody({
-            type: this.inputs.type,
-            mass: this.inputs.mass,
-            material,
+            type, mass, material, velocity,
             position: this.entity.getPosition(),
-            velocity: this.inputs.velocity,
-            shape: this.entity.collision.instance
+            shape: this.entity.collision.instance,
+            // linearDamping, angularDamping,
+            // linearFactor, angularFactor
         });
         body['entity'] = this.entity;
         // tslint:disable-next-line:no-unused-expression

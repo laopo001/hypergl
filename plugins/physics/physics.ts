@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, January 11th 2019, 12:01:07 am
+ * Last Modified: Saturday, January 12th 2019, 1:28:30 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -47,7 +47,7 @@ export class CannonPhysicsPlugin implements Plugin {
             this.world.step(fixedTimeStep, dt, maxSubSteps);
         });
     }
-    setGravity(g: [number, number, number] = [0, -10, 0]) {
+    setGravity(g: [number, number, number] = [0, -9.8, 0]) {
         this.world.gravity.set(...g);
     }
     addBody(o: {
@@ -60,6 +60,8 @@ export class CannonPhysicsPlugin implements Plugin {
         type?: string;
         linearDamping?: number;
         angularDamping?: number;
+        linearFactor?: Vec3;
+        angularFactor?: Vec3;
         allowSleep?: boolean;
         sleepSpeedLimit?: number;
         sleepTimeLimit?: number;
@@ -68,7 +70,7 @@ export class CannonPhysicsPlugin implements Plugin {
         fixedRotation?: boolean;
         shape?: CANNON.Shape;
     }) {
-        // console.log(o);
+        console.log(o);
         let t = this.format(o);
         switch (t.type) {
             case 'static': t.type = CANNON.Body.STATIC; t.mass = 0; break;
