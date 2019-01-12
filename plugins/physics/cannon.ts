@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, January 12th 2019, 3:20:53 pm
+ * Last Modified: Saturday, January 12th 2019, 5:14:25 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,6 +15,12 @@
 import { Application, Plugin, Vec3, Quat, Entity } from 'hypergl';
 import * as CANNON from 'cannon';
 
+interface CreateShapeOptions {
+    'sphere': { radius: number; };
+    'box': { halfExtents: Vec3 };
+    'cylinder': { radiusTop: number, radiusBottom: number, height: number, numSegments: number };
+}
+
 export interface EVENT {
     body: CANNON.Body & { entity: Entity },
     contact: CANNON.ContactEquation,
@@ -22,12 +28,7 @@ export interface EVENT {
     type: string,
 }
 
-export interface CreateShapeOptions {
-    'sphere': { radius: number; };
-    'box': { halfExtents: Vec3 };
-    'cylinder': { radiusTop: number, radiusBottom: number, height: number, numSegments: number };
-    // 'Plane': null,
-}
+
 // tslint:disable-next-line:one-variable-per-declaration
 // declare const Ammo;
 export class CannonPhysicsPlugin implements Plugin {
@@ -68,7 +69,6 @@ export class CannonPhysicsPlugin implements Plugin {
         fixedRotation?: boolean;
         shape?: CANNON.Shape;
     }) {
-        console.log(o);
         let t = this.format(o);
         switch (t.type) {
             case 'static': t.type = CANNON.Body.STATIC; t.mass = 0; break;

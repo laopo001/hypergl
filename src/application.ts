@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 8th 2019, 10:40:21 pm
+ * Last Modified: Saturday, January 12th 2019, 4:36:14 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -26,7 +26,7 @@ export interface PluginClass<T= Plugin> {
     new(app: Application): T;
 }
 
-export class Plugin {
+export interface Plugin {
 }
 
 let app;
@@ -80,22 +80,23 @@ export class Application<T= Plugin> {
         event.on(name, cb);
     }
 
-    registerPlugins(cs: PluginClass[]) {
-        cs.forEach(c => {
+    async registerPlugins(cs: PluginClass[]) {
+        for (let i = 0; i < cs.length; i++) {
+            const c = cs[i];
             if (c.pname in this.plugins) {
                 console.error(c.pname + '插件名称已经注册', c);
                 return;
             }
-            let p = new c(this);
+            let p = new c(this) as any;
+            if (p.initialize) {
+                p.initialize();
+            }
             this.plugins[c.pname] = p;
-        });
+        }
     }
     // tslint:disable-next-line:member-ordering
     private _start = 0;
     private tick = (timestamp: number) => {
-        // if (this._start) {
-
-        // }
         let dt = timestamp - this._start;
         event.fire('beforeRender');
         // timer.start();

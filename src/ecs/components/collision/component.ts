@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, January 10th 2019, 11:14:39 pm
+ * Last Modified: Saturday, January 12th 2019, 5:31:49 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -91,7 +91,6 @@ export class CollisionComponent extends Component<CollisionInputs> {
             mesh!.name = this.name + 'debugger' + this._uuid!;
             mesh!.material = this.createMaterial() as any;
             this.entity.model.instance.meshs.push(mesh!);
-            // app.scene.systems.collision!.createEntity().model.instance.meshs.push(mesh!);
         }
     }
     destroy() {
