@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, January 12th 2019, 2:26:14 am
+ * Last Modified: Saturday, January 12th 2019, 2:26:48 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -20,7 +20,7 @@ import { Rotate } from './utils/rotate';
 import { LoadImagePlugin } from 'hypergl/plugins/load';
 import { StatsPlugin } from 'hypergl/plugins/stat';
 import { PointerPlugin } from 'hypergl/plugins/pointer';
-import { CannonPhysicsPlugin } from 'hypergl/plugins/physics';
+import { CannonPhysicsPlugin, AmmoPlugin } from 'hypergl/plugins/physics';
 import { KeyPlugin } from 'hypergl/plugins/key';
 import { AppPlugin } from './types';
 
@@ -28,7 +28,8 @@ async function main() {
     const app = new Application<AppPlugin>(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
-    app.registerPlugins([LoadImagePlugin, StatsPlugin, PointerPlugin, CannonPhysicsPlugin, KeyPlugin]);
+    app.registerPlugins([LoadImagePlugin, StatsPlugin, AmmoPlugin,
+        PointerPlugin, CannonPhysicsPlugin, KeyPlugin]);
 
     console.log(app);
 

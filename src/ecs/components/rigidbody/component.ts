@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, January 12th 2019, 2:01:46 am
+ * Last Modified: Saturday, January 12th 2019, 3:20:53 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -20,7 +20,7 @@ import { Mat4, Vec3 } from '../../../math';
 import { ComponentSystem } from '../../system';
 import { event } from '../../../core';
 import { Application } from '../../../application';
-import { CannonPhysicsPlugin, BODY } from 'hypergl/plugins/physics';
+import { CannonPhysicsPlugin } from 'hypergl/plugins/physics';
 
 
 export interface RigidbodyInputs {
@@ -44,7 +44,7 @@ export const RigidbodyData: Partial<RigidbodyInputs> = {
 
 export class RigidbodyComponent extends Component<RigidbodyInputs> {
     name = 'rigidbody';
-    instance!: BODY;
+    instance;
     constructor(inputs: RigidbodyInputs, entity: Entity, system: ComponentSystem) {
         super(inputs, entity, system);
         copy(inputs, RigidbodyData);
@@ -60,7 +60,7 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
             type, mass, material, velocity,
             position: this.entity.getPosition(),
             shape: this.entity.collision.instance,
-            // linearDamping, angularDamping,
+            linearDamping, angularDamping,
             // linearFactor, angularFactor
         });
         body['entity'] = this.entity;
@@ -81,28 +81,16 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
     setVelocity(v: Vec3);
     setVelocity(x: number, y: number, z: number);
     setVelocity(x, y?, z?) {
-        if (x instanceof Vec3) {
-            this.instance.velocity.x = x.x;
-            this.instance.velocity.y = x.y;
-            this.instance.velocity.z = x.z;
-        } else {
-            this.instance.velocity.x = x;
-            this.instance.velocity.y = y;
-            this.instance.velocity.z = z;
-        }
+        let app = this.entity.app as Application<{ physics: CannonPhysicsPlugin }>;
+        let physics = app.plugins.physics;
+        physics.setVelocity(this.instance, x, y, z);
     }
     setAngularVelocity(v: Vec3);
     setAngularVelocity(x: number, y: number, z: number);
     setAngularVelocity(x, y?, z?) {
-        if (x instanceof Vec3) {
-            this.instance.angularVelocity.x = x.x;
-            this.instance.angularVelocity.y = x.y;
-            this.instance.angularVelocity.z = x.z;
-        } else {
-            this.instance.angularVelocity.x = x;
-            this.instance.angularVelocity.y = y;
-            this.instance.angularVelocity.z = z;
-        }
+        let app = this.entity.app as Application<{ physics: CannonPhysicsPlugin }>;
+        let physics = app.plugins.physics;
+        physics.setAngularVelocity(this.instance, x, y, z);
     }
     // Apply an force to the body at a point.
     applyForce(force: Vec3, point: Vec3) {
@@ -122,17 +110,14 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
     teleport(v: Vec3);
     teleport(x: number, y: number, z: number);
     teleport(x, y?, z?) {
+        let app = this.entity.app as Application<{ physics: CannonPhysicsPlugin }>;
+        let physics = app.plugins.physics;
         if (x instanceof Vec3) {
-            this.instance.position.x = x.x;
-            this.instance.position.y = x.y;
-            this.instance.position.z = x.z;
             this.entity.setPosition(x);
         } else {
-            this.instance.position.x = x;
-            this.instance.position.y = y;
-            this.instance.position.z = z;
             this.entity.setPosition(x, y, z);
         }
+        physics.teleport(this.instance, x, y, z);
     }
     destroy() {
         super.destroy();

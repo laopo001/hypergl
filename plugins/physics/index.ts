@@ -5,11 +5,12 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 2nd 2019, 9:17:51 pm
+ * Last Modified: Saturday, January 12th 2019, 2:26:29 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-export * from './physics';
+export * from './cannon';
+export * from './ammo';

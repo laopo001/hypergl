@@ -4,6 +4,7 @@ Projects:
 Todos:
   实现基本功能
   new: 
+    ☐ 添加ammo.js物理引擎
     ✔ Mesh.createCylinder @done(19-01-09 15:31)
     ✔ support OffscreenCanvas ()@done(18-12-21 20:32)
     ✔ plugin features @done(18-12-20 00:01)
