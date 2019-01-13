@@ -1,4 +1,4 @@
-declare namespace Ammo {
+declare namespace AMMO {
 
 	// ---- Memory
 
@@ -614,7 +614,7 @@ declare namespace Ammo {
 		setSleepingThresholds(linear: number, angular: number): void;
 		updateInertiaTensor(): void;
 
-		upcast(colObj: btCollisionObject): btRigidBody | Ammo.VoidPtr; // static member in C++, use protoype.upcast, returns Ammo.NULL on failure
+		upcast(colObj: btCollisionObject): btRigidBody | AMMO.VoidPtr; // static member in C++, use protoype.upcast, returns Ammo.NULL on failure
 	}
 
 	// ---- Constraints
@@ -814,7 +814,7 @@ declare namespace Ammo {
 	class btGhostObject extends btCollisionObject {
 		getNumOverlappingObjects(): number;
 		getOverlappingObject(index: number): btCollisionObject;
-		upcast(colObj: btCollisionObject): btGhostObject | Ammo.VoidPtr; // static member in C++, use protoype.upcast, returns Ammo.NULL on failure
+		upcast(colObj: btCollisionObject): btGhostObject | AMMO.VoidPtr; // static member in C++, use protoype.upcast, returns Ammo.NULL on failure
 	}
 
 	class btPairCachingGhostObject extends btGhostObject { }
@@ -1194,7 +1194,7 @@ declare namespace Ammo {
 		generateClusters(k: number, maxIterations?: number): number;
 		generateBendingConstraints(distance: number, mat: Material): number;
 
-		upcast(colObj: btCollisionObject): btSoftBody | Ammo.VoidPtr; // static member in C++, use protoype.upcast, returns Ammo.NULL on failure
+		upcast(colObj: btCollisionObject): btSoftBody | AMMO.VoidPtr; // static member in C++, use protoype.upcast, returns Ammo.NULL on failure
 	}
 
 	class btSoftBodyRigidBodyCollisionConfiguration extends btDefaultCollisionConfiguration {

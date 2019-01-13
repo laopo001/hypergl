@@ -5,14 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, January 12th 2019, 5:31:28 pm
+ * Last Modified: Sunday, January 13th 2019, 2:01:05 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
  */
 
 
-import * as Ammo from 'laopo001-ammo';
+import * as AMMO from 'laopo001-ammo';
 // import * as Ammo from './ammo';
 import { Application, Plugin, Vec3, Quat, Entity } from 'hypergl';
 import { IPhysics } from './types';
@@ -29,89 +29,159 @@ type PartialAny<T> = {
     [P in keyof T]: any;
 };
 
-let ammo: typeof Ammo;
+let Ammo: typeof AMMO;
 
 
 export class AmmoPlugin implements Plugin, IPhysics {
-    static pname = 'ammo';
+    static pname = 'physics';
+    type = 'ammo';
 
-    world!: Ammo.btDynamicsWorld;
+    world!: AMMO.btDynamicsWorld;
     constructor(private app: Application) {
         // this.initWorld();
     }
     async initialize() {
         return new Promise((resolve) => {
-            (Ammo as any)().then((e) => {
-                ammo = e;
+            (AMMO as any)().then((e) => {
+                Ammo = e;
+                this.initWorld();
                 resolve(true);
             });
         });
     }
     initWorld(g: [number, number, number] = [0, -9.82, 0]) {
         // Physics configuration
-        let collisionConfiguration = new ammo.btDefaultCollisionConfiguration();
-        let dispatcher = new ammo.btCollisionDispatcher(collisionConfiguration);
-        let broadphase = new ammo.btDbvtBroadphase();
-        let solver = new ammo.btSequentialImpulseConstraintSolver();
-        let physicsWorld = new ammo.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
-        physicsWorld.setGravity(new ammo.btVector3(...g));
+        let collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
+        let dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration);
+        let broadphase = new Ammo.btDbvtBroadphase();
+        let solver = new Ammo.btSequentialImpulseConstraintSolver();
+        let physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
+        physicsWorld.setGravity(new Ammo.btVector3(...g));
         this.app.on('update', (dt) => {
             physicsWorld.stepSimulation(dt, 10);
         });
         this.world = physicsWorld;
     }
     setGravity(g: [number, number, number]) {
-        this.world.setGravity(new ammo.btVector3(...g));
+        this.world.setGravity(new Ammo.btVector3(...g));
     }
     createShape<T extends keyof CreateShapeOptions>(name: T, options: CreateShapeOptions[T]) {
+        let shape;
+        let o = this.format(options);
         if (name === 'box') {
-            return new ammo.btBoxShape(this.format(options).halfExtents);
+            shape = new Ammo.btBoxShape(o.halfExtents);
         }
         if (name === 'sphere') {
-            return new ammo.btSphereShape(this.format(options).radius);
+            shape = new Ammo.btSphereShape(o.radius);
         }
         if (name === 'cylinder') {
-            let o = this.format(options);
             let halfExtents;
-            let shape;
             switch (o.axis) {
                 case 'x':
-                    halfExtents = new ammo.btVector3(o.height, o.radiusTop, o.radiusBottom);
-                    shape = new ammo.btCylinderShapeX(halfExtents);
+                    halfExtents = new Ammo.btVector3(o.height, o.radiusTop, o.radiusBottom);
+                    shape = new Ammo.btCylinderShapeX(halfExtents);
                     break;
                 case 'y':
-                    halfExtents = new ammo.btVector3(o.height, o.radiusTop, o.radiusBottom);
-                    shape = new ammo.btCylinderShape(halfExtents);
+                    halfExtents = new Ammo.btVector3(o.height, o.radiusTop, o.radiusBottom);
+                    shape = new Ammo.btCylinderShape(halfExtents);
                     break;
                 case 'z':
-                    halfExtents = new ammo.btVector3(o.height, o.radiusTop, o.radiusBottom);
-                    shape = new ammo.btCylinderShapeZ(halfExtents);
+                    halfExtents = new Ammo.btVector3(o.height, o.radiusTop, o.radiusBottom);
+                    shape = new Ammo.btCylinderShapeZ(halfExtents);
                     break;
             }
-            return shape;
         }
+        shape.options = options;
+        return shape;
     }
     addBody(o: {
+        type?: string;
         position?: Vec3;
         quaternion?: Quat;
         velocity?: Vec3;
         angularVelocity?: Vec3;
         mass?: number;
-        // material?: CANNON.Material;
-        type?: string;
+        friction?: number,
+        restitution: number,
         linearDamping?: number;
         angularDamping?: number;
         linearFactor?: Vec3;
         angularFactor?: Vec3;
-        allowSleep?: boolean;
-        sleepSpeedLimit?: number;
-        sleepTimeLimit?: number;
-        collisionFilterGroup?: number;
-        collisionFilterMask?: number;
-        fixedRotation?: boolean;
-        shape?: CANNON.Shape;
-    }) {
+        shape?: AMMO.btConvexShape;
+        group?: number;
+        mask?: number;
+    }, entity: Entity) {
+        console.log(o);
 
+        let { mass, type, shape, quaternion, position, friction, restitution,
+            linearDamping, angularDamping, linearFactor, angularFactor, group, mask } = this.format(o);
+        let localInertia = new Ammo.btVector3(0, 0, 0);
+        if (type === 'static' || type === 'kinematic') {
+            mass = 0;
+            shape.calculateLocalInertia(mass, localInertia);
+        }
+        let ammoQuat = new Ammo.btQuaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
+        let startTransform = new Ammo.btTransform();
+        startTransform.setIdentity();
+        startTransform.getOrigin().setValue(position.x, position.y, position.z);
+        startTransform.setRotation(ammoQuat);
+        let motionState = new Ammo.btDefaultMotionState(startTransform);
+        let bodyInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, localInertia);
+
+        let body = new Ammo.btRigidBody(bodyInfo);
+
+        body.setRestitution(restitution);
+        body.setFriction(friction);
+        body.setDamping(linearDamping, angularDamping);
+
+        let ammoVec1 = new Ammo.btVector3();
+        ammoVec1.setValue(linearFactor.x, linearFactor.y, linearFactor.z);
+        body.setLinearFactor(ammoVec1);
+        ammoVec1.setValue(angularFactor.x, angularFactor.y, angularFactor.z);
+        body.setAngularFactor(ammoVec1);
+
+        this.world.addRigidBody(body, group, mask);
+        if (type === 'kinematic') {
+            body.forceActivationState(4);
+            body.activate();
+        } else {
+            body.forceActivationState(1);
+            this.syncEntityToBody(entity, body);
+        }
+        return body;
+    }
+    syncEntityToBody(entity: Entity, body: AMMO.btRigidBody) {
+        let pos = entity.getPosition();
+        let rot = entity.getRotation();
+
+        let transform = body.getWorldTransform();
+        transform.getOrigin().setValue(pos.x, pos.y, pos.z);
+        let ammoQuat = new Ammo.btQuaternion(0, 0, 0, 1);
+        ammoQuat.setValue(rot.x, rot.y, rot.z, rot.w);
+        transform.setRotation(ammoQuat);
+
+        // update the motion state for kinematic bodies
+        if (entity.rigidbody.inputs.type === 'kinematic') {
+            let motionState = body.getMotionState();
+            if (motionState) {
+                motionState.setWorldTransform(transform);
+            }
+        }
+        body.activate();
+    }
+    syncBodyToEntity(entity: Entity, body: AMMO.btRigidBody) {
+        if (body.isActive()) {
+            let ammoTransform = new Ammo.btTransform();
+            let motionState = body.getMotionState();
+            if (motionState) {
+                motionState.getWorldTransform(ammoTransform);
+
+                let p = ammoTransform.getOrigin();
+                let q = ammoTransform.getRotation();
+                entity.setPosition(p.x(), p.y(), p.z());
+                entity.setRotation(q.x(), q.y(), q.z(), q.w());
+            }
+        }
     }
     private format(o: any) {
         let t: any = {};
@@ -119,9 +189,9 @@ export class AmmoPlugin implements Plugin, IPhysics {
         for (const k in o) {
             const v = o[k];
             if (v instanceof Vec3) {
-                t[k] = new ammo.btVector3(v.x, v.y, v.z);
+                t[k] = new Ammo.btVector3(v.x, v.y, v.z);
             } else if (v instanceof Quat) {
-                t[k] = new ammo.btQuaternion(v.x, v.y, v.z, v.w);
+                t[k] = new Ammo.btQuaternion(v.x, v.y, v.z, v.w);
             } else {
                 t[k] = v;
             }

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, January 12th 2019, 5:14:25 pm
+ * Last Modified: Saturday, January 12th 2019, 11:17:28 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -33,6 +33,7 @@ export interface EVENT {
 // declare const Ammo;
 export class CannonPhysicsPlugin implements Plugin {
     static pname = 'physics';
+    type = 'cannon';
     CANNON = CANNON;
     world = new CANNON.World();
     constructor(private app: Application) {
@@ -55,21 +56,28 @@ export class CannonPhysicsPlugin implements Plugin {
         angularVelocity?: Vec3;
         quaternion?: Quat;
         mass?: number;
-        material?: CANNON.Material;
+        // material?: CANNON.Material;
+        friction?: number,
+        restitution: number,
         type?: string;
         linearDamping?: number;
         angularDamping?: number;
         linearFactor?: Vec3;
         angularFactor?: Vec3;
-        allowSleep?: boolean;
-        sleepSpeedLimit?: number;
-        sleepTimeLimit?: number;
-        collisionFilterGroup?: number;
-        collisionFilterMask?: number;
-        fixedRotation?: boolean;
+        // allowSleep?: boolean;
+        // sleepSpeedLimit?: number;
+        // sleepTimeLimit?: number;
+        // collisionFilterGroup?: number;
+        // collisionFilterMask?: number;
+        // fixedRotation?: boolean;
+        group?: number;
+        mask?: number;
         shape?: CANNON.Shape;
     }) {
         let t = this.format(o);
+        t.material = this.createMaterial(o.friction!, o.restitution!);
+        t.collisionFilterGroup = t.group;
+        t.collisionFilterMask = t.mask;
         switch (t.type) {
             case 'static': t.type = CANNON.Body.STATIC; t.mass = 0; break;
             case 'dynamic': t.type = CANNON.Body.DYNAMIC; break;

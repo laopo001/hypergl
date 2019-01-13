@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, January 12th 2019, 5:31:49 pm
+ * Last Modified: Sunday, January 13th 2019, 1:58:20 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -20,7 +20,7 @@ import { Mat4, Vec3 } from '../../../math';
 import { ComponentSystem } from '../../system';
 import { event } from '../../../core';
 import { Application } from '../../../application';
-import { CannonPhysicsPlugin, EVENT } from 'hypergl/plugins/physics';
+import { CannonPhysicsPlugin, EVENT, IPhysics } from 'hypergl/plugins/physics';
 import { Mesh } from '../../../mesh';
 import { ColorMaterial, StandardMaterial } from '../../../material';
 import { once } from '../../../utils/decorators';
@@ -60,9 +60,15 @@ export class CollisionComponent extends Component<CollisionInputs> {
 
     initialize() {
         super.initialize();
-        let app = this.entity.app as Application<{ physics: CannonPhysicsPlugin }>;
+        let app = this.entity.app as Application<{ physics: IPhysics }>;
         let physics = app.plugins.physics;
-        this.instance = physics.createShape(this.inputs.type, this.inputs);
+        if (physics.type === 'cannon') {
+            this.instance = physics.createShape(this.inputs.type, this.inputs);
+        }
+        if (physics.type === 'ammo') {
+            this.instance = physics.createShape(this.inputs.type, this.inputs);
+        }
+
         if (this.inputs.debugger) {
             let mesh: Mesh;
             switch (this.inputs.type) {
