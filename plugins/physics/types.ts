@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, January 12th 2019, 11:58:03 pm
+ * Last Modified: Monday, January 14th 2019, 10:25:53 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -13,11 +13,10 @@
 
 import { Application, Plugin, Vec3, Quat, Entity } from 'hypergl';
 
-
 export interface IPhysics {
     type: string;
     initWorld(g?: [number, number, number]);
-    setGravity(g: [number, number, number]);
+    setGravity(g: Vec3);
     createShape(name: string, options: any)
     addBody(o: any, entity);
     syncEntityToBody(entity, o);

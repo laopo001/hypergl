@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, January 13th 2019, 2:01:05 am
+ * Last Modified: Monday, January 14th 2019, 11:06:04 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -16,7 +16,6 @@ import * as AMMO from 'laopo001-ammo';
 // import * as Ammo from './ammo';
 import { Application, Plugin, Vec3, Quat, Entity } from 'hypergl';
 import { IPhysics } from './types';
-import { Log } from 'src/utils';
 
 
 export interface CreateShapeOptions {
@@ -58,12 +57,14 @@ export class AmmoPlugin implements Plugin, IPhysics {
         let physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
         physicsWorld.setGravity(new Ammo.btVector3(...g));
         this.app.on('update', (dt) => {
-            physicsWorld.stepSimulation(dt, 10);
+            // tslint:disable-next-line:no-parameter-reassignment
+            dt = dt || 1;
+            physicsWorld.stepSimulation(dt, 10, 1 / 60);
         });
         this.world = physicsWorld;
     }
-    setGravity(g: [number, number, number]) {
-        this.world.setGravity(new Ammo.btVector3(...g));
+    setGravity(g: Vec3) {
+        this.world.setGravity(new Ammo.btVector3(g.x, g.y, g.z));
     }
     createShape<T extends keyof CreateShapeOptions>(name: T, options: CreateShapeOptions[T]) {
         let shape;
@@ -148,6 +149,8 @@ export class AmmoPlugin implements Plugin, IPhysics {
             body.forceActivationState(1);
             this.syncEntityToBody(entity, body);
         }
+        console.log(body.isActive());
+
         return body;
     }
     syncEntityToBody(entity: Entity, body: AMMO.btRigidBody) {
