@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, January 14th 2019, 11:06:04 pm
+ * Last Modified: Tuesday, January 15th 2019, 1:38:03 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -16,6 +16,20 @@ import * as AMMO from 'laopo001-ammo';
 // import * as Ammo from './ammo';
 import { Application, Plugin, Vec3, Quat, Entity } from 'hypergl';
 import { IPhysics } from './types';
+
+enum BODYSTATE {
+    BODYSTATE_ACTIVE_TAG = 1,
+    ISLAND_SLEEPING = 2,
+    WANTS_DEACTIVATION = 3,
+    DISABLE_DEACTIVATION = 4,
+    DISABLE_SIMULATION = 5,
+}
+
+enum BODYFLAG {
+    STATIC_OBJECT = 1,
+    KINEMATIC_OBJECT = 2,
+    NORESPONSE_OBJECT = 4,
+}
 
 
 export interface CreateShapeOptions {
@@ -48,14 +62,14 @@ export class AmmoPlugin implements Plugin, IPhysics {
             });
         });
     }
-    initWorld(g: [number, number, number] = [0, -9.82, 0]) {
+    initWorld() {
         // Physics configuration
         let collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
         let dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration);
         let broadphase = new Ammo.btDbvtBroadphase();
         let solver = new Ammo.btSequentialImpulseConstraintSolver();
         let physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
-        physicsWorld.setGravity(new Ammo.btVector3(...g));
+        physicsWorld.setGravity(new Ammo.btVector3(0, -9.82, 0));
         this.app.on('update', (dt) => {
             // tslint:disable-next-line:no-parameter-reassignment
             dt = dt || 1;
@@ -99,7 +113,6 @@ export class AmmoPlugin implements Plugin, IPhysics {
         type?: string;
         position?: Vec3;
         quaternion?: Quat;
-        velocity?: Vec3;
         angularVelocity?: Vec3;
         mass?: number;
         friction?: number,
@@ -119,6 +132,7 @@ export class AmmoPlugin implements Plugin, IPhysics {
         let localInertia = new Ammo.btVector3(0, 0, 0);
         if (type === 'static' || type === 'kinematic') {
             mass = 0;
+        } else {
             shape.calculateLocalInertia(mass, localInertia);
         }
         let ammoQuat = new Ammo.btQuaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
@@ -138,15 +152,26 @@ export class AmmoPlugin implements Plugin, IPhysics {
         let ammoVec1 = new Ammo.btVector3();
         ammoVec1.setValue(linearFactor.x, linearFactor.y, linearFactor.z);
         body.setLinearFactor(ammoVec1);
+        ammoVec1 = new Ammo.btVector3();
         ammoVec1.setValue(angularFactor.x, angularFactor.y, angularFactor.z);
         body.setAngularFactor(ammoVec1);
 
-        this.world.addRigidBody(body, group, mask);
         if (type === 'kinematic') {
-            body.forceActivationState(4);
+            body.setCollisionFlags(body.getCollisionFlags() | BODYFLAG.KINEMATIC_OBJECT);
+            body.setActivationState(BODYSTATE.DISABLE_DEACTIVATION as number);
+        }
+
+        if (group !== undefined && mask !== undefined) {
+            this.world.addRigidBody(body, group, mask);
+        } else {
+            this.world.addRigidBody(body);
+        }
+
+        if (type === 'kinematic') {
+            body.forceActivationState(BODYSTATE.DISABLE_DEACTIVATION as number);
             body.activate();
         } else {
-            body.forceActivationState(1);
+            body.forceActivationState(BODYSTATE.BODYSTATE_ACTIVE_TAG as number);
             this.syncEntityToBody(entity, body);
         }
         console.log(body.isActive());
@@ -172,7 +197,10 @@ export class AmmoPlugin implements Plugin, IPhysics {
         }
         body.activate();
     }
-    syncBodyToEntity(entity: Entity, body: AMMO.btRigidBody) {
+    syncBodyToEntity(entity: Entity, body: AMMO.btRigidBody, dt: number) {
+        // body.activate();
+        console.log(body.isActive());
+
         if (body.isActive()) {
             let ammoTransform = new Ammo.btTransform();
             let motionState = body.getMotionState();
@@ -184,6 +212,43 @@ export class AmmoPlugin implements Plugin, IPhysics {
                 entity.setPosition(p.x(), p.y(), p.z());
                 entity.setRotation(q.x(), q.y(), q.z(), q.w());
             }
+        }
+    }
+    enableSimulation(entity: Entity, body: AMMO.btRigidBody) {
+        if (entity.collision && entity.collision.enabled && !entity.rigidbody.simulationEnabled) {
+            if (body) {
+                this.addBody2(body, entity.rigidbody.inputs.group!, entity.rigidbody.inputs.mask!);
+
+                // set activation state so that the body goes back to normal simulation
+                if (entity.rigidbody.inputs.type === 'kinematic') {
+                    body.forceActivationState(BODYSTATE.DISABLE_DEACTIVATION as number);
+                    body.activate();
+                } else {
+                    body.forceActivationState(undefined as any);
+                    this.syncEntityToBody(entity, body);
+                }
+
+                entity.rigidbody.simulationEnabled = true;
+            }
+        }
+    }
+    // tslint:disable-next-line:adjacent-overload-signatures
+    addBody2(body: AMMO.btRigidBody, group: number, mask: number) {
+        if (group !== undefined && mask !== undefined) {
+            this.world.addRigidBody(body, group, mask);
+        } else {
+            this.world.addRigidBody(body);
+        }
+        return body;
+    }
+    disableSimulation(entity: Entity, body: AMMO.btRigidBody) {
+        if (body && entity.rigidbody.simulationEnabled) {
+            this.world.removeRigidBody(body);
+            // set activation state to disable simulation to avoid body.isActive() to return
+            // true even if it's not in the dynamics world
+            body.forceActivationState(BODYSTATE.DISABLE_SIMULATION as number);
+
+            entity.rigidbody.simulationEnabled = false;
         }
     }
     private format(o: any) {

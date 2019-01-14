@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, January 14th 2019, 10:59:06 pm
+ * Last Modified: Tuesday, January 15th 2019, 1:30:45 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -66,12 +66,11 @@ async function main() {
         })
         .addComponent('rigidbody', {
             type: 'dynamic',
-            // velocity: new Vec3(0, 0, 0),
             // linearFactor: new Vec3(0, 0, 1),
             linearDamping: 0,
             // angularFactor: new Vec3(0, 0, 0),
         })
-        .setLocalPosition(0, 0, 0);
+        .setLocalPosition(0, 2, 0);
     box.model.drawable<StandardMaterial>(0).material.diffuseColor = new Color(0.5, 0, 0);
     app.scene.root.addChild(box);
     app.on('update', () => {

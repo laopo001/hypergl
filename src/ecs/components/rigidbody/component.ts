@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, January 13th 2019, 1:20:04 am
+ * Last Modified: Tuesday, January 15th 2019, 1:23:18 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -28,11 +28,13 @@ export interface RigidbodyInputs {
     mass?: number;
     friction?: number;
     restitution?: number;
-    velocity?: Vec3;
+    // velocity?: Vec3;
     linearDamping?: number;
     angularDamping?: number;
     linearFactor?: Vec3;
     angularFactor?: Vec3;
+    linearVelocity?: Vec3;
+    angularVelocity?: Vec3;
     group?: number;
     mask?: number;
 }
@@ -46,6 +48,8 @@ export const RigidbodyData: Partial<RigidbodyInputs> = {
     angularDamping: 0,
     linearFactor: new Vec3(1, 1, 1),
     angularFactor: new Vec3(1, 1, 1),
+    linearVelocity: new Vec3(0, 0, 0),
+    angularVelocity: new Vec3(0, 0, 0),
     group: 1,
     mask: 65535
 };
@@ -53,6 +57,10 @@ export const RigidbodyData: Partial<RigidbodyInputs> = {
 export class RigidbodyComponent extends Component<RigidbodyInputs> {
     name = 'rigidbody';
     instance;
+    simulationEnabled = false;
+    get body() {
+        return this.instance;
+    }
     constructor(inputs: RigidbodyInputs, entity: Entity, system: ComponentSystem) {
         super(inputs, entity, system);
         copy(inputs, RigidbodyData);
@@ -63,20 +71,43 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
         let app = this.entity.app as Application<{ physics: IPhysics }>;
         let physics = app.plugins.physics;
 
-        let { type, mass, velocity, linearDamping, angularDamping, linearFactor, angularFactor, friction, restitution } = this.inputs;
+        let { type, mass, linearDamping, angularDamping, linearFactor,
+            angularFactor, friction, restitution, group, mask } = this.inputs;
         let body = physics.addBody({
-            type, mass, velocity, friction, restitution,
+            type, mass, friction, restitution,
             position: this.entity.getPosition(),
             quaternion: this.entity.getRotation(),
             shape: this.entity.collision.instance,
             linearDamping, angularDamping,
-            linearFactor, angularFactor
+            linearFactor, angularFactor,
+            group, mask
         }, this.entity);
         body['entity'] = this.entity;
         // tslint:disable-next-line:no-unused-expression
         this.entity.collision.inputs.onCollide && body.addEventListener('collide', this.entity.collision.inputs.onCollide as Function);
-        event.on('update', () => {
-            physics.syncBodyToEntity(this.entity, body);
+        event.on('update', (dt) => {
+            if (this.enabled) {
+                if (this.entity.rigidbody.inputs.type === 'dynamic') {
+                    physics.syncBodyToEntity(this.entity, body, dt);
+                }
+                if (this.entity.rigidbody.inputs.type === 'kinematic') {
+                    let _displacement = new Vec3().copy(this.inputs.linearVelocity!).scale(dt);
+                    this.entity.translate(_displacement);
+
+                    _displacement.copy(this.inputs.angularVelocity!).scale(dt);
+                    this.entity.rotate(_displacement.x, _displacement.y, _displacement.z);
+                    if (this.body.getMotionState()) {
+                        physics.syncEntityToBody(Entity, body);
+                        // let pos = this.entity.getPosition();
+                        // let rot = this.entity.getRotation();
+                        // ammoTransform.getOrigin().setValue(pos.x, pos.y, pos.z);
+                        // ammoQuat.setValue(rot.x, rot.y, rot.z, rot.w);
+                        // ammoTransform.setRotation(ammoQuat);
+                        // this.body.getMotionState().setWorldTransform(ammoTransform);
+                    }
+                }
+            }
+
         });
 
         this.instance = body;
@@ -87,29 +118,29 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
     setVelocity(x, y?, z?) {
         let app = this.entity.app as Application<{ physics: IPhysics }>;
         let physics = app.plugins.physics;
-        physics.setVelocity(this.instance, x, y, z);
+        // physics.setVelocity(this.instance, x, y, z);
     }
     setAngularVelocity(v: Vec3);
     setAngularVelocity(x: number, y: number, z: number);
     setAngularVelocity(x, y?, z?) {
         let app = this.entity.app as Application<{ physics: IPhysics }>;
         let physics = app.plugins.physics;
-        physics.setAngularVelocity(this.instance, x, y, z);
+        // physics.setAngularVelocity(this.instance, x, y, z);
     }
     // Apply an force to the body at a point.
     applyForce(force: Vec3, point: Vec3) {
         let app = this.entity.app as Application<{ physics: IPhysics }>;
         let physics = app.plugins.physics;
-        physics.applyForce(this.instance, {
-            force, point
-        });
+        // physics.applyForce(this.instance, {
+        //     force, point
+        // });
     }
     applyImpulse(impulse: Vec3, point: Vec3) {
         let app = this.entity.app as Application<{ physics: IPhysics }>;
         let physics = app.plugins.physics;
-        physics.applyImpulse(this.instance, {
-            impulse, point
-        });
+        // physics.applyImpulse(this.instance, {
+        //     impulse, point
+        // });
     }
     teleport(v: Vec3);
     teleport(x: number, y: number, z: number);
@@ -121,7 +152,7 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
         } else {
             this.entity.setPosition(x, y, z);
         }
-        physics.teleport(this.instance, x, y, z);
+        // physics.teleport(this.instance, x, y, z);
     }
     destroy() {
         super.destroy();

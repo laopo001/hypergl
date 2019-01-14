@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, January 12th 2019, 4:36:14 pm
+ * Last Modified: Tuesday, January 15th 2019, 1:44:05 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -102,7 +102,6 @@ export class Application<T= Plugin> {
         // timer.start();
         this.scene.render();
         // timer.end();
-        // console.log(timer.getDuration(), progress);
         event.fire('update', dt / 1000);
         event.fire('afterRender');
         this._start = timestamp;

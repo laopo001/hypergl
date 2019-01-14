@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 28th 2018, 9:38:52 pm
+ * Last Modified: Tuesday, January 15th 2019, 12:08:03 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -266,6 +266,19 @@ export class SceneNode extends IElement {
         }
         return this;
     }
+    translate(x: Vec3): this;
+    translate(x: number, y: number, z: number): this;
+    translate(x?, y?, z?) {
+        let translation: Vec3;
+        if (x instanceof Vec3) {
+            translation = x.clone();
+        } else {
+            translation = new Vec3(x, y, z);
+        }
+        translation.add(this.getPosition());
+        this.setPosition(translation);
+        return this;
+    }
     translateLocal(x: Vec3): this;
     translateLocal(x: number, y: number, z: number): this;
     translateLocal(x?, y?, z?) {
@@ -283,7 +296,6 @@ export class SceneNode extends IElement {
         }
         return this;
     }
-
     getLocalTransform() {
         if (this._dirtyLocal) {
             this.localTransform.setTRS(this.localPosition, this.localRotation, this.localScale);
