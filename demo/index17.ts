@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 15th 2019, 1:30:45 am
+ * Last Modified: Wednesday, January 16th 2019, 10:39:58 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -49,25 +49,22 @@ async function main() {
     app.scene.root.addChild(sky);
 
     let grassMaterial = new StandardMaterial();
-    // let grassTexture = new Texture();
-    // let grassImage = await loadImage('assets/images/grass.jpg');
-    // grassTexture.setSource(grassImage);
     grassMaterial.diffuseMap = Texture.loadImage('assets/images/grass.jpg');
 
 
     let box = new Entity('box')
         .addComponent('model', {
             type: 'box',
+            material: grassMaterial
         })
         .addComponent('collision', {
             type: 'box',
             halfExtents: new Vec3(0.5, 0.5, 0.5),
-            // debugger: true
+            debugger: true
         })
         .addComponent('rigidbody', {
             type: 'dynamic',
-            // linearFactor: new Vec3(0, 0, 1),
-            linearDamping: 0,
+            // linearFactor: new Vec3(0, 1, 0),
             // angularFactor: new Vec3(0, 0, 0),
         })
         .setLocalPosition(0, 2, 0);
@@ -75,7 +72,6 @@ async function main() {
     app.scene.root.addChild(box);
     app.on('update', () => {
         let position = new Vec3(0, 0, 0);
-        // box.rigidbody.setAngularVelocity(0, 0, 0);
         if (app.plugins.key.isPressed('ArrowUp')) {
             box.rigidbody.applyImpulse(new Vec3(0, 5, 0), position);
         }
@@ -90,8 +86,6 @@ async function main() {
         }
         if (app.plugins.key.isPressed('KeyR')) {
             box.rigidbody.teleport(0, 0, 0);
-            box.rigidbody.setVelocity(0, 0, 0);
-            box.rigidbody.setAngularVelocity(0, 0, 0);
         }
         if (box.getPosition().z > 5) {
             box.rigidbody.teleport(0, box.getPosition().y, -5);
@@ -132,7 +126,7 @@ async function main() {
             friction: 0
         })
         .setPosition(0, -4, 0).setLocalScale(10, 1, 10);
-    // app.scene.root.addChild(plane);
+    app.scene.root.addChild(plane);
 
     let plane2 = new Entity('plane2')
         .addComponent('model', {
@@ -150,7 +144,7 @@ async function main() {
             mass: 0
         })
         .setPosition(0, 4, 0).setLocalScale(10, 1, 10);
-    // app.scene.root.addChild(plane2);
+    app.scene.root.addChild(plane2);
 
     let camera = new Entity('camera')
         .addComponent('camera', {

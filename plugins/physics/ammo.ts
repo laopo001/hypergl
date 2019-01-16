@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 15th 2019, 1:38:03 am
+ * Last Modified: Wednesday, January 16th 2019, 10:35:19 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -32,6 +32,7 @@ enum BODYFLAG {
 }
 
 
+
 export interface CreateShapeOptions {
     'sphere': { radius: number; };
     'box': { halfExtents: Vec3 };
@@ -48,16 +49,21 @@ let Ammo: typeof AMMO;
 export class AmmoPlugin implements Plugin, IPhysics {
     static pname = 'physics';
     type = 'ammo';
-
+    ammoVec1!: AMMO.btVector3;
+    ammoVec2!: AMMO.btVector3;
+    ammoOrigin!: AMMO.btVector3;
     world!: AMMO.btDynamicsWorld;
     constructor(private app: Application) {
-        // this.initWorld();
+
     }
     async initialize() {
         return new Promise((resolve) => {
             (AMMO as any)().then((e) => {
                 Ammo = e;
                 this.initWorld();
+                this.ammoVec1 = new Ammo.btVector3();
+                this.ammoVec2 = new Ammo.btVector3();
+                this.ammoOrigin = new Ammo.btVector3(0, 0, 0);
                 resolve(true);
             });
         });
@@ -82,9 +88,11 @@ export class AmmoPlugin implements Plugin, IPhysics {
     }
     createShape<T extends keyof CreateShapeOptions>(name: T, options: CreateShapeOptions[T]) {
         let shape;
-        let o = this.format(options);
+        // let o = this.format(options);
+        let o = options as any;
         if (name === 'box') {
-            shape = new Ammo.btBoxShape(o.halfExtents);
+            let { x, y, z } = o.halfExtents;
+            shape = new Ammo.btBoxShape(new Ammo.btVector3(x, y, z));
         }
         if (name === 'sphere') {
             shape = new Ammo.btSphereShape(o.radius);
@@ -128,7 +136,8 @@ export class AmmoPlugin implements Plugin, IPhysics {
         console.log(o);
 
         let { mass, type, shape, quaternion, position, friction, restitution,
-            linearDamping, angularDamping, linearFactor, angularFactor, group, mask } = this.format(o);
+            linearDamping, angularDamping, linearFactor, angularFactor, group, mask } = o as any;
+
         let localInertia = new Ammo.btVector3(0, 0, 0);
         if (type === 'static' || type === 'kinematic') {
             mass = 0;
@@ -166,7 +175,6 @@ export class AmmoPlugin implements Plugin, IPhysics {
         } else {
             this.world.addRigidBody(body);
         }
-
         if (type === 'kinematic') {
             body.forceActivationState(BODYSTATE.DISABLE_DEACTIVATION as number);
             body.activate();
@@ -174,11 +182,9 @@ export class AmmoPlugin implements Plugin, IPhysics {
             body.forceActivationState(BODYSTATE.BODYSTATE_ACTIVE_TAG as number);
             this.syncEntityToBody(entity, body);
         }
-        console.log(body.isActive());
-
         return body;
     }
-    syncEntityToBody(entity: Entity, body: AMMO.btRigidBody) {
+    syncEntityToBody(entity: Entity, body: AMMO.btRigidBody, init = true) {
         let pos = entity.getPosition();
         let rot = entity.getRotation();
 
@@ -187,19 +193,19 @@ export class AmmoPlugin implements Plugin, IPhysics {
         let ammoQuat = new Ammo.btQuaternion(0, 0, 0, 1);
         ammoQuat.setValue(rot.x, rot.y, rot.z, rot.w);
         transform.setRotation(ammoQuat);
-
-        // update the motion state for kinematic bodies
-        if (entity.rigidbody.inputs.type === 'kinematic') {
-            let motionState = body.getMotionState();
-            if (motionState) {
-                motionState.setWorldTransform(transform);
+        if (init) {
+            // update the motion state for kinematic bodies
+            if (entity.rigidbody.inputs.type === 'kinematic') {
+                let motionState = body.getMotionState();
+                if (motionState) {
+                    motionState.setWorldTransform(transform);
+                }
             }
+            body.activate();
         }
-        body.activate();
+
     }
     syncBodyToEntity(entity: Entity, body: AMMO.btRigidBody, dt: number) {
-        // body.activate();
-        console.log(body.isActive());
 
         if (body.isActive()) {
             let ammoTransform = new Ammo.btTransform();
@@ -251,19 +257,31 @@ export class AmmoPlugin implements Plugin, IPhysics {
             entity.rigidbody.simulationEnabled = false;
         }
     }
-    private format(o: any) {
-        let t: any = {};
-        // tslint:disable-next-line:forin
-        for (const k in o) {
-            const v = o[k];
-            if (v instanceof Vec3) {
-                t[k] = new Ammo.btVector3(v.x, v.y, v.z);
-            } else if (v instanceof Quat) {
-                t[k] = new Ammo.btQuaternion(v.x, v.y, v.z, v.w);
-            } else {
-                t[k] = v;
-            }
+    applyForce(body: AMMO.btRigidBody, options: {
+        force: Vec3, point?: Vec3
+    }) {
+        body.activate();
+        this.ammoVec1.setValue(options.force.x, options.force.y, options.force.z);
+        if (options.point !== undefined) {
+            this.ammoVec2.setValue(options.point.x, options.point.y, options.point.z);
+            body.applyForce(this.ammoVec1, this.ammoVec2);
+        } else {
+            body.applyForce(this.ammoVec1, this.ammoOrigin);
         }
-        return t;
+    }
+    applyImpulse(body: AMMO.btRigidBody, options: {
+        impulse: Vec3, point?: Vec3
+    }) {
+        body.activate();
+        this.ammoVec1.setValue(options.impulse.x, options.impulse.y, options.impulse.z);
+        if (options.point !== undefined) {
+            this.ammoVec2.setValue(options.point.x, options.point.y, options.point.z);
+            body.applyImpulse(this.ammoVec1, this.ammoVec2);
+        } else {
+            body.applyImpulse(this.ammoVec1, this.ammoOrigin);
+        }
+    }
+    teleport(body: AMMO.btRigidBody, x: number, y: number, z: number) {
+
     }
 }

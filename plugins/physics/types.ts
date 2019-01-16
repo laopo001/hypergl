@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 15th 2019, 12:04:02 am
+ * Last Modified: Wednesday, January 16th 2019, 10:36:54 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -18,8 +18,11 @@ export interface IPhysics {
     initWorld(g?: [number, number, number]);
     setGravity(g: Vec3);
     createShape(name: string, options: any)
-    addBody(o: any, entity);
-    syncEntityToBody(entity, o);
-    syncBodyToEntity(entity, o, dt: number);
+    addBody(body, entity);
+    syncEntityToBody(entity, body, b?);
+    syncBodyToEntity(entity, body, dt: number);
+    applyForce(body, options);
+    applyImpulse(body, options);
+    // teleport(body, x, y, z)
 }
 
