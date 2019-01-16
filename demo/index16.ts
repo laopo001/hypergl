@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, January 11th 2019, 12:14:24 am
+ * Last Modified: Thursday, January 17th 2019, 12:54:25 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,32 +20,17 @@ import { Rotate } from './utils/rotate';
 import { LoadImagePlugin } from 'hypergl/plugins/load';
 import { StatsPlugin } from 'hypergl/plugins/stat';
 import { PointerPlugin } from 'hypergl/plugins/pointer';
-import { CannonPhysicsPlugin } from 'hypergl/plugins/physics';
+import { AmmoPlugin } from 'hypergl/plugins/physics';
 import { AppPlugin } from './types';
 
 async function main() {
     const app = new Application<AppPlugin>(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
-    app.registerPlugins([LoadImagePlugin, StatsPlugin, PointerPlugin, CannonPhysicsPlugin]);
+    app.registerPlugins([LoadImagePlugin, StatsPlugin, PointerPlugin, AmmoPlugin]);
 
     console.log(app);
 
-    // app.scene.fog = FOG.LINEAR;
-    // app.scene.fogEnd = 1000;
-    // let shape = app.plugins.physics.createShape('box', { halfExtents: new Vec3(10, 0.1, 10) });
-    // let body = app.plugins.physics.addBody({ mass: 1, shape });
-    // app.on('update', () => {
-    //     console.log(body!.position.y);
-    // });
-    // let cubeTexture = new CubeTexture();
-    // let negx = await loadImage('assets/images/skybox_nx.jpg');
-    // let negy = await loadImage('assets/images/skybox_ny.jpg');
-    // let negz = await loadImage('assets/images/skybox_nz.jpg');
-    // let posx = await loadImage('assets/images/skybox_px.jpg');
-    // let posy = await loadImage('assets/images/skybox_py.jpg');
-    // let posz = await loadImage('assets/images/skybox_pz.jpg');
-    // cubeTexture.setSource(posx, negx, posy, negy, posz, negz);
 
     let cubeTexture = await CubeTexture.loadImageAsync('assets/images/skybox_px.jpg', 'assets/images/skybox_nx.jpg', 'assets/images/skybox_py.jpg', 'assets/images/skybox_ny.jpg',
         'assets/images/skybox_pz.jpg', 'assets/images/skybox_nz.jpg');
@@ -75,14 +60,13 @@ async function main() {
         })
         .addComponent('collision', {
             type: 'sphere',
-            radius: 1,
+            radius: 0.75,
             debugger: true
         })
         .addComponent('rigidbody', {
             type: 'dynamic',
-            velocity: new Vec3(0, 10, 0)
         })
-        .setLocalPosition(0, 0, 0);
+        .setLocalPosition(0, 5, 0);
     let pbr_sphere1 = new PBRMaterial();
     pbr_sphere1.baseColor = new Color(1, 1, 0);
     pbr_sphere1.metallicFactor = 0.3;
@@ -101,10 +85,9 @@ async function main() {
         })
         .addComponent('collision', {
             type: 'cylinder',
-            radiusBottom: 0.5,
-            radiusTop: 0.5,
+            radius: 0.5,
             height: 1,
-            numSegments: 20,
+            axis: 'y',
             debugger: true
         })
         .addComponent('rigidbody', {

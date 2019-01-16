@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, January 13th 2019, 1:58:20 am
+ * Last Modified: Thursday, January 17th 2019, 12:54:25 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -36,10 +36,11 @@ export type CollisionInputs = {
     halfExtents: Vec3,
 } | {
     type: 'cylinder',
-    radiusTop: number,
-    radiusBottom: number,
+    // radiusTop: number,
+    //  radiusBottom: number,
+    radius: number,
     height: number,
-    numSegments: number,
+    axis: 'x' | 'y' | 'z'
 });
 
 export const CollisionData: Partial<CollisionInputs> = {
@@ -84,8 +85,8 @@ export class CollisionComponent extends Component<CollisionInputs> {
                     break;
                 case 'cylinder':
                     mesh = Mesh.createCylinder({
-                        baseRadius: this.inputs.radiusBottom,
-                        peakRadius: this.inputs.radiusTop,
+                        baseRadius: this.inputs.radius,
+                        peakRadius: this.inputs.radius,
                         height: this.inputs.height,
                         heightSegments: 20
                     });

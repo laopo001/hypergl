@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, January 11th 2019, 12:09:32 am
+ * Last Modified: Thursday, January 17th 2019, 12:15:34 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -30,8 +30,8 @@ export type ModelInputs = Common & ({
         peakRadius?: number;
         height?: number;
         heightSegments?: number;
-        capSegments?: number;
-        calculateTangents?: boolean;
+        // capSegments?: number;
+        // calculateTangents?: boolean;
     };
 } | {
     type: 'model',

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 16th 2019, 10:35:19 pm
+ * Last Modified: Thursday, January 17th 2019, 12:54:23 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -36,7 +36,7 @@ enum BODYFLAG {
 export interface CreateShapeOptions {
     'sphere': { radius: number; };
     'box': { halfExtents: Vec3 };
-    'cylinder': { radiusTop: number, radiusBottom: number, height: number, axis: 'x' | 'y' | 'z' };
+    'cylinder': { radius: number, height: number, axis: 'x' | 'y' | 'z' };
 }
 
 type PartialAny<T> = {
@@ -99,17 +99,19 @@ export class AmmoPlugin implements Plugin, IPhysics {
         }
         if (name === 'cylinder') {
             let halfExtents;
+            o.radiusTop = o.radius;
+            o.radiusBottom = o.radius;
             switch (o.axis) {
                 case 'x':
                     halfExtents = new Ammo.btVector3(o.height, o.radiusTop, o.radiusBottom);
                     shape = new Ammo.btCylinderShapeX(halfExtents);
                     break;
                 case 'y':
-                    halfExtents = new Ammo.btVector3(o.height, o.radiusTop, o.radiusBottom);
+                    halfExtents = new Ammo.btVector3(o.radiusTop, o.height, o.radiusBottom);
                     shape = new Ammo.btCylinderShape(halfExtents);
                     break;
                 case 'z':
-                    halfExtents = new Ammo.btVector3(o.height, o.radiusTop, o.radiusBottom);
+                    halfExtents = new Ammo.btVector3(o.radiusTop, o.radiusBottom, o.height);
                     shape = new Ammo.btCylinderShapeZ(halfExtents);
                     break;
             }
@@ -280,8 +282,5 @@ export class AmmoPlugin implements Plugin, IPhysics {
         } else {
             body.applyImpulse(this.ammoVec1, this.ammoOrigin);
         }
-    }
-    teleport(body: AMMO.btRigidBody, x: number, y: number, z: number) {
-
     }
 }
