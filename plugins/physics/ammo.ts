@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, January 17th 2019, 12:54:23 am
+ * Last Modified: Thursday, January 17th 2019, 7:11:30 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -16,6 +16,7 @@ import * as AMMO from 'laopo001-ammo';
 // import * as Ammo from './ammo';
 import { Application, Plugin, Vec3, Quat, Entity } from 'hypergl';
 import { IPhysics } from './types';
+
 
 enum BODYSTATE {
     BODYSTATE_ACTIVE_TAG = 1,
@@ -86,32 +87,33 @@ export class AmmoPlugin implements Plugin, IPhysics {
     setGravity(g: Vec3) {
         this.world.setGravity(new Ammo.btVector3(g.x, g.y, g.z));
     }
-    createShape<T extends keyof CreateShapeOptions>(name: T, options: CreateShapeOptions[T]) {
+    createShape<K extends keyof CreateShapeOptions>(name: K, options: CreateShapeOptions[K]) {
         let shape;
-        // let o = this.format(options);
-        let o = options as any;
         if (name === 'box') {
+            let o = options as CreateShapeOptions['box'];
             let { x, y, z } = o.halfExtents;
             shape = new Ammo.btBoxShape(new Ammo.btVector3(x, y, z));
         }
         if (name === 'sphere') {
+            let o = options as CreateShapeOptions['sphere'];
             shape = new Ammo.btSphereShape(o.radius);
         }
         if (name === 'cylinder') {
+            let o = options as CreateShapeOptions['cylinder'];
             let halfExtents;
-            o.radiusTop = o.radius;
-            o.radiusBottom = o.radius;
+            let radiusTop = o.radius;
+            let radiusBottom = o.radius;
             switch (o.axis) {
                 case 'x':
-                    halfExtents = new Ammo.btVector3(o.height, o.radiusTop, o.radiusBottom);
+                    halfExtents = new Ammo.btVector3(o.height, radiusTop, radiusBottom);
                     shape = new Ammo.btCylinderShapeX(halfExtents);
                     break;
                 case 'y':
-                    halfExtents = new Ammo.btVector3(o.radiusTop, o.height, o.radiusBottom);
+                    halfExtents = new Ammo.btVector3(radiusTop, o.height, radiusBottom);
                     shape = new Ammo.btCylinderShape(halfExtents);
                     break;
                 case 'z':
-                    halfExtents = new Ammo.btVector3(o.radiusTop, o.radiusBottom, o.height);
+                    halfExtents = new Ammo.btVector3(radiusTop, radiusBottom, o.height);
                     shape = new Ammo.btCylinderShapeZ(halfExtents);
                     break;
             }
@@ -135,10 +137,9 @@ export class AmmoPlugin implements Plugin, IPhysics {
         group?: number;
         mask?: number;
     }, entity: Entity) {
-        console.log(o);
-
+        // console.log(o);
         let { mass, type, shape, quaternion, position, friction, restitution,
-            linearDamping, angularDamping, linearFactor, angularFactor, group, mask } = o as any;
+            linearDamping, angularDamping, linearFactor, angularFactor, group, mask } = o as Required<typeof o>;
 
         let localInertia = new Ammo.btVector3(0, 0, 0);
         if (type === 'static' || type === 'kinematic') {

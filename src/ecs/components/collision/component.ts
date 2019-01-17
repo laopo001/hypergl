@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, January 17th 2019, 12:54:25 am
+ * Last Modified: Thursday, January 17th 2019, 6:53:34 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -44,7 +44,8 @@ export type CollisionInputs = {
 });
 
 export const CollisionData: Partial<CollisionInputs> = {
-    debugger: false
+    debugger: false,
+    axis: 'y'
     // type: 'box',
     // halfExtents: new Vec3(1, 1, 1)
 };
