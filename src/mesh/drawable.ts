@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 8th 2019, 5:01:35 pm
+ * Last Modified: Friday, January 18th 2019, 5:40:24 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -24,7 +24,7 @@ import { BoundingSphere } from '../shape/boundingSphere';
 
 let id = 0;
 export class Drawable<T extends Material= Material> {
-    debugger = false;
+    // debugger = false;
     name?: string;
     mode = DrawMode.TRIANGLES; // 默认绘制模式 为 三角形
     // tslint:disable-next-line:member-ordering
@@ -38,7 +38,7 @@ export class Drawable<T extends Material= Material> {
         position?: Vec3;
         uNormalMatrix?: Mat4;
         enabled?: boolean;
-        setScale?: Vec3;
+        // setScale?: Vec3;
     } = {};
     get type() {
         if (this.mode === 1 || this.mode === 2 || this.mode === 3) {

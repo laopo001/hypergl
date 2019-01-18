@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, January 17th 2019, 6:53:34 pm
+ * Last Modified: Friday, January 18th 2019, 6:53:04 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -73,16 +73,19 @@ export class CollisionComponent extends Component<CollisionInputs> {
 
         if (this.inputs.debugger) {
             let mesh: Mesh;
+            let scale: Vec3;
+            let eulerAngles: Vec3;
             switch (this.inputs.type) {
                 case 'box':
                     mesh = Mesh.createBox();
                     let { x, y, z } = this.inputs.halfExtents;
-                    mesh.cache.setScale = new Vec3(x * 2, y * 2, z * 2);
+                    let { x: a, y: b, z: c } = this.entity.getLocalScale();
+                    scale = new Vec3(x * 2, y * 2, z * 2).mul(new Vec3(1 / a, 1 / b, 1 / c));
                     break;
                 case 'sphere':
                     mesh = Mesh.createSphere();
                     x = this.inputs.radius * 2;
-                    mesh.cache.setScale = new Vec3(x, x, x);
+                    scale = new Vec3(x, x, x);
                     break;
                 case 'cylinder':
                     mesh = Mesh.createCylinder({
@@ -91,14 +94,34 @@ export class CollisionComponent extends Component<CollisionInputs> {
                         height: this.inputs.height,
                         heightSegments: 20
                     });
-                    mesh.cache.setScale = new Vec3(1, 1, 1);
+                    if (this.inputs.axis === 'x') {
+                        eulerAngles = new Vec3(0, 0, 90);
+                    }
+                    if (this.inputs.axis === 'z') {
+                        eulerAngles = new Vec3(90, 0, 0);
+                    }
+                    scale = new Vec3(1, 1, 1);
                     break;
             }
             this._uuid = mesh!.meshID;
-            mesh!.debugger = true;
-            mesh!.name = this.name + 'debugger' + this._uuid!;
+
+            mesh!.name = this.name + '-debugger-' + this._uuid!;
             mesh!.material = this.createMaterial() as any;
-            this.entity.model.instance.meshs.push(mesh!);
+            let e = new Entity({ name: mesh!.name, tag: [this.name] }).addComponent('model', {
+                type: 'model',
+                model: mesh!
+            });
+
+                e.setLocalScale(scale!);
+
+            if (eulerAngles! != null) {
+                console.log(eulerAngles!);
+
+                e.setLocalEulerAngles(eulerAngles!);
+            }
+
+            this.entity.addChild(e);
+
         }
     }
     destroy() {

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 16th 2019, 10:36:54 pm
+ * Last Modified: Friday, January 18th 2019, 11:07:08 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -28,7 +28,6 @@ export interface RigidbodyInputs {
     mass?: number;
     friction?: number;
     restitution?: number;
-    // velocity?: Vec3;
     linearDamping?: number;
     angularDamping?: number;
     linearFactor?: Vec3;

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, January 17th 2019, 7:11:30 pm
+ * Last Modified: Friday, January 18th 2019, 11:26:02 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -283,5 +283,8 @@ export class AmmoPlugin implements Plugin, IPhysics {
         } else {
             body.applyImpulse(this.ammoVec1, this.ammoOrigin);
         }
+    }
+    setMass(body: AMMO.btRigidBody) {
+        // todo
     }
 }
