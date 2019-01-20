@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 1st 2019, 12:08:19 am
+ * Last Modified: Sunday, January 20th 2019, 4:47:37 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -83,7 +83,7 @@ async function main() {
     let pbr_sphere1 = new PBRMaterial();
     pbr_sphere1.baseColor = new Color(1, 0, 0);
     pbr_sphere1.metallicFactor = 10;
-    sphere1.model.drawable(0).material = pbr_sphere1;
+    sphere1.model.drawable<PBRMaterial>(0).material = pbr_sphere1;
     app.scene.root.addChild(sphere1);
 
     let light = new Entity('light')

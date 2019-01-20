@@ -5,14 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 30th 2018, 6:35:09 pm
+ * Last Modified: Sunday, January 20th 2019, 4:49:43 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Entity, StandardMaterial, Config, SkyMaterial, Application, Vec3, Color, Texture, CubeTexture, Mesh, Line, ColorMaterial, FOG, GltfAssetLoader, Vec2 } from 'hypergl';
+import { Entity, StandardMaterial, Config, SkyMaterial, Application, Vec3, Color, Texture, CubeTexture, Mesh, Line, ColorMaterial, FOG,  Vec2 } from 'hypergl';
 import { FirstPersonCamera } from './utils/first_person_camera';
 import { Rotate } from './utils/rotate';
 // tslint:disable-next-line:no-duplicate-imports
@@ -26,7 +26,7 @@ async function main() {
         // webgl1:true
     });
     app.registerPlugins([LoadImagePlugin, StatsPlugin, PointerPlugin]);
-    let loadImage = app.plugins.loadImage.load;
+    let loadImage = app.util.loadImage;
     console.log(app);
 
     // app.scene.fog = FOG.LINEAR;

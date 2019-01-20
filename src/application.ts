@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 15th 2019, 1:44:05 am
+ * Last Modified: Sunday, January 20th 2019, 4:49:24 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -19,8 +19,9 @@ import { event, timer } from './core';
 import { Mesh } from './mesh/mesh';
 import { SystemRegistry } from './ecs/system-register';
 import { CameraComponentSystem } from './ecs/components/camera/system';
-import { sleep, Log } from './utils';
-
+import { sleep } from './utils';
+// tslint:disable-next-line:no-duplicate-imports
+import * as util from './utils';
 export interface PluginClass<T= Plugin> {
     pname: string;
     new(app: Application): T;
@@ -38,6 +39,7 @@ export class Application<T= Plugin> {
     get [Symbol.toStringTag]() {
         return 'Application';
     }
+    util = util;
     sceneInstances: Scene[] = [];
     activeIndex = 0;
     renderer: RendererPlatform;
