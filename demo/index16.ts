@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, January 18th 2019, 5:57:26 pm
+ * Last Modified: Sunday, January 20th 2019, 4:19:11 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -86,8 +86,8 @@ async function main() {
         .addComponent('collision', {
             type: 'cylinder',
             radius: 0.5,
-            height: 1,
-            axis: 'x',
+            height: 2,
+            axis: 'y',
             debugger: true
         })
         .addComponent('rigidbody', {
