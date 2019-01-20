@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, January 20th 2019, 4:19:11 pm
+ * Last Modified: Monday, January 21st 2019, 12:46:06 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -51,7 +51,6 @@ async function main() {
     // let grassImage = await loadImage('assets/images/grass.jpg');
     // grassTexture.setSource(grassImage);
     grassMaterial.diffuseMap = Texture.loadImage('assets/images/grass.jpg');
-
 
 
     let sphere1 = new Entity('sphere')

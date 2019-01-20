@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, January 4th 2019, 12:44:18 am
+ * Last Modified: Monday, January 21st 2019, 12:51:05 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -79,12 +79,14 @@ export class Entity extends SceneNode {
     private _enabled = false;
     constructor(name?: string)
     constructor(options?: { name?: string, tag: string[] })
-    constructor(name?) {
+
+    constructor(name?: string, tag?: string[])
+    constructor(name?, tag?) {
         super();
-        if (typeof name === 'undefined') {
-            //
-        }
-        else if (typeof name === 'string') {
+        if (arguments.length === 2) {
+            this.name = name;
+            this.tag = tag;
+        } else if (typeof name === 'string') {
             this.name = name;
         } else {
             this.name = name.name;
@@ -99,15 +101,15 @@ export class Entity extends SceneNode {
         this.components.push(component);
         return this;
     }
-    addComponents<K extends keyof ComponentInputs>(arr: Array<{ name: K, options: ComponentInputs[K] }>) {
-        arr.forEach(item => {
-            if (this[item.name as any]) {
-                return;
-            }
-            this.addComponent(item.name, item.options);
-        });
-        return this;
-    }
+    // addComponents<K extends keyof ComponentInputs>(arr: Array<{ name: K, options: ComponentInputs[K] }>) {
+    //     arr.forEach(item => {
+    //         if (this[item.name as any]) {
+    //             return;
+    //         }
+    //         this.addComponent(item.name, item.options);
+    //     });
+    //     return this;
+    // }
     get<T extends keyof Entity>(name: T): Pick<Entity, T> {
         if (this[name] == null) {
             Log.error(name + ' not add component');
@@ -135,7 +137,10 @@ export class Entity extends SceneNode {
         children.forEach(child => {
             super.addChild(child);
             child.parent = this;
-            this.app.scene.add(child);
+            if (this.app) {
+                this.app.scene.add(child);
+            }
+
             if (!this.enabled) {
                 child.enabled = false;
             }
@@ -154,17 +159,26 @@ export class Entity extends SceneNode {
             }
         }
     }
-
-    findByTag(name: string[]) {
-        //
+    findByNameAll(name: string): Array<Entity> {
+        let res: Array<Entity> = [];
+        if (this.name === name) {
+            res.push(this);
+        }
+        for (let i = 0; i < this.children.length; i++) {
+            const child = this.children[i];
+            res = res.concat(child.findByNameAll(name));
+        }
+        return res;
     }
-    // private _addChild(child: Entity) {
-    //     super.addChild(child);
-    //     child.parent = this;
-    //     this.app.scene.add(child);
-    //     if (!this.enabled) {
-    //         child.enabled = false;
-    //     }
-    //     return this;
-    // }
+    findByTag(tag: string): Array<Entity> {
+        let res: Array<Entity> = [];
+        if (this.tag.includes(tag)) {
+            res.push(this);
+        }
+        for (let i = 0; i < this.children.length; i++) {
+            const child = this.children[i];
+            res = res.concat(child.findByTag(tag));
+        }
+        return res;
+    }
 }

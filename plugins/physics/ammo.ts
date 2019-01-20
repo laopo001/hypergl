@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, January 18th 2019, 11:26:02 am
+ * Last Modified: Monday, January 21st 2019, 12:48:25 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -40,9 +40,6 @@ export interface CreateShapeOptions {
     'cylinder': { radius: number, height: number, axis: 'x' | 'y' | 'z' };
 }
 
-type PartialAny<T> = {
-    [P in keyof T]: any;
-};
 
 let Ammo: typeof AMMO;
 
@@ -103,17 +100,18 @@ export class AmmoPlugin implements Plugin, IPhysics {
             let halfExtents;
             let radiusTop = o.radius;
             let radiusBottom = o.radius;
+            let height = o.height / 2;
             switch (o.axis) {
                 case 'x':
-                    halfExtents = new Ammo.btVector3(o.height, radiusTop, radiusBottom);
+                    halfExtents = new Ammo.btVector3(height, radiusTop, radiusBottom);
                     shape = new Ammo.btCylinderShapeX(halfExtents);
                     break;
                 case 'y':
-                    halfExtents = new Ammo.btVector3(radiusTop, o.height, radiusBottom);
+                    halfExtents = new Ammo.btVector3(radiusTop, height, radiusBottom);
                     shape = new Ammo.btCylinderShape(halfExtents);
                     break;
                 case 'z':
-                    halfExtents = new Ammo.btVector3(radiusTop, radiusBottom, o.height);
+                    halfExtents = new Ammo.btVector3(radiusTop, radiusBottom, height);
                     shape = new Ammo.btCylinderShapeZ(halfExtents);
                     break;
             }
