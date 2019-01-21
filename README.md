@@ -13,18 +13,20 @@ a simple 3d game engine
 
 npm run test 
 
-npm run test:karma (测试依赖浏览器的部分)
+npm run test:browser (测试依赖浏览器的部分)
 
 # Features
  * entity component system 
  * component: light, model, camera, script, audio, listener, etc.
- * support web-audio 3d 
+ * support web-audio 3d (with howler)
  * fog
  * skybox
-
-# Roadmap
  * physical system and rigid-body
  * pbr material
+
+# Roadmap
+ * webgl2 -> webgl1
+ * multiple scene manage
 
 # examples
  * [3d-audio](https://stackblitz.com/edit/hypegl-3d-audio)
