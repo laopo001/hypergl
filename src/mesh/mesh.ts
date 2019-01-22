@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 9th 2019, 3:14:23 pm
+ * Last Modified: Tuesday, January 22nd 2019, 10:27:53 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -30,7 +30,7 @@ export class Mesh extends Drawable {
     static createPlane = createPlane;
     static createSphere = createSphere;
     static createCylinder = createCylinder;
-    // static createLines = createLines;
+    outline = false;
     castShadow = false;
     receiveShadow = false;
     material: StandardMaterial | PBRMaterial = StandardMaterial.defaultMaterial();

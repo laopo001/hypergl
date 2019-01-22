@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, January 7th 2019, 12:22:31 am
+ * Last Modified: Tuesday, January 22nd 2019, 10:57:39 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -41,25 +41,21 @@ export class RendererPlatform {
     programGenerator = new ShaderProgramGenerator(this);
     private webgl!: WebGLRenderingContext;
     private webgl2!: WebGL2RenderingContext;
-    constructor(public canvas: HTMLCanvasElement, option?: AppOption) {
-        let webgl2;
-        if (option && !option.webgl1) {
-            webgl2 = canvas.getContext('webgl2', option) as any;
-        }
-        this.webgl2 = webgl2;
-        // this.webgl2 = canvas.getContext('webgl2') as any;
-        if (this.webgl2) {
-            this.platform = 'webgl2';
-            Log.debug(`platform:${this.platform}`);
-        } else {
+    constructor(public canvas: HTMLCanvasElement, option: AppOption) {
+        option.stencil = option.stencil || true;
+        option.webgl1 = option.webgl1 || false;
+        option.antialias = option.antialias || true;
+        if (option.webgl1) {
             this.webgl = canvas.getContext('webgl', option) as any;
-            if (this.webgl) {
-                this.platform = 'webgl';
-                Log.debug(`platform:${this.platform}`);
-            } else {
-                Log.error('你的浏览器不支持webgl');
-            }
+            this.platform = 'webgl';
+        } else {
+            this.webgl2 = canvas.getContext('webgl2', option) as any;
+            this.platform = 'webgl2';
         }
+        if (!this.gl) {
+            Log.error('你的浏览器不支持webgl');
+        }
+        Log.debug(`platform:${this.platform}`);
         this.init();
         this.initExtension();
     }
@@ -275,8 +271,6 @@ export class RendererPlatform {
     }
     getScissor() {
         return this._last_scissor;
-        // const gl = this.gl;
-        // return gl.getParameter(gl.SCISSOR_BOX);
     }
     // tslint:disable-next-line:member-ordering
     private _last_viewport = new Array<number>(4);
@@ -290,7 +284,6 @@ export class RendererPlatform {
     }
     gerViewport() {
         return this._last_viewport;
-
     }
     @cache
     setLineWidth(width: number) {

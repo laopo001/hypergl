@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, January 20th 2019, 4:49:24 pm
+ * Last Modified: Tuesday, January 22nd 2019, 10:51:30 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -47,7 +47,7 @@ export class Application<T= Plugin> {
     lastRenderTime = 0;
     plugins: T = {} as any;
     // private _isPointerLock = false;
-    constructor(canvas: HTMLCanvasElement, option?: AppOption) {
+    constructor(canvas: HTMLCanvasElement, option: AppOption = {}) {
         this.canvas = canvas;
         this.renderer = new RendererPlatform(this.canvas, option);
         this.addScene(new Scene());

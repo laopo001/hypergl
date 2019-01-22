@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, December 27th 2018, 4:49:15 pm
+ * Last Modified: Tuesday, January 22nd 2019, 10:33:13 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -37,10 +37,9 @@ export function renderScence(scene: Scene) {
     let spotLightsUniforms = renderSpotLightArr('spotLightArr', lights.spotLight, scene);
     let LightsUniforms: any = { ...directionalLightsUniforms, ...pointLightsUniforms, ...spotLightsUniforms };
     let viewProjectionMatrixData = camera.viewProjectionMatrix().data;
-    // let temp: any[] = [];
+
     renderer.enableBLEND();
     for (let i = 0; i < drawables.length; i++) {
-
         // if (modelComponent.entity.name === 'sphere8') debugger;
 
         const drawable = drawables[i];
@@ -52,24 +51,9 @@ export function renderScence(scene: Scene) {
         drawable.vertexBuffer.format.elements.forEach(x => {
             attributes[SEMANTICMAP[x.semantic]] = x.semantic;
         });
-        // if (!drawable.receiveShadow) {
-        //     LightsUniforms._directionalLightArr.forEach(item => {
-        //         item.castShadows = 0;
-        //         temp.push(item);
-        //     });
-        //     LightsUniforms._pointLightArr.forEach(item => {
-        //         item.castShadows = 0;
-        //         temp.push(item);
-        //     });
-        //     LightsUniforms._spotLightArr.forEach(item => {
-        //         item.castShadows = 0;
-        //         temp.push(item);
-        //     });
-        // }
+
         material.setLights(LightsUniforms);
         material.setshaderVars('fog', scene.fog);
-        // material.setshaderVars('exposure', scene.exposure);
-        // material.setshaderVars('receiveShadow', drawable.receiveShadow);
         material.updateShader(attributes);
         let shader = material.shader as Shader;
         renderer.setShaderProgram(shader);
@@ -85,14 +69,6 @@ export function renderScence(scene: Scene) {
         shader.setUniformValue('uFogDist', new Float32Array([scene.fogStart, scene.fogEnd]));
         shader.setUniformValue('uReceiveShadow', drawable.receiveShadow);
         renderer.draw(drawable);
-
-        // if (!drawable.receiveShadow) {
-        //     temp.forEach(item => {
-        //         item.castShadows = 1;
-        //     });
-        //     temp = [];
-        // }
-
 
     }
     renderer.disableBLEND();

@@ -7,7 +7,7 @@ import { Vec3 } from '../math';
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 26th 2018, 4:02:31 pm
+ * Last Modified: Tuesday, January 22nd 2019, 10:57:39 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -16,6 +16,8 @@ import { Vec3 } from '../math';
 
 export interface AppOption {
     webgl1?: boolean;
+    stencil?: boolean;
+    antialias?: boolean;
 }
 
 export type TypeArray = Int8Array | Uint8Array | Int16Array | Uint16Array | Int32Array | Uint32Array | Float32Array | Float64Array;
