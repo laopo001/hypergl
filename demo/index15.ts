@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, January 20th 2019, 4:45:26 pm
+ * Last Modified: Wednesday, January 23rd 2019, 12:55:58 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -78,7 +78,7 @@ async function main() {
             pbr_sphere1.roughnessFactor = (j / 4);
             // pbr_sphere1.diffuseEnvTexture = cubeTexture;
             pbr_sphere1.specularEnvTexture = cubeTexture;
-            sphere1.model.drawable<PBRMaterial>(0).material = pbr_sphere1;
+            sphere1.model.setMaterial(0, pbr_sphere1);
             app.scene.root.addChild(sphere1);
         }
     }
@@ -93,7 +93,7 @@ async function main() {
     pbr_sphere1.metallicFactor = 0.3;
     pbr_sphere1.roughnessFactor = 0.3;
     pbr_sphere1.specularEnvTexture = cubeTexture;
-    sphere1.model.drawable<PBRMaterial>(0).material = pbr_sphere1;
+    sphere1.model.setMaterial(0, pbr_sphere1);
     app.scene.root.addChild(sphere1);
 
     let light = new Entity('light')

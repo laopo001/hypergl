@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 22nd 2019, 10:27:53 pm
+ * Last Modified: Wednesday, January 23rd 2019, 12:13:04 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -25,7 +25,7 @@ import { Drawable } from './drawable';
 import { createBox, createPlane, createSphere, createCylinder } from './create-mesh';
 
 
-export class Mesh extends Drawable {
+export class Mesh<T extends Material = StandardMaterial> extends Drawable<T> {
     static createBox = createBox;
     static createPlane = createPlane;
     static createSphere = createSphere;
@@ -33,7 +33,7 @@ export class Mesh extends Drawable {
     outline = false;
     castShadow = false;
     receiveShadow = false;
-    material: StandardMaterial | PBRMaterial = StandardMaterial.defaultMaterial();
+    material = StandardMaterial.defaultMaterial() as any;
     // private _material = Mesh.defaultMaterial;
     constructor() {
         super();

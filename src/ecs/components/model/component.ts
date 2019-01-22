@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, January 17th 2019, 12:15:34 am
+ * Last Modified: Wednesday, January 23rd 2019, 12:13:04 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -122,11 +122,14 @@ export class ModelComponent<T extends Material = StandardMaterial> extends Compo
         }
 
     }
-    drawable<K extends Material = T>(index = 0): Drawable<K> {
+    drawable<K extends Drawable = Mesh>(index = 0): K {
         return this.instance.meshs[index] as any;
     }
     material<K extends Material= T>(index = 0): K {
         return this.instance.meshs[index].material as any;
+    }
+    setMaterial<K extends Material>(index = 0, material: K) {
+        this.instance.meshs[index].material = material;
     }
     get length() {
         return this.instance.meshs.length;

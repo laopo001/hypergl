@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 22nd 2019, 10:57:39 pm
+ * Last Modified: Wednesday, January 23rd 2019, 12:44:47 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -35,6 +35,7 @@ export class RendererPlatform {
     glAddress!: number[];
     glDrawMode!: number[];
     platform!: Platform;
+    depthTest = false;
     AttrbuteType: { [s: string]: number } = {};
     glTypeToJs: { [s: string]: UNIFORM_TYPE } = {};
     uniformFunction: { [s: string]: FnVoid; } = {};
@@ -222,7 +223,10 @@ export class RendererPlatform {
             gl.TRIANGLE_FAN,
         ];
         let [r, g, b, a] = this._clearColor;
-        gl.enable(gl.DEPTH_TEST);
+
+        this.setDepthTest(true);
+        // gl.enable(gl.DEPTH_TEST);
+        // this.depthTest = true;
         // gl.enable(gl.POLYGON_OFFSET_FILL);
         // gl.polygonOffset(2, 2);
         gl.clearColor(r, g, b, a);
@@ -237,6 +241,20 @@ export class RendererPlatform {
     }
     // tslint:disable-next-line:member-ordering
     currShader!: Shader;
+    setDepthTest(enable: boolean) {
+        if (this.depthTest !== enable) {
+            let gl = this.gl;
+            if (enable) {
+                gl.enable(gl.DEPTH_TEST);
+            } else {
+                gl.disable(gl.DEPTH_TEST);
+            }
+            this.depthTest = enable;
+        }
+    }
+    getDepthTest() {
+        return this.depthTest;
+    }
     setShaderProgram(shader: Shader) {
         this.currShader = shader;
         if (shader.ready === false) {
@@ -293,9 +311,9 @@ export class RendererPlatform {
     clear(color = true, depth = true, stencil = true) {
         const gl = this.gl;
         let bits = 0;
-        if (color === undefined || color) bits |= gl.COLOR_BUFFER_BIT;
-        if (depth === undefined || depth) bits |= gl.DEPTH_BUFFER_BIT;
-        if (stencil === undefined || stencil) bits |= gl.STENCIL_BUFFER_BIT;
+        if (color) bits |= gl.COLOR_BUFFER_BIT;
+        if (depth) bits |= gl.DEPTH_BUFFER_BIT;
+        if (stencil) bits |= gl.STENCIL_BUFFER_BIT;
         gl.clear(bits);
     }
     initDraw(blend = false) {

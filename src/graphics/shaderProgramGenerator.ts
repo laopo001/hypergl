@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 26th 2018, 9:38:57 pm
+ * Last Modified: Wednesday, January 23rd 2019, 12:24:06 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -19,6 +19,7 @@ import phongVert from './shaders/phong.vert';
 import phongFrag from './shaders/phong.frag';
 import depthVert from './shaders/depth.vert';
 import depthFrag from './shaders/depth.frag';
+import outlineFrag from './shaders/outline.frag';
 import distanceVert from './shaders/distance.vert';
 import distanceFrag from './shaders/distance.frag';
 import colorVert from './shaders/color.vert';
@@ -96,6 +97,10 @@ function createShaderDefinition(name: string, renderer: RendererPlatform, option
         case 'depth':
             vertStr = depthVert(options);
             fragStr = depthFrag(options);
+            break;
+        case 'outline':
+            vertStr = depthVert(options);
+            fragStr = outlineFrag(options);
             break;
         case 'distance':
             vertStr = distanceVert(options);

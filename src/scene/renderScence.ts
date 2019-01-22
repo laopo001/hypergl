@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 22nd 2019, 10:33:13 pm
+ * Last Modified: Wednesday, January 23rd 2019, 1:10:34 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,6 +17,7 @@ import { Scene } from './scene';
 import { Shader } from '../graphics/shader';
 import { SEMANTICMAP, SEMANTIC } from '../conf';
 import { Log } from '../utils/util';
+import { Mesh } from '../mesh';
 import { Light, DirectionalLight, PointLight, SpotLight } from '../lights';
 import { Vec3, DEG_TO_RAD } from '../math';
 
@@ -29,6 +30,7 @@ export function renderScence(scene: Scene) {
     // camera.instance.updateRenderTarget();
     // modelComponents = camera.instance.getList(modelComponents);
     let renderer = scene.app.renderer;
+    let gl = renderer.gl;
     let { r, b, g, a } = camera.clearColor;
     renderer.setClearColor(r, b, g, a);
     renderer.clear();
@@ -39,12 +41,19 @@ export function renderScence(scene: Scene) {
     let viewProjectionMatrixData = camera.viewProjectionMatrix().data;
 
     renderer.enableBLEND();
+    gl.enable(gl.STENCIL_TEST);
+    gl.stencilOp(gl.KEEP, gl.KEEP, gl.REPLACE);
+
     for (let i = 0; i < drawables.length; i++) {
         // if (modelComponent.entity.name === 'sphere8') debugger;
 
         const drawable = drawables[i];
         if (!drawable.cache.enabled) {
             continue;
+        }
+        if ((drawable as Mesh).outline) {
+            gl.stencilFunc(gl.ALWAYS, 1, 0xFF);
+            gl.stencilMask(0xFF);
         }
         const material = drawable.material;
         let attributes: { [s: string]: SEMANTIC } = {};
@@ -69,6 +78,25 @@ export function renderScence(scene: Scene) {
         shader.setUniformValue('uFogDist', new Float32Array([scene.fogStart, scene.fogEnd]));
         shader.setUniformValue('uReceiveShadow', drawable.receiveShadow);
         renderer.draw(drawable);
+        if ((drawable as Mesh).outline) {
+            gl.stencilFunc(gl.NOTEQUAL, 1, 0xFF);
+            gl.stencilMask(0x00);
+            renderer.setDepthTest(false);
+            let clone = drawable.cache.uModelMatrix!.clone();
+            let data = clone.data;
+            data[0] *= 1.1;
+            data[5] *= 1.1;
+            data[10] *= 1.1;
+            let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
+            let shader = renderer.programGenerator.getShader('outline', attributes);
+            shader.setUniformValue('uViewProjectionMatrix', viewProjectionMatrixData);
+            shader.setUniformValue('uModelMatrix', data);
+            renderer.setShaderProgram(shader);
+            renderer.draw(drawable);
+            gl.stencilFunc(gl.ALWAYS, 1, 0xFF);
+            gl.stencilMask(0xFF);
+            renderer.setDepthTest(true);
+        }
 
     }
     renderer.disableBLEND();

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 16th 2019, 10:39:58 pm
+ * Last Modified: Wednesday, January 23rd 2019, 12:54:13 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -68,7 +68,7 @@ async function main() {
             // angularFactor: new Vec3(0, 0, 0),
         })
         .setLocalPosition(0, 2, 0);
-    box.model.drawable<StandardMaterial>(0).material.diffuseColor = new Color(0.5, 0, 0);
+    box.model.drawable(0).material.diffuseColor = new Color(0.5, 0, 0);
     app.scene.root.addChild(box);
     app.on('update', () => {
         let position = new Vec3(0, 0, 0);

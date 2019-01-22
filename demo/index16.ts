@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, January 21st 2019, 12:46:06 am
+ * Last Modified: Wednesday, January 23rd 2019, 12:53:55 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,7 +13,7 @@
 
 
 
-import { Entity, StandardMaterial, Config, util, SkyMaterial, Application, Vec3, Color, Texture, CubeTexture, PBRMaterial } from 'hypergl';
+import { Entity, StandardMaterial, Config, util, SkyMaterial, Application, Vec3, Color, Texture, CubeTexture, PBRMaterial, Mesh, Drawable } from 'hypergl';
 import { FirstPersonCamera } from './utils/first_person_camera';
 import { Rotate } from './utils/rotate';
 // tslint:disable-next-line:no-duplicate-imports
@@ -71,7 +71,8 @@ async function main() {
     pbr_sphere1.metallicFactor = 0.3;
     pbr_sphere1.roughnessFactor = 0.3;
     pbr_sphere1.specularEnvTexture = cubeTexture;
-    sphere1.model.drawable<PBRMaterial>(0).material = pbr_sphere1;
+    sphere1.model.setMaterial(0, pbr_sphere1);
+    // sphere1.model.drawable<Mesh>(0).material = pbr_sphere1;
     app.scene.root.addChild(sphere1);
 
     let cylinder = new Entity('cylinder')
