@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, January 18th 2019, 6:53:04 pm
+ * Last Modified: Wednesday, January 23rd 2019, 11:26:40 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -104,7 +104,7 @@ export class CollisionComponent extends Component<CollisionInputs> {
                     break;
             }
             this._uuid = mesh!.meshID;
-
+            mesh!.outline = true;
             mesh!.name = this.name + '-debugger-' + this._uuid!;
             mesh!.material = this.createMaterial() as any;
             let e = new Entity({ name: mesh!.name, tag: [this.name] }).addComponent('model', {
@@ -112,7 +112,7 @@ export class CollisionComponent extends Component<CollisionInputs> {
                 model: mesh!
             });
 
-                e.setLocalScale(scale!);
+            e.setLocalScale(scale!);
 
             if (eulerAngles! != null) {
                 console.log(eulerAngles!);

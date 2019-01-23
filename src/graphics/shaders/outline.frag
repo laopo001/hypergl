@@ -5,5 +5,5 @@ precision highp sampler2DShadow;
 #endif
 
 void main() {
-    gl_FragColor = vec4(0.04, 0.28, 0.26, 1.0);
+    gl_FragColor = vec4(0.04, 0.28, 0.26, 0.3);
 }

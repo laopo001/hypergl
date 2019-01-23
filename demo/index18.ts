@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 23rd 2019, 1:22:39 am
+ * Last Modified: Thursday, January 24th 2019, 12:32:21 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -43,19 +43,18 @@ async function main() {
             material: skym
         })
         .setLocalScale(100, 100, 100);
-    // app.scene.root.addChild(sky);
+    app.scene.root.addChild(sky);
 
     let grassMaterial = new StandardMaterial();
     grassMaterial.diffuseMap = Texture.loadImage('assets/images/grass.jpg');
 
     let plane = new Entity('plane')
-    .addComponent('model', {
-        type: 'plane',
-        material: grassMaterial
-    })
-    .setPosition(0, -2, 0).setLocalScale(10, 1, 10);
-app.scene.root.addChild(plane);
-
+        .addComponent('model', {
+            type: 'plane',
+            material: grassMaterial
+        })
+        .setPosition(0, -2, 0).setLocalScale(10, 1, 10);
+    app.scene.root.addChild(plane);
 
     let box = new Entity('box')
         .addComponent('model', {
@@ -74,6 +73,21 @@ app.scene.root.addChild(plane);
     box2.model.drawable(0).material = grassMaterial;
     box2.model.drawable(0).outline = true;
     app.scene.root.addChild(box2);
+
+    let sphere1 = new Entity('sphere')
+        .addComponent('model', {
+            type: 'sphere',
+        })
+        .addComponent('collision', {
+            type: 'sphere',
+            radius: 0.75,
+            debugger: true
+        })
+        .addComponent('rigidbody', {
+            type: 'static',
+        })
+        .setLocalPosition(0, 1, 0);
+    app.scene.root.addChild(sphere1);
 
     let light = new Entity('light')
         .addComponent('light', {

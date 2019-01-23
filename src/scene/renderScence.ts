@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 23rd 2019, 1:10:34 am
+ * Last Modified: Thursday, January 24th 2019, 12:50:55 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -81,23 +81,24 @@ export function renderScence(scene: Scene) {
         if ((drawable as Mesh).outline) {
             gl.stencilFunc(gl.NOTEQUAL, 1, 0xFF);
             gl.stencilMask(0x00);
-            renderer.setDepthTest(false);
+            // renderer.setDepthTest(false);
             let clone = drawable.cache.uModelMatrix!.clone();
             let data = clone.data;
-            data[0] *= 1.1;
-            data[5] *= 1.1;
-            data[10] *= 1.1;
+            data[0] += (drawable as Mesh).outlineWidth;
+            data[5] += (drawable as Mesh).outlineWidth;
+            data[10] += (drawable as Mesh).outlineWidth;
             let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
             let shader = renderer.programGenerator.getShader('outline', attributes);
             shader.setUniformValue('uViewProjectionMatrix', viewProjectionMatrixData);
             shader.setUniformValue('uModelMatrix', data);
             renderer.setShaderProgram(shader);
             renderer.draw(drawable);
-            gl.stencilFunc(gl.ALWAYS, 1, 0xFF);
+            // gl.stencilFunc(gl.ALWAYS, 1, 0xFF);
             gl.stencilMask(0xFF);
-            renderer.setDepthTest(true);
+            // renderer.setDepthTest(true);
+            // gl.clear(gl.STENCIL_BUFFER_BIT);
         }
-
+        gl.clear(gl.STENCIL_BUFFER_BIT);
     }
     renderer.disableBLEND();
 }

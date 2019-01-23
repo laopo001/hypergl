@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 23rd 2019, 12:44:47 am
+ * Last Modified: Thursday, January 24th 2019, 12:26:29 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -225,8 +225,8 @@ export class RendererPlatform {
         let [r, g, b, a] = this._clearColor;
 
         this.setDepthTest(true);
+        // gl.enable(gl.STENCIL_TEST);
         // gl.enable(gl.DEPTH_TEST);
-        // this.depthTest = true;
         // gl.enable(gl.POLYGON_OFFSET_FILL);
         // gl.polygonOffset(2, 2);
         gl.clearColor(r, g, b, a);
