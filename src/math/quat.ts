@@ -1,6 +1,7 @@
 /* tslint:disable */
 import { Vec3 } from './vec3';
 import * as math from './math';
+import { Mat4 } from './mat4';
 export class Quat {
 
     x: number;
@@ -242,10 +243,10 @@ export class Quat {
     }
 
 
-    setFromMat4(m) {
+    setFromMat4(mat: Mat4) {
         let m00, m01, m02, m10, m11, m12, m20, m21, m22, tr, s, rs, lx, ly, lz;
 
-        m = m.data;
+        let m = mat.data;
 
         // Cache matrix values for super-speed
         m00 = m[0];
