@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 23rd 2019, 12:53:55 am
+ * Last Modified: Monday, January 28th 2019, 1:08:14 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -104,7 +104,7 @@ async function main() {
         })
         .addComponent('collision', {
             type: 'box',
-            halfExtents: new Vec3(0.5, 0.5, 0.5),
+            halfExtents: new Vec3(0.5, 0.5, 0.5).scale(2),
             debugger: true
         })
         .addComponent('rigidbody', {

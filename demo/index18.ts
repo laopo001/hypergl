@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, January 24th 2019, 12:32:21 am
+ * Last Modified: Monday, January 28th 2019, 1:25:17 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -69,25 +69,27 @@ async function main() {
         .addComponent('model', {
             type: 'box',
         })
+        .addComponent('collision', {
+            type: 'box',
+            halfExtents: new Vec3(0.5, 0.5, 0.5).scale(2),
+            debugger: true
+        })
+        .addComponent('rigidbody', {
+            type: 'static',
+            mass: 0
+        })
         .setLocalPosition(1, 1, 0);
     box2.model.drawable(0).material = grassMaterial;
-    box2.model.drawable(0).outline = true;
+    // box2.model.drawable(0).outline = true;
     app.scene.root.addChild(box2);
 
     let sphere1 = new Entity('sphere')
         .addComponent('model', {
             type: 'sphere',
         })
-        .addComponent('collision', {
-            type: 'sphere',
-            radius: 0.75,
-            debugger: true
-        })
-        .addComponent('rigidbody', {
-            type: 'static',
-        })
         .setLocalPosition(0, 1, 0);
     app.scene.root.addChild(sphere1);
+    sphere1.model.drawable(0).outline = true;
 
     let light = new Entity('light')
         .addComponent('light', {

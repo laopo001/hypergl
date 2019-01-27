@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, January 27th 2019, 11:59:50 pm
+ * Last Modified: Monday, January 28th 2019, 1:37:53 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -42,8 +42,12 @@ export function renderScence(scene: Scene) {
 
     renderer.enableBLEND();
     gl.enable(gl.STENCIL_TEST);
-    gl.stencilOp(gl.KEEP, gl.KEEP, gl.REPLACE);
-
+    // gl.stencilFunc(gl.ALWAYS, 1, 0xFF);
+    // gl.stencilMask(0xFF);
+    // gl.stencilOp(gl.KEEP, gl.KEEP, gl.REPLACE);
+    // gl.stencilMask(0x00);
+    // gl.stencilFunc(gl.NOTEQUAL, 1, 0xFF);
+    // gl.stencilMask(0x00);
     for (let i = 0; i < drawables.length; i++) {
         // if (modelComponent.entity.name === 'sphere8') debugger;
 
@@ -52,6 +56,7 @@ export function renderScence(scene: Scene) {
             continue;
         }
         if (drawable instanceof Mesh && drawable.outline) {
+            gl.stencilOp(gl.KEEP, gl.KEEP, gl.REPLACE);
             gl.stencilFunc(gl.ALWAYS, 1, 0xFF);
             gl.stencilMask(0xFF);
         }
@@ -80,7 +85,7 @@ export function renderScence(scene: Scene) {
         renderer.draw(drawable);
         if (drawable instanceof Mesh && drawable.outline) {
             gl.stencilFunc(gl.NOTEQUAL, 1, 0xFF);
-            gl.stencilMask(0x00);
+            // gl.stencilMask(0x00);
             // renderer.setDepthTest(false);
             let clone = drawable.cache.uModelMatrix!.clone();
             let data = clone.data;
@@ -94,9 +99,12 @@ export function renderScence(scene: Scene) {
             renderer.setShaderProgram(shader);
             renderer.draw(drawable);
             // gl.stencilFunc(gl.ALWAYS, 1, 0xFF);
-            gl.stencilMask(0xFF);
+            // gl.clear(gl.STENCIL_BUFFER_BIT);
+            // gl.stencilMask(0xFF);
+            gl.stencilOp(gl.KEEP, gl.KEEP, gl.KEEP);
             // renderer.setDepthTest(true);
             // gl.clear(gl.STENCIL_BUFFER_BIT);
+            // gl.disable(gl.STENCIL_TEST);
         }
         gl.clear(gl.STENCIL_BUFFER_BIT);
     }
