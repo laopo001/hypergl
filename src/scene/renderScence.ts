@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, January 24th 2019, 12:50:55 am
+ * Last Modified: Sunday, January 27th 2019, 11:59:50 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -51,7 +51,7 @@ export function renderScence(scene: Scene) {
         if (!drawable.cache.enabled) {
             continue;
         }
-        if ((drawable as Mesh).outline) {
+        if (drawable instanceof Mesh && drawable.outline) {
             gl.stencilFunc(gl.ALWAYS, 1, 0xFF);
             gl.stencilMask(0xFF);
         }
@@ -78,15 +78,15 @@ export function renderScence(scene: Scene) {
         shader.setUniformValue('uFogDist', new Float32Array([scene.fogStart, scene.fogEnd]));
         shader.setUniformValue('uReceiveShadow', drawable.receiveShadow);
         renderer.draw(drawable);
-        if ((drawable as Mesh).outline) {
+        if (drawable instanceof Mesh && drawable.outline) {
             gl.stencilFunc(gl.NOTEQUAL, 1, 0xFF);
             gl.stencilMask(0x00);
             // renderer.setDepthTest(false);
             let clone = drawable.cache.uModelMatrix!.clone();
             let data = clone.data;
-            data[0] += (drawable as Mesh).outlineWidth;
-            data[5] += (drawable as Mesh).outlineWidth;
-            data[10] += (drawable as Mesh).outlineWidth;
+            data[0] += drawable.outlineWidth;
+            data[5] += drawable.outlineWidth;
+            data[10] += drawable.outlineWidth;
             let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
             let shader = renderer.programGenerator.getShader('outline', attributes);
             shader.setUniformValue('uViewProjectionMatrix', viewProjectionMatrixData);
