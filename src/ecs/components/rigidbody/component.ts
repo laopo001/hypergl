@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, January 18th 2019, 11:07:08 am
+ * Last Modified: Monday, January 28th 2019, 11:02:11 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -67,6 +67,10 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
 
     initialize() {
         super.initialize();
+        if (this.entity.collision.instance === null) {
+            console.warn('没有碰撞组件');
+            return;
+        }
         let app = this.entity.app as Application<{ physics: IPhysics }>;
         let physics = app.plugins.physics;
 
@@ -103,20 +107,6 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
         });
         this.instance = body;
     }
-    // setVelocity(v: Vec3);
-    // setVelocity(x: number, y: number, z: number);
-    // setVelocity(x, y?, z?) {
-    //     let app = this.entity.app as Application<{ physics: IPhysics }>;
-    //     let physics = app.plugins.physics;
-    //     // physics.setVelocity(this.instance, x, y, z);
-    // }
-    // setAngularVelocity(v: Vec3);
-    // setAngularVelocity(x: number, y: number, z: number);
-    // setAngularVelocity(x, y?, z?) {
-    //     let app = this.entity.app as Application<{ physics: IPhysics }>;
-    //     let physics = app.plugins.physics;
-    //     // physics.setAngularVelocity(this.instance, x, y, z);
-    // }
     applyForce(force: Vec3, point?: Vec3) {
         let app = this.entity.app as Application<{ physics: IPhysics }>;
         let physics = app.plugins.physics;
@@ -142,7 +132,6 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
             this.entity.setPosition(x, y, z);
         }
         physics.syncEntityToBody(this.entity, this.body);
-        // physics.teleport(this.instance, x, y, z);
     }
     destroy() {
         super.destroy();

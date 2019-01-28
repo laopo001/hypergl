@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 22nd 2018, 9:47:39 pm
+ * Last Modified: Tuesday, January 29th 2019, 12:49:14 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -18,6 +18,10 @@ import { Color } from '../core';
 import { Frustum } from '../math/frustum';
 import { ModelComponent } from '../ecs/components/model';
 import { BoundingSphere } from '../shape/boundingSphere';
+
+let _far = new Vec3();
+let _farW = new Vec3();
+let _deviceCoord = new Vec3();
 export class Camera {
     clearColor = new Color(0, 0, 0);
     get viewProjectionMatrix() {
@@ -25,8 +29,48 @@ export class Camera {
     }
     projectionMatrix = new Mat4();
     frustum: Frustum;
+    isPerspective = false;
+    isOrtho = false;
+    private _farClip = 0;
+    private _nearClip = 0;
     constructor(public node: SceneNode) {
         this.frustum = new Frustum(this.projectionMatrix, this.node.getWorldTransform().clone().invert());
+    }
+    screenToWorld(x, y, z, cw, ch, worldCoord = new Vec3()) {
+
+
+        let _invViewProjMat = this.viewProjectionMatrix.invert();
+
+        if (this.isPerspective) {
+            // Calculate the screen click as a point on the far plane of the
+            // normalized device coordinate 'box' (z=1)
+            _far.set(x / cw * 2 - 1, (ch - y) / ch * 2 - 1, 1);
+
+            // Transform to world space
+            _invViewProjMat.transformPoint(_far, _farW);
+
+            let w = _far.x * _invViewProjMat.data[3] +
+                _far.y * _invViewProjMat.data[7] +
+                _far.z * _invViewProjMat.data[11] +
+                _invViewProjMat.data[15];
+
+            _farW.scale(1 / w);
+
+            let alpha = z / this._farClip;
+            worldCoord.lerp(this.node.getPosition(), _farW, alpha);
+        } else {
+            // Calculate the screen click as a point on the far plane of the
+            // normalized device coordinate 'box' (z=1)
+            let range = this._farClip - this._nearClip;
+            _deviceCoord.set(x / cw, (ch - y) / ch, z / range);
+            _deviceCoord.scale(2);
+            _deviceCoord.sub(Vec3.ONE);
+
+            // Transform to world space
+            _invViewProjMat.transformPoint(_deviceCoord, worldCoord);
+        }
+
+        return worldCoord;
     }
     updateRenderTarget() {
         this.frustum.update(this.projectionMatrix, this.node.getWorldTransform().clone().invert());
@@ -67,10 +111,18 @@ export class Camera {
      * @memberof Camera
      */
     setPerspective(fov: number, aspect: number, near: number, far: number) {
+        this.isPerspective = true;
+        this.isOrtho = false;
+        this._nearClip = near;
+        this._farClip = far;
         this.projectionMatrix.setPerspective(fov, aspect, near, far);
         return this;
     }
     setOrtho(left: number, right: number, bottom: number, top: number, near: number, far: number) {
+        this.isPerspective = false;
+        this.isOrtho = true;
+        this._nearClip = near;
+        this._farClip = far;
         this.projectionMatrix.setOrtho(left, right, bottom, top, near, far);
         return this;
     }

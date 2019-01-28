@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, January 28th 2019, 1:25:17 am
+ * Last Modified: Tuesday, January 29th 2019, 12:21:55 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -53,6 +53,16 @@ async function main() {
             type: 'plane',
             material: grassMaterial
         })
+        .addComponent('collision', {
+            type: 'box',
+            debugger: true,
+            halfExtents: new Vec3(5, 0.1, 5),
+            // onCollide: (e) => { console.log(e.target.entity.name); }
+        })
+        .addComponent('rigidbody', {
+            type: 'static',
+            mass: 0
+        })
         .setPosition(0, -2, 0).setLocalScale(10, 1, 10);
     app.scene.root.addChild(plane);
 
@@ -72,11 +82,15 @@ async function main() {
         .addComponent('collision', {
             type: 'box',
             halfExtents: new Vec3(0.5, 0.5, 0.5).scale(2),
-            debugger: true
+            debugger: true,
+            collisionstart: (e) => {
+                console.log(e);
+
+            }
         })
         .addComponent('rigidbody', {
-            type: 'static',
-            mass: 0
+            type: 'dynamic',
+            mass: 1
         })
         .setLocalPosition(1, 1, 0);
     box2.model.drawable(0).material = grassMaterial;

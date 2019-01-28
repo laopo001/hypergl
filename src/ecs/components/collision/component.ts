@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, January 28th 2019, 1:26:15 am
+ * Last Modified: Tuesday, January 29th 2019, 12:24:39 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -18,16 +18,20 @@ import { Component } from '../../component';
 import { Log, copy } from '../../../utils/util';
 import { Mat4, Vec3 } from '../../../math';
 import { ComponentSystem } from '../../system';
-import { event } from '../../../core';
+import { event, createEvent } from '../../../core';
 import { Application } from '../../../application';
-import { CannonPhysicsPlugin, EVENT, IPhysics } from 'hypergl/plugins/physics';
+import { CannonPhysicsPlugin, IPhysics } from 'hypergl/plugins/physics';
 import { Mesh } from '../../../mesh';
 import { ColorMaterial, StandardMaterial } from '../../../material';
 import { once } from '../../../utils/decorators';
+import { FACE } from '../../../conf';
 
 export type CollisionInputs = {
     debugger?: boolean;
-    onCollide?: (e: EVENT) => void
+    contact?: (e) => void,
+    collisionstart?: (e) => void,
+    collisionend?: (e) => void,
+    triggerenter?: (e) => void,
 } & ({
     type: 'sphere',
     radius: number,
@@ -53,11 +57,11 @@ export const CollisionData: Partial<CollisionInputs> = {
 export class CollisionComponent extends Component<CollisionInputs> {
     name = 'collision';
     instance!: any;
+    event = createEvent();
     private _uuid?: number;
     constructor(inputs: CollisionInputs, entity: Entity, system: ComponentSystem) {
         super(inputs, entity, system);
         copy(inputs, CollisionData);
-
     }
 
     initialize() {
@@ -70,6 +74,14 @@ export class CollisionComponent extends Component<CollisionInputs> {
         if (physics.type === 'ammo') {
             this.instance = physics.createShape(this.inputs.type, this.inputs);
         }
+        // tslint:disable-next-line:no-unused-expression
+        this.inputs.contact && this.event.on('contact', this.inputs.contact);
+        // tslint:disable-next-line:no-unused-expression
+        this.inputs.collisionstart && this.event.on('collisionstart', this.inputs.collisionstart);
+        // tslint:disable-next-line:no-unused-expression
+        this.inputs.collisionend && this.event.on('collisionend', this.inputs.collisionend);
+        // tslint:disable-next-line:no-unused-expression
+        this.inputs.triggerenter && this.event.on('triggerenter', this.inputs.triggerenter);
 
         if (this.inputs.debugger) {
             let mesh: Mesh;
@@ -111,12 +123,9 @@ export class CollisionComponent extends Component<CollisionInputs> {
                 type: 'model',
                 model: mesh!
             });
-
             e.setLocalScale(scale!);
-
             if (eulerAngles! != null) {
-                console.log(eulerAngles!);
-
+                // console.log(eulerAngles!);
                 e.setLocalEulerAngles(eulerAngles!);
             }
 
@@ -137,6 +146,7 @@ export class CollisionComponent extends Component<CollisionInputs> {
         let material = new ColorMaterial();
         material.diffuseColor.set(1, 0, 0);
         material.opacity = 0.1;
+        material.cullFace = FACE.BACK;
         return material;
     }
 }

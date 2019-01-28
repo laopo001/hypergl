@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, January 21st 2019, 12:48:25 am
+ * Last Modified: Tuesday, January 29th 2019, 12:56:39 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -14,9 +14,8 @@
 
 import * as AMMO from 'laopo001-ammo';
 // import * as Ammo from './ammo';
-import { Application, Plugin, Vec3, Quat, Entity } from 'hypergl';
+import { Application, Plugin, Vec3, Quat, Entity, event } from 'hypergl';
 import { IPhysics } from './types';
-
 
 enum BODYSTATE {
     BODYSTATE_ACTIVE_TAG = 1,
@@ -32,8 +31,6 @@ enum BODYFLAG {
     NORESPONSE_OBJECT = 4,
 }
 
-
-
 export interface CreateShapeOptions {
     'sphere': { radius: number; };
     'box': { halfExtents: Vec3 };
@@ -42,6 +39,71 @@ export interface CreateShapeOptions {
 
 
 let Ammo: typeof AMMO;
+let frameCollisions = {};
+let collisions = {};
+
+class RaycastResult {
+    constructor(public entity: Entity, public point: Vec3, public normal: Vec3) {
+
+    }
+}
+
+class SingleContactResult {
+    localPointA?: Vec3;
+    localPointB?: Vec3;
+    pointA?: Vec3;
+    pointB?: Vec3;
+    normal?: Vec3;
+    constructor(public a: Entity, public b: Entity, public contactPoint: ContactPoint) {
+        this.localPointA = contactPoint && contactPoint.localPoint || new Vec3();
+        this.localPointB = contactPoint && contactPoint.localPointOther || new Vec3();
+        this.pointA = contactPoint && contactPoint.point || new Vec3();
+        this.pointB = contactPoint && contactPoint.pointOther || new Vec3();
+        this.normal = contactPoint && contactPoint.normal || new Vec3();
+    }
+}
+
+class ContactPoint {
+    constructor(public localPoint = new Vec3(),
+        public localPointOther = new Vec3(),
+        public point = new Vec3(),
+        public pointOther = new Vec3(),
+        public normal = new Vec3()) {
+
+    }
+}
+
+class ContactResult {
+    constructor(public other: Entity, public contacts: ContactPoint[]) {
+
+    }
+}
+class AllocatePool {
+    _count = 0;
+    _pool: any[] = [];
+    constructor(public _constructor, size) {
+        this._resize(size);
+    }
+    _resize(size) {
+        if (size > this._pool.length) {
+            for (let i = this._pool.length; i < size; i++) {
+                this._pool[i] = new this._constructor();
+            }
+        }
+    }
+
+    allocate() {
+        if (this._count >= this._pool.length) {
+            this._resize(this._pool.length * 2);
+        }
+        return this._pool[this._count++];
+    }
+
+    freeAll() {
+        this._count = 0;
+    }
+}
+
 
 
 export class AmmoPlugin implements Plugin, IPhysics {
@@ -51,8 +113,132 @@ export class AmmoPlugin implements Plugin, IPhysics {
     ammoVec2!: AMMO.btVector3;
     ammoOrigin!: AMMO.btVector3;
     world!: AMMO.btDynamicsWorld;
+    contactPointPool!: AllocatePool;
+    contactResultPool!: AllocatePool;
+    singleContactResultPool!: AllocatePool;
     constructor(private app: Application) {
 
+    }
+    // tslint:disable-next-line:cyclomatic-complexity
+    onUpdate = (dt) => {
+        // tslint:disable-next-line:no-parameter-reassignment
+        dt = dt || 1;
+        this.world.stepSimulation(dt, 10, 1 / 60);
+
+        // Check for collisions and fire callbacks
+        let dispatcher = this.world.getDispatcher();
+        let numManifolds = dispatcher.getNumManifolds();
+        // tslint:disable-next-line:one-variable-per-declaration
+        let i, j;
+
+        frameCollisions = {};
+
+        // loop through the all contacts and fire events
+        for (i = 0; i < numManifolds; i++) {
+            let manifold = dispatcher.getManifoldByIndexInternal(i);
+            let body0 = manifold.getBody0();
+            let body1 = manifold.getBody1();
+            let wb0 = Ammo.castObject(body0, Ammo.btRigidBody);
+            let wb1 = Ammo.castObject(body1, Ammo.btRigidBody);
+            let e0 = wb0.entity as Entity;
+            let e1 = wb1.entity as Entity;
+
+            // check if entity is null - TODO: investigate when this happens
+            if (!e0 || !e1) {
+                continue;
+            }
+
+            let flags0 = body0.getCollisionFlags();
+            let flags1 = body1.getCollisionFlags();
+
+            let numContacts = manifold.getNumContacts();
+            let forwardContacts: any[] = [];
+            let reverseContacts: any[] = [];
+            // tslint:disable-next-line:one-variable-per-declaration
+            let newCollision, e0Events, e1Events;
+
+            if (numContacts > 0) {
+                // don't fire contact events for triggers
+                if ((flags0 & BODYFLAG.NORESPONSE_OBJECT) ||
+                    (flags1 & BODYFLAG.NORESPONSE_OBJECT)) {
+
+                    e0Events = e0.collision ? e0.collision.event.hasEvent('triggerenter') || e0.collision.event.hasEvent('triggerleave') : false;
+                    e1Events = e1.collision ? e1.collision.event.hasEvent('triggerenter') || e1.collision.event.hasEvent('triggerleave') : false;
+
+                    if (e0Events) {
+                        // fire triggerenter events
+                        newCollision = this._storeCollision(e0, e1);
+                        if (newCollision) {
+                            if (e0.collision && !(flags1 & BODYFLAG.NORESPONSE_OBJECT)) {
+                                e0.collision.event.fire('triggerenter', e1);
+                            }
+                        }
+                    }
+
+                    if (e1Events) {
+                        newCollision = this._storeCollision(e1, e0);
+                        if (newCollision) {
+                            if (e1.collision && !(flags0 & BODYFLAG.NORESPONSE_OBJECT)) {
+                                e1.collision.event.fire('triggerenter', e0);
+                            }
+                        }
+                    }
+                } else {
+                    e0Events = e0.collision ? e0.collision.event.hasEvent('collisionstart') || e0.collision.event.hasEvent('collisionend') || e0.collision.event.hasEvent('contact') : false;
+                    e1Events = e1.collision ? e1.collision.event.hasEvent('collisionstart') || e1.collision.event.hasEvent('collisionend') || e1.collision.event.hasEvent('contact') : false;
+                    let globalEvents = event.hasEvent('contact');
+
+                    if (globalEvents || e0Events || e1Events) {
+                        for (j = 0; j < numContacts; j++) {
+                            let btContactPoint = manifold.getContactPoint(j);
+
+                            let contactPoint = this._createContactPointFromAmmo(btContactPoint);
+                            let reverseContactPoint = null;
+                            if (e0Events || e1Events) {
+                                reverseContactPoint = this._createReverseContactPointFromAmmo(btContactPoint);
+                                forwardContacts.push(contactPoint);
+                                reverseContacts.push(reverseContactPoint);
+                            }
+
+                            if (globalEvents) {
+                                // fire global contact event for every contact
+                                let result = this._createSingleContactResult(e0, e1, contactPoint);
+                                event.fire('contact', result);
+                            }
+                        }
+
+                        if (e0Events) {
+                            let forwardResult = this._createContactResult(e1, forwardContacts);
+
+                            // fire contact events on collision volume
+                            if (e0.collision) {
+                                e0.collision.event.fire('contact', forwardResult);
+                            }
+
+                            // fire collisionstart events
+                            newCollision = this._storeCollision(e0, e1);
+                            if (newCollision && e0.collision) {
+                                e0.collision.event.fire('collisionstart', forwardResult);
+                            }
+                        }
+
+                        if (e1Events) {
+                            let reverseResult = this._createContactResult(e0, reverseContacts);
+
+                            if (e1.collision) {
+                                e1.collision.event.fire('contact', reverseResult);
+                            }
+
+                            newCollision = this._storeCollision(e1, e0);
+                            if (newCollision && e1.collision) {
+                                e1.collision.event.fire('collisionstart', reverseResult);
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
     }
     async initialize() {
         return new Promise((resolve) => {
@@ -62,6 +248,9 @@ export class AmmoPlugin implements Plugin, IPhysics {
                 this.ammoVec1 = new Ammo.btVector3();
                 this.ammoVec2 = new Ammo.btVector3();
                 this.ammoOrigin = new Ammo.btVector3(0, 0, 0);
+                this.contactPointPool = new AllocatePool(ContactPoint, 1);
+                this.contactResultPool = new AllocatePool(ContactResult, 1);
+                this.singleContactResultPool = new AllocatePool(SingleContactResult, 1);
                 resolve(true);
             });
         });
@@ -74,11 +263,7 @@ export class AmmoPlugin implements Plugin, IPhysics {
         let solver = new Ammo.btSequentialImpulseConstraintSolver();
         let physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
         physicsWorld.setGravity(new Ammo.btVector3(0, -9.82, 0));
-        this.app.on('update', (dt) => {
-            // tslint:disable-next-line:no-parameter-reassignment
-            dt = dt || 1;
-            physicsWorld.stepSimulation(dt, 10, 1 / 60);
-        });
+        this.app.on('update', this.onUpdate);
         this.world = physicsWorld;
     }
     setGravity(g: Vec3) {
@@ -284,5 +469,97 @@ export class AmmoPlugin implements Plugin, IPhysics {
     }
     setMass(body: AMMO.btRigidBody) {
         // todo
+    }
+    raycastFirst(start: Vec3, end: Vec3) {
+        let result: any = null;
+
+        let ammoRayStart = new Ammo.btVector3(start.x, start.y, start.z);
+        let ammoRayEnd = new Ammo.btVector3(end.x, end.y, end.z);
+        let rayCallback = new Ammo.ClosestRayResultCallback(ammoRayStart, ammoRayEnd);
+
+        this.world.rayTest(ammoRayStart, ammoRayEnd, rayCallback);
+        if (rayCallback.hasHit()) {
+            let collisionObj = rayCallback.get_m_collisionObject();
+            let body = Ammo.castObject(collisionObj, Ammo.btRigidBody);
+            if (body) {
+                let point = rayCallback.get_m_hitPointWorld();
+                let normal = rayCallback.get_m_hitNormalWorld();
+
+                result = new RaycastResult(
+                    body.entity,
+                    new Vec3(point.x(), point.y(), point.z()),
+                    new Vec3(normal.x(), normal.y(), normal.z())
+                );
+
+                // keeping for backwards compatibility
+                if (arguments.length > 2) {
+                    let callback = arguments[2];
+                    callback(result);
+
+                    // if (!WARNED_RAYCAST_CALLBACK) {
+                    //     console.warn('[DEPRECATED]: pc.RigidBodyComponentSystem#rayCastFirst no longer requires a callback. The result of the raycast is returned by the function instead.');
+                    //     WARNED_RAYCAST_CALLBACK = true;
+                    // }
+                }
+            }
+        }
+
+        Ammo.destroy(rayCallback);
+    }
+    private _storeCollision(entity: Entity, other: Entity) {
+        let isNewCollision = false;
+        let guid = entity.uuid;
+
+        collisions[guid] = collisions[guid] || { others: [], entity };
+
+        if (collisions[guid].others.indexOf(other) < 0) {
+            collisions[guid].others.push(other);
+            isNewCollision = true;
+        }
+
+        frameCollisions[guid] = frameCollisions[guid] || { others: [], entity };
+        frameCollisions[guid].others.push(other);
+
+        return isNewCollision;
+    }
+    private _createContactPointFromAmmo(contactPoint) {
+        let contact = this.contactPointPool.allocate();
+
+        contact.localPoint.set(contactPoint.get_m_localPointA().x(), contactPoint.get_m_localPointA().y(), contactPoint.get_m_localPointA().z());
+        contact.localPointOther.set(contactPoint.get_m_localPointB().x(), contactPoint.get_m_localPointB().y(), contactPoint.get_m_localPointB().z());
+        contact.point.set(contactPoint.getPositionWorldOnA().x(), contactPoint.getPositionWorldOnA().y(), contactPoint.getPositionWorldOnA().z());
+        contact.pointOther.set(contactPoint.getPositionWorldOnB().x(), contactPoint.getPositionWorldOnB().y(), contactPoint.getPositionWorldOnB().z());
+        contact.normal.set(contactPoint.get_m_normalWorldOnB().x(), contactPoint.get_m_normalWorldOnB().y(), contactPoint.get_m_normalWorldOnB().z());
+
+        return contact;
+    }
+    private _createReverseContactPointFromAmmo(contactPoint) {
+        let contact = this.contactPointPool.allocate();
+
+        contact.localPointOther.set(contactPoint.get_m_localPointA().x(), contactPoint.get_m_localPointA().y(), contactPoint.get_m_localPointA().z());
+        contact.localPoint.set(contactPoint.get_m_localPointB().x(), contactPoint.get_m_localPointB().y(), contactPoint.get_m_localPointB().z());
+        contact.pointOther.set(contactPoint.getPositionWorldOnA().x(), contactPoint.getPositionWorldOnA().y(), contactPoint.getPositionWorldOnA().z());
+        contact.point.set(contactPoint.getPositionWorldOnB().x(), contactPoint.getPositionWorldOnB().y(), contactPoint.getPositionWorldOnB().z());
+        contact.normal.set(contactPoint.get_m_normalWorldOnB().x(), contactPoint.get_m_normalWorldOnB().y(), contactPoint.get_m_normalWorldOnB().z());
+        return contact;
+    }
+    private _createSingleContactResult(a, b, contactPoint) {
+        let result = this.singleContactResultPool.allocate();
+
+        result.a = a;
+        result.b = b;
+        result.localPointA = contactPoint.localPoint;
+        result.localPointB = contactPoint.localPointOther;
+        result.pointA = contactPoint.point;
+        result.pointB = contactPoint.pointOther;
+        result.normal = contactPoint.normal;
+
+        return result;
+    }
+    private _createContactResult(other, contacts) {
+        let result = this.contactResultPool.allocate();
+        result.other = other;
+        result.contacts = contacts;
+        return result;
     }
 }
