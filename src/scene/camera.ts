@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 29th 2019, 12:49:14 am
+ * Last Modified: Tuesday, January 29th 2019, 1:04:46 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -31,8 +31,8 @@ export class Camera {
     frustum: Frustum;
     isPerspective = false;
     isOrtho = false;
-    private _farClip = 0;
-    private _nearClip = 0;
+    farClip = 0;
+    nearClip = 0;
     constructor(public node: SceneNode) {
         this.frustum = new Frustum(this.projectionMatrix, this.node.getWorldTransform().clone().invert());
     }
@@ -56,12 +56,12 @@ export class Camera {
 
             _farW.scale(1 / w);
 
-            let alpha = z / this._farClip;
+            let alpha = z / this.farClip;
             worldCoord.lerp(this.node.getPosition(), _farW, alpha);
         } else {
             // Calculate the screen click as a point on the far plane of the
             // normalized device coordinate 'box' (z=1)
-            let range = this._farClip - this._nearClip;
+            let range = this.farClip - this.nearClip;
             _deviceCoord.set(x / cw, (ch - y) / ch, z / range);
             _deviceCoord.scale(2);
             _deviceCoord.sub(Vec3.ONE);
@@ -113,16 +113,16 @@ export class Camera {
     setPerspective(fov: number, aspect: number, near: number, far: number) {
         this.isPerspective = true;
         this.isOrtho = false;
-        this._nearClip = near;
-        this._farClip = far;
+        this.nearClip = near;
+        this.farClip = far;
         this.projectionMatrix.setPerspective(fov, aspect, near, far);
         return this;
     }
     setOrtho(left: number, right: number, bottom: number, top: number, near: number, far: number) {
         this.isPerspective = false;
         this.isOrtho = true;
-        this._nearClip = near;
-        this._farClip = far;
+        this.nearClip = near;
+        this.farClip = far;
         this.projectionMatrix.setOrtho(left, right, bottom, top, near, far);
         return this;
     }

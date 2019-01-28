@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 29th 2019, 12:51:34 am
+ * Last Modified: Tuesday, January 29th 2019, 1:04:46 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -97,7 +97,7 @@ export class CameraComponent extends Component<CameraInputs> {
         this.instance.projectionMatrix.setOrtho(left, right, bottom, top, near, far);
         return this;
     }
-    screenToWorld(screenx, screeny, cameraz, worldCoord) {
+    screenToWorld(screenx, screeny, cameraz, worldCoord?) {
         let renderer = this.system.app.renderer;
         return this.instance.screenToWorld(screenx, screeny, cameraz, renderer.canvas.width, renderer.canvas.height, worldCoord);
     }

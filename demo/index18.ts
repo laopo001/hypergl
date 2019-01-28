@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 29th 2019, 12:21:55 am
+ * Last Modified: Tuesday, January 29th 2019, 1:06:26 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -128,9 +128,19 @@ async function main() {
         })
         .addComponent('listener', {})
         .setPosition(-5, 5, 0)
-        .lookAt(new Vec3(0, 0, 0))
-        .addComponent('script', [new FirstPersonCamera({ speed: 2 })]);
+        .lookAt(new Vec3(0, 0, 0));
+    // .addComponent('script', [new FirstPersonCamera({ speed: 2 })]);
     app.scene.root.addChild(camera);
+
+    document.getElementById('canvas')!.addEventListener('mousedown', (e) => {
+        let from = camera.camera.screenToWorld(e.x, e.y, camera.camera.instance.nearClip);
+        let to = camera.camera.screenToWorld(e.x, e.y, camera.camera.instance.farClip);
+        let result = app.plugins.physics.raycastFirst(from, to);
+        if (result) {
+            let pickedEntity = result.entity;
+            console.log(pickedEntity.name);
+        }
+    }, false);
 
     app.start();
 }

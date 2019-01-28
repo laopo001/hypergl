@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 29th 2019, 12:56:39 am
+ * Last Modified: Tuesday, January 29th 2019, 1:00:42 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -471,7 +471,7 @@ export class AmmoPlugin implements Plugin, IPhysics {
         // todo
     }
     raycastFirst(start: Vec3, end: Vec3) {
-        let result: any = null;
+        let result: null | RaycastResult = null;
 
         let ammoRayStart = new Ammo.btVector3(start.x, start.y, start.z);
         let ammoRayEnd = new Ammo.btVector3(end.x, end.y, end.z);
@@ -505,6 +505,7 @@ export class AmmoPlugin implements Plugin, IPhysics {
         }
 
         Ammo.destroy(rayCallback);
+        return result;
     }
     private _storeCollision(entity: Entity, other: Entity) {
         let isNewCollision = false;
