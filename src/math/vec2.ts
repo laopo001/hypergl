@@ -74,9 +74,7 @@ export class Vec2 {
 
 
     length(): number {
-        let v = this.data;
-
-        return Math.sqrt(v[0] * v[0] + v[1] * v[1]);
+        return Math.sqrt(this.lengthSq());
     }
 
 

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, November 10th 2018, 12:27:28 am
+ * Last Modified: Tuesday, January 29th 2019, 6:44:27 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,3 +15,4 @@
 export * from './scene';
 export * from './node';
 export * from './camera';
+export * from './picker';

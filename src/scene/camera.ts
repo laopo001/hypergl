@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 29th 2019, 1:04:46 am
+ * Last Modified: Tuesday, January 29th 2019, 5:10:58 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -37,10 +37,7 @@ export class Camera {
         this.frustum = new Frustum(this.projectionMatrix, this.node.getWorldTransform().clone().invert());
     }
     screenToWorld(x, y, z, cw, ch, worldCoord = new Vec3()) {
-
-
         let _invViewProjMat = this.viewProjectionMatrix.invert();
-
         if (this.isPerspective) {
             // Calculate the screen click as a point on the far plane of the
             // normalized device coordinate 'box' (z=1)

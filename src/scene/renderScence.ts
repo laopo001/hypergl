@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, January 28th 2019, 9:58:22 pm
+ * Last Modified: Tuesday, January 29th 2019, 6:44:27 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,6 +20,8 @@ import { Log } from '../utils/util';
 import { Mesh } from '../mesh';
 import { Light, DirectionalLight, PointLight, SpotLight } from '../lights';
 import { Vec3, DEG_TO_RAD } from '../math';
+import { Picker } from './picker';
+import { Color } from '../core';
 
 
 
@@ -106,7 +108,8 @@ export function renderScence(scene: Scene) {
             // gl.clear(gl.STENCIL_BUFFER_BIT);
             // gl.disable(gl.STENCIL_TEST);
         }
-        gl.clear(gl.STENCIL_BUFFER_BIT);
+        renderer.clear(false, false, true);
+        // gl.clear(gl.STENCIL_BUFFER_BIT);
     }
     renderer.disableBLEND();
 }
@@ -278,4 +281,31 @@ function setLight(name: string, key: string, index, obj, parameters, value) {
     let t = name + index + '_' + key;
     obj[key] = t;
     parameters[t] = value;
+}
+
+export function rendererPickerFrame(picker: Picker) {
+    let scene = picker.scene;
+    let pickFrame = picker.pickFrame;
+    let drawables = scene.systems.model!.layers;
+    let renderer = scene.app.renderer;
+    let camera = scene.activeCamera;
+    let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
+    let shader = renderer.programGenerator.getShader('color', attributes);
+    let color = new Color();
+
+    shader.setUniformValue('uViewProjectionMatrix', camera.viewProjectionMatrix().data);
+    pickFrame.beforeDraw();
+    for (let i = 0; i < drawables.length; i++) {
+        const drawable = drawables[i];
+        if (!drawable.cache.enabled || !drawable.castShadow) {
+            continue;
+        }
+        renderer.setShaderProgram(shader as Shader);
+        shader.setUniformValue('uModelMatrix', drawable.cache.uModelMatrix!.data);
+        color.set(i / 255, 0, 0);
+        shader.setUniformValue('uDiffuseColor', color.data);
+        renderer.draw(drawable);
+    }
+    pickFrame.afterDraw();
+    return pickFrame.getTexture();
 }
