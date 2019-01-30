@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, January 12th 2019, 11:17:28 pm
+ * Last Modified: Wednesday, January 30th 2019, 4:37:04 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,7 +15,7 @@
 import { Application, Plugin, Vec3, Quat, Entity } from 'hypergl';
 import * as CANNON from 'cannon';
 
-interface CreateShapeOptions {
+export interface CreateShapeOptions {
     'sphere': { radius: number; };
     'box': { halfExtents: Vec3 };
     'cylinder': { radiusTop: number, radiusBottom: number, height: number, numSegments: number };
@@ -42,13 +42,13 @@ export class CannonPhysicsPlugin implements Plugin {
     initWorld(g: [number, number, number] = [0, -10, 0]) {
         let fixedTimeStep = 1.0 / 60.0; // seconds
         let maxSubSteps = 3;
-        this.world.gravity.set(...g);
+        this.world.gravity.set(g[0], g[1], g[2]);
         this.app.on('update', (dt) => {
             this.world.step(fixedTimeStep, dt, maxSubSteps);
         });
     }
     setGravity(g: [number, number, number] = [0, -9.8, 0]) {
-        this.world.gravity.set(...g);
+        this.world.gravity.set(g[0], g[1], g[2]);
     }
     addBody(o: {
         position?: Vec3;

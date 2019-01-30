@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 30th 2019, 3:24:01 pm
+ * Last Modified: Wednesday, January 30th 2019, 4:25:05 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -16,6 +16,7 @@ import { Frame } from '../graphics/createFrame';
 import { rendererPickerFrame } from './renderScence';
 import { ColorMaterial } from '../material';
 import { n_decimal_to_10 } from '../utils';
+import { Entity } from '../ecs';
 
 export class Picker {
     pickFrame: Frame;

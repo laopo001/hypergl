@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, December 27th 2018, 12:22:26 pm
+ * Last Modified: Wednesday, January 30th 2019, 4:33:36 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -18,6 +18,7 @@ import { Color } from '../../../core';
 import { ShadowUpdateMode } from '../../../conf';
 import { Log } from '../../../utils/util';
 import { Entity } from '../../entity';
+import { Frame } from '../../../graphics/createFrame';
 import { ComponentSystem } from '../../system';
 export interface LigthInputs {
     type: 'directional' | 'point' | 'spot'
@@ -86,7 +87,7 @@ export class LightComponent<T extends Light = Light> extends Component<LigthInpu
     get color() {
         return this.instance.color;
     }
-    get shadowFrame() {
+    get shadowFrame(): Frame | undefined {
         return this.instance.shadowFrame;
     }
     set shadowFrame(v) {

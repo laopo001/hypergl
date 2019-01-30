@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, January 28th 2019, 11:02:11 pm
+ * Last Modified: Wednesday, January 30th 2019, 4:30:45 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -86,8 +86,6 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
             group, mask
         }, this.entity);
         body['entity'] = this.entity;
-        // tslint:disable-next-line:no-unused-expression
-        this.entity.collision.inputs.onCollide && body.addEventListener('collide', this.entity.collision.inputs.onCollide as Function);
         event.on('update', (dt) => {
             if (this.enabled) {
                 if (this.entity.rigidbody.inputs.type === 'dynamic') {

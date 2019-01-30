@@ -7,7 +7,7 @@ import { ComponentSystem } from '../../system';
 import { event } from '../../../core';
 import { Howl, Howler } from 'howler';
 
-interface IHowlSoundSpriteDefinition {
+export interface IHowlSoundSpriteDefinition {
     [name: string]: [number, number] | [number, number, boolean]
 }
 export interface AudioInputs {

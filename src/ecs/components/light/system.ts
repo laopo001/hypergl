@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, November 21st 2018, 10:37:48 pm
+ * Last Modified: Wednesday, January 30th 2019, 4:32:00 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,6 +15,7 @@
 import { ComponentSystem } from '../../system';
 import { LightComponent } from './component';
 import { DirectionalLight, PointLight, SpotLight, Light } from '../../../lights';
+import { Component } from '../../component';
 import { Entity } from '../../entity';
 export class LightComponentSystem extends ComponentSystem {
     componentConstructor = LightComponent;

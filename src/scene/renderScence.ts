@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 30th 2019, 3:22:24 pm
+ * Last Modified: Wednesday, January 30th 2019, 4:23:24 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -343,5 +343,5 @@ export function rendererPickerFrame(picker: Picker, material: ColorMaterial, cb)
     // }
     cb();
     pickFrame.afterDraw();
-    return pickFrame.getTexture();
+    // return pickFrame.getTexture();
 }

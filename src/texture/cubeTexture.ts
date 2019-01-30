@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, January 5th 2019, 2:11:36 am
+ * Last Modified: Wednesday, January 30th 2019, 4:22:54 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -28,7 +28,7 @@ export class CubeTexture extends BaseTexture {
             loadImage(front_pz),
             loadImage(end_nz)
         ]).then(img => {
-            texture.setSource(...img);
+            texture.setSource(img[0], img[1], img[2], img[3], img[4], img[5]);
             app.renderer.initTexture(texture);
         });
         return texture;
@@ -44,7 +44,7 @@ export class CubeTexture extends BaseTexture {
             loadImage(front_pz),
             loadImage(end_nz)
         ]).then(img => {
-            texture.setSource(...img);
+            texture.setSource(img[0], img[1], img[2], img[3], img[4], img[5]);
             app.renderer.initTexture(texture);
         });
         return texture;

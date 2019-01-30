@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 7th 2018, 2:41:57 pm
+ * Last Modified: Wednesday, January 30th 2019, 4:28:32 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -25,7 +25,7 @@ export class Line extends Drawable {
     material = new ColorMaterial();
 }
 
-interface CreateLinesOptions {
+export interface CreateLinesOptions {
     type?: 'LINES' | 'LINE_LOOP' | 'LINE_STRIP',
     width?: number
 }

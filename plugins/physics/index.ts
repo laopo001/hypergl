@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, January 12th 2019, 11:17:36 pm
+ * Last Modified: Wednesday, January 30th 2019, 4:36:33 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,5 +13,5 @@
 
 
 export * from './cannon';
-export * from './ammo';
+// export * from './ammo';
 export * from './types';

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 29th 2019, 1:00:42 am
+ * Last Modified: Wednesday, January 30th 2019, 4:18:18 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -138,8 +138,8 @@ export class AmmoPlugin implements Plugin, IPhysics {
             let manifold = dispatcher.getManifoldByIndexInternal(i);
             let body0 = manifold.getBody0();
             let body1 = manifold.getBody1();
-            let wb0 = Ammo.castObject(body0, Ammo.btRigidBody);
-            let wb1 = Ammo.castObject(body1, Ammo.btRigidBody);
+            let wb0 = (Ammo as any).castObject(body0, Ammo.btRigidBody);
+            let wb1 = (Ammo as any).castObject(body1, Ammo.btRigidBody);
             let e0 = wb0.entity as Entity;
             let e1 = wb1.entity as Entity;
 
@@ -480,7 +480,7 @@ export class AmmoPlugin implements Plugin, IPhysics {
         this.world.rayTest(ammoRayStart, ammoRayEnd, rayCallback);
         if (rayCallback.hasHit()) {
             let collisionObj = rayCallback.get_m_collisionObject();
-            let body = Ammo.castObject(collisionObj, Ammo.btRigidBody);
+            let body = (Ammo as any).castObject(collisionObj, Ammo.btRigidBody);
             if (body) {
                 let point = rayCallback.get_m_hitPointWorld();
                 let normal = rayCallback.get_m_hitNormalWorld();

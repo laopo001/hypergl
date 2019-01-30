@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 30th 2019, 2:50:28 pm
+ * Last Modified: Wednesday, January 30th 2019, 4:31:09 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,7 +17,7 @@ import { Component } from '../../component';
 import { ComponentSystem } from '../../system';
 import { Drawable, Model } from '../../../mesh';
 
-interface Common {
+export interface Common {
     castShadow?: boolean,
     receiveShadow?: boolean,
     material?: Material;
@@ -77,7 +77,7 @@ export class ModelComponent<T extends Material = StandardMaterial> extends Compo
     entity!: Entity;
     instance: Model;
     name = 'model';
-    get model(){
+    get model() {
         return this.instance;
     }
     // _material;

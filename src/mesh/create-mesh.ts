@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 9th 2019, 3:14:23 pm
+ * Last Modified: Wednesday, January 30th 2019, 4:29:53 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -15,7 +15,7 @@
 import { CreateMeshOptions, CreateBoxOptions } from '../types';
 import { Vec3, Vec2 } from '../math';
 import { Mesh } from './mesh';
-
+import { StandardMaterial } from '../material';
 
 let primitiveUv1Padding = 4 / 64;
 let primitiveUv1PaddingScale = 1 - primitiveUv1Padding * 2;

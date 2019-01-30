@@ -5,14 +5,15 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 1st 2019, 2:14:58 am
+ * Last Modified: Wednesday, January 30th 2019, 4:35:52 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Entity, Application } from '..';
+import { Entity } from './entity';
+import { Mat4, Vec3 } from '../math';
 import { ComponentSystem } from '../ecs/system';
 export abstract class Component<Inputs> {
     initialized = false;
@@ -37,10 +38,10 @@ export abstract class Component<Inputs> {
     destroy() {
         this.initialized = false;
     }
-    getPosition() {
+    getPosition(): Vec3 {
         return this.entity.getPosition();
     }
-    getWorldTransform() {
+    getWorldTransform(): Mat4 {
         return this.entity.getWorldTransform();
     }
 }
