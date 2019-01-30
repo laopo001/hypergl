@@ -5,14 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 29th 2019, 1:06:26 am
+ * Last Modified: Tuesday, January 29th 2019, 7:06:25 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
  */
 
 
-import { Entity, StandardMaterial, Config, util, SkyMaterial, Application, Vec3, Color, Texture, CubeTexture, PBRMaterial, Mesh, Drawable } from 'hypergl';
+import { Entity, StandardMaterial, Config, util, SkyMaterial, Application, Vec3, Color, Picker, Texture, CubeTexture, PBRMaterial, Mesh, Drawable } from 'hypergl';
 import { FirstPersonCamera } from './utils/first_person_camera';
 import { Rotate } from './utils/rotate';
 // tslint:disable-next-line:no-duplicate-imports
@@ -132,14 +132,16 @@ async function main() {
     // .addComponent('script', [new FirstPersonCamera({ speed: 2 })]);
     app.scene.root.addChild(camera);
 
+    let picker = new Picker(app.scene);
     document.getElementById('canvas')!.addEventListener('mousedown', (e) => {
-        let from = camera.camera.screenToWorld(e.x, e.y, camera.camera.instance.nearClip);
-        let to = camera.camera.screenToWorld(e.x, e.y, camera.camera.instance.farClip);
-        let result = app.plugins.physics.raycastFirst(from, to);
-        if (result) {
-            let pickedEntity = result.entity;
-            console.log(pickedEntity.name);
-        }
+        // let from = camera.camera.screenToWorld(e.x, e.y, camera.camera.instance.nearClip);
+        // let to = camera.camera.screenToWorld(e.x, e.y, camera.camera.instance.farClip);
+        // let result = app.plugins.physics.raycastFirst(from, to);
+        // if (result) {
+        //     let pickedEntity = result.entity;
+        //     console.log(pickedEntity.name);
+        // }
+        picker.pick(e.x, e.y);
     }, false);
 
     app.start();
