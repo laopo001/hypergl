@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 23rd 2019, 12:13:04 am
+ * Last Modified: Wednesday, January 30th 2019, 2:50:28 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -77,6 +77,9 @@ export class ModelComponent<T extends Material = StandardMaterial> extends Compo
     entity!: Entity;
     instance: Model;
     name = 'model';
+    get model(){
+        return this.instance;
+    }
     // _material;
     constructor(inputs: ModelInputs, entity: Entity, system: ComponentSystem) {
         super(inputs, entity, system);

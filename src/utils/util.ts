@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, December 31st 2018, 5:55:14 pm
+ * Last Modified: Wednesday, January 30th 2019, 2:37:48 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,6 +14,7 @@
 import 'reflect-metadata';
 import { Constructor } from '../types';
 import { Vec3 } from '../math';
+import { Material } from 'cannon';
 
 /**
  * 日志
@@ -74,6 +75,28 @@ export function loadImage(url: string): Promise<ImageBitmap | HTMLImageElement> 
     }
 }
 
+export function to_n_decimal(n: number, d: number) {
+    let res: Array<number> = [];
+    while (n !== 0) {
+        let t = n % d;
+        res.push(t);
+        // tslint:disable-next-line:no-parameter-reassignment
+        n = (n - t) / d;
+    }
+    if (res.length === 0) {
+        return [0];
+    }
+    return res;
+}
+
+export function n_decimal_to_10(v: Array<number>, d: number) {
+    let c = v;
+    let res = 0;
+    c.forEach((x, index) => {
+        res += x * d ** index;
+    });
+    return res;
+}
 export function saveClosure(obj: any) {
     // tslint:disable-next-line:only-arrow-functions
     return function () {

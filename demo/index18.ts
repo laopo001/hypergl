@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 29th 2019, 7:06:25 pm
+ * Last Modified: Wednesday, January 30th 2019, 3:19:17 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -85,14 +85,13 @@ async function main() {
             debugger: true,
             collisionstart: (e) => {
                 console.log(e);
-
             }
         })
         .addComponent('rigidbody', {
             type: 'dynamic',
             mass: 1
         })
-        .setLocalPosition(1, 1, 0);
+        .setLocalPosition(1, 1, 1);
     box2.model.drawable(0).material = grassMaterial;
     // box2.model.drawable(0).outline = true;
     app.scene.root.addChild(box2);
@@ -141,7 +140,7 @@ async function main() {
         //     let pickedEntity = result.entity;
         //     console.log(pickedEntity.name);
         // }
-        picker.pick(e.x, e.y);
+        picker.pick(e.offsetX, e.offsetY);
     }, false);
 
     app.start();

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 29th 2019, 12:24:39 am
+ * Last Modified: Wednesday, January 30th 2019, 3:15:34 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -58,7 +58,7 @@ export class CollisionComponent extends Component<CollisionInputs> {
     name = 'collision';
     instance!: any;
     event = createEvent();
-    private _uuid?: number;
+    private _meshID?: number;
     constructor(inputs: CollisionInputs, entity: Entity, system: ComponentSystem) {
         super(inputs, entity, system);
         copy(inputs, CollisionData);
@@ -115,11 +115,12 @@ export class CollisionComponent extends Component<CollisionInputs> {
                     scale = new Vec3(1, 1, 1);
                     break;
             }
-            this._uuid = mesh!.meshID;
+            this._meshID = mesh!.meshID;
             mesh!.outline = true;
-            mesh!.name = this.name + '-debugger-' + this._uuid!;
+            mesh!.name = this.entity.name + '-' + this.name + '-component';
+
             mesh!.material = this.createMaterial() as any;
-            let e = new Entity({ name: mesh!.name, tag: [this.name] }).addComponent('model', {
+            let e = new Entity({ name: mesh!.name, tag: [this.name, 'debugger'] }).addComponent('model', {
                 type: 'model',
                 model: mesh!
             });

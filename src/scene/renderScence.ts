@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 29th 2019, 6:44:27 pm
+ * Last Modified: Wednesday, January 30th 2019, 3:22:24 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -16,12 +16,13 @@ import { Entity, LightComponent } from '../ecs';
 import { Scene } from './scene';
 import { Shader } from '../graphics/shader';
 import { SEMANTICMAP, SEMANTIC } from '../conf';
-import { Log } from '../utils/util';
+import { Log, to_n_decimal } from '../utils/util';
 import { Mesh } from '../mesh';
 import { Light, DirectionalLight, PointLight, SpotLight } from '../lights';
 import { Vec3, DEG_TO_RAD } from '../math';
 import { Picker } from './picker';
 import { Color } from '../core';
+import { ColorMaterial } from '../material';
 
 
 
@@ -283,29 +284,64 @@ function setLight(name: string, key: string, index, obj, parameters, value) {
     parameters[t] = value;
 }
 
-export function rendererPickerFrame(picker: Picker) {
+export function rendererPickerFrame(picker: Picker, material: ColorMaterial, cb) {
     let scene = picker.scene;
+    let entitys = scene.entitys;
     let pickFrame = picker.pickFrame;
     let drawables = scene.systems.model!.layers;
     let renderer = scene.app.renderer;
     let camera = scene.activeCamera;
     let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
-    let shader = renderer.programGenerator.getShader('color', attributes);
+    material.updateShader(attributes);
+    let shader = material.shader!;
+    renderer.setShaderProgram(shader);
     let color = new Color();
-
     shader.setUniformValue('uViewProjectionMatrix', camera.viewProjectionMatrix().data);
     pickFrame.beforeDraw();
-    for (let i = 0; i < drawables.length; i++) {
-        const drawable = drawables[i];
-        if (!drawable.cache.enabled || !drawable.castShadow) {
+    for (let i = 0; i < entitys.length; i++) {
+        const entity = entitys[i];
+        if (entity.model == null) {
             continue;
         }
-        renderer.setShaderProgram(shader as Shader);
-        shader.setUniformValue('uModelMatrix', drawable.cache.uModelMatrix!.data);
-        color.set(i / 255, 0, 0);
-        shader.setUniformValue('uDiffuseColor', color.data);
-        renderer.draw(drawable);
+        for (let j = 0; j < entity.model.model.meshs.length; j++) {
+            const drawable = entity.model.model.meshs[j];
+            let arr = to_n_decimal(i, 256);
+            if (arr.length >= 5) { console.warn('xxx'); }
+            for (let i = 0; i < 4; i++) {
+                if (arr[i] == null) {
+                    arr[i] = 0;
+                }
+            }
+            if (!drawable.cache.enabled) {
+                continue;
+            }
+            renderer.setShaderProgram(shader as Shader);
+            shader.setUniformValue('uModelMatrix', drawable.cache.uModelMatrix!.data);
+            color.set(arr[0] / 255, arr[1] / 255, arr[2] / 255);
+            shader.setUniformValue('uDiffuseColor', color.data);
+            shader.setUniformValue('uOpacity', arr[3] / 255);
+            renderer.draw(drawable);
+        }
     }
+    // for (let i = 0; i < drawables.length; i++) {
+    //     let arr = to_n_decimal(i, 256);
+    //     if (arr.length >= 4) { console.warn('xxx'); }
+    //     for (let i = 0; i < 3; i++) {
+    //         if (arr[i] == null) {
+    //             arr[i] = 0;
+    //         }
+    //     }
+    //     const drawable = drawables[i];
+    //     if (!drawable.cache.enabled) {
+    //         continue;
+    //     }
+    //     renderer.setShaderProgram(shader as Shader);
+    //     shader.setUniformValue('uModelMatrix', drawable.cache.uModelMatrix!.data);
+    //     color.set(arr[0] / 255, arr[1] / 255, arr[2] / 255);
+    //     shader.setUniformValue('uDiffuseColor', color.data);
+    //     renderer.draw(drawable);
+    // }
+    cb();
     pickFrame.afterDraw();
     return pickFrame.getTexture();
 }
