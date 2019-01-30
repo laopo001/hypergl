@@ -8,7 +8,7 @@ matrix:
 
 install:
   - git clone https://github.com/laopo001/gltf-loader-ts.git src/third_party/gltf-loader-ts
-  # - choco install firefox
+  - choco install firefox
   - choco install googlechrome
   - ps: Install-Product node $env:nodejs_version
   - node --version
