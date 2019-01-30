@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 30th 2019, 4:18:18 pm
+ * Last Modified: Wednesday, January 30th 2019, 4:41:39 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -42,13 +42,13 @@ let Ammo: typeof AMMO;
 let frameCollisions = {};
 let collisions = {};
 
-class RaycastResult {
+export class RaycastResult {
     constructor(public entity: Entity, public point: Vec3, public normal: Vec3) {
 
     }
 }
 
-class SingleContactResult {
+export class SingleContactResult {
     localPointA?: Vec3;
     localPointB?: Vec3;
     pointA?: Vec3;
@@ -63,7 +63,7 @@ class SingleContactResult {
     }
 }
 
-class ContactPoint {
+export class ContactPoint {
     constructor(public localPoint = new Vec3(),
         public localPointOther = new Vec3(),
         public point = new Vec3(),
@@ -73,12 +73,12 @@ class ContactPoint {
     }
 }
 
-class ContactResult {
+export class ContactResult {
     constructor(public other: Entity, public contacts: ContactPoint[]) {
 
     }
 }
-class AllocatePool {
+export class AllocatePool {
     _count = 0;
     _pool: any[] = [];
     constructor(public _constructor, size) {

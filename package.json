@@ -83,7 +83,7 @@
         "version": "gulp version",
         "commit": "gulp commit"
     },
-    "types": "lib/index.d.ts",
+    "types": "lib/src/index.d.ts",
     "typesVersions": {
         ">=3.1": {
             "*": [

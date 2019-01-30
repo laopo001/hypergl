@@ -7,9 +7,10 @@
   "include": [
     "src",
     "typings",
+    "plugins",
   ],
   "exclude": [
     "node_modules",
-    "src/third_party/gltf-loader-ts/test",
+    // "plugins",
   ]
 }

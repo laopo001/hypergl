@@ -5,14 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 1st 2019, 1:23:52 am
+ * Last Modified: Wednesday, January 30th 2019, 4:54:29 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 import { GltfLoader, GltfAsset } from './gltf-loader-ts/source';
-import { Application, Plugin, Mesh, PBRMaterial, Color, Texture, FILTER, WRAP, Entity, Mat4, Quat, RAD_TO_DEG, Scene } from 'hypergl';
+import { Application, Plugin, Mesh, PBRMaterial, StandardMaterial, Color, Texture, FILTER, WRAP, Entity, Mat4, Quat, RAD_TO_DEG, Scene } from 'hypergl';
 
 let loader = new GltfLoader();
 

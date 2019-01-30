@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 30th 2019, 3:15:34 pm
+ * Last Modified: Wednesday, January 30th 2019, 4:39:12 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -20,7 +20,7 @@ import { Mat4, Vec3 } from '../../../math';
 import { ComponentSystem } from '../../system';
 import { event, createEvent } from '../../../core';
 import { Application } from '../../../application';
-import { CannonPhysicsPlugin, IPhysics } from 'hypergl/plugins/physics';
+import { IPhysics } from 'hypergl/plugins/physics';
 import { Mesh } from '../../../mesh';
 import { ColorMaterial, StandardMaterial } from '../../../material';
 import { once } from '../../../utils/decorators';
