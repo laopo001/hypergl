@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 6:03:01 pm
+ * Last Modified: Wednesday, January 30th 2019, 7:07:33 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -87,9 +87,14 @@ module.exports = function (config) {
                 //         result.splice(i, 1);
                 //     }
                 // }
+                if (availableBrowsers.length > 1 && availableBrowsers.indexOf('Firefox') > -1) {
+                    var i = result.indexOf('Firefox');
+                    if (i !== -1) {
+                        result.splice(i, 1);
+                    }
+                }
                 if (availableBrowsers.length > 1 && availableBrowsers.indexOf('IE') > -1) {
                     var i = result.indexOf('IE');
-
                     if (i !== -1) {
                         result.splice(i, 1);
                     }
