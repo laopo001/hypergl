@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, January 21st 2019, 12:13:19 am
+ * Last Modified: Wednesday, January 30th 2019, 5:34:50 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -19,7 +19,7 @@ import { Nullable } from '../types';
 
 export class IElement {
     uuid = generateUUID();
-    name?: string;
+    name = '';
     tag: string[] = [];
     enabled = true;
 }

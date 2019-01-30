@@ -57,6 +57,8 @@
   "include": [
     "src",
     "typings",
+    "tests",
+    "testsOnbrowser",
     "demo"
   ],
   "exclude": [
