@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, January 21st 2019, 12:51:05 am
+ * Last Modified: Wednesday, January 30th 2019, 5:35:51 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -86,12 +86,16 @@ export class Entity extends SceneNode {
         if (arguments.length === 2) {
             this.name = name;
             this.tag = tag;
-        } else if (typeof name === 'string') {
-            this.name = name;
-        } else {
-            this.name = name.name;
-            this.tag = name.options;
         }
+        if (arguments.length === 1) {
+            if (typeof name === 'string') {
+                this.name = name;
+            } else {
+                this.name = name.name;
+                this.tag = name.options;
+            }
+        }
+
     }
     addComponent<K extends keyof ComponentInputs>(name: K, options: ComponentInputs[K]) {
         const system = this.app.scene.systems[name] as ComponentSystem;

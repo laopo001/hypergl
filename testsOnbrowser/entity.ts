@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, January 21st 2019, 12:38:54 am
+ * Last Modified: Wednesday, January 30th 2019, 5:46:30 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -18,8 +18,8 @@ import { assert } from 'chai';
 import { Entity } from '../src/index';
 
 
-describe('Application', () => {
-    it('Application findByName', () => {
+describe('Entity', () => {
+    it('findByName', () => {
         let root = new Entity();
         let parent = new Entity('parent');
         root.addChild(parent);
@@ -29,8 +29,8 @@ describe('Application', () => {
     });
 });
 
-describe('Application', () => {
-    it('Application findByNameAll', () => {
+describe('Entity', () => {
+    it('findByNameAll', () => {
         let root = new Entity();
         let parent = new Entity('parent');
         root.addChild(parent);

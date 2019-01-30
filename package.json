@@ -65,7 +65,8 @@
     "name": "hypergl",
     "pre-commit": [
         "lint",
-        "test"
+        "test",
+        "test:browser"
     ],
     "repository": {
         "type": "git",
