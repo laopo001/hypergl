@@ -17,5 +17,5 @@ install:
 
 test_script:
   - npm test
-  - npm run test:karma
+  - npm run test:browser
 build: off
