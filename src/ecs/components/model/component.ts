@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 30th 2019, 4:31:09 pm
+ * Last Modified: Friday, February 15th 2019, 12:21:44 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -59,20 +59,6 @@ export type ModelInputs = Common & ({
     }
 });
 
-// interface a {
-//     name: 'cylinder';
-// }
-// interface b {
-//     name: 'sphere';
-// }
-// interface age {
-//     age: string;
-// }
-// type c = age & (a | b);
-// let o: c = {
-//     name: 'sphere',
-//     age: '123'
-// };
 export class ModelComponent<T extends Material = StandardMaterial> extends Component<ModelInputs> {
     entity!: Entity;
     instance: Model;

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 1:41:42 am
+ * Last Modified: Friday, February 15th 2019, 12:50:03 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -47,7 +47,7 @@ export class ListenerComponent extends Component<ListenerInputs> {
         event.off('beforeRender', this.update);
     }
     private update = () => {
-        let audios = this.entity.app.scene.systems.audio!.components as AudioComponent[];
+        let audios = this.entity.scene.systems.audio!.components as AudioComponent[];
         audios.forEach(audio => {
             if (!audio.initialized) { return; }
             let a = audio.entity.getPosition();

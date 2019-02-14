@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 30th 2019, 4:33:55 pm
+ * Last Modified: Friday, February 15th 2019, 12:47:18 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -98,7 +98,7 @@ export class CameraComponent extends Component<CameraInputs> {
         return this;
     }
     screenToWorld(screenx, screeny, cameraz, worldCoord?) {
-        let renderer = this.system.app.renderer;
+        let renderer = this.entity.app.renderer;
         return this.instance.screenToWorld(screenx, screeny, cameraz, renderer.canvas.width, renderer.canvas.height, worldCoord);
     }
 }

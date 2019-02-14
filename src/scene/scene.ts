@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, February 14th 2019, 11:44:27 pm
+ * Last Modified: Friday, February 15th 2019, 12:38:45 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -68,7 +68,6 @@ export class Scene {
     materials: Material[] = [];
     drawables: Drawable[] = [];
     root: Entity = new Entity('root');
-    // readonly cameras: Camera[] = [];
     systems: SystemRegistry;
     isRegistered = false;
     private _activeCamera!: CameraComponent;
@@ -82,6 +81,7 @@ export class Scene {
     }
     constructor() {
         this.root.enabled = true;
+        this.root._scene = this;
         this.systems = new SystemRegistry();
         this.systems.add(new CameraComponentSystem());
         this.systems.add(new LightComponentSystem());
@@ -119,7 +119,7 @@ export class Scene {
             }
         }
         this.entitys.push(child);
-        child.enabled = true;
+        // child.enabled = true;
     }
     get [Symbol.toStringTag]() {
         return 'Scene';

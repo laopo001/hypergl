@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 30th 2019, 5:35:51 pm
+ * Last Modified: Friday, February 15th 2019, 12:46:04 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -31,6 +31,7 @@ import { Scene, SceneNode } from '../scene';
 import { Constructor, Undefinedable } from '../types';
 import { Vec3 } from '../math';
 import { ListenerComponent, ListenerInputs } from './components/listener';
+import { SystemRegistry } from './system-register';
 let EntityID = 0;
 
 export interface ComponentInputs {
@@ -44,12 +45,34 @@ export interface ComponentInputs {
     'rigidbody': RigidbodyInputs
 }
 
+const createComponent = {
+    model: ModelComponent,
+    camera: CameraComponent,
+    light: LightComponent,
+    script: ScriptComponent,
+    audio: AudioComponent,
+    listener: ListenerComponent,
+    collision: CollisionComponent,
+    rigidbody: RigidbodyComponent,
+};
+
 export type componentName = keyof ComponentInputs;
 
 export class Entity extends SceneNode {
     get app() {
         return Application.getApp();
     }
+    get scene(): Scene {
+        let p = this as Entity;
+        while (p) {
+            if (p.parent == null) {
+                break;
+            }
+            p = this.parent!;
+        }
+        return p._scene;
+    }
+    _scene!: Scene;
     get enabled() {
         return this._enabled;
     }
@@ -100,20 +123,12 @@ export class Entity extends SceneNode {
     addComponent<K extends keyof ComponentInputs>(name: K, options: ComponentInputs[K]) {
         const system = this.app.scene.systems[name] as ComponentSystem;
         Log.assert(system != null, name + ' system not register');
-        let component = system.addComponent(this, options);
+        // let component = system.addComponent(this, options);
+        let component = new (createComponent[name] as Constructor<Component<{}>>)(options, this);
         this[name as string] = component;
         this.components.push(component);
         return this;
     }
-    // addComponents<K extends keyof ComponentInputs>(arr: Array<{ name: K, options: ComponentInputs[K] }>) {
-    //     arr.forEach(item => {
-    //         if (this[item.name as any]) {
-    //             return;
-    //         }
-    //         this.addComponent(item.name, item.options);
-    //     });
-    //     return this;
-    // }
     get<T extends keyof Entity>(name: T): Pick<Entity, T> {
         if (this[name] == null) {
             Log.error(name + ' not add component');
@@ -141,12 +156,14 @@ export class Entity extends SceneNode {
         children.forEach(child => {
             super.addChild(child);
             child.parent = this;
-            if (this.app) {
-                this.app.scene.add(child);
-            }
+            // if (this.app) {
+            this.scene.add(child);
+            // }
 
             if (!this.enabled) {
                 child.enabled = false;
+            } else {
+                child.enabled = true;
             }
         });
         return this;
