@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, February 15th 2019, 12:47:59 am
+ * Last Modified: Friday, February 15th 2019, 1:11:24 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -36,7 +36,7 @@ async function main() {
     let skym = new SkyMaterial();
     skym.cubeTexture = cubeTexture;
 
-    let scene = new Scene();
+    let scene = new Scene('scene1');
 
     let sky = new Entity('sky')
         .addComponent('model', {
@@ -133,7 +133,7 @@ async function main() {
     scene.root.addChild(camera);
 
     app.addScene(scene);
-    app.setScene(1);
+    app.setScene(0);
 
     // let picker = new Picker(scene);
     document.getElementById('canvas')!.addEventListener('mousedown', (e) => {

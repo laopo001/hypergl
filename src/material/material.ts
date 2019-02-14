@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, January 28th 2019, 10:18:51 pm
+ * Last Modified: Friday, February 15th 2019, 1:07:50 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -32,7 +32,7 @@ export abstract class Material {
     cullFace = FACE.NONE;
     // protected _dirtyUpdate = false;
     constructor(public name?: string) {
-        this.app.scene.materials.push(this);
+
     }
     setUniform(name: string, data: UniformValueType) {
         this.uniforms[name] = data;

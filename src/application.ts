@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, February 14th 2019, 11:44:26 pm
+ * Last Modified: Friday, February 15th 2019, 1:11:07 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -19,7 +19,7 @@ import { event, timer } from './core';
 import { Mesh } from './mesh/mesh';
 import { SystemRegistry } from './ecs/system-register';
 import { CameraComponentSystem } from './ecs/components/camera/system';
-import { sleep } from './utils';
+import { sleep, Log } from './utils';
 // tslint:disable-next-line:no-duplicate-imports
 import * as util from './utils';
 export interface PluginClass<T= Plugin> {
@@ -34,12 +34,13 @@ let app;
 
 export class Application<T= Plugin> {
     get scene() {
-        return this.sceneInstances[this.activeIndex];
+        return this._scene;
     }
     get [Symbol.toStringTag]() {
         return 'Application';
     }
     util = util;
+    _scene!: Scene;
     sceneInstances: Scene[] = [];
     activeIndex = 0;
     renderer: RendererPlatform;
@@ -50,7 +51,8 @@ export class Application<T= Plugin> {
     constructor(canvas: HTMLCanvasElement, option: AppOption = {}) {
         this.canvas = canvas;
         this.renderer = new RendererPlatform(this.canvas, option);
-        this.addScene(new Scene());
+        // this.addScene(new Scene());
+        // this.setScene(0);
         app = this;
         event.fire('application-new', this);
     }
@@ -67,6 +69,9 @@ export class Application<T= Plugin> {
     async start() {
         this.renderer.setViewport(0, 0, this.canvas.width, this.canvas.height);
         this.renderer.setScissor(0, 0, this.canvas.width, this.canvas.height);
+        if (!this.scene) {
+            Log.error('not set active scene');
+        }
         await sleep(10);
         this.tick(0);
     }
@@ -76,8 +81,18 @@ export class Application<T= Plugin> {
         scene.isRegistered = true;
         return i;
     }
-    setScene(index: number) {
-        this.activeIndex = index;
+    setScene(index: number | string) {
+        let scene;
+        if (typeof index === 'string') {
+            let i = this.sceneInstances.findIndex((x) => index === x.name);
+            scene = this.sceneInstances[i];
+        } else {
+            scene = this.sceneInstances[index];
+        }
+        if (scene == null) {
+            Log.error('scene not found');
+        }
+        this._scene = scene;
     }
     on(name: string, cb: FnVoid) {
         event.on(name, cb);

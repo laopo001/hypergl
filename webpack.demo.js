@@ -20,7 +20,7 @@ module.exports = function (env, webpackConfig) {
     return {
         //页面入口文件配置
         entry: {
-            index: `./demo/index19.ts`,
+            index: `./demo/index19/index`,
             // index: `./demo/index13/index.ts`,
             // worker: `./demo/index13/worker.ts`
         },
