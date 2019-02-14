@@ -46,7 +46,8 @@ module.exports = function (env, webpackConfig) {
                             options: {
                                 configFile: 'tsconfig.json',
                                 happyPackMode: true,
-                                transpileOnly: true
+                                transpileOnly: true,
+                                // allowTsInNodeModules: true
                             }
                         }
                     ]
@@ -67,10 +68,7 @@ module.exports = function (env, webpackConfig) {
             ]
         },
         resolve: {
-            extensions: ['.ts', '.tsx', '.js'],
-            alias: {
-                'gltf-loader-ts': path.resolve(__dirname, `./src/third_party/gltf-loader-ts/source`)
-            }
+            extensions: ['.ts', '.tsx', '.js', 'json'],
         },
         externals: [],
         devtool: 'source-map',

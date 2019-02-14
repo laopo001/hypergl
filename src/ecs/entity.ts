@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, February 15th 2019, 1:08:43 am
+ * Last Modified: Friday, February 15th 2019, 3:02:06 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -156,9 +156,10 @@ export class Entity extends SceneNode {
         children.forEach(child => {
             super.addChild(child);
             child.parent = this;
-            // if (this.app) {
-            this.scene.add(child);
-            // }
+
+            // tslint:disable-next-line:no-unused-expression
+            this.scene && this.scene.add(child);
+
 
             if (!this.enabled) {
                 child.enabled = false;

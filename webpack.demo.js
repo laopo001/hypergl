@@ -94,6 +94,6 @@ module.exports = function (env, webpackConfig) {
         devtool: 'source-map',
         mode: 'development',
         performance: { hints: false },
-        target: 'node'
+        // target: 'node'
     };
 }
