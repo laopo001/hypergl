@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, February 15th 2019, 1:23:15 am
+ * Last Modified: Friday, February 15th 2019, 2:11:34 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -21,8 +21,6 @@ import { StatsPlugin } from 'hypergl/plugins/stat';
 import { PointerPlugin } from 'hypergl/plugins/pointer';
 import { AmmoPlugin } from 'hypergl/plugins/physics';
 import { AppPlugin } from '../types';
-// import { scene } from './scene1';
-
 
 async function main() {
     const app = new Application<AppPlugin>(document.getElementById('canvas') as HTMLCanvasElement, {
@@ -31,20 +29,6 @@ async function main() {
     app.registerPlugins([LoadImagePlugin, StatsPlugin, PointerPlugin, AmmoPlugin]);
 
     console.log(app);
-
-
-
-    // let picker = new Picker(scene);
-    document.getElementById('canvas')!.addEventListener('mousedown', (e) => {
-        // let from = camera.camera.screenToWorld(e.x, e.y, camera.camera.instance.nearClip);
-        // let to = camera.camera.screenToWorld(e.x, e.y, camera.camera.instance.farClip);
-        // let result = app.plugins.physics.raycastFirst(from, to);
-        // if (result) {
-        //     let pickedEntity = result.entity;
-        //     console.log(pickedEntity.name);
-        // }
-        // picker.pick(e.offsetX, e.offsetY);
-    }, false);
 
     import('./scene1').then(x => {
         app.addScene(x.scene);
