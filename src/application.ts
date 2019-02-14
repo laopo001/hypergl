@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 22nd 2019, 10:51:30 pm
+ * Last Modified: Thursday, February 14th 2019, 11:44:26 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -73,6 +73,7 @@ export class Application<T= Plugin> {
     addScene(scene: Scene) {
         let i = this.sceneInstances.push(scene);
         scene.app = this;
+        scene.isRegistered = true;
         return i;
     }
     setScene(index: number) {
