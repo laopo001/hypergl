@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, February 14th 2019, 11:47:48 pm
+ * Last Modified: Friday, February 15th 2019, 12:47:59 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -131,6 +131,9 @@ async function main() {
         .lookAt(new Vec3(0, 0, 0));
     // .addComponent('script', [new FirstPersonCamera({ speed: 2 })]);
     scene.root.addChild(camera);
+
+    app.addScene(scene);
+    app.setScene(1);
 
     // let picker = new Picker(scene);
     document.getElementById('canvas')!.addEventListener('mousedown', (e) => {
