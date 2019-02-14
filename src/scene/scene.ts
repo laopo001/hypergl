@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, February 15th 2019, 12:55:38 am
+ * Last Modified: Friday, February 15th 2019, 1:09:22 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -65,8 +65,8 @@ export class Scene {
 
     app!: Application;
     entitys: Entity[] = [];
-    materials: Material[] = [];
-    drawables: Drawable[] = [];
+    // materials: Material[] = [];
+    // drawables: Drawable[] = [];
     root: Entity = new Entity('root');
     systems: SystemRegistry;
     isRegistered = false;
@@ -79,7 +79,7 @@ export class Scene {
     set activeCamera(x) {
         this._activeCamera = x;
     }
-    constructor() {
+    constructor(public name?: string) {
         this.root.enabled = true;
         this.root._scene = this;
         this.systems = new SystemRegistry();

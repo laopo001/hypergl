@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, January 18th 2019, 5:40:24 pm
+ * Last Modified: Friday, February 15th 2019, 1:09:22 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -52,7 +52,7 @@ export class Drawable<T extends Material= Material> {
     material!: T;
     meshID = id++;
     constructor() {
-        Application.getApp().scene.drawables.push(this);
+        // Application.getApp().scene.drawables.push(this);
     }
     // tslint:disable-next-line:cyclomatic-complexity
     create(opts: CreateDrawabelOptions) {
