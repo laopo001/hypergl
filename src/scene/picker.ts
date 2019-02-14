@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 30th 2019, 4:25:05 pm
+ * Last Modified: Thursday, February 14th 2019, 11:46:00 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -15,7 +15,7 @@ import { Scene } from './scene';
 import { Frame } from '../graphics/createFrame';
 import { rendererPickerFrame } from './renderScence';
 import { ColorMaterial } from '../material';
-import { n_decimal_to_10 } from '../utils';
+import { n_decimal_to_10, Log } from '../utils';
 import { Entity } from '../ecs';
 
 export class Picker {
@@ -23,6 +23,9 @@ export class Picker {
     colorMaterial = new ColorMaterial();
     pixels = new Uint8Array(4);
     constructor(public scene: Scene) {
+        if (!scene.isRegistered) {
+            Log.error('场景没有注册');
+        }
         let [x, y, width, height] = scene.app.renderer.gerViewport();
         this.pickFrame = this.scene.createShadowFrame(width, height, false);
     }
