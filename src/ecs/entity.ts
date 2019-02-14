@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, February 15th 2019, 12:46:04 am
+ * Last Modified: Friday, February 15th 2019, 12:55:40 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -98,7 +98,7 @@ export class Entity extends SceneNode {
     boundingBox: any;
     parent?: Entity;
     readonly children: Entity[] = [];
-    private components: Component<{}>[] = [];
+    components: Component<{}>[] = [];
     private _enabled = false;
     constructor(name?: string)
     constructor(options?: { name?: string, tag: string[] })
