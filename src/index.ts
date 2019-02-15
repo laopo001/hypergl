@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 1st 2019, 12:09:33 am
+ * Last Modified: Friday, February 15th 2019, 2:16:33 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -19,6 +19,7 @@ export * from './core';
 export * from './math';
 export * from './application';
 export * from './scene';
+export * from './scene/scene';
 export * from './graphics';
 export * from './material';
 export * from './ecs';
