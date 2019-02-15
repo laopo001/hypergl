@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, February 15th 2019, 2:11:34 am
+ * Last Modified: Friday, February 15th 2019, 2:25:19 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -30,8 +30,8 @@ async function main() {
 
     console.log(app);
 
-    import('./scene1').then(x => {
-        app.addScene(x.scene);
+    import('./scene1').then(module => {
+        app.addScene(module.scene);
         app.setScene('scene1');
         app.start();
     });

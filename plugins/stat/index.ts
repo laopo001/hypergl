@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, December 21st 2018, 10:06:04 pm
+ * Last Modified: Friday, February 15th 2019, 2:16:02 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,7 +13,7 @@
 
 
 import { Application, Plugin } from 'hypergl';
-import * as Stats from './stats.js';
+import Stats from './stats.js';
 export class StatsPlugin implements Plugin {
     static pname = 'stats';
     constructor(private app: Application) {
