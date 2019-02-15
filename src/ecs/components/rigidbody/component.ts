@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 30th 2019, 4:30:45 pm
+ * Last Modified: Friday, February 15th 2019, 2:08:13 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -13,7 +13,7 @@
 
 
 
-import { Entity, Camera } from '../../..';
+import { Entity } from '../../entity';
 import { Component } from '../../component';
 import { Log, copy } from '../../../utils/util';
 import { Mat4, Vec3 } from '../../../math';

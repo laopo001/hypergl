@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, February 15th 2019, 12:50:03 am
+ * Last Modified: Friday, February 15th 2019, 2:06:10 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,13 +13,14 @@
 
 
 
-import { Entity } from '../../..';
 import { Component } from '../../component';
 import { Log } from '../../../utils/util';
 import { Mat4, Vec3, Vec4 } from '../../../math';
 import { ComponentSystem } from '../../system';
 import { event } from '../../../core';
 import { AudioComponent } from '../audio';
+import { Entity } from '../../entity';
+
 export interface ListenerInputs {
 }
 

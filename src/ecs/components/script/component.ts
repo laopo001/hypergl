@@ -5,14 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 1:23:40 am
+ * Last Modified: Friday, February 15th 2019, 2:08:35 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Entity, Application, Model, math, Mesh } from '../../..';
+import { Entity } from '../../entity';
 import { Component } from '../../component';
 import { Script } from './script';
 import { ComponentSystem } from '../../system';

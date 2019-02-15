@@ -5,17 +5,20 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, February 15th 2019, 12:21:44 am
+ * Last Modified: Friday, February 15th 2019, 2:05:19 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Entity, Application, math, Mesh, StandardMaterial, Material, Vec3, Vec2 } from '../../..';
+// import { Entity, Mesh, StandardMaterial, Material, Vec3, Vec2 } from '../../..';
 import { Component } from '../../component';
 import { ComponentSystem } from '../../system';
-import { Drawable, Model } from '../../../mesh';
+import { Drawable, Model, Mesh } from '../../../mesh';
+import { Entity } from '../../entity';
+import { Material, StandardMaterial } from '../../../material';
+import { Vec2, Vec3 } from '../../../math';
 
 export interface Common {
     castShadow?: boolean,

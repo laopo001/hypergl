@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, February 14th 2019, 11:21:01 pm
+ * Last Modified: Friday, February 15th 2019, 1:46:10 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -27,9 +27,10 @@ module.exports = function (env, webpackConfig) {
         //入口文件输出配置
         output: {
             path: path.resolve(__dirname, 'build'),
-            library: 'HGL',
+            // library: 'HGL',
             // libraryTarget: "umd",
-            filename: '[name].js'
+            filename: '[name].js',
+            chunkFilename: '[name].bundle.js',
         },
         //插件项
         plugins: [

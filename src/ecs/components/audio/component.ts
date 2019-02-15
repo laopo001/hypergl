@@ -1,5 +1,5 @@
 
-import { Entity, Camera } from '../../..';
+import { Entity } from '../../entity';
 import { Component } from '../../component';
 import { Log, copy } from '../../../utils/util';
 import { Mat4, Vec3 } from '../../../math';
@@ -42,7 +42,7 @@ export const AudioData: Partial<AudioInputs> = {
 };
 
 export class AudioComponent extends Component<AudioInputs> {
-    name = 'camera';
+    name = 'audio';
     instance!: Howl;
     constructor(inputs: AudioInputs, entity: Entity, system: ComponentSystem) {
         super(inputs, entity, system);
