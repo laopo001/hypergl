@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, February 15th 2019, 2:25:19 pm
+ * Last Modified: Saturday, February 16th 2019, 12:44:41 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -16,7 +16,7 @@ import { Entity, StandardMaterial, Config, Scene, util, SkyMaterial, Application
 import { FirstPersonCamera } from '../utils/first_person_camera';
 import { Rotate } from '../utils/rotate';
 // tslint:disable-next-line:no-duplicate-imports
-import { LoadImagePlugin } from 'hypergl/plugins/load';
+import { LoadImagePlugin, GltfPlugin } from 'hypergl/plugins/load';
 import { StatsPlugin } from 'hypergl/plugins/stat';
 import { PointerPlugin } from 'hypergl/plugins/pointer';
 import { AmmoPlugin } from 'hypergl/plugins/physics';
@@ -26,15 +26,32 @@ async function main() {
     const app = new Application<AppPlugin>(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
-    app.registerPlugins([LoadImagePlugin, StatsPlugin, PointerPlugin, AmmoPlugin]);
+    app.registerPlugins([LoadImagePlugin, StatsPlugin, PointerPlugin, AmmoPlugin, GltfPlugin]);
 
     console.log(app);
 
-    import('./scene1').then(module => {
+    import('./scene-pick').then(module => {
         app.addScene(module.scene);
-        app.setScene('scene1');
+        app.setScene('pick');
+        let button = document.createElement('button');
+        button.innerText = 'pick';
+        button.onclick = () => {
+            app.setScene('pick');
+        };
+        document.body.append(button);
         app.start();
     });
+
+    import('./scene-gltf').then(module => {
+        app.addScene(module.scene);
+        let button = document.createElement('button');
+        button.innerText = 'gltf';
+        button.onclick = () => {
+            app.setScene('gltf');
+        };
+        document.body.append(button);
+    });
+
 
 }
 
