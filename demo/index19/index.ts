@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, February 16th 2019, 12:44:41 am
+ * Last Modified: Saturday, February 16th 2019, 2:20:28 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -32,18 +32,18 @@ async function main() {
 
     import('./scene-pick').then(module => {
         app.addScene(module.scene);
-        app.setScene('pick');
         let button = document.createElement('button');
         button.innerText = 'pick';
         button.onclick = () => {
             app.setScene('pick');
         };
         document.body.append(button);
-        app.start();
     });
 
     import('./scene-gltf').then(module => {
         app.addScene(module.scene);
+        app.setScene('gltf');
+        app.start();
         let button = document.createElement('button');
         button.innerText = 'gltf';
         button.onclick = () => {

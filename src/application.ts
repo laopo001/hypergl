@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, February 16th 2019, 12:04:45 am
+ * Last Modified: Saturday, February 16th 2019, 1:31:28 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -51,8 +51,8 @@ export class Application<T= Plugin> {
     constructor(canvas: HTMLCanvasElement, option: AppOption = {}) {
         this.canvas = canvas;
         this.renderer = new RendererPlatform(this.canvas, option);
-        // this.addScene(new Scene());
-        // this.setScene(0);
+        this.addScene(new Scene());
+        this.setScene(0);
         app = this;
         event.fire('application-new', this);
     }
