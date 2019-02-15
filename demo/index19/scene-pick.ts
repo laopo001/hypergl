@@ -5,17 +5,17 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, February 15th 2019, 1:14:29 am
+ * Last Modified: Saturday, February 16th 2019, 12:38:40 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
  */
 
 
-import { Entity, StandardMaterial, Config, Scene, util, SkyMaterial, Application, Vec3, Color, Picker, Texture, CubeTexture, PBRMaterial, Mesh, Drawable } from 'hypergl';
+import { Entity, StandardMaterial, Config, event, Scene, util, SkyMaterial, Application, Vec3, Color, Picker, Texture, CubeTexture, PBRMaterial, Mesh, Drawable } from 'hypergl';
 
 
-let scene = new Scene('scene1');
+let scene = new Scene('pick');
 
 let cubeTexture = CubeTexture.loadImage('assets/images/skybox_px.jpg', 'assets/images/skybox_nx.jpg', 'assets/images/skybox_py.jpg', 'assets/images/skybox_ny.jpg',
     'assets/images/skybox_pz.jpg', 'assets/images/skybox_nz.jpg');
@@ -115,6 +115,14 @@ let camera = new Entity('camera')
     .lookAt(new Vec3(0, 0, 0));
 // .addComponent('script', [new FirstPersonCamera({ speed: 2 })]);
 scene.root.addChild(camera);
+
+event.on('start', () => {
+    let picker = new Picker(scene);
+    document.getElementById('canvas')!.addEventListener('mousedown', (e) => {
+        let entity = picker.pick(e.offsetX, e.offsetY);
+        console.log(entity.name);
+    }, false);
+});
 
 
 export { scene };

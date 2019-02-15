@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, February 15th 2019, 1:11:07 am
+ * Last Modified: Saturday, February 16th 2019, 12:04:45 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -73,6 +73,7 @@ export class Application<T= Plugin> {
             Log.error('not set active scene');
         }
         await sleep(10);
+        event.fire('start');
         this.tick(0);
     }
     addScene(scene: Scene) {
