@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, January 18th 2019, 5:34:48 pm
+ * Last Modified: Saturday, February 16th 2019, 2:29:16 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -44,23 +44,7 @@ export class ModelComponentSystem extends ComponentSystem {
                         drawable.cache.position = position;
                         drawable.cache.uNormalMatrix = uNormalMatrix;
                         drawable.cache.uModelMatrix = uModelMatrix;
-                        // if (!drawable.debugger) {
-                        //     drawable.cache.uModelMatrix = uModelMatrix;
 
-                        // } else {
-                        //     let { x, y, z } = drawable.cache.setScale!;
-                        //     let clone = uModelMatrix.clone();
-                        //     let m = clone.data;
-                        //     m[0] /= scale.x;
-                        //     m[5] /= scale.y;
-                        //     m[10] /= scale.z;
-                        //     m[0] *= x;
-                        //     m[5] *= y;
-                        //     m[10] *= z;
-                        //     drawable.cache.uModelMatrix = clone;
-                        //     // console.log(drawable.cache.uModelMatrix.getTranslation().data);
-                        //     // drawable.cache.uModelMatrix = uModelMatrix;
-                        // }
                         if ((drawable.material as StandardMaterial).opacity < 1 || (drawable.material as StandardMaterial).opacityMap) {
                             this.opacityLayers.push(drawable);
                         } else {

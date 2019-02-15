@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, February 15th 2019, 3:02:06 am
+ * Last Modified: Saturday, February 16th 2019, 2:48:08 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -33,6 +33,13 @@ import { Vec3 } from '../math';
 import { ListenerComponent, ListenerInputs } from './components/listener';
 import { SystemRegistry } from './system-register';
 let EntityID = 0;
+
+function forChildren(children: Entity[], value: boolean) {
+    children.forEach(c => {
+        c.enabled = value;
+        forChildren(c.children, value);
+    });
+}
 
 export interface ComponentInputs {
     'camera': CameraInputs,
@@ -84,6 +91,8 @@ export class Entity extends SceneNode {
                 x.initialize();
             });
         }
+        // tslint:disable-next-line:no-unused-expression
+        this.children && forChildren(this.children, value);
     }
     EntityID = EntityID++;
     mesh?: Mesh;

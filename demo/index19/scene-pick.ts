@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, February 16th 2019, 12:38:40 am
+ * Last Modified: Saturday, February 16th 2019, 1:21:42 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -13,7 +13,9 @@
 
 
 import { Entity, StandardMaterial, Config, event, Scene, util, SkyMaterial, Application, Vec3, Color, Picker, Texture, CubeTexture, PBRMaterial, Mesh, Drawable } from 'hypergl';
+import { AppPlugin } from '../types';
 
+let app = Application.getApp<AppPlugin>();
 
 let scene = new Scene('pick');
 
@@ -119,8 +121,10 @@ scene.root.addChild(camera);
 event.on('start', () => {
     let picker = new Picker(scene);
     document.getElementById('canvas')!.addEventListener('mousedown', (e) => {
-        let entity = picker.pick(e.offsetX, e.offsetY);
-        console.log(entity.name);
+        if (app.scene.name === 'pick') {
+            let entity = picker.pick(e.offsetX, e.offsetY);
+            console.log(entity.name);
+        }
     }, false);
 });
 
