@@ -5,20 +5,21 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, February 15th 2019, 12:47:18 am
+ * Last Modified: Friday, February 15th 2019, 2:07:05 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Entity, Camera } from '../../..';
+
 import { Component } from '../../component';
 import { Log, copy } from '../../../utils/util';
 import { Mat4, Vec3 } from '../../../math';
 import { ComponentSystem } from '../../system';
 import { Color } from '../../../core';
-
+import { Camera } from '../../../scene/camera';
+import { Entity } from '../../entity';
 export interface CameraInputs {
     type: 'perspective' | 'orthographic'
     orthographic?: {
