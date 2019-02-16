@@ -23,10 +23,10 @@ npm run test:browser (测试依赖浏览器的部分)
  * skybox
  * physical system and rigid-body
  * pbr material
+ * multiple scene manage
 
 # Roadmap
  * webgl2 -> webgl1
- * multiple scene manage
 
 # examples
  * [3d-audio](https://stackblitz.com/edit/hypegl-3d-audio)

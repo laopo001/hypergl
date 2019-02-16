@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, February 15th 2019, 1:09:22 am
+ * Last Modified: Saturday, February 16th 2019, 10:01:42 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -23,7 +23,7 @@ import { Frame } from '../graphics/createFrame';
 import { Log } from '../utils/util';
 import { Mesh } from '../mesh/mesh';
 import { StandardMaterial, Material } from '../material';
-import { event, IElement } from '../core';
+import { event, IElement, createEvent } from '../core';
 import { SystemRegistry } from '../ecs/system-register';
 import { CameraComponentSystem } from '../ecs/components/camera/system';
 import { LightComponentSystem } from '../ecs/components/light/system';
@@ -36,6 +36,7 @@ import { CollisionComponentSystem } from '../ecs/components/collision';
 import { RigidbodyComponentSystem } from '../ecs/components/rigidbody';
 import { FOG } from '../conf';
 import { Drawable } from '../mesh';
+
 export class Scene {
     static ambientColor = new Color(0.2, 0.2, 0.2);
     fog: FOG = FOG.NONE;
@@ -70,6 +71,7 @@ export class Scene {
     root: Entity = new Entity('root');
     systems: SystemRegistry;
     isRegistered = false;
+    sceneEvent = createEvent();
     private _activeCamera!: CameraComponent;
     get activeCamera() {
         let defaultCamera = this.systems.camera!.components[0];
@@ -78,6 +80,9 @@ export class Scene {
     }
     set activeCamera(x) {
         this._activeCamera = x;
+    }
+    get isActive() {
+        return this.isRegistered && this.app.scene === this;
     }
     constructor(public name?: string) {
         this.root.enabled = true;
@@ -91,6 +96,11 @@ export class Scene {
         this.systems.add(new ListenerComponentSystem());
         this.systems.add(new CollisionComponentSystem());
         this.systems.add(new RigidbodyComponentSystem());
+        event.on('update', (dt) => {
+            if (this.isActive) {
+                this.sceneEvent.fire('sceneUpdate', dt);
+            }
+        });
     }
     render() {
         this.root.syncHierarchy();
@@ -123,6 +133,12 @@ export class Scene {
         });
         this.entitys.push(child);
         // child.enabled = true;
+    }
+    onUpdate(cb) {
+        this.sceneEvent.on('sceneUpdate', cb);
+    }
+    offUpdate(cb) {
+        this.sceneEvent.off('sceneUpdate', cb);
     }
     get [Symbol.toStringTag]() {
         return 'Scene';
