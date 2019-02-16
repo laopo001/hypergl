@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, February 16th 2019, 1:31:28 am
+ * Last Modified: Saturday, February 16th 2019, 11:55:36 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -25,6 +25,7 @@ import * as util from './utils';
 export interface PluginClass<T= Plugin> {
     pname: string;
     new(app: Application): T;
+    create?(): any;
 }
 
 export interface Plugin {
@@ -34,6 +35,10 @@ let app;
 
 export class Application<T= Plugin> {
     get scene() {
+        if (!this._scene) {
+            this.addScene(new Scene());
+            this.setScene(0);
+        }
         return this._scene;
     }
     get [Symbol.toStringTag]() {
@@ -51,8 +56,6 @@ export class Application<T= Plugin> {
     constructor(canvas: HTMLCanvasElement, option: AppOption = {}) {
         this.canvas = canvas;
         this.renderer = new RendererPlatform(this.canvas, option);
-        this.addScene(new Scene());
-        this.setScene(0);
         app = this;
         event.fire('application-new', this);
     }
@@ -80,6 +83,7 @@ export class Application<T= Plugin> {
         let i = this.sceneInstances.push(scene);
         scene.app = this;
         scene.isRegistered = true;
+        scene.sceneEvent.fire('register');
         return i;
     }
     setScene(index: number | string) {
@@ -106,11 +110,16 @@ export class Application<T= Plugin> {
                 console.error(c.pname + '插件名称已经注册', c);
                 return;
             }
-            let p = new c(this) as any;
-            if (p.initialize) {
-                p.initialize();
+            if (c.create) {
+                this.plugins[c.pname] = c.create();
+            } else {
+                let p = new c(this) as any;
+                if (p.initialize) {
+                    p.initialize();
+                }
+                this.plugins[c.pname] = p;
             }
-            this.plugins[c.pname] = p;
+
         }
     }
     // tslint:disable-next-line:member-ordering

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, February 16th 2019, 10:01:42 pm
+ * Last Modified: Sunday, February 17th 2019, 2:39:58 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -88,17 +88,17 @@ export class Scene {
         this.root.enabled = true;
         this.root._scene = this;
         this.systems = new SystemRegistry();
-        this.systems.add(new CameraComponentSystem());
-        this.systems.add(new LightComponentSystem());
-        this.systems.add(new ScriptComponentSystem());
-        this.systems.add(new ModelComponentSystem());
-        this.systems.add(new AudioComponentSystem());
-        this.systems.add(new ListenerComponentSystem());
-        this.systems.add(new CollisionComponentSystem());
-        this.systems.add(new RigidbodyComponentSystem());
+        this.systems.add(new CameraComponentSystem(this));
+        this.systems.add(new LightComponentSystem(this));
+        this.systems.add(new ScriptComponentSystem(this));
+        this.systems.add(new ModelComponentSystem(this));
+        this.systems.add(new AudioComponentSystem(this));
+        this.systems.add(new ListenerComponentSystem(this));
+        this.systems.add(new CollisionComponentSystem(this));
+        this.systems.add(new RigidbodyComponentSystem(this));
         event.on('update', (dt) => {
             if (this.isActive) {
-                this.sceneEvent.fire('sceneUpdate', dt);
+                this.sceneEvent.fire('update', dt);
             }
         });
     }
@@ -134,12 +134,12 @@ export class Scene {
         this.entitys.push(child);
         // child.enabled = true;
     }
-    onUpdate(cb) {
-        this.sceneEvent.on('sceneUpdate', cb);
-    }
-    offUpdate(cb) {
-        this.sceneEvent.off('sceneUpdate', cb);
-    }
+    // onUpdate(cb) {
+    //     this.sceneEvent.on('update', cb);
+    // }
+    // offUpdate(cb) {
+    //     this.sceneEvent.off('update', cb);
+    // }
     get [Symbol.toStringTag]() {
         return 'Scene';
     }

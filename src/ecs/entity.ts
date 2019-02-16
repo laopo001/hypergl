@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, February 16th 2019, 2:48:08 am
+ * Last Modified: Sunday, February 17th 2019, 12:01:44 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -133,6 +133,7 @@ export class Entity extends SceneNode {
         // const system = this.app.scene.systems[name] as ComponentSystem;
         // Log.assert(system != null, name + ' system not register');
         // let component = system.addComponent(this, options);
+
         let component = new (createComponent[name] as Constructor<Component<{}>>)(options, this);
         this[name as string] = component;
         this.components.push(component);

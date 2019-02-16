@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, February 16th 2019, 1:21:42 am
+ * Last Modified: Sunday, February 17th 2019, 3:43:36 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -78,10 +78,13 @@ let box2 = new Entity('box2')
         type: 'dynamic',
         mass: 1
     })
-    .setLocalPosition(1, 1, 1);
+    .setLocalPosition(1, 2, 1);
 box2.model.drawable(0).material = grassMaterial;
 // box2.model.drawable(0).outline = true;
 scene.root.addChild(box2);
+// scene.sceneEvent.on('update', () => {
+//     console.log(box2.getPosition().data);
+// });
 
 let sphere1 = new Entity('sphere')
     .addComponent('model', {

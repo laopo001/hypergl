@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, January 7th 2019, 12:55:57 am
+ * Last Modified: Saturday, February 16th 2019, 11:48:04 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -17,12 +17,13 @@ import { CollisionComponent } from './component';
 import { Entity } from '../../entity';
 import { Model } from '../../../mesh';
 import { once } from '../../..//utils/decorators';
+import { Scene } from '../../../scene';
 export class CollisionComponentSystem extends ComponentSystem {
     componentConstructor = CollisionComponent;
     name = 'collision';
     // _entity = new Entity();
-    constructor() {
-        super();
+    constructor(scene: Scene) {
+        super(scene);
 
     }
     @once

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, February 16th 2019, 2:29:16 am
+ * Last Modified: Saturday, February 16th 2019, 11:48:04 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -18,6 +18,7 @@ import { StandardMaterial } from '../../../material';
 import { Vec3 } from '../../../math/vec3';
 import { event } from '../../../core';
 import { Drawable } from '../../../mesh';
+import { Scene } from '../../../scene';
 
 export class ModelComponentSystem extends ComponentSystem {
     name = 'model';
@@ -27,8 +28,8 @@ export class ModelComponentSystem extends ComponentSystem {
     components: ModelComponent[] = [];
     layers: Drawable[] = [];
     private _dirty = false;
-    constructor() {
-        super();
+    constructor(scene: Scene) {
+        super(scene);
 
         event.on('beforeRender', () => {
             if (this._dirty) {
