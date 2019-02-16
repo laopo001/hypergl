@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 30th 2019, 4:41:39 pm
+ * Last Modified: Sunday, February 17th 2019, 3:42:24 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -38,7 +38,7 @@ export interface CreateShapeOptions {
 }
 
 
-let Ammo: typeof AMMO;
+// let
 let frameCollisions = {};
 let collisions = {};
 
@@ -109,6 +109,7 @@ export class AllocatePool {
 export class AmmoPlugin implements Plugin, IPhysics {
     static pname = 'physics';
     type = 'ammo';
+    Ammo!: typeof AMMO;
     ammoVec1!: AMMO.btVector3;
     ammoVec2!: AMMO.btVector3;
     ammoOrigin!: AMMO.btVector3;
@@ -119,8 +120,12 @@ export class AmmoPlugin implements Plugin, IPhysics {
     constructor(private app: Application) {
 
     }
+    static create() {
+        return AmmoPlugin;
+    }
     // tslint:disable-next-line:cyclomatic-complexity
     onUpdate = (dt) => {
+        let Ammo = this.Ammo;
         // tslint:disable-next-line:no-parameter-reassignment
         dt = dt || 1;
         this.world.stepSimulation(dt, 10, 1 / 60);
@@ -243,7 +248,8 @@ export class AmmoPlugin implements Plugin, IPhysics {
     async initialize() {
         return new Promise((resolve) => {
             (AMMO as any)().then((e) => {
-                Ammo = e;
+                this.Ammo = e;
+                let Ammo = this.Ammo;
                 this.initWorld();
                 this.ammoVec1 = new Ammo.btVector3();
                 this.ammoVec2 = new Ammo.btVector3();
@@ -256,6 +262,7 @@ export class AmmoPlugin implements Plugin, IPhysics {
         });
     }
     initWorld() {
+        let Ammo = this.Ammo;
         // Physics configuration
         let collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
         let dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration);
@@ -263,13 +270,15 @@ export class AmmoPlugin implements Plugin, IPhysics {
         let solver = new Ammo.btSequentialImpulseConstraintSolver();
         let physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
         physicsWorld.setGravity(new Ammo.btVector3(0, -9.82, 0));
-        this.app.on('update', this.onUpdate);
+        // this.app.on('update', this.onUpdate);
         this.world = physicsWorld;
     }
     setGravity(g: Vec3) {
+        let Ammo = this.Ammo;
         this.world.setGravity(new Ammo.btVector3(g.x, g.y, g.z));
     }
     createShape<K extends keyof CreateShapeOptions>(name: K, options: CreateShapeOptions[K]) {
+        let Ammo = this.Ammo;
         let shape;
         if (name === 'box') {
             let o = options as CreateShapeOptions['box'];
@@ -311,7 +320,7 @@ export class AmmoPlugin implements Plugin, IPhysics {
         angularVelocity?: Vec3;
         mass?: number;
         friction?: number,
-        restitution: number,
+        restitution?: number,
         linearDamping?: number;
         angularDamping?: number;
         linearFactor?: Vec3;
@@ -320,7 +329,7 @@ export class AmmoPlugin implements Plugin, IPhysics {
         group?: number;
         mask?: number;
     }, entity: Entity) {
-        // console.log(o);
+        let Ammo = this.Ammo;
         let { mass, type, shape, quaternion, position, friction, restitution,
             linearDamping, angularDamping, linearFactor, angularFactor, group, mask } = o as Required<typeof o>;
 
@@ -371,6 +380,7 @@ export class AmmoPlugin implements Plugin, IPhysics {
         return body;
     }
     syncEntityToBody(entity: Entity, body: AMMO.btRigidBody, init = true) {
+        let Ammo = this.Ammo;
         let pos = entity.getPosition();
         let rot = entity.getRotation();
 
@@ -392,21 +402,30 @@ export class AmmoPlugin implements Plugin, IPhysics {
 
     }
     syncBodyToEntity(entity: Entity, body: AMMO.btRigidBody, dt: number) {
-
+        let Ammo = this.Ammo;
+        // tslint:disable-next-line:one-variable-per-declaration
+        let x, y, z, w;
         if (body.isActive()) {
             let ammoTransform = new Ammo.btTransform();
             let motionState = body.getMotionState();
             if (motionState) {
                 motionState.getWorldTransform(ammoTransform);
-
                 let p = ammoTransform.getOrigin();
+                x = p.x();
+                y = p.y();
+                z = p.z();
+                entity.setPosition(x, y, z);
                 let q = ammoTransform.getRotation();
-                entity.setPosition(p.x(), p.y(), p.z());
-                entity.setRotation(q.x(), q.y(), q.z(), q.w());
+                x = q.x();
+                y = q.y();
+                z = q.z();
+                w = q.w();
+                entity.setRotation(x, y, z, w);
             }
         }
     }
     enableSimulation(entity: Entity, body: AMMO.btRigidBody) {
+        let Ammo = this.Ammo;
         if (entity.collision && entity.collision.enabled && !entity.rigidbody.simulationEnabled) {
             if (body) {
                 this.addBody2(body, entity.rigidbody.inputs.group!, entity.rigidbody.inputs.mask!);
@@ -426,6 +445,7 @@ export class AmmoPlugin implements Plugin, IPhysics {
     }
     // tslint:disable-next-line:adjacent-overload-signatures
     addBody2(body: AMMO.btRigidBody, group: number, mask: number) {
+        let Ammo = this.Ammo;
         if (group !== undefined && mask !== undefined) {
             this.world.addRigidBody(body, group, mask);
         } else {
@@ -434,6 +454,7 @@ export class AmmoPlugin implements Plugin, IPhysics {
         return body;
     }
     disableSimulation(entity: Entity, body: AMMO.btRigidBody) {
+        let Ammo = this.Ammo;
         if (body && entity.rigidbody.simulationEnabled) {
             this.world.removeRigidBody(body);
             // set activation state to disable simulation to avoid body.isActive() to return
@@ -446,6 +467,7 @@ export class AmmoPlugin implements Plugin, IPhysics {
     applyForce(body: AMMO.btRigidBody, options: {
         force: Vec3, point?: Vec3
     }) {
+        let Ammo = this.Ammo;
         body.activate();
         this.ammoVec1.setValue(options.force.x, options.force.y, options.force.z);
         if (options.point !== undefined) {
@@ -458,6 +480,7 @@ export class AmmoPlugin implements Plugin, IPhysics {
     applyImpulse(body: AMMO.btRigidBody, options: {
         impulse: Vec3, point?: Vec3
     }) {
+        let Ammo = this.Ammo;
         body.activate();
         this.ammoVec1.setValue(options.impulse.x, options.impulse.y, options.impulse.z);
         if (options.point !== undefined) {
@@ -468,9 +491,11 @@ export class AmmoPlugin implements Plugin, IPhysics {
         }
     }
     setMass(body: AMMO.btRigidBody) {
+        let Ammo = this.Ammo;
         // todo
     }
     raycastFirst(start: Vec3, end: Vec3) {
+        let Ammo = this.Ammo;
         let result: null | RaycastResult = null;
 
         let ammoRayStart = new Ammo.btVector3(start.x, start.y, start.z);
@@ -508,6 +533,7 @@ export class AmmoPlugin implements Plugin, IPhysics {
         return result;
     }
     private _storeCollision(entity: Entity, other: Entity) {
+        let Ammo = this.Ammo;
         let isNewCollision = false;
         let guid = entity.uuid;
 
@@ -524,6 +550,7 @@ export class AmmoPlugin implements Plugin, IPhysics {
         return isNewCollision;
     }
     private _createContactPointFromAmmo(contactPoint) {
+        let Ammo = this.Ammo;
         let contact = this.contactPointPool.allocate();
 
         contact.localPoint.set(contactPoint.get_m_localPointA().x(), contactPoint.get_m_localPointA().y(), contactPoint.get_m_localPointA().z());
@@ -535,6 +562,7 @@ export class AmmoPlugin implements Plugin, IPhysics {
         return contact;
     }
     private _createReverseContactPointFromAmmo(contactPoint) {
+        let Ammo = this.Ammo;
         let contact = this.contactPointPool.allocate();
 
         contact.localPointOther.set(contactPoint.get_m_localPointA().x(), contactPoint.get_m_localPointA().y(), contactPoint.get_m_localPointA().z());
@@ -545,6 +573,7 @@ export class AmmoPlugin implements Plugin, IPhysics {
         return contact;
     }
     private _createSingleContactResult(a, b, contactPoint) {
+        let Ammo = this.Ammo;
         let result = this.singleContactResultPool.allocate();
 
         result.a = a;
@@ -558,6 +587,7 @@ export class AmmoPlugin implements Plugin, IPhysics {
         return result;
     }
     private _createContactResult(other, contacts) {
+        let Ammo = this.Ammo;
         let result = this.contactResultPool.allocate();
         result.other = other;
         result.contacts = contacts;

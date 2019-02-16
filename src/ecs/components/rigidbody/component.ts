@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, February 15th 2019, 2:08:13 pm
+ * Last Modified: Sunday, February 17th 2019, 2:48:57 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -65,14 +65,15 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
         copy(inputs, RigidbodyData);
     }
 
-    initialize() {
+    async initialize() {
         super.initialize();
         if (this.entity.collision.instance === null) {
             console.warn('没有碰撞组件');
             return;
         }
-        let app = this.entity.app as Application<{ physics: IPhysics }>;
-        let physics = app.plugins.physics;
+        let app = this.entity.scene.app as Application<{ physics: IPhysics }>;
+        //         let physics = this.entity.scene.systems.rigidbody!.physics;
+        let physics = await this.entity.scene.systems.rigidbody!.asyncPhysics;
 
         let { type, mass, linearDamping, angularDamping, linearFactor,
             angularFactor, friction, restitution, group, mask } = this.inputs;
@@ -86,7 +87,7 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
             group, mask
         }, this.entity);
         body['entity'] = this.entity;
-        event.on('update', (dt) => {
+        this.entity.scene.sceneEvent.on('update', (dt) => {
             if (this.enabled) {
                 if (this.entity.rigidbody.inputs.type === 'dynamic') {
                     physics.syncBodyToEntity(this.entity, body, dt);
@@ -98,7 +99,7 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
                     _displacement.copy(this.inputs.angularVelocity!).scale(dt);
                     this.entity.rotate(_displacement.x, _displacement.y, _displacement.z);
                     if (this.body.getMotionState()) {
-                        physics.syncEntityToBody(Entity, body, false);
+                        physics.syncEntityToBody(this.entity, body, false);
                     }
                 }
             }
@@ -107,14 +108,14 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
     }
     applyForce(force: Vec3, point?: Vec3) {
         let app = this.entity.app as Application<{ physics: IPhysics }>;
-        let physics = app.plugins.physics;
+        let physics = this.entity.scene.systems.rigidbody!.physics;
         physics.applyForce(this.instance, {
             force, point
         });
     }
     applyImpulse(impulse: Vec3, point?: Vec3) {
         let app = this.entity.app as Application<{ physics: IPhysics }>;
-        let physics = app.plugins.physics;
+        let physics = this.entity.scene.systems.rigidbody!.physics;
         physics.applyImpulse(this.instance, {
             impulse, point
         });
@@ -123,7 +124,7 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
     teleport(x: number, y: number, z: number);
     teleport(x, y?, z?) {
         let app = this.entity.app as Application<{ physics: IPhysics }>;
-        let physics = app.plugins.physics;
+        let physics = this.entity.scene.systems.rigidbody!.physics;
         if (x instanceof Vec3) {
             this.entity.setPosition(x);
         } else {

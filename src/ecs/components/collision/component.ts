@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 30th 2019, 4:39:12 pm
+ * Last Modified: Sunday, February 17th 2019, 2:11:40 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -64,10 +64,10 @@ export class CollisionComponent extends Component<CollisionInputs> {
         copy(inputs, CollisionData);
     }
 
-    initialize() {
+    async initialize() {
         super.initialize();
         let app = this.entity.app as Application<{ physics: IPhysics }>;
-        let physics = app.plugins.physics;
+        let physics = await this.entity.scene.systems.rigidbody!.asyncPhysics;
         if (physics.type === 'cannon') {
             this.instance = physics.createShape(this.inputs.type, this.inputs);
         }

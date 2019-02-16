@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, February 15th 2019, 12:41:58 am
+ * Last Modified: Saturday, February 16th 2019, 11:44:34 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -16,11 +16,13 @@ import { Application } from '../application';
 import { Entity } from './entity';
 import { Component } from './component';
 import { Constructor } from '../types';
+import { Scene } from '../scene';
 let id = 0;
 export abstract class ComponentSystem {
     get app() {
         return Application.getApp();
     }
+    scene!: Scene;
     map: {
         [s: string]: Component<{}>;
     } = {};
@@ -28,6 +30,7 @@ export abstract class ComponentSystem {
     components: Component<{}>[] = [];
     abstract componentConstructor: Constructor<Component<{}>>;
     entitys: Entity[] = [];
+    constructor(private scece: Scene) { }
     addComponent(entity: Entity, component) {
         // const component = new this.componentConstructor(componentData, entity, this) as Component<{}>;
         // component.initialize();
