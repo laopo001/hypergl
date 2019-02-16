@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, February 16th 2019, 2:42:05 am
+ * Last Modified: Saturday, February 16th 2019, 8:09:15 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -236,6 +236,7 @@ export class GltfAssetLoader {
         let textureData = gltf.textures![index];
         let texture = new Texture();
         let img = await this.loadImage(textureData.source!);
+        texture['name'] = gltf.images![textureData.source!].uri;
         let samplerData = gltf.samplers![textureData.sampler!];
         // tslint:disable-next-line:no-unused-expression
         samplerData.magFilter && (texture.magFilter = gltf_filter[samplerData.magFilter]);
