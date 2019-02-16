@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, January 24th 2019, 12:26:29 am
+ * Last Modified: Saturday, February 16th 2019, 8:24:57 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -366,6 +366,8 @@ export class RendererPlatform {
                 if (texture.flipY) {
                     // 对纹理图像进行Y轴反转
                     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
+                } else {
+                    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 0);
                 }
                 if (texture.isPowerOf2()) {
                     if (!texture.isGenerateMipmap) {
