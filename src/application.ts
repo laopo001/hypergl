@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, February 16th 2019, 11:55:36 pm
+ * Last Modified: Monday, February 18th 2019, 12:04:56 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -97,7 +97,11 @@ export class Application<T= Plugin> {
         if (scene == null) {
             Log.error('scene not found');
         }
+        if (this._scene) {
+            this._scene.sceneEvent.fire('inactive');
+        }
         this._scene = scene;
+        scene.sceneEvent.fire('active');
     }
     on(name: string, cb: FnVoid) {
         event.on(name, cb);

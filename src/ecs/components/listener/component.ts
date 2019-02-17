@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, February 15th 2019, 2:06:10 pm
+ * Last Modified: Monday, February 18th 2019, 12:47:23 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -27,25 +27,33 @@ export interface ListenerInputs {
 export const cameraData: ListenerInputs = {
 
 };
-let created = false;
+// let created = false;
 export class ListenerComponent extends Component<ListenerInputs> {
     name = 'listener';
     instance: any;
+    pos = new Vec3();
     constructor(inputs: ListenerInputs = cameraData, entity: Entity, system: ComponentSystem) {
         super(inputs, entity, system);
-        if (!created) { created = true; } else {
-            throw (new Error('listener component 只能有一个'));
-        }
+        // if (!created) { created = true; } else {
+        //     throw (new Error('listener component 只能有一个'));
+        // }
 
         this.instance = null;
     }
     initialize() {
         super.initialize();
-        event.on('beforeRender', this.update);
+        if (!this.entity.scene.systems.listener!['created']) {
+            this.entity.scene.systems.listener!['created'] = true;
+        } else {
+            throw (new Error('listener component 只能有一个'));
+        }
+        this.entity.scene.sceneEvent.on('update', this.update);
+        // event.on('beforeRender', this.update);
     }
     destroy() {
         super.destroy();
-        event.off('beforeRender', this.update);
+        this.entity.scene.sceneEvent.off('update', this.update);
+        // event.off('beforeRender', this.update);
     }
     private update = () => {
         let audios = this.entity.scene.systems.audio!.components as AudioComponent[];
@@ -53,8 +61,9 @@ export class ListenerComponent extends Component<ListenerInputs> {
             if (!audio.initialized) { return; }
             let a = audio.entity.getPosition();
             let m = this.entity.getWorldTransform();
-            let v = m.clone().invert().mulVec4(new Vec4(a.x, a.y, a.z, 1));
-            let { x, y, z } = v;
+            m.clone().invert().transformPoint(new Vec3(a.x, a.y, a.z), this.pos);
+            // .mulVec4(new Vec4(a.x, a.y, a.z, 1));
+            let { x, y, z } = this.pos;
             audio.instance.pos(x, y, z);
         });
     }
