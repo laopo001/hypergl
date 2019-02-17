@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 8th 2019, 10:41:30 pm
+ * Last Modified: Sunday, February 17th 2019, 3:48:57 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -39,6 +39,7 @@ export class FirstPersonCamera extends Script<FirstPersonCameraInputs, AppPlugin
         let x = 0, y = 0;
         // tslint:disable-next-line:no-non-null-assertion
         document.getElementById('canvas')!.addEventListener('mousemove', (event) => {
+            if (!this.entity.scene.isActive) { return; }
             if (this.app.plugins.pointer.isPointerLocked) {
                 this.ex -= event.movementY / 5;
                 this.ex = math.clamp(this.ex, -90, 90);
@@ -47,11 +48,13 @@ export class FirstPersonCamera extends Script<FirstPersonCameraInputs, AppPlugin
         }, false);
         // tslint:disable-next-line:no-non-null-assertion
         document.getElementById('canvas')!.addEventListener('mousedown', (event) => {
+            if (!this.entity.scene.isActive) { return; }
             if (!this.app.plugins.pointer.isPointerLocked) {
                 this.app.plugins.pointer.lock();
             }
         }, false);
         document.addEventListener('keydown', (event) => {
+            if (!this.entity.scene.isActive) { return; }
             if (event.key === 'w') {
                 this.forwards = true;
             }
@@ -72,6 +75,7 @@ export class FirstPersonCamera extends Script<FirstPersonCameraInputs, AppPlugin
             }
         }, false);
         document.addEventListener('keyup', (event) => {
+            if (!this.entity.scene.isActive) { return; }
             if (event.key === 'w') {
                 this.forwards = false;
             }

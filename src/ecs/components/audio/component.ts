@@ -47,24 +47,39 @@ export class AudioComponent extends Component<AudioInputs> {
     constructor(inputs: AudioInputs, entity: Entity, system: ComponentSystem) {
         super(inputs, entity, system);
         copy(inputs, AudioData);
-        // const sound = new Howl(this.inputs);
-        // this.instance = sound;
     }
 
     initialize() {
         super.initialize();
+        let autoplay = this.inputs.autoplay;
+        this.inputs.autoplay = false;
         const sound = new Howl(this.inputs);
         this.instance = sound;
+        if (autoplay) {
+            this.entity.scene.sceneEvent.on('active', () => {
+                this.reStart();
+            });
+            this.entity.scene.sceneEvent.on('inactive', () => {
+                this.pause();
+            });
+        }
     }
     destroy() {
         super.destroy();
         this.instance = undefined as any;
     }
     play(spriteOrId?: string | number): number {
-        return this.instance.play();
+        return this.instance.play(spriteOrId);
     }
+    reStart() {
+        this.instance.seek(this._seek);
+        this.play();
+    }
+    // tslint:disable-next-line:member-ordering
+    private _seek = 0;
     pause(id?: number) {
-        return this.instance.pause();
+        this._seek = this.instance.seek() as number;
+        this.instance.pause();
     }
     stop(id?: number) {
         return this.instance.stop();

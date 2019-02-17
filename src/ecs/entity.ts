@@ -75,7 +75,7 @@ export class Entity extends SceneNode {
             if (p.parent == null) {
                 break;
             }
-            p = this.parent!;
+            p = p.parent!;
         }
         return p._scene;
     }

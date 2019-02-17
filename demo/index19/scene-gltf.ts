@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, February 16th 2019, 8:02:29 pm
+ * Last Modified: Sunday, February 17th 2019, 9:47:31 pm
  * Modified By:
  * -----
  * Copyright (c) 2019 dadigua
@@ -26,10 +26,7 @@ let cubeTexture = CubeTexture.loadImage('assets/images/skybox_px.jpg', 'assets/i
     'assets/images/skybox_pz.jpg', 'assets/images/skybox_nz.jpg');
 
 gltf.loadSenceRoot().then(node => {
-    console.log(node);
     scene.root.addChild(node);
-    // let entity = app.scene.root.findByName('node_damagedHelmet_-6514');
-    // entity!.model.material<PBRMaterial>().specularEnvTexture = cubeTexture;
 });
 
 let light = new Entity('light')

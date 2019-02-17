@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, February 17th 2019, 3:28:28 am
+ * Last Modified: Monday, February 18th 2019, 12:09:35 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -21,6 +21,14 @@ import { StatsPlugin } from 'hypergl/plugins/stat';
 import { PointerPlugin } from 'hypergl/plugins/pointer';
 import { AmmoPlugin } from 'hypergl/plugins/physics';
 import { AppPlugin } from '../types';
+import { FnVoid } from '../../src/types';
+
+function addButton(text: string, cb: FnVoid) {
+    let button = document.createElement('button');
+    button.innerText = text;
+    button.onclick = cb;
+    document.body.append(button);
+}
 
 async function main() {
     const app = new Application<AppPlugin>(document.getElementById('canvas') as HTMLCanvasElement, {
@@ -32,26 +40,26 @@ async function main() {
 
     import('./scene-pick').then(module => {
         app.addScene(module.scene);
-        let button = document.createElement('button');
-        button.innerText = 'pick';
-        button.onclick = () => {
+        addButton('pick', () => {
             app.setScene('pick');
-        };
-        document.body.append(button);
+        });
     });
 
     import('./scene-gltf').then(module => {
         app.addScene(module.scene);
         app.setScene('gltf');
         app.start();
-        let button = document.createElement('button');
-        button.innerText = 'gltf';
-        button.onclick = () => {
+        addButton('gltf', () => {
             app.setScene('gltf');
-        };
-        document.body.append(button);
+        });
     });
 
+    import('./scene-audio').then(module => {
+        app.addScene(module.scene);
+        addButton('audio', () => {
+            app.setScene('audio');
+        });
+    });
 
 }
 
