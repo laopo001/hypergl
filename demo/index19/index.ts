@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, February 18th 2019, 12:09:35 am
+ * Last Modified: Tuesday, February 19th 2019, 10:44:33 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -58,6 +58,13 @@ async function main() {
         app.addScene(module.scene);
         addButton('audio', () => {
             app.setScene('audio');
+        });
+    });
+
+    import('./scene-material').then(module => {
+        app.addScene(module.scene);
+        addButton('material', () => {
+            app.setScene('material');
         });
     });
 
