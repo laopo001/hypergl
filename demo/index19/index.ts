@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, February 19th 2019, 10:44:33 pm
+ * Last Modified: Tuesday, February 19th 2019, 10:45:48 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -65,6 +65,13 @@ async function main() {
         app.addScene(module.scene);
         addButton('material', () => {
             app.setScene('material');
+        });
+    });
+
+    import('./scene-skybox').then(module => {
+        app.addScene(module.scene);
+        addButton('skybox', () => {
+            app.setScene('skybox');
         });
     });
 
