@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, February 17th 2019, 3:44:29 am
+ * Last Modified: Monday, February 25th 2019, 10:34:42 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -26,13 +26,13 @@ export class RigidbodyComponentSystem extends ComponentSystem {
         super(scene);
         // tslint:disable-next-line:no-unused-expression
         this.asyncPhysics = new Promise((resolve, reject) => {
-            scene.sceneEvent.on('register', () => {
+            scene.event.on('register', () => {
                 if ((scene.app.plugins as any).physics) {
                     let c = (scene.app.plugins as any).physics;
                     this.physics = new c(scene.app);
 
                     this.physics.initialize().then(() => {
-                        scene.sceneEvent.on('update', (dt) => {
+                        scene.event.on('update', (dt) => {
                             this.physics.onUpdate(dt);
                         });
                         resolve(this.physics);

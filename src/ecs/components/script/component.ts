@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, February 18th 2019, 12:16:48 am
+ * Last Modified: Monday, February 25th 2019, 10:34:42 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -40,12 +40,12 @@ export class ScriptComponent extends Component<ScriptInputs> {
             script.entity = this.entity;
             script.initialize();
         });
-        this.entity.scene.sceneEvent.on('update', this.update);
+        this.entity.scene.event.on('update', this.update);
         // event.on('update', this.update);
     }
     destroy() {
         super.destroy();
-        this.entity.scene.sceneEvent.off('update', this.update);
+        this.entity.scene.event.off('update', this.update);
         // event.off('update', this.update);
         this.instance.forEach(script => {
             script.entity = this.entity;

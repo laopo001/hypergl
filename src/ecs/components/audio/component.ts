@@ -56,10 +56,10 @@ export class AudioComponent extends Component<AudioInputs> {
         const sound = new Howl(this.inputs);
         this.instance = sound;
         if (autoplay) {
-            this.entity.scene.sceneEvent.on('active', () => {
+            this.entity.scene.event.on('active', () => {
                 this.reStart();
             });
-            this.entity.scene.sceneEvent.on('inactive', () => {
+            this.entity.scene.event.on('inactive', () => {
                 this.pause();
             });
         }

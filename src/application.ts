@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, February 18th 2019, 12:04:56 am
+ * Last Modified: Monday, February 25th 2019, 10:34:42 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -83,7 +83,7 @@ export class Application<T= Plugin> {
         let i = this.sceneInstances.push(scene);
         scene.app = this;
         scene.isRegistered = true;
-        scene.sceneEvent.fire('register');
+        scene.event.fire('register');
         return i;
     }
     setScene(index: number | string) {
@@ -98,7 +98,7 @@ export class Application<T= Plugin> {
             Log.error('scene not found');
         }
         if (this._scene) {
-            this._scene.sceneEvent.fire('inactive');
+            this._scene.event.fire('inactive');
         }
         this._scene = scene;
         scene.sceneEvent.fire('active');

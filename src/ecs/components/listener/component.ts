@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, February 18th 2019, 12:47:23 am
+ * Last Modified: Monday, February 25th 2019, 10:34:42 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -47,12 +47,12 @@ export class ListenerComponent extends Component<ListenerInputs> {
         } else {
             throw (new Error('listener component 只能有一个'));
         }
-        this.entity.scene.sceneEvent.on('update', this.update);
+        this.entity.scene.event.on('update', this.update);
         // event.on('beforeRender', this.update);
     }
     destroy() {
         super.destroy();
-        this.entity.scene.sceneEvent.off('update', this.update);
+        this.entity.scene.event.off('update', this.update);
         // event.off('beforeRender', this.update);
     }
     private update = () => {
