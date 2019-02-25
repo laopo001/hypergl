@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, February 17th 2019, 3:48:57 am
+ * Last Modified: Monday, February 25th 2019, 11:25:50 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -119,4 +119,6 @@ export class FirstPersonCamera extends Script<FirstPersonCameraInputs, AppPlugin
             this.entity.translateLocal(0, this.inputs.speed * dt, 0);
         }
     }
+    // tslint:disable-next-line:no-empty
+    destroy() { }
 }

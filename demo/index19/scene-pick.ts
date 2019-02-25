@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, February 25th 2019, 10:45:42 am
+ * Last Modified: Monday, February 25th 2019, 11:20:39 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -123,6 +123,7 @@ event.on('start', () => {
     document.getElementById('canvas')!.addEventListener('mousedown', (e) => {
         if (app.scene.name === 'pick') {
             let entity = picker.pick(e.offsetX, e.offsetY);
+            alert(entity.name);
             console.log(entity.name);
         }
     }, false);
