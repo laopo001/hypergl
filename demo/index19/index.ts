@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, February 25th 2019, 11:11:50 am
+ * Last Modified: Monday, February 25th 2019, 11:59:14 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -23,6 +23,7 @@ import { AmmoPlugin } from 'hypergl/plugins/physics';
 import { AppPlugin } from '../types';
 import { FnVoid } from '../../src/types';
 import { createSkyboxScene } from './scene-skybox';
+
 
 function addButton(text: string, cb: FnVoid) {
     let button = document.createElement('button');

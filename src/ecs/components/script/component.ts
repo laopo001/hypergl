@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, February 25th 2019, 10:34:42 am
+ * Last Modified: Monday, February 25th 2019, 11:55:22 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -54,6 +54,11 @@ export class ScriptComponent extends Component<ScriptInputs> {
         });
     }
     private update = (e: number) => {
+        this.instance.forEach(script => {
+            script.update(e);
+        });
+    }
+    private app_update = (e: number) => {
         this.instance.forEach(script => {
             script.update(e);
         });

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, February 25th 2019, 10:45:42 am
+ * Last Modified: Monday, February 25th 2019, 11:25:50 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -19,7 +19,7 @@ import { Application } from '../../../application';
 export abstract class Script<Inputs, T= {}> {
     static defaultInputs: any = {};
     get app() {
-        return this.entity.app;
+        return Application.getApp<T>().unwrap();
     }
     entity!: Entity;
     inputs!: Inputs;
@@ -31,5 +31,5 @@ export abstract class Script<Inputs, T= {}> {
     }
     abstract initialize();
     abstract update(dt: number);
-    destroy?();
+    abstract destroy?();
 }
