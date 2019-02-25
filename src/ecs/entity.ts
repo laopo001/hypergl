@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, February 17th 2019, 12:01:44 am
+ * Last Modified: Monday, February 25th 2019, 10:45:42 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -67,7 +67,7 @@ export type componentName = keyof ComponentInputs;
 
 export class Entity extends SceneNode {
     get app() {
-        return Application.getApp();
+        return Application.getApp().unwrap();
     }
     get scene(): Scene {
         let p = this as Entity;

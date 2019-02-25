@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, February 19th 2019, 10:45:48 pm
+ * Last Modified: Monday, February 25th 2019, 11:11:50 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -22,6 +22,7 @@ import { PointerPlugin } from 'hypergl/plugins/pointer';
 import { AmmoPlugin } from 'hypergl/plugins/physics';
 import { AppPlugin } from '../types';
 import { FnVoid } from '../../src/types';
+import { createSkyboxScene } from './scene-skybox';
 
 function addButton(text: string, cb: FnVoid) {
     let button = document.createElement('button');
@@ -41,37 +42,37 @@ async function main() {
     import('./scene-pick').then(module => {
         app.addScene(module.scene);
         addButton('pick', () => {
-            app.setScene('pick');
+            app.setActiveScene('pick');
         });
     });
 
     import('./scene-gltf').then(module => {
         app.addScene(module.scene);
-        app.setScene('gltf');
+        app.setActiveScene('gltf');
         app.start();
         addButton('gltf', () => {
-            app.setScene('gltf');
+            app.setActiveScene('gltf');
         });
     });
 
     import('./scene-audio').then(module => {
         app.addScene(module.scene);
         addButton('audio', () => {
-            app.setScene('audio');
+            app.setActiveScene('audio');
         });
     });
 
     import('./scene-material').then(module => {
         app.addScene(module.scene);
         addButton('material', () => {
-            app.setScene('material');
+            app.setActiveScene('material');
         });
     });
 
-    import('./scene-skybox').then(module => {
-        app.addScene(module.scene);
+    createSkyboxScene().then(module => {
+        app.addScene(module);
         addButton('skybox', () => {
-            app.setScene('skybox');
+            app.setActiveScene('skybox');
         });
     });
 

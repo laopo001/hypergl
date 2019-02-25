@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, February 19th 2019, 10:42:47 pm
+ * Last Modified: Monday, February 25th 2019, 11:12:20 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -15,11 +15,9 @@
 import { Entity, StandardMaterial, Config, Scene, util, SkyMaterial, Application, Vec3, Color, Vec2, Texture, CubeTexture, PBRMaterial, Mesh, Drawable } from 'hypergl';
 import { AppPlugin } from '../types';
 import { FirstPersonCamera } from '../utils/first_person_camera';
-let app = Application.getApp<AppPlugin>();
 
-export const scene = new Scene('skybox');
-
-async function main() {
+export async function createSkyboxScene() {
+    const scene = new Scene('skybox');
     let loadImage = util.loadImage;
     let skycube = new CubeTexture();
     let negx = await loadImage('assets/images/skybox_nx.jpg');
@@ -84,6 +82,5 @@ async function main() {
         })
         .setPosition(0, -2, 0).setLocalScale(10, 1, 10);
     scene.root.addChild(plane);
-
+    return scene;
 }
-main();

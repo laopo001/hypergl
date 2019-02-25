@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, February 15th 2019, 2:11:03 am
+ * Last Modified: Monday, February 25th 2019, 10:59:32 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -133,7 +133,7 @@ async function main() {
     scene.root.addChild(camera);
 
     app.addScene(scene);
-    app.setScene(0);
+    app.setActiveScene(0);
 
     // let picker = new Picker(scene);
     document.getElementById('canvas')!.addEventListener('mousedown', (e) => {

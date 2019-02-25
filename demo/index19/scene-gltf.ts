@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, February 17th 2019, 9:47:31 pm
+ * Last Modified: Monday, February 25th 2019, 10:45:42 am
  * Modified By:
  * -----
  * Copyright (c) 2019 dadigua
@@ -16,7 +16,7 @@ import { Entity, StandardMaterial, Config, event, Scene, util, SkyMaterial, Appl
 import { AppPlugin } from '../types';
 import { FirstPersonCamera } from '../utils/first_person_camera';
 
-let app = Application.getApp<AppPlugin>();
+let app = Application.getApp<AppPlugin>().unwrap();
 
 let scene = new Scene('gltf');
 

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, February 16th 2019, 11:48:04 pm
+ * Last Modified: Monday, February 25th 2019, 10:50:52 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -25,15 +25,5 @@ export class CollisionComponentSystem extends ComponentSystem {
     constructor(scene: Scene) {
         super(scene);
 
-    }
-    @once
-    createEntity() {
-        let entity = new Entity();
-        entity.addComponent('model', {
-            type: 'model',
-            model: new Model([])
-        });
-        this.app.scene.add(entity);
-        return entity;
     }
 }

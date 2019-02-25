@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, February 15th 2019, 1:07:50 am
+ * Last Modified: Monday, February 25th 2019, 10:53:04 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -23,7 +23,7 @@ let MaterialId = 0;
 export abstract class Material {
     MaterialId = MaterialId++;
     get app() {
-        return Application.getApp();
+        return Application.getApp().unwrap();
     }
     uniforms: { [s: string]: UniformValueType } = {};
     shaderVars: { [s: string]: any } = {};
