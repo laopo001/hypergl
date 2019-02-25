@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 29th 2019, 12:08:52 am
+ * Last Modified: Monday, February 25th 2019, 6:44:41 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -65,11 +65,12 @@
 //     }
 // };
 
-export function createEvent() {
+export function createEvent(name: string) {
     const _callbacks: {
         [key: string]: Array<Function>
     } = {};
     let event = {
+        name,
         _callbacks,
         on(name: string, callback: any) {
             if (event.hasEvent(name)) {
@@ -122,4 +123,4 @@ export function createEvent() {
     return event;
 }
 
-export const event = createEvent();
+export const event = createEvent('application');

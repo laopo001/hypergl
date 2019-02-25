@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, February 25th 2019, 12:09:18 pm
+ * Last Modified: Monday, February 25th 2019, 6:44:41 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -71,7 +71,7 @@ export class Scene {
     root: Entity = new Entity('root');
     systems: SystemRegistry;
     isRegistered = false;
-    event = createEvent();
+    event = createEvent('scene');
     private _activeCamera!: CameraComponent;
     get activeCamera() {
         let defaultCamera = this.systems.camera!.components[0];

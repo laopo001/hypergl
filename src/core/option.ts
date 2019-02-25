@@ -5,14 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, February 25th 2019, 10:41:31 am
+ * Last Modified: Monday, February 25th 2019, 6:35:10 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
  */
 
 export class Option<T> {
-    constructor(private value: T, private msg?: string) {
+    constructor(private value?: T, private msg?: string) {
 
     }
     unwrap() {
@@ -20,5 +20,8 @@ export class Option<T> {
             throw new Error(this.msg || 'unwrap失败');
         }
         return this.value;
+    }
+    setValue(value: T) {
+        this.value = value;
     }
 }
