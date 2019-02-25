@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, February 16th 2019, 11:44:34 pm
+ * Last Modified: Monday, February 25th 2019, 10:51:41 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,7 +20,7 @@ import { Scene } from '../scene';
 let id = 0;
 export abstract class ComponentSystem {
     get app() {
-        return Application.getApp();
+        return Application.getApp().unwrap();
     }
     scene!: Scene;
     map: {

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, January 5th 2019, 2:10:34 am
+ * Last Modified: Monday, February 25th 2019, 10:48:32 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -19,7 +19,7 @@ import { loadImage } from '../utils/util';
 export class Texture extends BaseTexture {
     source?: SourceElement;
     static loadImage(url: string) {
-        let app = Application.getApp();
+        let app = Application.getApp().unwrap();
         let texture = new Texture(app.renderer.gl.createTexture()!);
         // loadImage
         loadImage(url).then(img => {
@@ -30,7 +30,7 @@ export class Texture extends BaseTexture {
         // app.renderer.loadTexture
     }
     static async loadImageAsync(url: string) {
-        let app = Application.getApp();
+        let app = await Application.getAsyncApp();
         let texture = new Texture(app.renderer.gl.createTexture()!);
         // loadImage
         await loadImage(url).then(img => {

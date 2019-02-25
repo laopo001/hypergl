@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, February 25th 2019, 10:34:42 am
+ * Last Modified: Monday, February 25th 2019, 10:37:31 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -107,14 +107,14 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
         this.instance = body;
     }
     applyForce(force: Vec3, point?: Vec3) {
-        let app = this.entity.app as Application<{ physics: IPhysics }>;
+
         let physics = this.entity.scene.systems.rigidbody!.physics;
         physics.applyForce(this.instance, {
             force, point
         });
     }
     applyImpulse(impulse: Vec3, point?: Vec3) {
-        let app = this.entity.app as Application<{ physics: IPhysics }>;
+
         let physics = this.entity.scene.systems.rigidbody!.physics;
         physics.applyImpulse(this.instance, {
             impulse, point
@@ -123,7 +123,7 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
     teleport(v: Vec3);
     teleport(x: number, y: number, z: number);
     teleport(x, y?, z?) {
-        let app = this.entity.app as Application<{ physics: IPhysics }>;
+
         let physics = this.entity.scene.systems.rigidbody!.physics;
         if (x instanceof Vec3) {
             this.entity.setPosition(x);

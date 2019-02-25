@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 30th 2019, 4:22:54 pm
+ * Last Modified: Monday, February 25th 2019, 10:48:32 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -18,7 +18,7 @@ export class CubeTexture extends BaseTexture {
     source?: Array<SourceElement>;
     isCube = true;
     static loadImage(left_px: string, right_nx: string, top_py: string, bottom_ny: string, front_pz: string, end_nz: string) {
-        let app = Application.getApp();
+        let app = Application.getApp().unwrap();
         let texture = new CubeTexture(app.renderer.gl.createTexture()!);
         Promise.all([
             loadImage(left_px),
@@ -34,7 +34,7 @@ export class CubeTexture extends BaseTexture {
         return texture;
     }
     static async loadImageAsync(left_px: string, right_nx: string, top_py: string, bottom_ny: string, front_pz: string, end_nz: string) {
-        let app = Application.getApp();
+        let app = await Application.getAsyncApp();
         let texture = new CubeTexture(app.renderer.gl.createTexture()!);
         await Promise.all([
             loadImage(left_px),

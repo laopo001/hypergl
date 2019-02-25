@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 19th 2018, 12:24:17 am
+ * Last Modified: Monday, February 25th 2019, 10:51:22 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -19,12 +19,4 @@ import { Entity } from '../../entity';
 export class ScriptComponentSystem extends ComponentSystem {
     name = 'script';
     componentConstructor = ScriptComponent;
-    // addComponent(entity: Entity, componentData: any) {
-    //     let component = super.addComponent(entity, componentData) as ScriptComponent;
-
-    //     return component;
-    // }
-    // removeComponent(component: ScriptComponent) {
-    //     super.removeComponent(component);
-    // }
 }

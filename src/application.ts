@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, February 25th 2019, 10:34:42 am
+ * Last Modified: Monday, February 25th 2019, 10:59:32 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,7 +15,7 @@
 import { Scene } from './scene/scene';
 import { RendererPlatform } from './graphics/renderer';
 import { AppOption, FnVoid, Constructor } from './types';
-import { event, timer } from './core';
+import { event, timer, Option } from './core';
 import { Mesh } from './mesh/mesh';
 import { SystemRegistry } from './ecs/system-register';
 import { CameraComponentSystem } from './ecs/components/camera/system';
@@ -36,8 +36,8 @@ let app;
 export class Application<T= Plugin> {
     get scene() {
         if (!this._scene) {
-            this.addScene(new Scene());
-            this.setScene(0);
+            this.addScene(new Scene('default'));
+            this.setActiveScene(0);
         }
         return this._scene;
     }
@@ -45,13 +45,13 @@ export class Application<T= Plugin> {
         return 'Application';
     }
     util = util;
-    _scene!: Scene;
     sceneInstances: Scene[] = [];
     activeIndex = 0;
     renderer: RendererPlatform;
     canvas: HTMLCanvasElement;
     lastRenderTime = 0;
     plugins: T = {} as any;
+    private _scene!: Scene;
     // private _isPointerLock = false;
     constructor(canvas: HTMLCanvasElement, option: AppOption = {}) {
         this.canvas = canvas;
@@ -59,8 +59,8 @@ export class Application<T= Plugin> {
         app = this;
         event.fire('application-new', this);
     }
-    static getApp<T>(): Application<T> {
-        return app;
+    static getApp<T>(): Option<Application<T>> {
+        return new Option(app);
     }
     static getAsyncApp<T>(): Promise<Application<T>> {
         return new Promise((resolve, reject) => {
@@ -86,7 +86,7 @@ export class Application<T= Plugin> {
         scene.event.fire('register');
         return i;
     }
-    setScene(index: number | string) {
+    setActiveScene(index: number | string) {
         let scene;
         if (typeof index === 'string') {
             let i = this.sceneInstances.findIndex((x) => index === x.name);
@@ -101,7 +101,7 @@ export class Application<T= Plugin> {
             this._scene.event.fire('inactive');
         }
         this._scene = scene;
-        scene.sceneEvent.fire('active');
+        scene.event.fire('active');
     }
     on(name: string, cb: FnVoid) {
         event.on(name, cb);
