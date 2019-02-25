@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, February 17th 2019, 2:48:57 am
+ * Last Modified: Monday, February 25th 2019, 10:34:42 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -87,7 +87,7 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
             group, mask
         }, this.entity);
         body['entity'] = this.entity;
-        this.entity.scene.sceneEvent.on('update', (dt) => {
+        this.entity.scene.event.on('update', (dt) => {
             if (this.enabled) {
                 if (this.entity.rigidbody.inputs.type === 'dynamic') {
                     physics.syncBodyToEntity(this.entity, body, dt);
