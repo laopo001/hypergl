@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, February 25th 2019, 11:11:50 am
+ * Last Modified: Tuesday, February 26th 2019, 7:07:43 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -21,6 +21,23 @@ export const scene = new Scene('material');
 
 async function main() {
     let loadImage = util.loadImage;
+
+    let camera = new Entity('camera')
+        .addComponent('camera', {
+            type: 'perspective',
+            perspective: {
+                fov: 45,
+                aspectRatio: 1000 / 600,
+                near: 1,
+                far: 10000
+            }
+        })
+        .addComponent('listener', {})
+        .setPosition(0, 5, 5)
+        .lookAt(new Vec3(0, 0, 0));
+    // .addComponent('script', [new FirstPersonCamera({ speed: 0.1 })]);
+    scene.root.addChild(camera);
+
     let skycube = new CubeTexture();
     let negx = await loadImage('assets/images/skybox_nx.jpg');
     let negy = await loadImage('assets/images/skybox_ny.jpg');
@@ -56,22 +73,6 @@ async function main() {
         // .setLocalPosition(10, 20, 30)
         .setLocalScale(100, 100, 100);
     scene.root.addChild(sky);
-
-    let camera = new Entity('camera')
-        .addComponent('camera', {
-            type: 'perspective',
-            perspective: {
-                fov: 45,
-                aspectRatio: 1000 / 600,
-                near: 1,
-                far: 10000
-            }
-        })
-        .addComponent('listener', {})
-        .setPosition(0, 5, 5)
-        .lookAt(new Vec3(0, 0, 0));
-    // .addComponent('script', [new FirstPersonCamera({ speed: 0.1 })]);
-    scene.root.addChild(camera);
 
     let light = new Entity('light')
         .addComponent('light', {

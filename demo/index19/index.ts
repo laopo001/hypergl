@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, February 25th 2019, 11:59:14 am
+ * Last Modified: Tuesday, February 26th 2019, 5:59:03 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -23,7 +23,15 @@ import { AmmoPlugin } from 'hypergl/plugins/physics';
 import { AppPlugin } from '../types';
 import { FnVoid } from '../../src/types';
 import { createSkyboxScene } from './scene-skybox';
+import createRouter from 'router5';
+import browserPlugin from 'router5-plugin-browser';
+import persistentParamsPlugin from 'router5-plugin-persistent-params';
 
+
+
+// addButton('profile', () => {
+//     router.navigate('profile');
+// });
 
 function addButton(text: string, cb: FnVoid) {
     let button = document.createElement('button');
@@ -40,42 +48,48 @@ async function main() {
 
     console.log(app);
 
-    import('./scene-pick').then(module => {
-        app.addScene(module.scene);
-        addButton('pick', () => {
-            app.setActiveScene('pick');
-        });
-    });
-
-    import('./scene-gltf').then(module => {
-        app.addScene(module.scene);
-        app.setActiveScene('gltf');
-        app.start();
-        addButton('gltf', () => {
-            app.setActiveScene('gltf');
-        });
-    });
-
-    import('./scene-audio').then(module => {
-        app.addScene(module.scene);
-        addButton('audio', () => {
-            app.setActiveScene('audio');
-        });
-    });
-
-    import('./scene-material').then(module => {
-        app.addScene(module.scene);
-        addButton('material', () => {
-            app.setActiveScene('material');
-        });
-    });
-
     createSkyboxScene().then(module => {
         app.addScene(module);
         addButton('skybox', () => {
             app.setActiveScene('skybox');
         });
     });
+
+    const routes = [
+        { name: 'default', path: '/', forwardTo: 'pick' },
+        { name: 'pick', path: '/pick', },
+        { name: 'gltf', path: '/gltf' },
+        { name: 'audio', path: '/audio' },
+        { name: 'material', path: '/material' },
+    ];
+    routes.filter(x => x.name !== 'default').forEach((x) => {
+        let name = x.name;
+        addButton(name, () => {
+            router.navigate(name);
+        });
+    });
+    const router = createRouter(routes);
+
+
+    router.usePlugin(browserPlugin({
+        useHash: true
+    }));
+
+    router.subscribe(async (status) => {
+        let name = status.route.name;
+        import('./scene-' + name).then(module => {
+            if (!module.scene.isRegistered) {
+                app.addScene(module.scene);
+            }
+            app.setActiveScene(status.route.name);
+            if (status.previousRoute == null) {
+                app.start();
+            }
+        });
+        console.log(name);
+    });
+
+    router.start();
 
 }
 
