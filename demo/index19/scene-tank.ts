@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, February 26th 2019, 10:58:36 pm
+ * Last Modified: Wednesday, February 27th 2019, 12:21:28 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -40,7 +40,7 @@ let light = new Entity('light')
     })
     .setEulerAngles(-45, 0, 0)
     .setLocalPosition(0, 5, 0);
-scene.root.addChild(light);
+// scene.root.addChild(light);
 
 let camera = new Entity('camera')
     .addComponent('camera', {

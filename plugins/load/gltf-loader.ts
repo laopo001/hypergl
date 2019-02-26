@@ -5,14 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, February 16th 2019, 8:09:15 pm
+ * Last Modified: Wednesday, February 27th 2019, 12:47:23 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 import { GltfLoader, GltfAsset } from './gltf-loader-ts/source';
-import { Application, Plugin, Mesh, PBRMaterial, StandardMaterial, Color, Texture, FILTER, WRAP, Entity, Mat4, Quat, RAD_TO_DEG, Scene } from 'hypergl';
+import { Application, Plugin, Mesh, PBRMaterial, Model, Color, Texture, FILTER, WRAP, Entity, Mat4, Quat, RAD_TO_DEG, Scene } from 'hypergl';
 
 let loader = new GltfLoader();
 
@@ -122,6 +122,7 @@ export class GltfAssetLoader {
         if (!gltf.meshes) {
             throw new Error(`${this.url}的gltf没有meshs属性`);
         }
+        let meshs: Mesh[] = [];
         let model = gltf.meshes[index];
         for (let j = 0; j < model.primitives.length; j++) {
             const mesh = model.primitives[j];
@@ -129,24 +130,37 @@ export class GltfAssetLoader {
 
             let normals = await assets.accessorData<any>(mesh.attributes.NORMAL);
             let uvs;
+            let uvs1;
             if (typeof mesh.attributes.TEXCOORD_0 === 'number') {
                 uvs = await assets.accessorData<any>(mesh.attributes.TEXCOORD_0);
+            }
+            if (typeof mesh.attributes.TEXCOORD_1 === 'number') {
+                uvs1 = await assets.accessorData<any>(mesh.attributes.TEXCOORD_1);
+            }
+            let tangents;
+            if (typeof mesh.attributes.TANGENT === 'number') {
+                tangents = await assets.accessorData<any>(mesh.attributes.TANGENT);
             }
             let indices;
             if (typeof mesh.indices === 'number') {
                 indices = await assets.accessorData<any>(mesh.indices);
             }
+
             let m = Mesh.createMesh({
-                positions, normals, uvs, indices
+                positions, normals, uvs, indices, uvs1, tangents
             });
             m.name = model.name;
             // tslint:disable-next-line:no-unused-expression
             mesh.mode && (m.mode = mesh.mode);
             m.material = await this.loadMaterial(mesh.material!);
-            return m;
+            meshs.push(m);
+            // return m;
         }
+        let h_model = new Model(meshs);
+        // h_model.meshs.pop();
+        console.log(h_model);
 
-
+        return h_model;
     }
     async loadMaterial(index: number) {
         let assets = await this.assets;
