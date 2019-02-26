@@ -2,6 +2,7 @@
 
 #define HAS_NORMALS 1
 #define HAS_UV 1
+// #define HAS_TANGENTS 1
 #define USE_IBL 1
 // {{#if shaderVars.USE_IBL}}
 

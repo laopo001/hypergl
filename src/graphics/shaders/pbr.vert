@@ -2,6 +2,7 @@
 // #define USE_IBL 1
 #define HAS_NORMALS 1
 #define HAS_UV 1
+// #define HAS_TANGENTS 1
 // #define HAS_BASECOLORMAP 1
 // #define HAS_METALROUGHNESSMAP 1
 // #define HAS_NORMALMAP 1

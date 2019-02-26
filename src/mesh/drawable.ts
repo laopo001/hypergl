@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, February 15th 2019, 1:09:22 am
+ * Last Modified: Tuesday, February 26th 2019, 11:06:49 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -125,8 +125,6 @@ export class Drawable<T extends Material= Material> {
             }
             iterator.next();
         }
-        // vertexBuffer.bind();
-
         // Create the index buffer
         let indexBuffer = indices && new IndexBuffer(Uint16Array, BUFFER.STATIC, indices);
 

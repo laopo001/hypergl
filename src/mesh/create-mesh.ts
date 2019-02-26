@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 30th 2019, 4:29:53 pm
+ * Last Modified: Tuesday, February 26th 2019, 11:07:40 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -128,7 +128,7 @@ export function createBox(opts?: CreateBoxOptions) {
         positions,
         normals,
         uvs,
-        // uvs1,
+        uvs1,
         indices
     };
     return Mesh.createMesh(options);
@@ -192,7 +192,7 @@ export function createPlane(opts?: CreatePlaneOptions) {
         positions,
         normals,
         uvs,
-        // uvs1: uvs, // UV1 = UV0 for plane
+        uvs1: uvs, // UV1 = UV0 for plane
         indices
     };
     // if (pc.precalculatedTangents) {
@@ -261,7 +261,7 @@ export function createSphere(opts?: CreateSphereOptions) {
         positions,
         normals,
         uvs,
-        // uvs1: uvs, // UV1 = UV0 for sphere
+        uvs1: uvs, // UV1 = UV0 for sphere
         indices
     };
 
@@ -610,7 +610,7 @@ export function _createConeData(baseRadius: number, peakRadius: number, height: 
         positions,
         normals,
         uvs,
-        // uvs1,
+        uvs1,
         indices,
     };
 }
