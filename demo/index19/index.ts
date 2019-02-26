@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, February 26th 2019, 5:59:03 pm
+ * Last Modified: Tuesday, February 26th 2019, 10:24:03 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -25,19 +25,15 @@ import { FnVoid } from '../../src/types';
 import { createSkyboxScene } from './scene-skybox';
 import createRouter from 'router5';
 import browserPlugin from 'router5-plugin-browser';
-import persistentParamsPlugin from 'router5-plugin-persistent-params';
 
 
-
-// addButton('profile', () => {
-//     router.navigate('profile');
-// });
+let container = document.getElementById('container')!;
 
 function addButton(text: string, cb: FnVoid) {
     let button = document.createElement('button');
     button.innerText = text;
     button.onclick = cb;
-    document.body.append(button);
+    container.append(button);
 }
 
 async function main() {
@@ -61,6 +57,7 @@ async function main() {
         { name: 'gltf', path: '/gltf' },
         { name: 'audio', path: '/audio' },
         { name: 'material', path: '/material' },
+        { name: 'tank', path: '/tank', },
     ];
     routes.filter(x => x.name !== 'default').forEach((x) => {
         let name = x.name;
@@ -86,7 +83,6 @@ async function main() {
                 app.start();
             }
         });
-        console.log(name);
     });
 
     router.start();
