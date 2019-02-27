@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 30th 2019, 2:37:48 pm
+ * Last Modified: Thursday, February 28th 2019, 12:40:32 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,7 +14,6 @@
 import 'reflect-metadata';
 import { Constructor } from '../types';
 import { Vec3 } from '../math';
-import { Material } from 'cannon';
 
 /**
  * 日志

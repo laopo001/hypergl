@@ -5,6 +5,7 @@
     },
     "dependencies": {
         "howler": "^2.0.15",
+        "cannon": "schteppe/cannon.js",
         "isomorphic-fetch": "^2.2.1",
         "laopo001-ammo": "^0.0.3",
         "reflect-metadata": "^0.1.12"
