@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, February 25th 2019, 10:38:41 am
+ * Last Modified: Thursday, February 28th 2019, 12:38:34 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -57,7 +57,7 @@ export const CollisionData: Partial<CollisionInputs> = {
 export class CollisionComponent extends Component<CollisionInputs> {
     name = 'collision';
     instance!: any;
-    event = createEvent();
+    event = createEvent('collision');
     private _meshID?: number;
     constructor(inputs: CollisionInputs, entity: Entity, system: ComponentSystem) {
         super(inputs, entity, system);
