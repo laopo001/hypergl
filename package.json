@@ -66,7 +66,8 @@
     "name": "hypergl",
     "pre-commit": [
         "lint",
-        "test"
+        "test",
+        "tsc"
     ],
     "repository": {
         "type": "git",
