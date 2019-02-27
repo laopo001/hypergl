@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, February 16th 2019, 8:24:57 pm
+ * Last Modified: Wednesday, February 27th 2019, 2:13:01 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -471,6 +471,7 @@ export class RendererPlatform {
             } else if (mesh.indexBuffer.dataType === Uint32Array) {
                 drawFormat = gl.UNSIGNED_INT;
             }
+            // drawFormat = gl.UNSIGNED_BYTE;
             gl.drawElements(
                 this.glDrawMode[mesh.mode],
                 mesh.indexBuffer.length,

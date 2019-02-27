@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, February 27th 2019, 12:21:28 am
+ * Last Modified: Wednesday, February 27th 2019, 3:21:32 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -21,13 +21,14 @@ let app = Application.getApp<AppPlugin>().unwrap();
 
 const scene = new Scene('tank');
 
-let gltf = app.plugins.gltf.createLoader('./assets/models/PalmTree.gltf');
+let gltf = app.plugins.gltf.createLoader('./assets/models/CompleteLevelArt.gltf');
 
 let cubeTexture = CubeTexture.loadImage('assets/images/skybox_px.jpg', 'assets/images/skybox_nx.jpg', 'assets/images/skybox_py.jpg', 'assets/images/skybox_ny.jpg',
     'assets/images/skybox_pz.jpg', 'assets/images/skybox_nz.jpg');
 
 gltf.loadSenceRoot().then(node => {
-    // node.setLocalScale(0.1, 0.1, 0.1);
+    node.setLocalScale(0.11, 0.11, 0.11);
+    // console.log(node.getLocalScale());
     scene.root.addChild(node);
 });
 
@@ -40,7 +41,8 @@ let light = new Entity('light')
     })
     .setEulerAngles(-45, 0, 0)
     .setLocalPosition(0, 5, 0);
-// scene.root.addChild(light);
+scene.root.addChild(light);
+
 
 let camera = new Entity('camera')
     .addComponent('camera', {

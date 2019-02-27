@@ -5,14 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, February 27th 2019, 12:47:23 am
+ * Last Modified: Wednesday, February 27th 2019, 2:36:10 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 import { GltfLoader, GltfAsset } from './gltf-loader-ts/source';
-import { Application, Plugin, Mesh, PBRMaterial, Model, Color, Texture, FILTER, WRAP, Entity, Mat4, Quat, RAD_TO_DEG, Scene } from 'hypergl';
+import { Application, Plugin, Mesh, PBRMaterial, Model, Color, StandardMaterial, Texture, FILTER, WRAP, Entity, Mat4, Quat, RAD_TO_DEG, Scene } from 'hypergl';
 
 let loader = new GltfLoader();
 
@@ -153,13 +153,11 @@ export class GltfAssetLoader {
             // tslint:disable-next-line:no-unused-expression
             mesh.mode && (m.mode = mesh.mode);
             m.material = await this.loadMaterial(mesh.material!);
+            // m.material = new StandardMaterial();
             meshs.push(m);
-            // return m;
         }
         let h_model = new Model(meshs);
-        // h_model.meshs.pop();
-        console.log(h_model);
-
+        // console.log(h_model);
         return h_model;
     }
     async loadMaterial(index: number) {
