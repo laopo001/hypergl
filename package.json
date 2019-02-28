@@ -4,8 +4,8 @@
         "url": "https://github.com/laopo001/hypergl/issues"
     },
     "dependencies": {
-        "howler": "^2.0.15",
         "cannon": "schteppe/cannon.js",
+        "howler": "^2.0.15",
         "isomorphic-fetch": "^2.2.1",
         "laopo001-ammo": "^0.0.3",
         "reflect-metadata": "^0.1.12"
@@ -93,5 +93,5 @@
             ]
         }
     },
-    "version": "0.0.1-nightly.20190227.1"
+    "version": "0.0.1-nightly.20190228.0"
 }
