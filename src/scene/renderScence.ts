@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 30th 2019, 4:23:24 pm
+ * Last Modified: Thursday, February 28th 2019, 5:45:06 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -154,11 +154,11 @@ export function renderDirectionalLightArr(name: string, lights: LightComponent<D
             let { texture, viewProjectionMatrix } = rendererDirectionalShadowMap(scene, item);
             setLight(name, 'shadowMap', index, obj, uniforms, texture);
             setLight(name, 'lightSpaceMatrix', index, obj, uniforms, viewProjectionMatrix.data);
-            setLight(name, 'castShadows', index, obj, uniforms, item.castShadows ? 1 : 0);
             setLight(name, 'shadowType', index, obj, uniforms, o[item.shadowType]);
             setLight(name, 'shadowMapSize', index, obj, uniforms, item.shadowMapSize);
             setLight(name, 'shadowBias', index, obj, uniforms, item.shadowBias);
         }
+        setLight(name, 'castShadows', index, obj, uniforms, item.castShadows ? 1 : 0);
         setLight(name, 'position', index, obj, uniforms, item.getPosition().data);
         setLight(name, 'color', index, obj, uniforms, item.color.data3);
         setLight(name, 'direction', index, obj, uniforms, item.direction.normalize().data);
@@ -208,11 +208,11 @@ export function renderPointLightArr(name: string, lights: LightComponent<PointLi
         if (item.castShadows) {
             let { texture } = rendererPointShadowMap(scene, item);
             setLight(name, 'shadowMap', index, obj, uniforms, texture);
-            setLight(name, 'castShadows', index, obj, uniforms, item.castShadows ? 1 : 0);
             setLight(name, 'shadowType', index, obj, uniforms, o[item.shadowType]);
             setLight(name, 'shadowMapSize', index, obj, uniforms, item.shadowMapSize);
             setLight(name, 'shadowBias', index, obj, uniforms, item.shadowBias);
         }
+        setLight(name, 'castShadows', index, obj, uniforms, item.castShadows ? 1 : 0);
         setLight(name, 'position', index, obj, uniforms, item.getPosition().data);
         setLight(name, 'color', index, obj, uniforms, item.color.data3);
         setLight(name, 'range', index, obj, uniforms, item.range);
@@ -261,11 +261,11 @@ export function renderSpotLightArr(name: string, lights: LightComponent<SpotLigh
             let { texture, viewProjectionMatrix } = rendererSpotShadowMap(scene, item);
             setLight(name, 'shadowMap', index, obj, uniforms, texture);
             setLight(name, 'lightSpaceMatrix', index, obj, uniforms, viewProjectionMatrix.data);
-            setLight(name, 'castShadows', index, obj, uniforms, item.castShadows ? 1 : 0);
             setLight(name, 'shadowType', index, obj, uniforms, o[item.shadowType]);
             setLight(name, 'shadowMapSize', index, obj, uniforms, item.shadowMapSize);
             setLight(name, 'shadowBias', index, obj, uniforms, item.shadowBias);
         }
+        setLight(name, 'castShadows', index, obj, uniforms, item.castShadows ? 1 : 0);
         setLight(name, 'position', index, obj, uniforms, item.getPosition().data);
         setLight(name, 'direction', index, obj, uniforms, item.direction.normalize().data);
         setLight(name, 'innerConeAngle', index, obj, uniforms, Math.cos(item.innerConeAngle * DEG_TO_RAD));
