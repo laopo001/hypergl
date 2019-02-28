@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, February 28th 2019, 12:38:34 am
+ * Last Modified: Friday, March 1st 2019, 12:05:19 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -20,7 +20,6 @@ import { Mat4, Vec3 } from '../../../math';
 import { ComponentSystem } from '../../system';
 import { event, createEvent } from '../../../core';
 import { Application } from '../../../application';
-import { IPhysics } from 'hypergl/plugins/physics';
 import { Mesh } from '../../../mesh';
 import { ColorMaterial, StandardMaterial } from '../../../material';
 import { once } from '../../../utils/decorators';
@@ -117,7 +116,6 @@ export class CollisionComponent extends Component<CollisionInputs> {
             this._meshID = mesh!.meshID;
             mesh!.outline = true;
             mesh!.name = this.entity.name + '-' + this.name + '-component';
-
             mesh!.material = this.createMaterial() as any;
             let e = new Entity({ name: mesh!.name, tag: [this.name, 'debugger'] }).addComponent('model', {
                 type: 'model',
@@ -133,12 +131,11 @@ export class CollisionComponent extends Component<CollisionInputs> {
 
         }
     }
+    on(eventName: 'contact' | 'collisionstart' | 'collisionend' | 'triggerenter', cb: any) {
+        this.event.on(eventName, cb);
+    }
     destroy() {
         super.destroy();
-        // let app = this.entity.app as Application<{ physics: CannonPhysicsPlugin }>;
-        // if (this._uuid != null) {
-        //     app.scene.systems.model!.opacityLayers = app.scene.systems.model!.opacityLayers.filter(x => this._uuid !== x.meshID);
-        // }
         this.instance = undefined as any;
     }
     @once
