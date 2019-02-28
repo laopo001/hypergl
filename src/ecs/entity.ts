@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, February 25th 2019, 10:45:42 am
+ * Last Modified: Thursday, February 28th 2019, 3:04:48 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -88,14 +88,14 @@ export class Entity extends SceneNode {
         if (value) {
             // tslint:disable-next-line:no-unused-expression
             this.components && this.components.forEach(x => {
-                x.initialize();
+                // tslint:disable-next-line:no-unused-expression
+                !x.initialized && x.initialize();
             });
         }
         // tslint:disable-next-line:no-unused-expression
         this.children && forChildren(this.children, value);
     }
     EntityID = EntityID++;
-    mesh?: Mesh;
     model!: ModelComponent;
     camera!: CameraComponent;
     light!: LightComponent;

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, February 16th 2019, 11:48:04 pm
+ * Last Modified: Thursday, February 28th 2019, 2:59:58 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -64,9 +64,7 @@ export class ModelComponentSystem extends ComponentSystem {
         });
     }
     addComponent(entity: Entity, componentData: any) {
-        let component = super.addComponent(entity, componentData) as ModelComponent;
+        super.addComponent(entity, componentData);
         this._dirty = true;
-        // this.list.push(component);
-        return component;
     }
 }

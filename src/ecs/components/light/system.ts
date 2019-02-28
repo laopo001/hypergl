@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 30th 2019, 4:32:00 pm
+ * Last Modified: Thursday, February 28th 2019, 2:59:58 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -23,8 +23,8 @@ export class LightComponentSystem extends ComponentSystem {
     directionalLights: LightComponent<DirectionalLight>[] = [];
     pointLights: LightComponent<PointLight>[] = [];
     spotLight: LightComponent<SpotLight>[] = [];
-    addComponent(entity: Entity, componentData: any) {
-        let component = super.addComponent(entity, componentData);
+    addComponent(entity: Entity, component: any) {
+        // let component = super.addComponent(entity, componentData);
         let child = component.instance;
         if (child instanceof DirectionalLight) {
             this.directionalLights.push(component as LightComponent<DirectionalLight>);
@@ -33,7 +33,6 @@ export class LightComponentSystem extends ComponentSystem {
         } else if (child instanceof SpotLight) {
             this.spotLight.push(component as LightComponent<SpotLight>);
         }
-        return component;
     }
 
 }

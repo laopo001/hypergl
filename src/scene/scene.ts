@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, February 25th 2019, 6:44:41 pm
+ * Last Modified: Thursday, February 28th 2019, 3:14:48 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -54,16 +54,6 @@ export class Scene {
      * @memberof Scene
      */
     gammaCorrection = 2.2;
-    readonly lights: {
-        directionalLights: DirectionalLight[],
-        pointLights: PointLight[],
-        spotLight: SpotLight[]
-    } = {
-            directionalLights: [],
-            pointLights: [],
-            spotLight: []
-        };
-
     app!: Application;
     entitys: Entity[] = [];
     // materials: Material[] = [];
