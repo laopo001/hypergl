@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, February 26th 2019, 7:07:43 pm
+ * Last Modified: Friday, March 1st 2019, 1:16:27 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -14,6 +14,7 @@
 
 import { Entity, StandardMaterial, Config, Scene, util, SkyMaterial, Application, Vec3, Color, Vec2, Texture, CubeTexture, PBRMaterial, Mesh, Drawable } from 'hypergl';
 import { AppPlugin } from '../types';
+import { FirstPersonCamera } from '../utils/first_person_camera';
 
 let app = Application.getApp<AppPlugin>();
 
@@ -34,8 +35,8 @@ async function main() {
         })
         .addComponent('listener', {})
         .setPosition(0, 5, 5)
-        .lookAt(new Vec3(0, 0, 0));
-    // .addComponent('script', [new FirstPersonCamera({ speed: 0.1 })]);
+        .lookAt(new Vec3(0, 0, 0))
+        .addComponent('script', [new FirstPersonCamera({ speed: 2 })]);
     scene.root.addChild(camera);
 
     let skycube = new CubeTexture();
@@ -88,6 +89,7 @@ async function main() {
     let sphere1 = new Entity('sphere1')
         .addComponent('model', {
             type: 'sphere',
+            castShadow: true
         })
         .setLocalPosition(3, 0, 0);
     sphere1.model.material().opacity = 0.3;
@@ -97,6 +99,7 @@ async function main() {
     let sphere2 = new Entity('sphere2')
         .addComponent('model', {
             type: 'sphere',
+            castShadow: true
         })
         .setLocalPosition(1.5, 0, 0);
     let misc = new Texture();

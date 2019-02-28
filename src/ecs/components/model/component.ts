@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, February 15th 2019, 2:05:19 pm
+ * Last Modified: Friday, March 1st 2019, 1:09:54 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -104,7 +104,9 @@ export class ModelComponent<T extends Material = StandardMaterial> extends Compo
         }
         ['receiveShadow', 'castShadow'].forEach(key => {
             if (this.inputs[key] !== undefined) {
-                this.instance[key] = this.inputs[key];
+                this.instance.meshs.forEach(drawable => {
+                    drawable[key] = this.inputs[key];
+                });
             }
         });
         if (this.inputs.material) {

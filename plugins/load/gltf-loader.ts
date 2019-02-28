@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, February 27th 2019, 2:36:10 pm
+ * Last Modified: Friday, March 1st 2019, 12:49:33 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -78,11 +78,12 @@ export class GltfAssetLoader {
                 type: 'model',
                 model: mesh
             });
-            // entity.mesh = mesh;
+            entity.tag.push('model');
         }
         if (typeof nodeData.camera === 'number') {
             let camera = await this.loadCamera(nodeData.camera);
             entity.addComponent('camera', camera as any);
+            entity.tag.push('camera');
         }
         if (nodeData.translation) {
             let [x, y, z] = nodeData.translation;
