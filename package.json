@@ -81,7 +81,7 @@
         "start": "webpack --config webpack.demo.js --colors --watch",
         "test": "jest",
         "test:browser": "webpack --colors && gulp replaceTests && karma start",
-        "tsc": "tsc -p tsconfig.compiler.json",
+        "tsc": "tsc -p tsconfig.compiler.json && gulp movejs",
         "version": "gulp version",
         "commit": "gulp commit"
     },

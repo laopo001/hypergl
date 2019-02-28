@@ -79,6 +79,12 @@ gulp.task('replace', function (cb) {
     return stream;
 });
 
+gulp.task('movejs', function (cb) {
+    let stream = gulp.src('./plugins/**/*.js')
+        .pipe(gulp.dest('./lib/plugins/'))
+    return stream;
+});
+
 gulp.task('move', function (cb) {
     let stream = gulp.src('./build/assets/**')
         .pipe(gulp.dest('deploy/assets'))
