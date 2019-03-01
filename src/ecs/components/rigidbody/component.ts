@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, February 25th 2019, 10:37:31 am
+ * Last Modified: Friday, March 1st 2019, 3:33:50 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -106,25 +106,25 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
         });
         this.instance = body;
     }
-    applyForce(force: Vec3, point?: Vec3) {
-
-        let physics = this.entity.scene.systems.rigidbody!.physics;
+    async applyForce(force: Vec3, point?: Vec3) {
+        let physics = await this.entity.scene.systems.rigidbody!.asyncPhysics;
+        // let physics = this.entity.scene.systems.rigidbody!.physics;
         physics.applyForce(this.instance, {
             force, point
         });
     }
-    applyImpulse(impulse: Vec3, point?: Vec3) {
-
-        let physics = this.entity.scene.systems.rigidbody!.physics;
+    async applyImpulse(impulse: Vec3, point?: Vec3) {
+        let physics = await this.entity.scene.systems.rigidbody!.asyncPhysics;
+        // let physics = this.entity.scene.systems.rigidbody!.physics;
         physics.applyImpulse(this.instance, {
             impulse, point
         });
     }
     teleport(v: Vec3);
     teleport(x: number, y: number, z: number);
-    teleport(x, y?, z?) {
-
-        let physics = this.entity.scene.systems.rigidbody!.physics;
+    async teleport(x, y?, z?) {
+        let physics = await this.entity.scene.systems.rigidbody!.asyncPhysics;
+        // let physics = this.entity.scene.systems.rigidbody!.physics;
         if (x instanceof Vec3) {
             this.entity.setPosition(x);
         } else {

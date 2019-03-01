@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, February 28th 2019, 3:04:48 pm
+ * Last Modified: Friday, March 1st 2019, 3:27:40 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -124,7 +124,7 @@ export class Entity extends SceneNode {
                 this.name = name;
             } else {
                 this.name = name.name;
-                this.tag = name.options;
+                this.tag = name.tag;
             }
         }
 
