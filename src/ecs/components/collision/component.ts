@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, March 1st 2019, 12:05:19 am
+ * Last Modified: Sunday, March 3rd 2019, 9:20:17 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -141,7 +141,7 @@ export class CollisionComponent extends Component<CollisionInputs> {
     @once
     private createMaterial() {
         let material = new ColorMaterial();
-        material.diffuseColor.set(1, 0, 0);
+        material.diffuseColor.set(0, 0, 0);
         material.opacity = 0.1;
         material.cullFace = FACE.BACK;
         return material;
