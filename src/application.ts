@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, February 25th 2019, 6:42:15 pm
+ * Last Modified: Sunday, March 3rd 2019, 2:00:04 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -64,11 +64,7 @@ export class Application<T= Plugin> {
         return app;
     }
     static getAsyncApp<T>(): Promise<Application<T>> {
-        return new Promise((resolve, reject) => {
-            event.on('application-new', () => {
-                resolve(app.unwrap());
-            });
-        });
+        return app.toPromise();
     }
     async start() {
         this.renderer.setViewport(0, 0, this.canvas.width, this.canvas.height);

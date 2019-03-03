@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, March 1st 2019, 3:33:50 pm
+ * Last Modified: Sunday, March 3rd 2019, 1:28:37 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -20,7 +20,7 @@ import { Mat4, Vec3 } from '../../../math';
 import { ComponentSystem } from '../../system';
 import { event } from '../../../core';
 import { Application } from '../../../application';
-import { IPhysics } from 'hypergl/plugins/physics';
+import { IPhysics } from '../../../../plugins/physics/types';
 
 
 export interface RigidbodyInputs {
