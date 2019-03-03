@@ -5,12 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, March 3rd 2019, 1:59:22 pm
+ * Last Modified: Sunday, March 3rd 2019, 2:15:14 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
  */
 
+
+declare const process;
 export class Option<T> {
     private promise: Promise<T>;
     private cb!: (value: T) => void;
@@ -29,6 +31,9 @@ export class Option<T> {
         return this.value;
     }
     toPromise() {
+        if (process.env.NODE_ENV === 'development' && this.value === undefined) {
+            console.warn('value is undefined');
+        }
         return this.promise;
     }
     setValue(value: T) {
