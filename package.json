@@ -15,7 +15,7 @@
         "@types/handlebars": "^4.0.39",
         "@types/howler": "^2.0.5",
         "@types/jest": "^23.3.1",
-        "@types/node": "^10.0.3",
+        "@types/node": "^11.10.4",
         "ali-oss": "^5.1.1",
         "browser-sync": "^2.18.12",
         "browser-sync-webpack-plugin": "^2.2.2",
@@ -93,5 +93,5 @@
             ]
         }
     },
-    "version": "0.0.1-nightly.20190301.1"
+    "version": "0.0.1-nightly.20190303.0"
 }
