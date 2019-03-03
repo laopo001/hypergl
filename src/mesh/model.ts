@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, December 22nd 2018, 9:44:56 pm
+ * Last Modified: Sunday, March 3rd 2019, 4:15:10 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,6 +14,7 @@
 
 import { Drawable } from './drawable';
 export class Model {
+    name = '';
     constructor(public meshs: Drawable[]) {
 
     }

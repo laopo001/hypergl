@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, March 1st 2019, 12:49:33 am
+ * Last Modified: Sunday, March 3rd 2019, 4:14:28 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -62,12 +62,12 @@ export class GltfAssetLoader {
         let entity = new Entity();
         for (let i = 0; i < sceneData.nodes!.length; i++) {
             const nodeIndex = sceneData.nodes![i];
-            let entityChild = await this.resolveSenceNode(nodeIndex);
+            let entityChild = await this.loadSenceNode(nodeIndex);
             entity.addChild(entityChild);
         }
         return entity;
     }
-    async resolveSenceNode(index: number) {
+    async loadSenceNode(index: number) {
         let assets = await this.assets;
         let { gltf } = assets;
         let nodeData = gltf.nodes![index];
@@ -111,7 +111,7 @@ export class GltfAssetLoader {
         if (nodeData.children) {
             for (let i = 0; i < nodeData.children.length; i++) {
                 const index = nodeData.children[i];
-                let entityChild = await this.resolveSenceNode(index);
+                let entityChild = await this.loadSenceNode(index);
                 entity.addChild(entityChild);
             }
         }
@@ -158,6 +158,7 @@ export class GltfAssetLoader {
             meshs.push(m);
         }
         let h_model = new Model(meshs);
+        h_model.name = model.name;
         // console.log(h_model);
         return h_model;
     }
