@@ -5,14 +5,13 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, March 1st 2019, 3:27:40 pm
+ * Last Modified: Tuesday, March 5th 2019, 1:48:07 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import { Mesh, Model } from '../mesh';
 import { CameraComponent, CameraInputs } from './components/camera';
 import { LightComponent, LigthInputs } from './components/light';
 import { ScriptInputs, Script, ScriptComponent } from './components/script';
@@ -23,15 +22,14 @@ import { RigidbodyComponent, RigidbodyInputs } from './components/rigidbody';
 import { Component } from './component';
 import { Shader } from '../graphics/shader';
 import { Log } from '../utils/util';
-import { Camera } from '../scene/camera';
-import { Light } from '../lights';
 import { Application } from '../application';
 import { ComponentSystem } from './system';
 import { Scene, SceneNode } from '../scene';
-import { Constructor, Undefinedable } from '../types';
+import { Constructor, Undefinedable, convertImmutable } from '../types';
 import { Vec3 } from '../math';
 import { ListenerComponent, ListenerInputs } from './components/listener';
-import { SystemRegistry } from './system-register';
+
+
 let EntityID = 0;
 
 function forChildren(children: Entity[], value: boolean) {
@@ -52,7 +50,7 @@ export interface ComponentInputs {
     'rigidbody': RigidbodyInputs
 }
 
-const createComponent = {
+const createComponent = convertImmutable({
     model: ModelComponent,
     camera: CameraComponent,
     light: LightComponent,
@@ -61,7 +59,8 @@ const createComponent = {
     listener: ListenerComponent,
     collision: CollisionComponent,
     rigidbody: RigidbodyComponent,
-};
+});
+
 
 export type componentName = keyof ComponentInputs;
 

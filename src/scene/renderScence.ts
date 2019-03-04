@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, February 28th 2019, 5:45:06 pm
+ * Last Modified: Tuesday, March 5th 2019, 1:29:58 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -23,7 +23,7 @@ import { Vec3, DEG_TO_RAD } from '../math';
 import { Picker } from './picker';
 import { Color } from '../core';
 import { ColorMaterial } from '../material';
-
+import { ReadonlyObject } from '../types';
 
 
 export function renderScence(scene: Scene) {
@@ -142,7 +142,7 @@ function rendererDirectionalShadowMap(scene: Scene, light: LightComponent<Direct
     light.shadowFrame.afterDraw();
     return { texture: light.shadowFrame.getTexture(), viewProjectionMatrix: camera.viewProjectionMatrix };
 }
-let o = { 'Normal': 0, 'PCF': 1, 'PCFSoft': 2 };
+let o: ReadonlyObject<{ 'Normal': number, 'PCF': number, 'PCFSoft': number }> = { 'Normal': 0, 'PCF': 1, 'PCFSoft': 2 };
 export function renderDirectionalLightArr(name: string, lights: LightComponent<DirectionalLight>[], scene: Scene) {
     let uniforms = {};
     let res: any[] = [];
@@ -323,25 +323,6 @@ export function rendererPickerFrame(picker: Picker, material: ColorMaterial, cb)
             renderer.draw(drawable);
         }
     }
-    // for (let i = 0; i < drawables.length; i++) {
-    //     let arr = to_n_decimal(i, 256);
-    //     if (arr.length >= 4) { console.warn('xxx'); }
-    //     for (let i = 0; i < 3; i++) {
-    //         if (arr[i] == null) {
-    //             arr[i] = 0;
-    //         }
-    //     }
-    //     const drawable = drawables[i];
-    //     if (!drawable.cache.enabled) {
-    //         continue;
-    //     }
-    //     renderer.setShaderProgram(shader as Shader);
-    //     shader.setUniformValue('uModelMatrix', drawable.cache.uModelMatrix!.data);
-    //     color.set(arr[0] / 255, arr[1] / 255, arr[2] / 255);
-    //     shader.setUniformValue('uDiffuseColor', color.data);
-    //     renderer.draw(drawable);
-    // }
     cb();
     pickFrame.afterDraw();
-    // return pickFrame.getTexture();
 }

@@ -1,5 +1,3 @@
-import { Vec3 } from '../math';
-
 /*
  * ProjectName: hypergl
  * FilePath: \src\types\index.ts
@@ -7,12 +5,14 @@ import { Vec3 } from '../math';
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 22nd 2019, 10:57:39 pm
+ * Last Modified: Tuesday, March 5th 2019, 1:32:41 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
+
+import { Vec3 } from '../math';
 
 export interface AppOption {
     webgl1?: boolean;
@@ -20,15 +20,6 @@ export interface AppOption {
     antialias?: boolean;
 }
 
-export type TypeArray = Int8Array | Uint8Array | Int16Array | Uint16Array | Int32Array | Uint32Array | Float32Array | Float64Array;
-
-export type TypeArrayConstructor = Int8ArrayConstructor | Uint8ArrayConstructor | Int16ArrayConstructor | Uint16ArrayConstructor |
-    Int32ArrayConstructor | Uint32ArrayConstructor | Float32ArrayConstructor | Float64Array;
-export type Fn<T> = (...args) => T;
-export type FnVoid = Fn<void>;
-export type Nullable<T> = T | null | undefined;
-export type Undefinedable<T> = T | undefined;
-export interface Obj<T> { [s: string]: Undefinedable<T> }
 export interface CreateMeshOptions {
     positions: number[];
     normals?: number[]; // 法线
@@ -53,13 +44,6 @@ export interface CreateDrawabelOptions {
     blendWeights?: string[];
 }
 
-export type Constructor<T> = new (...args) => T;
-
-// export interface Constructor2<T> {
-//     new(...args): T;
-// }
-
-export declare type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 export interface CreateBoxOptions {
     halfExtents?: Vec3;
@@ -68,3 +52,4 @@ export interface CreateBoxOptions {
     heightSegments?: number;
 }
 
+export * from './types';

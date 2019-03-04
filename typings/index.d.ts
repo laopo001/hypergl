@@ -20,3 +20,5 @@ declare module '*.handlebars' {
     const content: (...arg) => string;
     export default content;
 }
+
+type zero_to_one = number;

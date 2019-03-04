@@ -86,5 +86,5 @@
         "commit": "gulp commit"
     },
     "types": "lib/src/index.d.ts",
-    "version": "0.0.1-nightly.20190303.2"
+    "version": "0.0.1-nightly.20190305.0"
 }

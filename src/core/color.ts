@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 6:03:01 pm
+ * Last Modified: Tuesday, March 5th 2019, 12:29:24 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,7 +17,7 @@ export class Color {
     buffer: ArrayBuffer;
     data: Float32Array;
     data3: Float32Array;
-    constructor(r?: number, g?: number, b?: number, a?: number) {
+    constructor(r?: zero_to_one, g?: zero_to_one, b?: zero_to_one, a?: zero_to_one) {
         this.buffer = new ArrayBuffer(4 * 4);
         this.data = new Float32Array(this.buffer, 0, 4);
         this.data3 = new Float32Array(this.buffer, 0, 3);
