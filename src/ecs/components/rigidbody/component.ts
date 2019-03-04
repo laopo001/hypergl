@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, March 3rd 2019, 1:28:37 pm
+ * Last Modified: Tuesday, March 5th 2019, 12:07:23 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -20,7 +20,6 @@ import { Mat4, Vec3 } from '../../../math';
 import { ComponentSystem } from '../../system';
 import { event } from '../../../core';
 import { Application } from '../../../application';
-import { IPhysics } from '../../../../plugins/physics/types';
 
 
 export interface RigidbodyInputs {
@@ -71,8 +70,6 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
             console.warn('没有碰撞组件');
             return;
         }
-        let app = this.entity.scene.app as Application<{ physics: IPhysics }>;
-        //         let physics = this.entity.scene.systems.rigidbody!.physics;
         let physics = await this.entity.scene.systems.rigidbody!.asyncPhysics;
 
         let { type, mass, linearDamping, angularDamping, linearFactor,
@@ -108,14 +105,12 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
     }
     async applyForce(force: Vec3, point?: Vec3) {
         let physics = await this.entity.scene.systems.rigidbody!.asyncPhysics;
-        // let physics = this.entity.scene.systems.rigidbody!.physics;
         physics.applyForce(this.instance, {
             force, point
         });
     }
     async applyImpulse(impulse: Vec3, point?: Vec3) {
         let physics = await this.entity.scene.systems.rigidbody!.asyncPhysics;
-        // let physics = this.entity.scene.systems.rigidbody!.physics;
         physics.applyImpulse(this.instance, {
             impulse, point
         });

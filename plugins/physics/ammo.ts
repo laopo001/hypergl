@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, February 17th 2019, 3:42:24 am
+ * Last Modified: Tuesday, March 5th 2019, 12:06:24 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -385,7 +385,11 @@ export class AmmoPlugin implements Plugin, IPhysics {
         let rot = entity.getRotation();
 
         let transform = body.getWorldTransform();
-        transform.getOrigin().setValue(pos.x, pos.y, pos.z);
+        // 计算碰撞中心
+        let { x: c_x, y: c_y, z: c_z } = entity.localTransform.transformVector(entity.collision.inputs.center!);
+        // console.log(c_x, c_y, c_z);
+
+        transform.getOrigin().setValue(pos.x + c_x, pos.y + c_y, pos.z + c_z);
         let ammoQuat = new Ammo.btQuaternion(0, 0, 0, 1);
         ammoQuat.setValue(rot.x, rot.y, rot.z, rot.w);
         transform.setRotation(ammoQuat);
@@ -414,7 +418,10 @@ export class AmmoPlugin implements Plugin, IPhysics {
                 x = p.x();
                 y = p.y();
                 z = p.z();
-                entity.setPosition(x, y, z);
+                // 计算碰撞中心
+                let { x: c_x, y: c_y, z: c_z } = entity.localTransform.transformVector(entity.collision.inputs.center!);
+                // console.log(entity.localTransform.getTranslation().data);
+                entity.setPosition(x - c_x, y - c_y, z - c_z);
                 let q = ammoTransform.getRotation();
                 x = q.x();
                 y = q.y();

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, March 3rd 2019, 9:20:17 pm
+ * Last Modified: Tuesday, March 5th 2019, 12:01:29 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -27,6 +27,7 @@ import { FACE } from '../../../conf';
 
 export type CollisionInputs = {
     debugger?: boolean;
+    center?: Vec3;
     contact?: (e) => void,
     collisionstart?: (e) => void,
     collisionend?: (e) => void,
@@ -40,7 +41,7 @@ export type CollisionInputs = {
 } | {
     type: 'cylinder',
     // radiusTop: number,
-    //  radiusBottom: number,
+    // radiusBottom: number,
     radius: number,
     height: number,
     axis: 'x' | 'y' | 'z'
@@ -48,7 +49,8 @@ export type CollisionInputs = {
 
 export const CollisionData: Partial<CollisionInputs> = {
     debugger: false,
-    axis: 'y'
+    axis: 'y',
+    center: new Vec3(0, 0, 0)
     // type: 'box',
     // halfExtents: new Vec3(1, 1, 1)
 };
@@ -123,10 +125,9 @@ export class CollisionComponent extends Component<CollisionInputs> {
             });
             e.setLocalScale(scale!);
             if (eulerAngles! != null) {
-                // console.log(eulerAngles!);
                 e.setLocalEulerAngles(eulerAngles!);
             }
-
+            e.setLocalPosition(this.inputs.center!);
             this.entity.addChild(e);
 
         }
