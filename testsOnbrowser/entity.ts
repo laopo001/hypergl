@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 30th 2019, 5:46:30 pm
+ * Last Modified: Tuesday, March 5th 2019, 1:44:34 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -24,7 +24,7 @@ describe('Entity', () => {
         let parent = new Entity('parent');
         root.addChild(parent);
         let find = root.findByName('parent');
-        console.log(find.name);
+        console.log(find!.name);
         assert.notEqual(find, null);
     });
 });
@@ -39,5 +39,18 @@ describe('Entity', () => {
         parent.addChild(child, child2);
         let find = root.findByNameAll('child');
         assert.equal(find.length, 2);
+    });
+});
+
+describe('Entity', () => {
+    it('findByTag', () => {
+        let node = new Entity('1');
+        let node2 = new Entity('2', ['1', '2']);
+        let node3 = new Entity('3', ['1']);
+
+        node.addChild(node2, node3);
+        let nodes = node.findByTag('1', '2');
+
+        assert.equal(nodes.length, 1);
     });
 });

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, March 5th 2019, 1:48:07 am
+ * Last Modified: Tuesday, March 5th 2019, 12:26:50 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -201,15 +201,19 @@ export class Entity extends SceneNode {
         }
         return res;
     }
-    findByTag(tag: string): Array<Entity> {
+    findByTag(...tags: Array<string>): Array<Entity> {
         let res: Array<Entity> = [];
-        if (this.tag.includes(tag)) {
+        if (includes(this.tag, tags)) {
             res.push(this);
         }
         for (let i = 0; i < this.children.length; i++) {
             const child = this.children[i];
-            res = res.concat(child.findByTag(tag));
+            res = res.concat(child.findByTag(...tags));
         }
         return res;
     }
+}
+
+function includes<T>(src: Array<T>, searchElements: Array<T>, fromIndex?: number) {
+    return searchElements.map(x => src.includes(x), fromIndex).every(x => x === true);
 }

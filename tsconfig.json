@@ -32,7 +32,10 @@
       "./typings"
     ],
     "outDir": "lib",
-    "types": [],
+    "types": [
+      "jest",
+      "node"
+    ],
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
     "paths": {
