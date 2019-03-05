@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, March 5th 2019, 7:04:11 pm
+ * Last Modified: Tuesday, March 5th 2019, 10:34:00 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -88,44 +88,48 @@ export interface Clone {
 }
 
 export abstract class Serialize {
+    static parse<T>(str: string, src: T): T { return src; }
     stringify(): string { return ''; }
 }
 
-export abstract class Deserialize {
-    static parse(str: string): any { /**/ }
-}
-
-
-export function SerializeDecorator(format: { [s: string]: (any) => undefined | null | boolean | string | number }) {
+type BaseType = undefined | null | boolean | string | number;
+export function SerializeDecorator(format: { [s: string]: [(any) => BaseType, (any: any) => any] }) {
     return function fn<T extends Serialize>(c: Constructor<T>) {
         c.prototype.stringify = function () {
             let that = {};
             const keys = Object.keys(this);
             keys.forEach(key => {
                 if (key in format) {
-                    that[key] = format[key](this[key]);
+                    that[key] = format[key][0](this[key]);
                 } else {
                     that[key] = this[key];
                 }
             });
             return JSON.stringify(that);
         };
-    };
-}
-
-export function DeserializeDecorator(format: { [s: string]: (any) => undefined | null | boolean | string | number }) {
-    return function fn<T extends Deserialize>(c: Constructor<T>) {
-        (c as any).parse = function (str: string) {
+        // tslint:disable-next-line:only-arrow-functions
+        (c as any).parse = function (str: string, src: any) {
             let that = JSON.parse(str);
             const keys = Object.keys(that);
             keys.forEach(key => {
                 if (key in format) {
-                    that[key] = format[key](that[key]);
+                    that[key] = format[key][1](that[key]);
                 } else {
                     that[key] = that[key];
                 }
             });
+            that.__proto__ = src['__proto__'];
             return that;
         };
     };
 }
+
+
+@SerializeDecorator({ name: [(x) => 12, (x) => 123] })
+class Greeter extends Serialize {
+    name = 123;
+    range!: string;
+}
+let g = new Greeter();
+// console.log(g.stringify(), g);
+

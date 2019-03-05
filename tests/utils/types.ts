@@ -5,35 +5,29 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, March 5th 2019, 7:07:05 pm
+ * Last Modified: Tuesday, March 5th 2019, 10:34:29 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
  */
 
 
-import { Serialize, SerializeDecorator, Deserialize, DeserializeDecorator } from '../../src/types/types';
+import { Serialize, SerializeDecorator } from '../../src/types/types';
 
-@SerializeDecorator({ name: (x) => 123 })
+@SerializeDecorator({ name: [(x) => x, (x) => x] })
 class Greeter extends Serialize {
     name = 123;
     range!: string;
 }
 
-test('SerializeDecorator', () => {
+test('Serialize', () => {
     let g = new Greeter();
 
     expect(g.stringify()).toEqual('{"name":123}');
 });
 
-@DeserializeDecorator({ name: (x) => 123 })
-class Greeter2 extends Deserialize {
-    name = 123;
-    range!: string;
-}
 
-test('DeserializeDecorator', () => {
-    let g = new Greeter();
-    let a: Greeter2 = Greeter2.parse(g.stringify());
-    expect(g.stringify()).toEqual('{"name":123}');
+test('Deserialize', () => {
+    let a: Greeter = Greeter.parse('{"name":123}', new Greeter());
+    expect(a.name).toEqual(123);
 });

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, March 3rd 2019, 2:12:53 pm
+ * Last Modified: Tuesday, March 5th 2019, 10:20:45 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -133,6 +133,7 @@ export function validate<T>(target: any, propertyKey: string, descriptor: TypedP
 function classDecorator(arr: string[]) {
     return function fn(c: Constructor<Greeter>) {
         return class extends c {
+            abc = 123;
             constructor() {
                 super();
                 arr.forEach(key => {
@@ -157,4 +158,4 @@ class Greeter implements I {
 }
 
 // let g = new Greeter();
-// console.log(g);
+// console.log(g.abc);
