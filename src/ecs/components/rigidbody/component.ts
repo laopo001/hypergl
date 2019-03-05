@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, March 5th 2019, 12:07:23 am
+ * Last Modified: Wednesday, March 6th 2019, 12:46:34 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -15,7 +15,7 @@
 
 import { Entity } from '../../entity';
 import { Component } from '../../component';
-import { Log, copy } from '../../../utils/util';
+import { Log, input_copy } from '../../../utils/util';
 import { Mat4, Vec3 } from '../../../math';
 import { ComponentSystem } from '../../system';
 import { event } from '../../../core';
@@ -61,7 +61,7 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
     }
     constructor(inputs: RigidbodyInputs, entity: Entity, system: ComponentSystem) {
         super(inputs, entity, system);
-        copy(inputs, RigidbodyData);
+        input_copy(inputs, RigidbodyData);
     }
 
     async initialize() {

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, February 15th 2019, 2:07:05 pm
+ * Last Modified: Wednesday, March 6th 2019, 12:46:34 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,7 +14,7 @@
 
 
 import { Component } from '../../component';
-import { Log, copy } from '../../../utils/util';
+import { Log, input_copy } from '../../../utils/util';
 import { Mat4, Vec3 } from '../../../math';
 import { ComponentSystem } from '../../system';
 import { Color } from '../../../core';
@@ -68,7 +68,7 @@ export class CameraComponent extends Component<CameraInputs> {
 
     constructor(inputs: CameraInputs, entity: Entity, system: ComponentSystem) {
         super(inputs, entity, system);
-        copy(inputs, cameraData);
+        input_copy(inputs, cameraData);
         let camera = new Camera(this.entity);
         switch (this.inputs.type) {
             case 'perspective': {

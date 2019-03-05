@@ -1,7 +1,7 @@
 
 import { Entity } from '../../entity';
 import { Component } from '../../component';
-import { Log, copy } from '../../../utils/util';
+import { Log, input_copy } from '../../../utils/util';
 import { Mat4, Vec3 } from '../../../math';
 import { ComponentSystem } from '../../system';
 import { event } from '../../../core';
@@ -46,7 +46,7 @@ export class AudioComponent extends Component<AudioInputs> {
     instance!: Howl;
     constructor(inputs: AudioInputs, entity: Entity, system: ComponentSystem) {
         super(inputs, entity, system);
-        copy(inputs, AudioData);
+        input_copy(inputs, AudioData);
     }
 
     initialize() {

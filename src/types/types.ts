@@ -5,13 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, March 5th 2019, 10:34:00 pm
+ * Last Modified: Wednesday, March 6th 2019, 12:45:50 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
  */
 
-
+import * as iclone from 'clone';
+import * as tslib_1 from 'tslib';
 export type TypeArray = Int8Array | Uint8Array | Int16Array | Uint16Array | Int32Array | Uint32Array | Float32Array | Float64Array;
 
 export type TypeArrayConstructor = Int8ArrayConstructor | Uint8ArrayConstructor | Int16ArrayConstructor | Uint16ArrayConstructor |
@@ -78,18 +79,26 @@ export function convertImmutable<T>(a: T) {
     return a as Immutable<T>;
 }
 
+export interface Clone {
+    clone<T>(src: T): T
+}
 
 export interface Copy {
-    copy(): this;
+    copy<T>(ref: T, src: T)
 }
 
-export interface Clone {
-    clone(): this;
-}
+// export function clone<T>(src: T): T {
+//     return iclone(src);
+// }
+// export function copy<T>(ref: T, src: T) {
+//     let that = iclone(src);
+//     Object.assign(ref, that);
+// }
+
 
 export abstract class Serialize {
-    static parse<T>(str: string, src: T): T { return src; }
-    stringify(): string { return ''; }
+    static parse<T>(str: string, src: T): T { throw new Error(); return src; }
+    stringify(): string { throw new Error(); return ''; }
 }
 
 type BaseType = undefined | null | boolean | string | number;
@@ -125,11 +134,11 @@ export function SerializeDecorator(format: { [s: string]: [(any) => BaseType, (a
 }
 
 
-@SerializeDecorator({ name: [(x) => 12, (x) => 123] })
-class Greeter extends Serialize {
-    name = 123;
-    range!: string;
-}
-let g = new Greeter();
-// console.log(g.stringify(), g);
+// @SerializeDecorator({ name: [(x) => 12, (x) => 123] })
+// class Greeter extends Serialize {
+//     name = 123;
+//     range!: string;
+// }
+// let g = new Greeter();
+// console.log(clone(g));
 

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, March 5th 2019, 10:20:45 pm
+ * Last Modified: Wednesday, March 6th 2019, 12:58:51 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,7 +14,7 @@
 import 'reflect-metadata';
 import { Constructor } from '../types';
 import { Vec3 } from '../math';
-
+import * as iclone from 'clone';
 /**
  * 日志
  */
@@ -46,12 +46,20 @@ export namespace Log {
     }
 }
 
-export function copy(ref, source) {
+export function input_copy(ref, source) {
     for (let k in source) {
         if (ref[k] === undefined) {
             ref[k] = source[k];
         }
     }
+}
+
+export function clone<T>(src: T): T {
+    return iclone(src);
+}
+export function copy<T>(ref: T, src: T) {
+    let that = iclone(src);
+    Object.assign(ref, that);
 }
 
 export function loadImage(url: string): Promise<ImageBitmap | HTMLImageElement> {
