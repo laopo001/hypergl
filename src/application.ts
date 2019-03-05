@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, March 4th 2019, 8:09:07 pm
+ * Last Modified: Tuesday, March 5th 2019, 5:19:11 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,7 +14,7 @@
 
 import { Scene } from './scene/scene';
 import { RendererPlatform } from './graphics/renderer';
-import { AppOption, FnVoid, Constructor } from './types';
+import { AppOption, FnVoid, Constructor, DeepImmutable } from './types';
 import { event, timer, Option } from './core';
 import { Mesh } from './mesh/mesh';
 import { SystemRegistry } from './ecs/system-register';
@@ -50,7 +50,7 @@ export class Application<T= Plugin> {
     renderer: RendererPlatform;
     canvas: HTMLCanvasElement;
     lastRenderTime = 0;
-    plugins: T = {} as any;
+    plugins: DeepImmutable<T> = {} as any;
     private _scene!: Scene;
     // private _isPointerLock = false;
     constructor(canvas: HTMLCanvasElement, option: AppOption = {}) {
@@ -103,7 +103,7 @@ export class Application<T= Plugin> {
         event.on(name, cb);
     }
 
-    async registerPlugins(cs: PluginClass[]) {
+    registerPlugins(cs: PluginClass[]) {
         for (let i = 0; i < cs.length; i++) {
             const c = cs[i];
             if (c.pname in this.plugins) {
