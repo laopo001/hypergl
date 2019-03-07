@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, February 28th 2019, 2:59:58 pm
+ * Last Modified: Friday, March 8th 2019, 12:37:44 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -31,9 +31,7 @@ export abstract class ComponentSystem {
     abstract componentConstructor: Constructor<Component<{}>>;
     entitys: Entity[] = [];
     constructor(private scece: Scene) { }
-    addComponent(entity: Entity, component): void {
-        // const component = new this.componentConstructor(componentData, entity, this) as Component<{}>;
-        // component.initialize();
+    addComponent(entity: Entity, component: Component<{}>): void {
         this.map[entity.uuid] = component;
         this.components.push(component);
     }

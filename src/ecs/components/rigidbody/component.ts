@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, March 6th 2019, 12:46:34 am
+ * Last Modified: Friday, March 8th 2019, 12:30:32 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -53,12 +53,13 @@ export const RigidbodyData: Partial<RigidbodyInputs> = {
 };
 
 export class RigidbodyComponent extends Component<RigidbodyInputs> {
-    name = 'rigidbody';
-    instance;
-    simulationEnabled = false;
     get body() {
         return this.instance;
     }
+    name = 'rigidbody';
+    instance;
+    simulationEnabled = false;
+    update: any;
     constructor(inputs: RigidbodyInputs, entity: Entity, system: ComponentSystem) {
         super(inputs, entity, system);
         input_copy(inputs, RigidbodyData);
@@ -84,7 +85,7 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
             group, mask
         }, this.entity);
         body['entity'] = this.entity;
-        this.entity.scene.event.on('update', (dt) => {
+        this.update = (dt) => {
             if (this.enabled) {
                 if (this.entity.rigidbody.inputs.type === 'dynamic') {
                     physics.syncBodyToEntity(this.entity, body, dt);
@@ -100,8 +101,17 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
                     }
                 }
             }
-        });
+        };
+        this.entity.scene.event.on('update', this.update);
         this.instance = body;
+    }
+    async destroy() {
+        super.destroy();
+        this.entity.scene.event.off('update', this.update);
+        let physics = await this.entity.scene.systems.rigidbody!.asyncPhysics;
+        physics.removeBody(this.instance);
+        this.enabled = false;
+        this.instance = undefined as any;
     }
     async applyForce(force: Vec3, point?: Vec3) {
         let physics = await this.entity.scene.systems.rigidbody!.asyncPhysics;
@@ -126,10 +136,6 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
             this.entity.setPosition(x, y, z);
         }
         physics.syncEntityToBody(this.entity, this.body);
-    }
-    destroy() {
-        super.destroy();
-        this.instance = undefined as any;
     }
 }
 

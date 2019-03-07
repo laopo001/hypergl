@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, March 6th 2019, 12:58:51 am
+ * Last Modified: Friday, March 8th 2019, 12:40:42 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -104,6 +104,14 @@ export function n_decimal_to_10(v: Array<number>, d: number) {
     });
     return res;
 }
+
+export function arrayRemove<T>(arr: Array<T>, elm: T) {
+    let i = arr.findIndex(x => x === elm);
+    if (i > -1) {
+        arr.splice(i, 1);
+    }
+}
+
 export function saveClosure(obj: any) {
     // tslint:disable-next-line:only-arrow-functions
     return function () {

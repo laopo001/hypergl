@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, February 28th 2019, 2:59:58 pm
+ * Last Modified: Friday, March 8th 2019, 12:42:12 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,14 +17,15 @@ import { LightComponent } from './component';
 import { DirectionalLight, PointLight, SpotLight, Light } from '../../../lights';
 import { Component } from '../../component';
 import { Entity } from '../../entity';
+import { arrayRemove } from '../../../utils';
 export class LightComponentSystem extends ComponentSystem {
     componentConstructor = LightComponent;
     name = 'light';
     directionalLights: LightComponent<DirectionalLight>[] = [];
     pointLights: LightComponent<PointLight>[] = [];
     spotLight: LightComponent<SpotLight>[] = [];
-    addComponent(entity: Entity, component: any) {
-        // let component = super.addComponent(entity, componentData);
+    addComponent(entity: Entity, component: Component<{}>) {
+        super.addComponent(entity, component);
         let child = component.instance;
         if (child instanceof DirectionalLight) {
             this.directionalLights.push(component as LightComponent<DirectionalLight>);
@@ -34,5 +35,14 @@ export class LightComponentSystem extends ComponentSystem {
             this.spotLight.push(component as LightComponent<SpotLight>);
         }
     }
-
+    removeComponent(component: Component<{}>) {
+        let child = component.instance;
+        if (child instanceof DirectionalLight) {
+            arrayRemove(this.directionalLights, component as LightComponent<DirectionalLight>);
+        } else if (child instanceof PointLight) {
+            arrayRemove(this.pointLights, component as LightComponent<PointLight>);
+        } else if (child instanceof SpotLight) {
+            arrayRemove(this.spotLight, component as LightComponent<SpotLight>);
+        }
+    }
 }

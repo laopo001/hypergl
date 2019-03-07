@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, March 7th 2019, 11:39:13 pm
+ * Last Modified: Thursday, March 7th 2019, 11:46:37 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -24,6 +24,7 @@ import { Mesh } from '../../../mesh';
 import { ColorMaterial, StandardMaterial } from '../../../material';
 import { once } from '../../../utils/decorators';
 import { FACE } from '../../../conf';
+import { FnVoid } from '../../../types';
 
 export type CollisionInputs = {
     debugger?: boolean;
@@ -144,7 +145,7 @@ export class CollisionComponent extends Component<CollisionInputs> {
 
         }
     }
-    on(eventName: 'contact' | 'collisionstart' | 'collisionend' | 'triggerenter', cb: any) {
+    on(eventName: 'contact' | 'collisionstart' | 'collisionend' | 'triggerenter', cb: FnVoid) {
         this.event.on(eventName, cb);
     }
     destroy() {

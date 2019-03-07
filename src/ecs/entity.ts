@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, March 7th 2019, 10:42:16 pm
+ * Last Modified: Friday, March 8th 2019, 12:36:01 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -146,13 +146,13 @@ export class Entity extends SceneNode {
     removeComponent<K extends keyof ComponentInputs>(component: K);
     removeComponent(component) {
         if (typeof component === 'string') {
-            const system = this.app.scene.systems[component] as ComponentSystem;
+            const system = this.scene && this.scene.systems[component] as ComponentSystem;
             Log.assert(system != null, name + ' system not register');
             this.components.splice(this.components.indexOf(this[component]), 1);
             this[component] = null;
             system.removeComponent(this[component]);
         } else {
-            const system = this.app.scene.systems[component.name] as ComponentSystem;
+            const system = this.scene && this.scene.systems[component.name] as ComponentSystem;
             this.components.splice(this.components.indexOf(component), 1);
             this[component.name] = null;
             system.removeComponent(component);
@@ -166,7 +166,6 @@ export class Entity extends SceneNode {
 
             // tslint:disable-next-line:no-unused-expression
             this.scene && this.scene.add(child);
-
 
             if (!this.enabled) {
                 child.enabled = false;
@@ -209,6 +208,20 @@ export class Entity extends SceneNode {
             res = res.concat(child.findByTag(...tags));
         }
         return res;
+    }
+    destroy() {
+        this.components.forEach(c => {
+            this.removeComponent(c);
+        });
+        if (this.scene) {
+            let index = this.scene.entitys.findIndex(x => x === this);
+            if (index > -1) {
+                this.scene.entitys.splice(index, 1);
+            }
+        }
+        this.children.forEach(e => {
+            e.destroy();
+        });
     }
 }
 

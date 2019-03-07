@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, February 28th 2019, 2:59:58 pm
+ * Last Modified: Friday, March 8th 2019, 12:00:28 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -27,7 +27,7 @@ export class ModelComponentSystem extends ComponentSystem {
     opacityLayers: Drawable[] = [];
     components: ModelComponent[] = [];
     layers: Drawable[] = [];
-    private _dirty = false;
+    private _dirty = true;
     constructor(scene: Scene) {
         super(scene);
 
@@ -62,9 +62,5 @@ export class ModelComponentSystem extends ComponentSystem {
             });
             this.layers = this.normalLayers.concat(this.opacityLayers);
         });
-    }
-    addComponent(entity: Entity, componentData: any) {
-        super.addComponent(entity, componentData);
-        this._dirty = true;
     }
 }
