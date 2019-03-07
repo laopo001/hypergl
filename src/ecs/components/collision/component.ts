@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, March 7th 2019, 11:46:37 pm
+ * Last Modified: Friday, March 8th 2019, 1:41:57 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -38,11 +38,10 @@ export type CollisionInputs = {
     radius: number,
 } | {
     type: 'box',
+    default?: boolean,
     halfExtents: Vec3,
 } | {
     type: 'cylinder',
-    // radiusTop: number,
-    // radiusBottom: number,
     radius: number,
     height: number,
     axis: 'x' | 'y' | 'z'
@@ -51,16 +50,15 @@ export type CollisionInputs = {
 export const CollisionData: Partial<CollisionInputs> = {
     debugger: false,
     axis: 'y',
-    center: new Vec3(0, 0, 0)
+    center: new Vec3(0, 0, 0),
+    // halfExtents: new Vec3(1, 1, 1),
     // type: 'box',
-    // halfExtents: new Vec3(1, 1, 1)
 };
 
 export class CollisionComponent extends Component<CollisionInputs> {
     name = 'collision';
     instance!: any;
     event = createEvent('collision');
-    private _meshID?: number;
     constructor(inputs: CollisionInputs, entity: Entity, system: ComponentSystem) {
         super(inputs, entity, system);
         input_copy(inputs, CollisionData);
@@ -91,7 +89,7 @@ export class CollisionComponent extends Component<CollisionInputs> {
             switch (this.inputs.type) {
                 case 'box':
                     mesh = Mesh.createBox();
-                    let { x, y, z } = this.inputs.halfExtents;
+                    let { x, y, z } = this.inputs.halfExtents!;
                     let { x: a, y: b, z: c } = this.entity.getLocalScale();
                     scale = new Vec3(x * 2, y * 2, z * 2).mul(new Vec3(1 / a, 1 / b, 1 / c));
                     break;
@@ -116,7 +114,6 @@ export class CollisionComponent extends Component<CollisionInputs> {
                     scale = new Vec3(1, 1, 1);
                     break;
             }
-            this._meshID = mesh!.meshID;
             mesh!.outline = true;
             mesh!.name = this.entity.name + '-' + this.name + '-component';
             mesh!.material = this.createMaterial() as any;
@@ -135,8 +132,14 @@ export class CollisionComponent extends Component<CollisionInputs> {
             }
             let { x, y, z } = v;
             let localScale = new Vec3(1 / x, 1 / y, 1 / z);
-            scale!.mul(localScale);
-            e.setLocalScale(scale);
+            if (this.inputs.type === 'box' && this.inputs.default) {
+                scale!.mul(this.inputs.halfExtents);
+                e.setLocalScale(scale);
+            } else {
+                scale!.mul(localScale);
+                e.setLocalScale(scale);
+            }
+
             if (eulerAngles! != null) {
                 e.setLocalEulerAngles(eulerAngles!);
             }

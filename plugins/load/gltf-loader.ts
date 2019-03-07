@@ -5,14 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, March 3rd 2019, 4:14:28 pm
+ * Last Modified: Friday, March 8th 2019, 1:48:34 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 import { GltfLoader, GltfAsset } from './gltf-loader-ts/source';
-import { Application, Plugin, Mesh, PBRMaterial, Model, Color, StandardMaterial, Texture, FILTER, WRAP, Entity, Mat4, Quat, RAD_TO_DEG, Scene } from 'hypergl';
+import { Application, Plugin, Mesh, PBRMaterial, Model, Color, StandardMaterial, Texture, FILTER, WRAP, Entity, Mat4, Quat, RAD_TO_DEG, Scene, Vec3 } from 'hypergl';
 
 let loader = new GltfLoader();
 
@@ -73,11 +73,35 @@ export class GltfAssetLoader {
         let nodeData = gltf.nodes![index];
         let entity = new Entity(nodeData.name);
         if (typeof nodeData.mesh === 'number') {
-            let mesh = await this.loadMesh(nodeData.mesh);
+            let model = await this.loadMesh(nodeData.mesh);
+
             entity.addComponent('model', {
                 type: 'model',
-                model: mesh
+                model
             });
+            // TODO
+            // let max = new Vec3();
+            // let min = new Vec3();
+            // model.meshs.forEach(m => {
+            //     max.x = Math.max(max.x, m.aabb.max.x);
+            //     max.y = Math.max(max.y, m.aabb.max.y);
+            //     max.z = Math.max(max.z, m.aabb.max.z);
+            //     min.x = Math.min(min.x, m.aabb.min.x);
+            //     min.y = Math.min(min.y, m.aabb.min.y);
+            //     min.z = Math.min(min.z, m.aabb.min.z);
+            // });
+            // let center = new Vec3((max.x + min.x) / 2, (max.y + min.y) / 2, (max.z + min.z) / 2);
+            // let halfExtents = new Vec3((max.x - min.x) / 2, (max.y - min.y) / 2, (max.z - min.z) / 2);
+            // console.log(center.data, halfExtents.data);
+            // console.log('========');
+            // entity.addComponent('collision', {
+            //     default: true,
+            //     type: 'box',
+            //     halfExtents,
+            //     // center,
+            //     debugger: true
+            // });
+
             entity.tag.push('model');
         }
         if (typeof nodeData.camera === 'number') {

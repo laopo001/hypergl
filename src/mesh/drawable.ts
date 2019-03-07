@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, February 26th 2019, 11:06:49 pm
+ * Last Modified: Friday, March 8th 2019, 12:53:21 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -31,7 +31,7 @@ export class Drawable<T extends Material= Material> {
     vertexBuffer!: VertexBuffer;
     indexBuffer?: IndexBuffer;
     castShadow = false;
-    aabb!: BoundingSphere;
+    aabb!: BoundingBox;
     receiveShadow = false;
     cache: {
         uModelMatrix?: Mat4;
@@ -51,9 +51,6 @@ export class Drawable<T extends Material= Material> {
     }
     material!: T;
     meshID = id++;
-    constructor() {
-        // Application.getApp().scene.drawables.push(this);
-    }
     // tslint:disable-next-line:cyclomatic-complexity
     create(opts: CreateDrawabelOptions) {
         // Check the supplied options and provide defaults for unspecified ones
@@ -128,7 +125,7 @@ export class Drawable<T extends Material= Material> {
         // Create the index buffer
         let indexBuffer = indices && new IndexBuffer(Uint16Array, BUFFER.STATIC, indices);
 
-        this.aabb = BoundingSphere.compute(positions);
+        this.aabb = BoundingBox.compute(positions);
         this.vertexBuffer = vertexBuffer;
         this.indexBuffer = indexBuffer;
         return this;
