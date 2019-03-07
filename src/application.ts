@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, March 5th 2019, 5:19:11 pm
+ * Last Modified: Thursday, March 7th 2019, 10:52:57 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,7 +14,7 @@
 
 import { Scene } from './scene/scene';
 import { RendererPlatform } from './graphics/renderer';
-import { AppOption, FnVoid, Constructor, DeepImmutable } from './types';
+import { AppOption, FnVoid, Constructor, DeepImmutable, GLTFSerialize } from './types';
 import { event, timer, Option } from './core';
 import { Mesh } from './mesh/mesh';
 import { SystemRegistry } from './ecs/system-register';
@@ -33,7 +33,7 @@ export interface Plugin {
 
 let app = new Option<Application<any>>();
 
-export class Application<T= Plugin> {
+export class Application<T= Plugin> implements GLTFSerialize {
     get scene() {
         if (!this._scene) {
             this.addScene(new Scene('default'));
@@ -52,6 +52,8 @@ export class Application<T= Plugin> {
     lastRenderTime = 0;
     plugins: DeepImmutable<T> = {} as any;
     private _scene!: Scene;
+    // tslint:disable-next-line:member-ordering
+    private _start = 0;
     // private _isPointerLock = false;
     constructor(canvas: HTMLCanvasElement, option: AppOption = {}) {
         this.canvas = canvas;
@@ -122,8 +124,9 @@ export class Application<T= Plugin> {
 
         }
     }
-    // tslint:disable-next-line:member-ordering
-    private _start = 0;
+    export() {
+        return '';
+    }
     private tick = (timestamp: number) => {
         let dt = timestamp - this._start;
         event.fire('beforeRender');

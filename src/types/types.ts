@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, March 6th 2019, 12:45:50 am
+ * Last Modified: Thursday, March 7th 2019, 10:50:44 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -95,6 +95,9 @@ export interface Copy {
 //     Object.assign(ref, that);
 // }
 
+export interface GLTFSerialize {
+    export(): string;
+}
 
 export abstract class Serialize {
     static parse<T>(str: string, src: T): T { throw new Error(); return src; }

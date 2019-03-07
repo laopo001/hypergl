@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, March 5th 2019, 12:26:50 pm
+ * Last Modified: Thursday, March 7th 2019, 10:42:16 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,13 +20,11 @@ import { AudioComponent, AudioInputs } from './components/audio';
 import { CollisionComponent, CollisionInputs } from './components/collision';
 import { RigidbodyComponent, RigidbodyInputs } from './components/rigidbody';
 import { Component } from './component';
-import { Shader } from '../graphics/shader';
 import { Log } from '../utils/util';
 import { Application } from '../application';
 import { ComponentSystem } from './system';
 import { Scene, SceneNode } from '../scene';
 import { Constructor, Undefinedable, convertImmutable } from '../types';
-import { Vec3 } from '../math';
 import { ListenerComponent, ListenerInputs } from './components/listener';
 
 

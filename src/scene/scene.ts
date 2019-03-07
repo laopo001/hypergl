@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, March 4th 2019, 8:04:31 pm
+ * Last Modified: Thursday, March 7th 2019, 11:12:06 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,8 +17,6 @@ import { renderScence } from './renderScence';
 import { Camera } from './camera';
 import { Entity } from '../ecs/entity';
 import { Color } from '../core/color';
-import { Vec3 } from '../math';
-import { Light, PointLight, DirectionalLight, SpotLight } from '../lights';
 import { Frame } from '../graphics/createFrame';
 import { Log } from '../utils/util';
 import { Mesh } from '../mesh/mesh';
@@ -35,7 +33,6 @@ import { ListenerComponentSystem } from '../ecs/components/listener';
 import { CollisionComponentSystem } from '../ecs/components/collision';
 import { RigidbodyComponentSystem } from '../ecs/components/rigidbody';
 import { FOG } from '../conf';
-import { Drawable } from '../mesh';
 
 export class Scene {
     static ambientColor = new Color(0.2, 0.2, 0.2);
@@ -62,15 +59,15 @@ export class Scene {
     systems: SystemRegistry;
     isRegistered = false;
     event = createEvent('scene');
-    private _activeCamera!: CameraComponent;
+    private _activeCameraIndex = 0;
     get activeCamera() {
-        let defaultCamera = this.systems.camera!.components[0];
-        Log.assert(this._activeCamera || defaultCamera, 'scene 没有 activeCamera');
-        return this._activeCamera || defaultCamera;
+        let defaultCamera = this.systems.camera!.components[this._activeCameraIndex];
+        Log.assert(this._activeCameraIndex || defaultCamera, 'scene 没有 activeCamera');
+        return defaultCamera as CameraComponent;
     }
-    set activeCamera(x) {
-        this._activeCamera = x;
-    }
+    // set activeCamera(x) {
+    //     this._activeCameraIndex = x;
+    // }
     get isActive() {
         return this.isRegistered && this.app.scene === this;
     }
@@ -91,6 +88,9 @@ export class Scene {
                 this.event.fire('update', dt);
             }
         });
+    }
+    setActiveCamera(x: number) {
+        this._activeCameraIndex = x;
     }
     render() {
         this.root.syncHierarchy();

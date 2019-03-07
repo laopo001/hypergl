@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, November 18th 2018, 8:43:48 pm
+ * Last Modified: Thursday, March 7th 2019, 11:11:23 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -18,15 +18,4 @@ import { CameraComponent } from './component';
 export class CameraComponentSystem extends ComponentSystem {
     componentConstructor = CameraComponent;
     name = 'camera';
-    // cameraComponents: CameraComponent[] = [];
-    // addCamera(camera) {
-    //     this.cameraComponents.push(camera);
-    // }
-
-    // removeCamera(camera) {
-    //     let index = this.cameraComponents.indexOf(camera);
-    //     if (index >= 0) {
-    //         this.cameraComponents.splice(index, 1);
-    //     }
-    // }
 }
