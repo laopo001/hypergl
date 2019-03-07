@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, March 7th 2019, 10:53:00 pm
+ * Last Modified: Thursday, March 7th 2019, 11:37:33 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -60,7 +60,7 @@ async function main() {
         .addComponent('collision', {
             type: 'box',
             halfExtents: new Vec3(0.5, 0.5, 0.5),
-            center: new Vec3(0, 1, 0),
+            center: new Vec3(0, -1, 0),
             debugger: true
         })
         .addComponent('rigidbody', {
@@ -70,7 +70,12 @@ async function main() {
         })
         .setLocalPosition(0, 2, 0);
     box.model.drawable(0).material.diffuseColor = new Color(0.5, 0, 0);
+
+    // let temp = new Entity('t');
+    // temp.setLocalScale(2, 2, 2);
+    // temp.addChild(box);
     app.scene.root.addChild(box);
+
     app.on('update', () => {
         let position = new Vec3(0, 0, 0);
         if (app.plugins.key.isPressed('ArrowUp')) {
@@ -159,10 +164,9 @@ async function main() {
         })
         .addComponent('listener', {})
         .setPosition(-15, 0, 0)
-        .lookAt(new Vec3(0, 0, 0));
-    // .addComponent('script', [new FirstPersonCamera({ speed: 2 })]);
+        .lookAt(new Vec3(0, 0, 0))
+        .addComponent('script', [new FirstPersonCamera({ speed: 2 })]);
     app.scene.root.addChild(camera);
-    app.export();
     app.start();
 }
 

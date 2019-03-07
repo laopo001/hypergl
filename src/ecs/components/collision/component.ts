@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, March 7th 2019, 10:42:16 pm
+ * Last Modified: Thursday, March 7th 2019, 11:39:13 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -123,11 +123,23 @@ export class CollisionComponent extends Component<CollisionInputs> {
                 type: 'model',
                 model: mesh!
             });
-            e.setLocalScale(scale!);
+            let p = this.entity;
+            let v = new Vec3(1, 1, 1);
+            while (p) {
+                if (p.parent == null) {
+                    break;
+                }
+                p = p.parent!;
+                v.mul(p.getLocalScale());
+            }
+            let { x, y, z } = v;
+            let localScale = new Vec3(1 / x, 1 / y, 1 / z);
+            scale!.mul(localScale);
+            e.setLocalScale(scale);
             if (eulerAngles! != null) {
                 e.setLocalEulerAngles(eulerAngles!);
             }
-            e.setLocalPosition(this.inputs.center!);
+            e.setLocalPosition(localScale.mul(this.inputs.center!));
             this.entity.addChild(e);
 
         }
