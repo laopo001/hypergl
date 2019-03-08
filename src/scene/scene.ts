@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, March 7th 2019, 11:12:06 pm
+ * Last Modified: Friday, March 8th 2019, 11:54:36 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -112,6 +112,7 @@ export class Scene {
         return f;
     }
     add(child: Entity) {
+        event.fire('add');
         if (child.children.length > 0) {
             for (let i = 0; i < child.children.length; i++) {
                 const element = child.children[i];

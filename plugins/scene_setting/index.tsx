@@ -23,12 +23,15 @@ export class SceneSettingPlugin implements Plugin {
 
     constructor(private app: Application) {
         let div = document.createElement('div');
-        div.style.width = '100%';
-        div.style.height = '400px';
+        div.style.width = '200px';
+        div.style.height = '100%';
+        div.style.background = 'rgba(202, 199, 166, 0.4)';
         div.style.position = 'fixed';
-        div.style.bottom = 'fixed';
-        div.style.overflowY = 'auto';
+        div.style.right = '0px';
+        div.style.top = '0px';
+        div.style.overflow = 'auto';
         document.body.appendChild(div);
+
         render(<App app={app} />, div);
     }
 }

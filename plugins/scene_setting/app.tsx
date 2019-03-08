@@ -13,8 +13,9 @@
 
 import React, { Component } from 'react';
 import { Application, Plugin, Entity } from 'hypergl';
-import { Tree } from 'antd';
+import { Tree, Popover, Row, Col, Input, Divider, Card } from 'antd';
 import { format } from 'util';
+import { EditableTagGroup } from './editable_tag_group/editable_tag_group';
 const { TreeNode } = Tree;
 
 export class App extends Component<{ app: Application }> {
@@ -58,7 +59,7 @@ export class App extends Component<{ app: Application }> {
   })
   format(root: Entity) {
     let node = {
-      title: '',
+      title: '' as any,
       key: 0,
       children: [] as Array<any>
     };
@@ -68,17 +69,84 @@ export class App extends Component<{ app: Application }> {
       });
 
     }
-    node.title = root.name;
+    let position = root.getLocalPosition() as any;
+    let rotation = root.getLocalEulerAngles() as any;
+    let scale = root.getLocalScale() as any;
+    let plane = <div style={{ width: 300 }}>
+      <Row>
+        <Col span={6}>tags:</Col>
+        <Col span={18}><EditableTagGroup value={root.tag} onChange={(tags) => { root.tag = tags; }} /></Col>
+      </Row>
+
+      <Row>
+        <Col span={6}>position:</Col>
+        <Col span={18}>
+          <Input defaultValue={position.x} onChange={(e) => {
+            let v = parseFloat(e.target.value);
+            root.setLocalPosition(v, position.y, position.z);
+          }} style={{ width: 40 }} size="small" />
+          <Input onChange={(e) => {
+            let v = parseFloat(e.target.value);
+            root.setLocalPosition(position.x, v, position.z);
+          }} defaultValue={position.y} style={{ width: 40 }} size="small" />
+          <Input onChange={(e) => {
+            let v = parseFloat(e.target.value);
+            root.setLocalPosition(position.x, position.y, v);
+          }} defaultValue={position.z} style={{ width: 40 }} size="small" />
+        </Col>
+      </Row>
+      <Row>
+        <Col span={6}>rotation:</Col>
+        <Col span={18}>
+          <Input onChange={(e) => {
+            let v = parseFloat(e.target.value);
+            root.setLocalEulerAngles(v, position.y, position.z);
+          }} defaultValue={rotation.x} style={{ width: 40 }} size="small" />
+          <Input onChange={(e) => {
+            let v = parseFloat(e.target.value);
+            root.setLocalEulerAngles(position.x, v, position.z);
+          }} defaultValue={rotation.y} style={{ width: 40 }} size="small" />
+          <Input onChange={(e) => {
+            let v = parseFloat(e.target.value);
+            root.setLocalEulerAngles(position.x, position.y, v);
+          }} defaultValue={rotation.z} style={{ width: 40 }} size="small" />
+        </Col>
+      </Row>
+      <Row>
+        <Col span={6}>scale:</Col>
+        <Col span={18}>
+          <Input defaultValue={scale.x} style={{ width: 40 }} size="small" />
+          <Input defaultValue={scale.y} style={{ width: 40 }} size="small" />
+          <Input defaultValue={scale.z} style={{ width: 40 }} size="small" />
+        </Col>
+      </Row>
+
+      {/* <Card
+        size="small"
+        title="rigid body"
+      // extra={<a href="#">More</a>}
+      >
+        <p>Card content</p>
+        <p>Card content</p>
+        <p>Card content</p>
+      </Card> */}
+    </div>;
+    node.title = <Popover content={plane} placement="left" title="Title" trigger="hover">
+      {root.name}
+    </Popover>;
+
+
     node.key = root.EntityID;
     return node;
   }
   componentDidMount() {
-    // console.log(this.props.app);
     let app = this.props.app;
-    app.on('start', () => {
+
+    app.on('add', () => {
       let nodes = this.format(app.scene.root);
       this.setState({ treeData: [nodes] });
     });
+
 
   }
   render() {
