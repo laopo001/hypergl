@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, March 8th 2019, 12:55:25 am
+ * Last Modified: Friday, March 8th 2019, 11:01:26 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -68,12 +68,25 @@ module.exports = function (env, webpackConfig) {
                             }
                         }
                     ]
-                },
-                // {
-                //     test: /\.(frag|vert)$/,
-                //     use: 'raw-loader'
-                // },
-                {
+                }, {
+                    test: /\.less$/,
+                    use: [{
+                        loader: 'style-loader',
+                    }, {
+                        loader: 'css-loader', // translates CSS into CommonJS
+                    }, {
+                        loader: 'less-loader', // compiles Less to CSS
+                        options: {
+                            // modifyVars: {
+                            //     'base-color': '#f9963f',
+                            //     'primary-color': '#1DA57A',
+                            //     'link-color': '#1DA57A',
+                            //     'border-radius-base': '2px',
+                            // },
+                            javascriptEnabled: true,
+                        },
+                    }],
+                }, {
                     test: /\.(frag|vert|handlebars)$/, loader: 'handlebars-loader',
                     query: {
                         helperDirs: [

@@ -15,7 +15,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "jsx": "react",
-    "jsxFactory": "hgl.h",
+    "jsxFactory": "React.createElement",
     "downlevelIteration": true,
     "lib": [
       "webworker",
@@ -56,6 +56,9 @@
       ],
       "hypergl/plugins/pointer": [
         "./plugins/pointer"
+      ],
+      "hypergl/plugins/scene_setting": [
+        "./plugins/scene_setting"
       ]
     }
   },

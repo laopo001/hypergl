@@ -15,6 +15,10 @@ declare module '*.json' {
     export default content;
 }
 
+declare module '*.less' {
+    const content: (...arg) => string;
+    export default content;
+}
 
 declare module '*.handlebars' {
     const content: (...arg) => string;

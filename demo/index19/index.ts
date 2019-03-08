@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, February 26th 2019, 10:24:03 pm
+ * Last Modified: Friday, March 8th 2019, 10:22:54 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -20,6 +20,7 @@ import { LoadImagePlugin, GltfPlugin } from 'hypergl/plugins/load';
 import { StatsPlugin } from 'hypergl/plugins/stat';
 import { PointerPlugin } from 'hypergl/plugins/pointer';
 import { AmmoPlugin } from 'hypergl/plugins/physics';
+import { SceneSettingPlugin } from 'hypergl/plugins/scene_setting';
 import { AppPlugin } from '../types';
 import { FnVoid } from '../../src/types';
 import { createSkyboxScene } from './scene-skybox';
@@ -40,7 +41,7 @@ async function main() {
     const app = new Application<AppPlugin>(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
-    app.registerPlugins([LoadImagePlugin, StatsPlugin, PointerPlugin, AmmoPlugin, GltfPlugin]);
+    app.registerPlugins([LoadImagePlugin, StatsPlugin, PointerPlugin, AmmoPlugin, GltfPlugin, SceneSettingPlugin]);
 
     console.log(app);
 

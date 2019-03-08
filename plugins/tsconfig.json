@@ -12,7 +12,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "jsx": "react",
-    "jsxFactory": "hgl.h",
+    "jsxFactory": "React.createElement",
     "downlevelIteration": true,
     "lib": [
       "webworker",
@@ -50,6 +50,5 @@
     "stat",
     "../typings"
   ],
-  "exclude": [
-  ]
+  "exclude": []
 }
