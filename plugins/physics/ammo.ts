@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, March 8th 2019, 12:28:37 am
+ * Last Modified: Saturday, March 9th 2019, 1:17:01 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -382,6 +382,9 @@ export class AmmoPlugin implements Plugin, IPhysics {
     removeBody(body: AMMO.btRigidBody) {
         this.world.removeRigidBody(body);
         Ammo.destroy(body);
+    }
+    destroy(object: Object) {
+        Ammo.destroy(object);
     }
     syncEntityToBody(entity: Entity, body: AMMO.btRigidBody, init = true) {
         let Ammo = this.Ammo;

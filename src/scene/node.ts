@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, January 15th 2019, 12:08:03 am
+ * Last Modified: Saturday, March 9th 2019, 12:57:08 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,7 +14,7 @@
 
 import { IElement } from '../core/element';
 import { Vec3, Quat, Mat4, Vec2 } from '../math';
-import { Log } from '../utils/util';
+import { Log, arrayRemove } from '../utils/util';
 import { Scene } from './scene';
 import { Entity } from '../ecs';
 
@@ -83,6 +83,10 @@ export class SceneNode extends IElement {
         this.children.push(child);
         child.parent = this;
         child._dirtify();
+    }
+    removeChild(child: SceneNode) {
+        arrayRemove(this.children, child);
+        child.parent = undefined;
     }
     setPosition(x: Vec3): this;
     setPosition(x: number, y: number, z: number): this;

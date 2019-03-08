@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, February 25th 2019, 10:34:42 am
+ * Last Modified: Saturday, March 9th 2019, 12:42:58 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -22,6 +22,7 @@ export class RigidbodyComponentSystem extends ComponentSystem {
     name = 'rigidbody';
     physics!: AmmoPlugin;
     asyncPhysics!: Promise<AmmoPlugin>;
+    enabled = true;
     constructor(scene: Scene) {
         super(scene);
         // tslint:disable-next-line:no-unused-expression

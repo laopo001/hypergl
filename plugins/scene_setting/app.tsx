@@ -13,10 +13,11 @@
 
 import React, { Component } from 'react';
 import { Application, Plugin, Entity } from 'hypergl';
-import { Tree, Popover, Row, Col, Input, Divider, Card } from 'antd';
+import { Tree, Popover, Row, Col, Input, Divider, Card, Select, Switch } from 'antd';
 import { format } from 'util';
 import { EditableTagGroup } from './editable_tag_group/editable_tag_group';
 const { TreeNode } = Tree;
+const Option = Select.Option;
 
 export class App extends Component<{ app: Application }> {
   state = {
@@ -72,6 +73,7 @@ export class App extends Component<{ app: Application }> {
     let position = root.getLocalPosition() as any;
     let rotation = root.getLocalEulerAngles() as any;
     let scale = root.getLocalScale() as any;
+
     let plane = <div style={{ width: 300 }}>
       <Row>
         <Col span={6}>tags:</Col>
@@ -84,15 +86,21 @@ export class App extends Component<{ app: Application }> {
           <Input defaultValue={position.x} onChange={(e) => {
             let v = parseFloat(e.target.value);
             root.setLocalPosition(v, position.y, position.z);
-          }} style={{ width: 40 }} size="small" />
+            // tslint:disable-next-line:no-unused-expression
+            root.rigidbody && root.rigidbody.update();
+          }} style={{ width: 60 }} size="small" />
           <Input onChange={(e) => {
             let v = parseFloat(e.target.value);
             root.setLocalPosition(position.x, v, position.z);
-          }} defaultValue={position.y} style={{ width: 40 }} size="small" />
+            // tslint:disable-next-line:no-unused-expression
+            root.rigidbody && root.rigidbody.update();
+          }} defaultValue={position.y} style={{ width: 60 }} size="small" />
           <Input onChange={(e) => {
             let v = parseFloat(e.target.value);
             root.setLocalPosition(position.x, position.y, v);
-          }} defaultValue={position.z} style={{ width: 40 }} size="small" />
+            // tslint:disable-next-line:no-unused-expression
+            root.rigidbody && root.rigidbody.update();
+          }} defaultValue={position.z} style={{ width: 60 }} size="small" />
         </Col>
       </Row>
       <Row>
@@ -101,35 +109,86 @@ export class App extends Component<{ app: Application }> {
           <Input onChange={(e) => {
             let v = parseFloat(e.target.value);
             root.setLocalEulerAngles(v, position.y, position.z);
-          }} defaultValue={rotation.x} style={{ width: 40 }} size="small" />
+          }} defaultValue={rotation.x} style={{ width: 60 }} size="small" />
           <Input onChange={(e) => {
             let v = parseFloat(e.target.value);
             root.setLocalEulerAngles(position.x, v, position.z);
-          }} defaultValue={rotation.y} style={{ width: 40 }} size="small" />
+          }} defaultValue={rotation.y} style={{ width: 60 }} size="small" />
           <Input onChange={(e) => {
             let v = parseFloat(e.target.value);
             root.setLocalEulerAngles(position.x, position.y, v);
-          }} defaultValue={rotation.z} style={{ width: 40 }} size="small" />
+          }} defaultValue={rotation.z} style={{ width: 60 }} size="small" />
         </Col>
       </Row>
       <Row>
         <Col span={6}>scale:</Col>
         <Col span={18}>
-          <Input defaultValue={scale.x} style={{ width: 40 }} size="small" />
-          <Input defaultValue={scale.y} style={{ width: 40 }} size="small" />
-          <Input defaultValue={scale.z} style={{ width: 40 }} size="small" />
+          <Input onChange={(e) => {
+            let v = parseFloat(e.target.value);
+            root.setLocalScale(v, scale.y, scale.z);
+          }} defaultValue={scale.x} style={{ width: 60 }} size="small" />
+          <Input onChange={(e) => {
+            let v = parseFloat(e.target.value);
+            root.setLocalScale(scale.x, v, scale.z);
+          }} defaultValue={scale.y} style={{ width: 60 }} size="small" />
+          <Input onChange={(e) => {
+            let v = parseFloat(e.target.value);
+            root.setLocalScale(scale.x, scale.y, v);
+          }} defaultValue={scale.z} style={{ width: 60 }} size="small" />
         </Col>
       </Row>
-
-      {/* <Card
+      {root.collision ? <Card
+        size="small"
+        title="collision body"
+      // extra={<a href="#">More</a>}
+      >
+        <Row>
+          <Col span={6}>type:</Col>
+          <Col span={18}>
+            <Select size="small" defaultValue={root.collision.inputs.type} style={{ width: 120 }} onChange={(e) => {
+              root.collision.inputs.type = e;
+              root.collision.update();
+            }}>
+              <Option value="box">box</Option>
+              <Option value="sphere">sphere</Option>
+              <Option value="cylinder">cylinder</Option>
+            </Select>
+          </Col>
+        </Row>
+        {root.collision.inputs.type === 'box' ? <Row>
+          <Col span={6}>halfExtents:</Col>
+          <Col span={18}>
+            <Input defaultValue={root.collision.inputs.halfExtents.x as any} onChange={(e) => {
+              let v = parseFloat(e.target.value);
+              (root.collision.inputs as any).halfExtents.x = v;
+              root.collision.update();
+            }} style={{ width: 60 }} size="small" />
+            <Input defaultValue={root.collision.inputs.halfExtents.y as any} onChange={(e) => {
+              let v = parseFloat(e.target.value);
+              (root.collision.inputs as any).halfExtents.y = v;
+              root.collision.update();
+            }} style={{ width: 60 }} size="small" />
+            <Input defaultValue={root.collision.inputs.halfExtents.z as any} onChange={(e) => {
+              let v = parseFloat(e.target.value);
+              (root.collision.inputs as any).halfExtents.z = v;
+              root.collision.update();
+            }} style={{ width: 60 }} size="small" />
+          </Col>
+        </Row> : null}
+        {root.collision.inputs.type === 'sphere' ? <Row>
+          <Col span={6}>radius:</Col>
+          <Col span={18}>
+            <Input defaultValue={root.collision.inputs.radius as any} style={{ width: 60 }} size="small" />
+          </Col>
+        </Row> : null}
+      </Card> : null}
+      {root.rigidbody ? <Card
         size="small"
         title="rigid body"
       // extra={<a href="#">More</a>}
       >
         <p>Card content</p>
-        <p>Card content</p>
-        <p>Card content</p>
-      </Card> */}
+      </Card> : null}
     </div>;
     node.title = <Popover content={plane} placement="left" title="Title" trigger="hover">
       {root.name}
@@ -164,6 +223,11 @@ export class App extends Component<{ app: Application }> {
         >
           {this.renderTreeNodes(this.state.treeData)}
         </Tree>
+        <div>
+          {/* <Switch defaultChecked onChange={() => {
+
+          }} /> */}
+        </div>
       </div>
     );
   }

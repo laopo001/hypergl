@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, March 8th 2019, 12:36:01 am
+ * Last Modified: Saturday, March 9th 2019, 1:10:49 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -173,7 +173,12 @@ export class Entity extends SceneNode {
                 child.enabled = true;
             }
         });
+
         return this;
+    }
+    removeChild(c: Entity) {
+        super.removeChild(c);
+        c.enabled = false;
     }
     findByName(name: string): Undefinedable<Entity> {
         if (this.name === name) {

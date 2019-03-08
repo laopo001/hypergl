@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, March 8th 2019, 12:30:32 am
+ * Last Modified: Saturday, March 9th 2019, 2:03:51 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -59,7 +59,7 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
     name = 'rigidbody';
     instance;
     simulationEnabled = false;
-    update: any;
+    updateFn: any;
     constructor(inputs: RigidbodyInputs, entity: Entity, system: ComponentSystem) {
         super(inputs, entity, system);
         input_copy(inputs, RigidbodyData);
@@ -85,7 +85,10 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
             group, mask
         }, this.entity);
         body['entity'] = this.entity;
-        this.update = (dt) => {
+        this.updateFn = (dt) => {
+            if (!this.entity.scene.systems.rigidbody!.enabled) {
+                return;
+            }
             if (this.enabled) {
                 if (this.entity.rigidbody.inputs.type === 'dynamic') {
                     physics.syncBodyToEntity(this.entity, body, dt);
@@ -102,12 +105,17 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
                 }
             }
         };
-        this.entity.scene.event.on('update', this.update);
+        this.entity.scene.event.on('update', this.updateFn);
         this.instance = body;
+    }
+    update() {
+        // this.entity.collision.update();
+        this.destroy();
+        this.initialize();
     }
     async destroy() {
         super.destroy();
-        this.entity.scene.event.off('update', this.update);
+        this.entity.scene.event.off('update', this.updateFn);
         let physics = await this.entity.scene.systems.rigidbody!.asyncPhysics;
         physics.removeBody(this.instance);
         this.enabled = false;

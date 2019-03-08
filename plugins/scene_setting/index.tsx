@@ -31,7 +31,6 @@ export class SceneSettingPlugin implements Plugin {
         div.style.top = '0px';
         div.style.overflow = 'auto';
         document.body.appendChild(div);
-
         render(<App app={app} />, div);
     }
 }

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, February 25th 2019, 11:20:39 am
+ * Last Modified: Saturday, March 9th 2019, 1:22:15 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -14,6 +14,7 @@
 
 import { Entity, StandardMaterial, Config, event, Scene, util, SkyMaterial, Application, Vec3, Color, Picker, Texture, CubeTexture, PBRMaterial, Mesh, Drawable } from 'hypergl';
 import { AppPlugin } from '../types';
+import { FirstPersonCamera } from '../utils/first_person_camera';
 
 let app = Application.getApp<AppPlugin>().unwrap();
 
@@ -114,8 +115,8 @@ let camera = new Entity('camera')
     })
     .addComponent('listener', {})
     .setPosition(-5, 5, 0)
-    .lookAt(new Vec3(0, 0, 0));
-// .addComponent('script', [new FirstPersonCamera({ speed: 2 })]);
+    .lookAt(new Vec3(0, 0, 0))
+    .addComponent('script', [new FirstPersonCamera({ speed: 2 })]);
 scene.root.addChild(camera);
 
 event.on('start', () => {
@@ -123,7 +124,7 @@ event.on('start', () => {
     document.getElementById('canvas')!.addEventListener('mousedown', (e) => {
         if (app.scene.name === 'pick') {
             let entity = picker.pick(e.offsetX, e.offsetY);
-            alert(entity.name);
+            // alert(entity.name);
             console.log(entity.name);
         }
     }, false);

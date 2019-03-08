@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, March 8th 2019, 1:41:57 am
+ * Last Modified: Saturday, March 9th 2019, 2:00:58 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -49,16 +49,19 @@ export type CollisionInputs = {
 
 export const CollisionData: Partial<CollisionInputs> = {
     debugger: false,
-    axis: 'y',
     center: new Vec3(0, 0, 0),
-    // halfExtents: new Vec3(1, 1, 1),
-    // type: 'box',
-};
+    type: 'box',
+    halfExtents: new Vec3(0.5, 0.5, 0.5),
+    radius: 1,
+    height: 1,
+    axis: 'y',
+} as any;
 
 export class CollisionComponent extends Component<CollisionInputs> {
     name = 'collision';
     instance!: any;
     event = createEvent('collision');
+    isAddDebugger?: Entity;
     constructor(inputs: CollisionInputs, entity: Entity, system: ComponentSystem) {
         super(inputs, entity, system);
         input_copy(inputs, CollisionData);
@@ -66,12 +69,9 @@ export class CollisionComponent extends Component<CollisionInputs> {
 
     async initialize() {
         super.initialize();
-        let physics = await this.entity.scene.systems.rigidbody!.asyncPhysics;
-        if (physics.type === 'cannon') {
-            this.instance = physics.createShape(this.inputs.type, this.inputs);
-        }
-        if (physics.type === 'ammo') {
-            this.instance = physics.createShape(this.inputs.type, this.inputs);
+        if (this.entity.rigidbody.instance === null) {
+            console.warn('没有刚体组件');
+            return;
         }
         // tslint:disable-next-line:no-unused-expression
         this.inputs.contact && this.event.on('contact', this.inputs.contact);
@@ -82,6 +82,8 @@ export class CollisionComponent extends Component<CollisionInputs> {
         // tslint:disable-next-line:no-unused-expression
         this.inputs.triggerenter && this.event.on('triggerenter', this.inputs.triggerenter);
 
+        let physics = await this.entity.scene.systems.rigidbody!.asyncPhysics;
+        this.instance = physics.createShape(this.inputs.type, this.inputs);
         if (this.inputs.debugger) {
             let mesh: Mesh;
             let scale: Vec3;
@@ -145,15 +147,34 @@ export class CollisionComponent extends Component<CollisionInputs> {
             }
             e.setLocalPosition(localScale.mul(this.inputs.center!));
             this.entity.addChild(e);
-
+            this.isAddDebugger = e;
         }
+    }
+    update() {
+        this.entity.rigidbody.destroy();
+        this.destroy();
+        this.initialize();
+        this.entity.rigidbody.initialize();
     }
     on(eventName: 'contact' | 'collisionstart' | 'collisionend' | 'triggerenter', cb: FnVoid) {
         this.event.on(eventName, cb);
     }
-    destroy() {
+    async destroy() {
         super.destroy();
+        // tslint:disable-next-line:no-unused-expression
+        this.inputs.contact && this.event.off('contact', this.inputs.contact);
+        // tslint:disable-next-line:no-unused-expression
+        this.inputs.collisionstart && this.event.off('collisionstart', this.inputs.collisionstart);
+        // tslint:disable-next-line:no-unused-expression
+        this.inputs.collisionend && this.event.off('collisionend', this.inputs.collisionend);
+        // tslint:disable-next-line:no-unused-expression
+        this.inputs.triggerenter && this.event.off('triggerenter', this.inputs.triggerenter);
+        let physics = await this.entity.scene.systems.rigidbody!.asyncPhysics;
+        physics.destroy(this.instance);
         this.instance = undefined as any;
+        if (this.isAddDebugger) {
+            this.entity.removeChild(this.isAddDebugger!);
+        }
     }
     @once
     private createMaterial() {
