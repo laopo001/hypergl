@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, March 9th 2019, 2:00:58 am
+ * Last Modified: Sunday, March 10th 2019, 12:39:31 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -129,11 +129,13 @@ export class CollisionComponent extends Component<CollisionInputs> {
                 if (p.parent == null) {
                     break;
                 }
+
                 p = p.parent!;
                 v.mul(p.getLocalScale());
             }
             let { x, y, z } = v;
             let localScale = new Vec3(1 / x, 1 / y, 1 / z);
+
             if (this.inputs.type === 'box' && this.inputs.default) {
                 scale!.mul(this.inputs.halfExtents);
                 e.setLocalScale(scale);

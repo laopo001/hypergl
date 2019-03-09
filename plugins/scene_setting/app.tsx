@@ -19,6 +19,8 @@ import { EditableTagGroup } from './editable_tag_group/editable_tag_group';
 const { TreeNode } = Tree;
 const Option = Select.Option;
 const Panel = Collapse.Panel;
+
+let components = ['collision', 'rigidbody'];
 export class App extends Component<{ app: Application }> {
   state = {
     expandedKeys: [],
@@ -80,7 +82,7 @@ export class App extends Component<{ app: Application }> {
         <Col span={18}><EditableTagGroup value={root.tag} onChange={(tags) => { root.tag = tags; }} /></Col>
       </Row>
 
-      <Row>
+      <Row style={{ marginTop: '5px' }}>
         <Col span={6}>position:</Col>
         <Col span={18}>
           <Input defaultValue={position.x} onChange={(e) => {
@@ -103,7 +105,7 @@ export class App extends Component<{ app: Application }> {
           }} defaultValue={position.z} style={{ width: 60 }} size="small" />
         </Col>
       </Row>
-      <Row>
+      <Row style={{ marginTop: '5px' }}>
         <Col span={6}>rotation:</Col>
         <Col span={18}>
           <Input onChange={(e) => {
@@ -120,7 +122,7 @@ export class App extends Component<{ app: Application }> {
           }} defaultValue={rotation.z} style={{ width: 60 }} size="small" />
         </Col>
       </Row>
-      <Row>
+      <Row style={{ marginTop: '5px' }}>
         <Col span={6}>scale:</Col>
         <Col span={18}>
           <Input onChange={(e) => {
@@ -137,6 +139,24 @@ export class App extends Component<{ app: Application }> {
           }} defaultValue={scale.z} style={{ width: 60 }} size="small" />
         </Col>
       </Row>
+      <div style={{ margin: '5px 0' }}>
+        <Select
+          size="small"
+          value={undefined}
+          style={{ width: '100%' }}
+          placeholder="add component"
+          onChange={(e: any) => {
+            console.log(e);
+            root.addComponent(e, {});
+            this.update();
+          }}
+        >
+          {components.map(x => {
+            return <Option key={x} value={x}>{x}</Option>;
+          })}
+        </Select>
+      </div>
+      <div style={{}}></div>
       {root.collision ? <Card
         size="small"
         title="collision component"
@@ -200,13 +220,15 @@ export class App extends Component<{ app: Application }> {
   }
   componentDidMount() {
     let app = this.props.app;
-
     app.on('add', () => {
       let nodes = this.format(app.scene.root);
       this.setState({ treeData: [nodes] });
     });
-
-
+  }
+  update() {
+    let app = this.props.app;
+    let nodes = this.format(app.scene.root);
+    this.setState({ treeData: [nodes] });
   }
   render() {
     return (

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, March 10th 2019, 12:17:23 am
+ * Last Modified: Sunday, March 10th 2019, 12:23:01 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -109,10 +109,8 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
         this.instance = body;
     }
     update() {
-        // this.entity.collision.update();
         this.destroy();
         this.initialize();
-
     }
     active() {
         if (this.body) {
