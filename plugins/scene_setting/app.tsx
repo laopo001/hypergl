@@ -13,12 +13,12 @@
 
 import React, { Component } from 'react';
 import { Application, Plugin, Entity } from 'hypergl';
-import { Tree, Popover, Row, Col, Input, Divider, Card, Select, Switch } from 'antd';
+import { Tree, Popover, Row, Col, Input, Divider, Card, Select, Switch, Collapse } from 'antd';
 import { format } from 'util';
 import { EditableTagGroup } from './editable_tag_group/editable_tag_group';
 const { TreeNode } = Tree;
 const Option = Select.Option;
-
+const Panel = Collapse.Panel;
 export class App extends Component<{ app: Application }> {
   state = {
     expandedKeys: [],
@@ -74,7 +74,7 @@ export class App extends Component<{ app: Application }> {
     let rotation = root.getLocalEulerAngles() as any;
     let scale = root.getLocalScale() as any;
 
-    let plane = <div style={{ width: 300 }}>
+    let plane = <div style={{ width: 300 }} onClick={e => { e.stopPropagation(); }} >
       <Row>
         <Col span={6}>tags:</Col>
         <Col span={18}><EditableTagGroup value={root.tag} onChange={(tags) => { root.tag = tags; }} /></Col>
@@ -139,7 +139,7 @@ export class App extends Component<{ app: Application }> {
       </Row>
       {root.collision ? <Card
         size="small"
-        title="collision body"
+        title="collision component"
       // extra={<a href="#">More</a>}
       >
         <Row>
@@ -184,7 +184,7 @@ export class App extends Component<{ app: Application }> {
       </Card> : null}
       {root.rigidbody ? <Card
         size="small"
-        title="rigid body"
+        title="rigidbody component"
       // extra={<a href="#">More</a>}
       >
         <p>Card content</p>
@@ -224,6 +224,9 @@ export class App extends Component<{ app: Application }> {
           {this.renderTreeNodes(this.state.treeData)}
         </Tree>
         <div>
+          <button onClick={() => {
+            this.props.app.exportPhysiceConfig();
+          }}>导出</button>
           {/* <Switch defaultChecked onChange={() => {
 
           }} /> */}

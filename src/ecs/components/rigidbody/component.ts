@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, March 9th 2019, 2:03:51 am
+ * Last Modified: Sunday, March 10th 2019, 12:17:23 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -112,13 +112,18 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
         // this.entity.collision.update();
         this.destroy();
         this.initialize();
+
+    }
+    active() {
+        if (this.body) {
+            this.body.activate();
+        }
     }
     async destroy() {
         super.destroy();
         this.entity.scene.event.off('update', this.updateFn);
         let physics = await this.entity.scene.systems.rigidbody!.asyncPhysics;
         physics.removeBody(this.instance);
-        this.enabled = false;
         this.instance = undefined as any;
     }
     async applyForce(force: Vec3, point?: Vec3) {

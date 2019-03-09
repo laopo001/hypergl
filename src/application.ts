@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, March 7th 2019, 10:52:57 pm
+ * Last Modified: Saturday, March 9th 2019, 11:49:22 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,7 +14,7 @@
 
 import { Scene } from './scene/scene';
 import { RendererPlatform } from './graphics/renderer';
-import { AppOption, FnVoid, Constructor, DeepImmutable, GLTFSerialize } from './types';
+import { AppOption, FnVoid, Constructor, DeepImmutable, GLTFSerialize, PhysiceConfig } from './types';
 import { event, timer, Option } from './core';
 import { Mesh } from './mesh/mesh';
 import { SystemRegistry } from './ecs/system-register';
@@ -22,6 +22,8 @@ import { CameraComponentSystem } from './ecs/components/camera/system';
 import { sleep, Log } from './utils';
 // tslint:disable-next-line:no-duplicate-imports
 import * as util from './utils';
+import { scene } from '../demo/index19/scene-tank';
+import { Entity } from './ecs';
 export interface PluginClass<T= Plugin> {
     pname: string;
     new(app: Application): T;
@@ -33,7 +35,7 @@ export interface Plugin {
 
 let app = new Option<Application<any>>();
 
-export class Application<T= Plugin> implements GLTFSerialize {
+export class Application<T= Plugin> implements GLTFSerialize, PhysiceConfig {
     get scene() {
         if (!this._scene) {
             this.addScene(new Scene('default'));
@@ -124,8 +126,33 @@ export class Application<T= Plugin> implements GLTFSerialize {
 
         }
     }
-    export() {
+    exportGltf() {
         return '';
+    }
+    exportPhysiceConfig() {
+        let format = (root: Entity) => {
+            let obj = {} as any;
+            if (root.collision != null && root.rigidbody != null) {
+                obj.collision = root.collision.inputs;
+                obj.rigidbody = root.rigidbody.inputs;
+            }
+            obj.name = root.name;
+            let children = root.children.map((node, index) => {
+                return format(node);
+            });
+            if (children.length > 0) {
+                obj.children = children;
+            }
+            return obj;
+        };
+        let res = {
+            name: this.scene.name,
+            root: format(this.scene.root)
+        };
+
+        console.log(res);
+
+        return JSON.stringify(res);
     }
     private tick = (timestamp: number) => {
         let dt = timestamp - this._start;

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, March 7th 2019, 10:50:44 pm
+ * Last Modified: Saturday, March 9th 2019, 11:11:27 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -96,7 +96,11 @@ export interface Copy {
 // }
 
 export interface GLTFSerialize {
-    export(): string;
+    exportGltf(): string;
+}
+
+export interface PhysiceConfig {
+    exportPhysiceConfig(): string;
 }
 
 export abstract class Serialize {
