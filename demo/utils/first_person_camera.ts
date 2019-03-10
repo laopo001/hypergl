@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, February 25th 2019, 11:25:50 am
+ * Last Modified: Sunday, March 10th 2019, 10:48:11 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -48,7 +48,7 @@ export class FirstPersonCamera extends Script<FirstPersonCameraInputs, AppPlugin
         }, false);
         // tslint:disable-next-line:no-non-null-assertion
         document.getElementById('canvas')!.addEventListener('mousedown', (event) => {
-            if (!this.entity.scene.isActive) { return; }
+            if (!this.entity.scene.isActive || event.button !== 0) { return; }
             if (!this.app.plugins.pointer.isPointerLocked) {
                 this.app.plugins.pointer.lock();
             }

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, March 10th 2019, 10:34:03 pm
+ * Last Modified: Sunday, March 10th 2019, 10:54:22 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -151,14 +151,14 @@ export class Entity extends SceneNode {
             // this.components.splice(this.components.indexOf(this[component]), 1);
             arrayRemove(this.components, this[component]);
             system.removeComponent(this[component]);
-            this[component].destroy();
+            // this[component].destroy();
             this[component] = null;
         } else {
             const system = this.scene && this.scene.systems[component.name] as ComponentSystem;
             // this.components.splice(this.components.indexOf(component), 1);
             arrayRemove(this.components, component);
             system.removeComponent(component);
-            this[component.name].destroy();
+            // this[component.name].destroy();
             this[component.name] = null;
         }
         return this;

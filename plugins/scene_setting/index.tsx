@@ -22,6 +22,12 @@ export class SceneSettingPlugin implements Plugin {
     static pname = 'sceneSetting';
 
     constructor(private app: Application) {
+
+        // tslint:disable-next-line:only-arrow-functions
+        document.oncontextmenu = function (e) { return false; };
+        // tslint:disable-next-line:only-arrow-functions
+        document.oncontextmenu = function (e) { return false; };
+
         let div = document.createElement('div');
         div.style.width = '200px';
         div.style.height = '100%';

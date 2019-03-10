@@ -13,38 +13,41 @@
 
 import React, { Component } from 'react';
 import { Application, Plugin, Entity, Vec3, util } from 'hypergl';
-import { Tree, Popover, Row, Col, Input, Divider, Card, Select, Switch, Collapse } from 'antd';
+import { Tree, Popover, Row, Col, Divider, Card, Select, Switch, Collapse } from 'antd';
 import { format } from 'util';
 import { EditableTagGroup } from './editable_tag_group/editable_tag_group';
+import { MyInput } from './myinput';
 const { TreeNode } = Tree;
 const Option = Select.Option;
 const Panel = Collapse.Panel;
+
+
 
 function create(input, key: string, cb = () => { /* */ }) {
   return <Row>
     <Col span={6}>{key}:</Col>
     <Col span={18}>{
       input[key] instanceof Vec3 ? <div>
-        <Input defaultValue={input[key].x as any} onChange={(e) => {
-          let v = parseFloat(e.target.value);
+        <MyInput defaultValue={input[key].x as any} onBlur={(e: any) => {
+          let v = parseFloat(e);
           input[key].x = v;
           cb();
-        }} style={{ width: 60 }} size="small" />
-        <Input defaultValue={input[key].y as any} onChange={(e) => {
-          let v = parseFloat(e.target.value);
+        }} />
+        <MyInput defaultValue={input[key].y as any} onBlur={(e: any) => {
+          let v = parseFloat(e);
           (input as any)[key].y = v;
           cb();
-        }} style={{ width: 60 }} size="small" />
-        <Input defaultValue={input[key].z as any} onChange={(e) => {
-          let v = parseFloat(e.target.value);
+        }} />
+        <MyInput defaultValue={input[key].z as any} onBlur={(e: any) => {
+          let v = parseFloat(e);
           (input as any)[key].z = v;
           cb();
-        }} style={{ width: 60 }} size="small" />
-      </div> : <Input defaultValue={input[key]} onChange={(e) => {
-        let v = parseFloat(e.target.value);
+        }} />
+      </div> : <MyInput defaultValue={input[key]} onBlur={(e: any) => {
+        let v = parseFloat(e);
         (input as any)[key] = v;
         cb();
-      }} style={{ width: 60 }} size="small" />
+      }} />
     }
 
     </Col>
@@ -107,7 +110,7 @@ export class App extends Component<{ app: Application }> {
     let rotation = root.getLocalEulerAngles() as any;
     let scale = root.getLocalScale() as any;
 
-    let plane = <div style={{ width: 300 }} onClick={e => { e.stopPropagation(); }} >
+    let plane = <div style={{ width: 400 }} onClick={e => { e.stopPropagation(); }} >
       <Row>
         <Col span={6}>tags:</Col>
         <Col span={18}><EditableTagGroup value={root.tag} onChange={(tags) => { root.tag = tags; }} /></Col>
@@ -116,58 +119,58 @@ export class App extends Component<{ app: Application }> {
       <Row style={{ marginTop: '5px' }}>
         <Col span={6}>position:</Col>
         <Col span={18}>
-          <Input defaultValue={position.x} onChange={(e) => {
-            let v = parseFloat(e.target.value);
+          <MyInput defaultValue={position.x} onBlur={(e: any) => {
+            let v = parseFloat(e);
             root.setLocalPosition(v, position.y, position.z);
             // tslint:disable-next-line:no-unused-expression
             root.rigidbody && root.rigidbody.update();
-          }} style={{ width: 60 }} size="small" />
-          <Input onChange={(e) => {
-            let v = parseFloat(e.target.value);
+          }} />
+          <MyInput onBlur={(e: any) => {
+            let v = parseFloat(e);
             root.setLocalPosition(position.x, v, position.z);
             // tslint:disable-next-line:no-unused-expression
             root.rigidbody && root.rigidbody.update();
-          }} defaultValue={position.y} style={{ width: 60 }} size="small" />
-          <Input onChange={(e) => {
-            let v = parseFloat(e.target.value);
+          }} defaultValue={position.y} />
+          <MyInput onBlur={(e: any) => {
+            let v = parseFloat(e);
             root.setLocalPosition(position.x, position.y, v);
             // tslint:disable-next-line:no-unused-expression
             root.rigidbody && root.rigidbody.update();
-          }} defaultValue={position.z} style={{ width: 60 }} size="small" />
+          }} defaultValue={position.z} />
         </Col>
       </Row>
       <Row style={{ marginTop: '5px' }}>
         <Col span={6}>rotation:</Col>
         <Col span={18}>
-          <Input onChange={(e) => {
-            let v = parseFloat(e.target.value);
+          <MyInput onBlur={(e: any) => {
+            let v = parseFloat(e);
             root.setLocalEulerAngles(v, position.y, position.z);
-          }} defaultValue={rotation.x} style={{ width: 60 }} size="small" />
-          <Input onChange={(e) => {
-            let v = parseFloat(e.target.value);
+          }} defaultValue={rotation.x} />
+          <MyInput onBlur={(e: any) => {
+            let v = parseFloat(e);
             root.setLocalEulerAngles(position.x, v, position.z);
-          }} defaultValue={rotation.y} style={{ width: 60 }} size="small" />
-          <Input onChange={(e) => {
-            let v = parseFloat(e.target.value);
+          }} defaultValue={rotation.y} />
+          <MyInput onBlur={(e: any) => {
+            let v = parseFloat(e);
             root.setLocalEulerAngles(position.x, position.y, v);
-          }} defaultValue={rotation.z} style={{ width: 60 }} size="small" />
+          }} defaultValue={rotation.z} />
         </Col>
       </Row>
       <Row style={{ marginTop: '5px' }}>
         <Col span={6}>scale:</Col>
         <Col span={18}>
-          <Input onChange={(e) => {
-            let v = parseFloat(e.target.value);
+          <MyInput onBlur={(e: any) => {
+            let v = parseFloat(e);
             root.setLocalScale(v, scale.y, scale.z);
-          }} defaultValue={scale.x} style={{ width: 60 }} size="small" />
-          <Input onChange={(e) => {
-            let v = parseFloat(e.target.value);
+          }} defaultValue={scale.x} />
+          <MyInput onBlur={(e: any) => {
+            let v = parseFloat(e);
             root.setLocalScale(scale.x, v, scale.z);
-          }} defaultValue={scale.y} style={{ width: 60 }} size="small" />
-          <Input onChange={(e) => {
-            let v = parseFloat(e.target.value);
+          }} defaultValue={scale.y} />
+          <MyInput onBlur={(e: any) => {
+            let v = parseFloat(e);
             root.setLocalScale(scale.x, scale.y, v);
-          }} defaultValue={scale.z} style={{ width: 60 }} size="small" />
+          }} defaultValue={scale.z} />
         </Col>
       </Row>
       <div style={{ margin: '5px 0' }}>
@@ -268,14 +271,19 @@ export class App extends Component<{ app: Application }> {
   componentDidMount() {
     let app = this.props.app;
     app.on('add', () => {
-      let nodes = this.format(app.scene.root);
-      this.setState({ treeData: [nodes] });
+      this.update();
     });
+    // setInterval(() => {
+    //   let nodes = this.format(app.scene.root);
+    //   this.setState({ treeData: [nodes] });
+    // }, 500);
   }
   update() {
-    let app = this.props.app;
-    let nodes = this.format(app.scene.root);
-    this.setState({ treeData: [nodes] });
+    setTimeout(() => {
+      let app = this.props.app;
+      let nodes = this.format(app.scene.root);
+      this.setState({ treeData: [nodes] });
+    }, 300);
   }
   render() {
     return (

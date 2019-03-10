@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, March 8th 2019, 1:44:56 am
+ * Last Modified: Sunday, March 10th 2019, 11:25:39 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -58,5 +58,16 @@ let camera = new Entity('camera')
     .lookAt(new Vec3(0, 0, 0))
     .addComponent('script', [new FirstPersonCamera({ speed: 2 })]);
 scene.root.addChild(camera);
+
+event.on('start', () => {
+    let picker = new Picker(scene);
+    document.getElementById('canvas')!.addEventListener('mousedown', (e) => {
+        if (app.scene.name === 'tank' && e.button === 2) {
+            let entity = picker.pick(e.offsetX, e.offsetY);
+            // alert(entity.name);
+            console.log(entity.name);
+        }
+    }, false);
+});
 
 export { scene };
