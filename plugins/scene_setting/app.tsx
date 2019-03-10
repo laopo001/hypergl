@@ -12,7 +12,7 @@
  */
 
 import React, { Component } from 'react';
-import { Application, Plugin, Entity, Vec3 } from 'hypergl';
+import { Application, Plugin, Entity, Vec3, util } from 'hypergl';
 import { Tree, Popover, Row, Col, Input, Divider, Card, Select, Switch, Collapse } from 'antd';
 import { format } from 'util';
 import { EditableTagGroup } from './editable_tag_group/editable_tag_group';
@@ -177,7 +177,7 @@ export class App extends Component<{ app: Application }> {
           style={{ width: '100%' }}
           placeholder="add component"
           onChange={(e: any) => {
-            root.addComponent(e, {});
+            root.addComponent(e, { debugger: true });
             root[e].initialize();
             this.update();
           }}
@@ -191,7 +191,10 @@ export class App extends Component<{ app: Application }> {
       {root.collision ? <Card
         size="small"
         title="collision component"
-      // extra={<a href="#">More</a>}
+        extra={<a href="javascript:void(0)" onClick={() => {
+          root.removeComponent('collision');
+          this.update();
+        }} >delete</a>}
       >
         <Row>
           <Col span={6}>type:</Col>
@@ -208,12 +211,29 @@ export class App extends Component<{ app: Application }> {
         </Row>
         {create(root.collision.inputs, 'center', () => { root.collision.update(); })}
         {root.collision.inputs.type === 'box' ? create(root.collision.inputs, 'halfExtents', () => { root.collision.update(); }) : null}
-        {root.collision.inputs.type === 'sphere' ? create(root.collision.inputs, 'radius', () => { root.collision.update(); }) : null}
+        {root.collision.inputs.type === 'sphere' || root.collision.inputs.type === 'cylinder' ? create(root.collision.inputs, 'radius', () => { root.collision.update(); }) : null}
+        {root.collision.inputs.type === 'cylinder' ? <Row>
+          <Col span={6}>axis:</Col>
+          <Col span={18}>
+            <Select size="small" defaultValue={root.collision.inputs.axis} style={{ width: 120 }} onChange={(e) => {
+              (root.collision.inputs as any).axis = e;
+              root.collision.update();
+            }}>
+              <Option value="x">y</Option>
+              <Option value="y">y</Option>
+              <Option value="z">z</Option>
+            </Select>
+          </Col>
+        </Row> : null}
+        {root.collision.inputs.type === 'cylinder' ? create(root.collision.inputs, 'height', () => { root.collision.update(); }) : null}
       </Card> : null}
       {root.rigidbody ? <Card
         size="small"
         title="rigidbody component"
-      // extra={<a href="#">More</a>}
+        extra={<a href="javascript:void(0)" onClick={() => {
+          root.removeComponent('rigidbody');
+          this.update();
+        }} >delete</a>}
       >
         <Row>
           <Col span={6}>type:</Col>

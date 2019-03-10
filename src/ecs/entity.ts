@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, March 9th 2019, 1:10:49 am
+ * Last Modified: Sunday, March 10th 2019, 10:34:03 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,7 +20,7 @@ import { AudioComponent, AudioInputs } from './components/audio';
 import { CollisionComponent, CollisionInputs } from './components/collision';
 import { RigidbodyComponent, RigidbodyInputs } from './components/rigidbody';
 import { Component } from './component';
-import { Log } from '../utils/util';
+import { Log, arrayRemove } from '../utils/util';
 import { Application } from '../application';
 import { ComponentSystem } from './system';
 import { Scene, SceneNode } from '../scene';
@@ -148,14 +148,18 @@ export class Entity extends SceneNode {
         if (typeof component === 'string') {
             const system = this.scene && this.scene.systems[component] as ComponentSystem;
             Log.assert(system != null, name + ' system not register');
-            this.components.splice(this.components.indexOf(this[component]), 1);
-            this[component] = null;
+            // this.components.splice(this.components.indexOf(this[component]), 1);
+            arrayRemove(this.components, this[component]);
             system.removeComponent(this[component]);
+            this[component].destroy();
+            this[component] = null;
         } else {
             const system = this.scene && this.scene.systems[component.name] as ComponentSystem;
-            this.components.splice(this.components.indexOf(component), 1);
-            this[component.name] = null;
+            // this.components.splice(this.components.indexOf(component), 1);
+            arrayRemove(this.components, component);
             system.removeComponent(component);
+            this[component.name].destroy();
+            this[component.name] = null;
         }
         return this;
     }

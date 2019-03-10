@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, March 10th 2019, 6:07:49 pm
+ * Last Modified: Sunday, March 10th 2019, 8:09:35 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -52,7 +52,7 @@ export const CollisionData: Partial<CollisionInputs> = {
     center: new Vec3(0, 0, 0),
     type: 'box',
     halfExtents: new Vec3(0.5, 0.5, 0.5),
-    radius: 1,
+    radius: 0.5,
     height: 1,
     axis: 'y',
 } as any;
