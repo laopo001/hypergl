@@ -12,13 +12,44 @@
  */
 
 import React, { Component } from 'react';
-import { Application, Plugin, Entity } from 'hypergl';
+import { Application, Plugin, Entity, Vec3 } from 'hypergl';
 import { Tree, Popover, Row, Col, Input, Divider, Card, Select, Switch, Collapse } from 'antd';
 import { format } from 'util';
 import { EditableTagGroup } from './editable_tag_group/editable_tag_group';
 const { TreeNode } = Tree;
 const Option = Select.Option;
 const Panel = Collapse.Panel;
+
+function create(input, key: string, cb = () => { /* */ }) {
+  return <Row>
+    <Col span={6}>{key}:</Col>
+    <Col span={18}>{
+      input[key] instanceof Vec3 ? <div>
+        <Input defaultValue={input[key].x as any} onChange={(e) => {
+          let v = parseFloat(e.target.value);
+          input[key].x = v;
+          cb();
+        }} style={{ width: 60 }} size="small" />
+        <Input defaultValue={input[key].y as any} onChange={(e) => {
+          let v = parseFloat(e.target.value);
+          (input as any)[key].y = v;
+          cb();
+        }} style={{ width: 60 }} size="small" />
+        <Input defaultValue={input[key].z as any} onChange={(e) => {
+          let v = parseFloat(e.target.value);
+          (input as any)[key].z = v;
+          cb();
+        }} style={{ width: 60 }} size="small" />
+      </div> : <Input defaultValue={input[key]} onChange={(e) => {
+        let v = parseFloat(e.target.value);
+        (input as any)[key] = v;
+        cb();
+      }} style={{ width: 60 }} size="small" />
+    }
+
+    </Col>
+  </Row>;
+}
 
 let components = ['collision', 'rigidbody'];
 export class App extends Component<{ app: Application }> {
@@ -146,8 +177,8 @@ export class App extends Component<{ app: Application }> {
           style={{ width: '100%' }}
           placeholder="add component"
           onChange={(e: any) => {
-            console.log(e);
             root.addComponent(e, {});
+            root[e].initialize();
             this.update();
           }}
         >
@@ -175,39 +206,35 @@ export class App extends Component<{ app: Application }> {
             </Select>
           </Col>
         </Row>
-        {root.collision.inputs.type === 'box' ? <Row>
-          <Col span={6}>halfExtents:</Col>
-          <Col span={18}>
-            <Input defaultValue={root.collision.inputs.halfExtents.x as any} onChange={(e) => {
-              let v = parseFloat(e.target.value);
-              (root.collision.inputs as any).halfExtents.x = v;
-              root.collision.update();
-            }} style={{ width: 60 }} size="small" />
-            <Input defaultValue={root.collision.inputs.halfExtents.y as any} onChange={(e) => {
-              let v = parseFloat(e.target.value);
-              (root.collision.inputs as any).halfExtents.y = v;
-              root.collision.update();
-            }} style={{ width: 60 }} size="small" />
-            <Input defaultValue={root.collision.inputs.halfExtents.z as any} onChange={(e) => {
-              let v = parseFloat(e.target.value);
-              (root.collision.inputs as any).halfExtents.z = v;
-              root.collision.update();
-            }} style={{ width: 60 }} size="small" />
-          </Col>
-        </Row> : null}
-        {root.collision.inputs.type === 'sphere' ? <Row>
-          <Col span={6}>radius:</Col>
-          <Col span={18}>
-            <Input defaultValue={root.collision.inputs.radius as any} style={{ width: 60 }} size="small" />
-          </Col>
-        </Row> : null}
+        {create(root.collision.inputs, 'center', () => { root.collision.update(); })}
+        {root.collision.inputs.type === 'box' ? create(root.collision.inputs, 'halfExtents', () => { root.collision.update(); }) : null}
+        {root.collision.inputs.type === 'sphere' ? create(root.collision.inputs, 'radius', () => { root.collision.update(); }) : null}
       </Card> : null}
       {root.rigidbody ? <Card
         size="small"
         title="rigidbody component"
       // extra={<a href="#">More</a>}
       >
-        <p>Card content</p>
+        <Row>
+          <Col span={6}>type:</Col>
+          <Col span={18}>
+            <Select size="small" defaultValue={root.rigidbody.inputs.type} style={{ width: 120 }} onChange={(e) => {
+              root.rigidbody.inputs.type = e;
+              root.rigidbody.update();
+              this.update();
+            }}>
+              <Option value="static">static</Option>
+              <Option value="dynamic">dynamic</Option>
+            </Select>
+          </Col>
+        </Row>
+        {create(root.rigidbody.inputs, 'friction', () => { root.rigidbody.update(); })}
+        {create(root.rigidbody.inputs, 'restitution', () => { root.rigidbody.update(); })}
+        {root.rigidbody.inputs.type === 'dynamic' ? create(root.rigidbody.inputs, 'mass', () => { root.rigidbody.update(); }) : null}
+        {root.rigidbody.inputs.type === 'dynamic' ? create(root.rigidbody.inputs, 'linearDamping', () => { root.rigidbody.update(); }) : null}
+        {root.rigidbody.inputs.type === 'dynamic' ? create(root.rigidbody.inputs, 'angularDamping', () => { root.rigidbody.update(); }) : null}
+        {root.rigidbody.inputs.type === 'dynamic' ? create(root.rigidbody.inputs, 'linearFactor', () => { root.rigidbody.update(); }) : null}
+        {root.rigidbody.inputs.type === 'dynamic' ? create(root.rigidbody.inputs, 'angularFactor', () => { root.rigidbody.update(); }) : null}
       </Card> : null}
     </div>;
     node.title = <Popover content={plane} placement="left" title="Title" trigger="hover">

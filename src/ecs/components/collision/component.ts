@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, March 10th 2019, 12:39:31 am
+ * Last Modified: Sunday, March 10th 2019, 6:07:49 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -69,10 +69,10 @@ export class CollisionComponent extends Component<CollisionInputs> {
 
     async initialize() {
         super.initialize();
-        if (this.entity.rigidbody.instance === null) {
-            console.warn('没有刚体组件');
-            return;
-        }
+        // if (this.entity.rigidbody.instance === null) {
+        //     console.warn('没有刚体组件');
+        //     return;
+        // }
         // tslint:disable-next-line:no-unused-expression
         this.inputs.contact && this.event.on('contact', this.inputs.contact);
         // tslint:disable-next-line:no-unused-expression
@@ -153,10 +153,12 @@ export class CollisionComponent extends Component<CollisionInputs> {
         }
     }
     update() {
-        this.entity.rigidbody.destroy();
+        // tslint:disable-next-line:no-unused-expression
+        this.entity.rigidbody && this.entity.rigidbody.destroy();
         this.destroy();
         this.initialize();
-        this.entity.rigidbody.initialize();
+        // tslint:disable-next-line:no-unused-expression
+        this.entity.rigidbody && this.entity.rigidbody.initialize();
     }
     on(eventName: 'contact' | 'collisionstart' | 'collisionend' | 'triggerenter', cb: FnVoid) {
         this.event.on(eventName, cb);

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, March 10th 2019, 12:23:01 am
+ * Last Modified: Sunday, March 10th 2019, 4:53:46 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -38,7 +38,7 @@ export interface RigidbodyInputs {
 }
 
 export const RigidbodyData: Partial<RigidbodyInputs> = {
-    type: 'dynamic',
+    type: 'static',
     friction: 0.5,
     mass: 1,
     restitution: 0.5,
