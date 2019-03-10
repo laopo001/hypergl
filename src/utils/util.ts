@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, March 10th 2019, 11:03:59 pm
+ * Last Modified: Sunday, March 10th 2019, 5:08:57 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -49,7 +49,7 @@ export namespace Log {
 export function input_copy(ref = {}, source) {
     for (let k in source) {
         if (ref[k] === undefined) {
-            if (typeof source[k] === 'object') {
+            if (typeof source[k] === 'object' && source[k].clone != null) {
                 ref[k] = source[k].clone();
             } else {
                 ref[k] = source[k];

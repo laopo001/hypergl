@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, March 10th 2019, 11:25:39 pm
+ * Last Modified: Sunday, March 10th 2019, 5:07:44 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -21,7 +21,7 @@ let app = Application.getApp<AppPlugin>().unwrap();
 
 const scene = new Scene('tank');
 
-let gltf = app.plugins.gltf.createLoader('./assets/models/CompleteLevelArt.gltf');
+let gltf = app.plugins.gltf.createLoader('./assets/models/_Complete-Game.gltf');
 
 let cubeTexture = CubeTexture.loadImage('assets/images/skybox_px.jpg', 'assets/images/skybox_nx.jpg', 'assets/images/skybox_py.jpg', 'assets/images/skybox_ny.jpg',
     'assets/images/skybox_pz.jpg', 'assets/images/skybox_nz.jpg');
