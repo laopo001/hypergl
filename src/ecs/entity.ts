@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, March 10th 2019, 10:54:22 pm
+ * Last Modified: Monday, March 11th 2019, 10:42:46 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -26,6 +26,7 @@ import { ComponentSystem } from './system';
 import { Scene, SceneNode } from '../scene';
 import { Constructor, Undefinedable, convertImmutable } from '../types';
 import { ListenerComponent, ListenerInputs } from './components/listener';
+import { Vec3 } from '../math';
 
 
 let EntityID = 0;
@@ -183,6 +184,31 @@ export class Entity extends SceneNode {
     removeChild(c: Entity) {
         super.removeChild(c);
         c.enabled = false;
+    }
+    resolveJSON(obj, d) {
+        if (obj.collision) {
+            for (let key in obj.collision) {
+                if (typeof obj.collision[key] === 'object') {
+                    let [x, y, z] = obj.collision[key].data;
+                    obj.collision[key] = new Vec3(x, y, z);
+                }
+            }
+            obj.collision.debugger = d;
+            this.addComponent('collision', obj.collision);
+        }
+        if (obj.rigidbody) {
+            for (let key in obj.rigidbody) {
+                if (typeof obj.rigidbody[key] === 'object') {
+                    let [x, y, z] = obj.rigidbody[key].data;
+                    obj.rigidbody[key] = new Vec3(x, y, z);
+                }
+            }
+            this.addComponent('rigidbody', obj.rigidbody);
+        }
+        for (let i = 0; i < this.children.length; i++) {
+            const child = this.children[i];
+            child.resolveJSON(obj.children[i], d);
+        }
     }
     findByName(name: string): Undefinedable<Entity> {
         if (this.name === name) {

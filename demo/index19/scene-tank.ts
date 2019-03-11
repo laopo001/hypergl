@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, March 10th 2019, 5:07:44 pm
+ * Last Modified: Monday, March 11th 2019, 10:42:46 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -14,6 +14,7 @@
 
 import { Entity, StandardMaterial, Config, event, Scene, util, SkyMaterial, Application, Vec3, Color, Picker, Texture, CubeTexture, PBRMaterial, Mesh, Drawable } from 'hypergl';
 import { AppPlugin } from '../types';
+import { json } from './physics';
 import { Rotate } from '../utils/rotate';
 import { FirstPersonCamera } from '../utils/first_person_camera';
 
@@ -30,6 +31,8 @@ gltf.loadSenceRoot().then(node => {
     node.setLocalScale(0.11, 0.11, 0.11);
     // console.log(node.getLocalScale());
     scene.root.addChild(node);
+    scene.root.resolveJSON(json.root, true);
+    scene.root.enabled = true;
 });
 
 let light = new Entity('light')

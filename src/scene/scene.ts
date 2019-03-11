@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, March 8th 2019, 11:54:36 pm
+ * Last Modified: Monday, March 11th 2019, 10:05:50 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -65,9 +65,6 @@ export class Scene {
         Log.assert(this._activeCameraIndex || defaultCamera, 'scene 没有 activeCamera');
         return defaultCamera as CameraComponent;
     }
-    // set activeCamera(x) {
-    //     this._activeCameraIndex = x;
-    // }
     get isActive() {
         return this.isRegistered && this.app.scene === this;
     }
