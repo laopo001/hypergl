@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, March 11th 2019, 10:05:50 pm
+ * Last Modified: Friday, March 15th 2019, 12:29:33 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -83,6 +83,16 @@ export class Scene {
         event.on('update', (dt) => {
             if (this.isActive) {
                 this.event.fire('update', dt);
+            }
+        });
+        event.on('beforeRender', (dt) => {
+            if (this.isActive) {
+                this.event.fire('beforeRender', dt);
+            }
+        });
+        event.on('afterRender', (dt) => {
+            if (this.isActive) {
+                this.event.fire('afterRender', dt);
             }
         });
     }

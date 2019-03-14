@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, March 10th 2019, 4:53:46 pm
+ * Last Modified: Friday, March 15th 2019, 12:30:46 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -100,7 +100,7 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
                     _displacement.copy(this.inputs.angularVelocity!).scale(dt);
                     this.entity.rotate(_displacement.x, _displacement.y, _displacement.z);
                     if (this.body.getMotionState()) {
-                        physics.syncEntityToBody(this.entity, body, false);
+                        physics.syncEntityToBody(this.entity, body, true);
                     }
                 }
             }
@@ -138,13 +138,25 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
     }
     teleport(v: Vec3);
     teleport(x: number, y: number, z: number);
-    async teleport(x, y?, z?) {
-        let physics = await this.entity.scene.systems.rigidbody!.asyncPhysics;
+    teleport(x, y?, z?) {
+        let physics = this.entity.scene.systems.rigidbody!.physics;
         // let physics = this.entity.scene.systems.rigidbody!.physics;
         if (x instanceof Vec3) {
             this.entity.setPosition(x);
         } else {
             this.entity.setPosition(x, y, z);
+        }
+        physics.syncEntityToBody(this.entity, this.body);
+    }
+    translateLocal(v: Vec3);
+    translateLocal(x: number, y: number, z: number);
+    translateLocal(x, y?, z?) {
+        let physics = this.entity.scene.systems.rigidbody!.physics;
+        // let physics = this.entity.scene.systems.rigidbody!.physics;
+        if (x instanceof Vec3) {
+            this.entity.translateLocal(x);
+        } else {
+            this.entity.translateLocal(x, y, z);
         }
         physics.syncEntityToBody(this.entity, this.body);
     }

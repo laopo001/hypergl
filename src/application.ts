@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, March 9th 2019, 11:49:22 pm
+ * Last Modified: Friday, March 15th 2019, 1:05:44 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -157,9 +157,7 @@ export class Application<T= Plugin> implements GLTFSerialize, PhysiceConfig {
     private tick = (timestamp: number) => {
         let dt = timestamp - this._start;
         event.fire('beforeRender');
-        // timer.start();
         this.scene.render();
-        // timer.end();
         event.fire('update', dt / 1000);
         event.fire('afterRender');
         this._start = timestamp;

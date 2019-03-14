@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 30th 2019, 4:35:52 pm
+ * Last Modified: Thursday, March 14th 2019, 9:19:14 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -16,7 +16,6 @@ import { Entity } from './entity';
 import { Mat4, Vec3 } from '../math';
 import { ComponentSystem } from '../ecs/system';
 export abstract class Component<Inputs> {
-    initialized = false;
     get enabled() {
         if (!this.entity.enabled) {
             return this.entity.enabled;
@@ -26,9 +25,11 @@ export abstract class Component<Inputs> {
     set enabled(value) {
         this._enabled = value;
     }
+    initialized = false;
     abstract name: string;
 
     abstract instance: any;
+    attended = false;
     private _enabled = true;
     constructor(public inputs: Inputs, public entity: Entity, public system: ComponentSystem) {
     }

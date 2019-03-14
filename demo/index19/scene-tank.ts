@@ -5,72 +5,127 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, March 11th 2019, 10:42:46 pm
+ * Last Modified: Friday, March 15th 2019, 12:56:08 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
  */
 
 
-import { Entity, StandardMaterial, Config, event, Scene, util, SkyMaterial, Application, Vec3, Color, Picker, Texture, CubeTexture, PBRMaterial, Mesh, Drawable } from 'hypergl';
-import { AppPlugin } from '../types';
-import { json } from './physics';
-import { Rotate } from '../utils/rotate';
-import { FirstPersonCamera } from '../utils/first_person_camera';
 
+import { Entity, StandardMaterial, Config, event, Scene, util, SkyMaterial, Application, Vec3, Color, Picker, Texture, CubeTexture, Quat } from 'hypergl';
+import { AppPlugin } from '../types';
+import { FirstPersonCamera, BloodStrip, PlayerScript } from '../scripts';
+import { json } from './physics';
+import { AssetsLoader } from '../utils/assets';
 let app = Application.getApp<AppPlugin>().unwrap();
 
 const scene = new Scene('tank');
 
-let gltf = app.plugins.gltf.createLoader('./assets/models/_Complete-Game.gltf');
 
-let cubeTexture = CubeTexture.loadImage('assets/images/skybox_px.jpg', 'assets/images/skybox_nx.jpg', 'assets/images/skybox_py.jpg', 'assets/images/skybox_ny.jpg',
-    'assets/images/skybox_pz.jpg', 'assets/images/skybox_nz.jpg');
 
-gltf.loadSenceRoot().then(node => {
+async function main() {
+    const red = new StandardMaterial();
+    red.diffuseColor = new Color(1, 0, 0);
+
+
+    let light = new Entity('light')
+        .addComponent('light', {
+            type: 'directional',
+            castShadows: true,
+            shadowType: 'PCF',
+            range: 16
+        })
+        .setEulerAngles(-45, -45, 0)
+        .setLocalPosition(0, 5, 0);
+    scene.root.addChild(light);
+
+
+
+    let camera = new Entity('camera')
+        .addComponent('camera', {
+            type: 'perspective',
+            perspective: {
+                fov: 45,
+                aspectRatio: app.canvas.width / app.canvas.height,
+                near: 1,
+                far: 10000
+            }
+        })
+        .setPosition(0, 5, 5)
+        .lookAt(new Vec3(0, 0, 0))
+        .addComponent('script', [new FirstPersonCamera({ speed: 2 })]);
+    scene.root.addChild(camera);
+
+    let loader = await AssetsLoader.loadAssets({
+        scene: app.plugins.gltf.createLoader('./assets/models/_Complete-Game.gltf').loadSenceRoot(),
+        tank: app.plugins.gltf.createLoader('./assets/models/CompleteTank.gltf').loadSenceRoot(),
+        model_bulled: app.plugins.gltf.createLoader('./assets/models/_Complete-Game.gltf').loadMesh(0)
+    });
+    let node = loader.get<Entity>('scene');
     node.setLocalScale(0.11, 0.11, 0.11);
-    // console.log(node.getLocalScale());
     scene.root.addChild(node);
     scene.root.resolveJSON(json.root, true);
     scene.root.enabled = true;
-});
 
-let light = new Entity('light')
-    .addComponent('light', {
-        type: 'directional',
-        castShadows: true,
-        shadowType: 'PCF',
-        range: 16
-    })
-    .setEulerAngles(-45, 0, 0)
-    .setLocalPosition(0, 5, 0);
-scene.root.addChild(light);
+    let node2 = loader.get<Entity>('tank');
+    scene.root.addChild(node2);
+
+    let tank = new Entity('tank');
+    tank.addComponent('collision', {
+        type: 'box',
+        debugger: true,
+        center: new Vec3(0, 0.25, 0),
+        halfExtents: new Vec3(0.25, 0.25, 0.25),
+    }).addComponent('rigidbody', {
+        type: 'dynamic',
+        mass: 0.1,
+        restitution: 1,
+        friction: 0.5,
+    }).addComponent('script', [
+        new BloodStrip({ value: 50, camera }),
+        new PlayerScript({ speed: 1 })
+    ]);
+    tank.setPosition(0, 2, 0).setLocalScale(0.25, 0.25, 0.25);
+    tank.addChild(node2);
+    tank.findByTag('model').forEach(x => {
+        x.model.instance.meshs.forEach(drawable => {
+            drawable.castShadow = true;
+        });
+    });
+    scene.root.addChild(tank);
+
+    let plane = new Entity('plane')
+        .addComponent('model', {
+            type: 'plane',
+            receiveShadow: true
+        })
+        .addComponent('collision', {
+            type: 'box',
+            // debugger: true,
+            halfExtents: new Vec3(5, 0.1, 5),
+        })
+        .addComponent('rigidbody', {
+            type: 'static',
+            mass: 0
+        })
+        .setPosition(0, -0.1, 0).setLocalScale(10, 1, 10);
+    scene.root.addChild(plane);
+
+    document.getElementById('canvas')!.addEventListener('mousedown', async (e) => {
+        let from = camera.camera.screenToWorld(e.offsetX, e.offsetY, camera.camera.instance.nearClip);
+        let to = camera.camera.screenToWorld(e.offsetX, e.offsetY, camera.camera.instance.farClip);
 
 
-let camera = new Entity('camera')
-    .addComponent('camera', {
-        type: 'perspective',
-        perspective: {
-            fov: 45,
-            aspectRatio: app.canvas.width / app.canvas.height,
-            near: 1,
-            far: 10000
+
+        let result = app.scene.systems.rigidbody!.physics.raycastFirst(from, to);
+        if (result) {
+            let pickedEntity = result.entity;
+            console.log(pickedEntity.name);
         }
-    })
-    .setPosition(0, 5, 5)
-    .lookAt(new Vec3(0, 0, 0))
-    .addComponent('script', [new FirstPersonCamera({ speed: 2 })]);
-scene.root.addChild(camera);
 
-event.on('start', () => {
-    let picker = new Picker(scene);
-    document.getElementById('canvas')!.addEventListener('mousedown', (e) => {
-        if (app.scene.name === 'tank' && e.button === 2) {
-            let entity = picker.pick(e.offsetX, e.offsetY);
-            // alert(entity.name);
-            console.log(entity.name);
-        }
     }, false);
-});
+}
+main();
 
 export { scene };

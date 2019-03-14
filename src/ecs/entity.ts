@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, March 11th 2019, 10:42:46 pm
+ * Last Modified: Thursday, March 14th 2019, 9:50:10 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -128,13 +128,11 @@ export class Entity extends SceneNode {
 
     }
     addComponent<K extends keyof ComponentInputs>(name: K, options: ComponentInputs[K]) {
-        // const system = this.app.scene.systems[name] as ComponentSystem;
-        // Log.assert(system != null, name + ' system not register');
-        // let component = system.addComponent(this, options);
-
         let component = new (createComponent[name] as Constructor<Component<{}>>)(options, this);
         this[name as string] = component;
         this.components.push(component);
+        // tslint:disable-next-line:no-unused-expression
+        this.scene && this.scene.systems[name]!.addComponent(this, component);
         return this;
     }
     get<T extends keyof Entity>(name: T): Pick<Entity, T> {
@@ -147,21 +145,20 @@ export class Entity extends SceneNode {
     removeComponent<K extends keyof ComponentInputs>(component: K);
     removeComponent(component) {
         if (typeof component === 'string') {
-            const system = this.scene && this.scene.systems[component] as ComponentSystem;
-            Log.assert(system != null, name + ' system not register');
-            // this.components.splice(this.components.indexOf(this[component]), 1);
+            // tslint:disable-next-line:no-unused-expression
+            this.scene && (this.scene.systems[component] as ComponentSystem).removeComponent(this[component]);
             arrayRemove(this.components, this[component]);
-            system.removeComponent(this[component]);
             // this[component].destroy();
             this[component] = null;
         } else {
-            const system = this.scene && this.scene.systems[component.name] as ComponentSystem;
-            // this.components.splice(this.components.indexOf(component), 1);
+            // tslint:disable-next-line:no-unused-expression
+            this.scene && (this.scene.systems[component.name] as ComponentSystem).removeComponent(component);
             arrayRemove(this.components, component);
-            system.removeComponent(component);
             // this[component.name].destroy();
             this[component.name] = null;
         }
+        // tslint:disable-next-line:no-unused-expression
+
         return this;
     }
     addChild(...children: Entity[]) {
@@ -195,6 +192,7 @@ export class Entity extends SceneNode {
             }
             obj.collision.debugger = d;
             this.addComponent('collision', obj.collision);
+            // this.scene.systems.collision!.addComponent(this, this.collision);
         }
         if (obj.rigidbody) {
             for (let key in obj.rigidbody) {
@@ -204,11 +202,13 @@ export class Entity extends SceneNode {
                 }
             }
             this.addComponent('rigidbody', obj.rigidbody);
+            // this.scene.systems.rigidbody!.addComponent(this, this.rigidbody);
         }
         for (let i = 0; i < this.children.length; i++) {
             const child = this.children[i];
             child.resolveJSON(obj.children[i], d);
         }
+
     }
     findByName(name: string): Undefinedable<Entity> {
         if (this.name === name) {
