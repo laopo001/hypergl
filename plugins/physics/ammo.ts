@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, March 15th 2019, 12:04:17 am
+ * Last Modified: Saturday, March 16th 2019, 12:00:15 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -481,7 +481,6 @@ export class AmmoPlugin implements Plugin, IPhysics {
     applyForce(body: AMMO.btRigidBody, options: {
         force: Vec3, point?: Vec3
     }) {
-        let Ammo = this.Ammo;
         body.activate();
         this.ammoVec1.setValue(options.force.x, options.force.y, options.force.z);
         if (options.point !== undefined) {
@@ -491,10 +490,16 @@ export class AmmoPlugin implements Plugin, IPhysics {
             body.applyForce(this.ammoVec1, this.ammoOrigin);
         }
     }
+    applyTorque(body: AMMO.btRigidBody, options: {
+        force: Vec3,
+    }) {
+        body.activate();
+        this.ammoVec1.setValue(options.force.x, options.force.y, options.force.z);
+        body.applyTorque(this.ammoVec1);
+    }
     applyImpulse(body: AMMO.btRigidBody, options: {
         impulse: Vec3, point?: Vec3
     }) {
-        let Ammo = this.Ammo;
         body.activate();
         this.ammoVec1.setValue(options.impulse.x, options.impulse.y, options.impulse.z);
         if (options.point !== undefined) {
@@ -503,6 +508,13 @@ export class AmmoPlugin implements Plugin, IPhysics {
         } else {
             body.applyImpulse(this.ammoVec1, this.ammoOrigin);
         }
+    }
+    applyTorqueImpulse(body: AMMO.btRigidBody, options: {
+        impulse: Vec3,
+    }) {
+        body.activate();
+        this.ammoVec1.setValue(options.impulse.x, options.impulse.y, options.impulse.z);
+        body.applyTorqueImpulse(this.ammoVec1);
     }
     setMass(body: AMMO.btRigidBody) {
         let Ammo = this.Ammo;

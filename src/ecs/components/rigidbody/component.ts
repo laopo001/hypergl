@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, March 15th 2019, 11:25:01 pm
+ * Last Modified: Saturday, March 16th 2019, 12:00:15 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -130,11 +130,19 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
             force, point
         });
     }
+    applyTorque(v: Vec3) {
+        let physics = this.entity.scene.systems.rigidbody!.physics;
+        physics.applyTorque(this.body, { force: v });
+    }
     applyImpulse(impulse: Vec3, point?: Vec3) {
         let physics = this.entity.scene.systems.rigidbody!.physics;
         physics.applyImpulse(this.instance, {
             impulse, point
         });
+    }
+    applyTorqueImpulse(v: Vec3) {
+        let physics = this.entity.scene.systems.rigidbody!.physics;
+        physics.applyTorqueImpulse(this.body, { impulse: v });
     }
     teleport(v: Vec3);
     teleport(x: number, y: number, z: number);

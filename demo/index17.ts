@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, March 8th 2019, 12:54:31 am
+ * Last Modified: Saturday, March 16th 2019, 12:08:18 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -90,6 +90,9 @@ async function main() {
         if (app.plugins.key.isPressed('ArrowRight')) {
             box.rigidbody.applyImpulse(new Vec3(0, 0, 5), position);
         }
+        if (app.plugins.key.KeyW) {
+            box.rigidbody.applyTorque(new Vec3(5, 0, 0));
+        }
         if (app.plugins.key.isPressed('KeyR')) {
             box.rigidbody.teleport(0, 0, 0);
         }
@@ -163,8 +166,8 @@ async function main() {
         })
         .addComponent('listener', {})
         .setPosition(-15, 0, 0)
-        .lookAt(new Vec3(0, 0, 0))
-        .addComponent('script', [new FirstPersonCamera({ speed: 2 })]);
+        .lookAt(new Vec3(0, 0, 0));
+    // .addComponent('script', [new FirstPersonCamera({ speed: 2 })]);
     app.scene.root.addChild(camera);
     app.start();
 }
