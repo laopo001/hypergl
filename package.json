@@ -71,7 +71,7 @@
         "3d"
     ],
     "license": "MIT",
-    "main": "dist/index.js",
+    "main": "lib/src/index.js",
     "name": "hypergl",
     "pre-commit": [
         "lint",
@@ -86,7 +86,7 @@
         "build": "webpack --colors",
         "build:prod": "webpack --colors -p",
         "lint": "node node_modules/tslint/bin/tslint -c tslint.json src/**/*.ts --exclude **/src/third_party/**",
-        "prepublishOnly": "npm  run tsc && npm run build",
+        "prepublishOnly": "npm  run tsc && npm run build && gulp move_shader_file",
         "start": "webpack --config webpack.demo.js --colors --watch",
         "test": "jest",
         "test:browser": "webpack --colors && gulp replaceTests && karma start",

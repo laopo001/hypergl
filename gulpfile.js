@@ -85,6 +85,12 @@ gulp.task('movejs', function (cb) {
     return stream;
 });
 
+gulp.task('move_shader_file', function (cb) {
+    let stream = gulp.src('./dist/shader_file**')
+        .pipe(gulp.dest('./lib/src/graphics/'))
+    return stream;
+});
+
 gulp.task('move', function (cb) {
     let stream = gulp.src('./build/assets/**')
         .pipe(gulp.dest('deploy/assets'))

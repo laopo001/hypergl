@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, March 15th 2019, 12:30:46 am
+ * Last Modified: Friday, March 15th 2019, 11:25:01 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -124,14 +124,14 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
         physics.removeBody(this.instance);
         this.instance = undefined as any;
     }
-    async applyForce(force: Vec3, point?: Vec3) {
-        let physics = await this.entity.scene.systems.rigidbody!.asyncPhysics;
+    applyForce(force: Vec3, point?: Vec3) {
+        let physics = this.entity.scene.systems.rigidbody!.physics;
         physics.applyForce(this.instance, {
             force, point
         });
     }
-    async applyImpulse(impulse: Vec3, point?: Vec3) {
-        let physics = await this.entity.scene.systems.rigidbody!.asyncPhysics;
+    applyImpulse(impulse: Vec3, point?: Vec3) {
+        let physics = this.entity.scene.systems.rigidbody!.physics;
         physics.applyImpulse(this.instance, {
             impulse, point
         });

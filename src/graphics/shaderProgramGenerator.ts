@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, January 23rd 2019, 12:24:06 am
+ * Last Modified: Friday, March 15th 2019, 11:31:42 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,21 +13,25 @@
 
 
 
-import basicVert from './shaders/basic.vert';
-import basicFrag from './shaders/basic.frag';
-import phongVert from './shaders/phong.vert';
-import phongFrag from './shaders/phong.frag';
-import depthVert from './shaders/depth.vert';
-import depthFrag from './shaders/depth.frag';
-import outlineFrag from './shaders/outline.frag';
-import distanceVert from './shaders/distance.vert';
-import distanceFrag from './shaders/distance.frag';
-import colorVert from './shaders/color.vert';
-import colorFrag from './shaders/color.frag';
-import skyVert from './shaders/sky.vert';
-import skyFrag from './shaders/sky.frag';
-import pbrVert from './shaders/pbr.vert';
-import pbrFrag from './shaders/pbr.frag';
+// import basicVert from './shaders/basic.vert';
+// import basicFrag from './shaders/basic.frag';
+// import phongVert from './shaders/phong.vert';
+// import phongFrag from './shaders/phong.frag';
+// import depthVert from './shaders/depth.vert';
+// import depthFrag from './shaders/depth.frag';
+// import outlineFrag from './shaders/outline.frag';
+// import distanceVert from './shaders/distance.vert';
+// import distanceFrag from './shaders/distance.frag';
+// import colorVert from './shaders/color.vert';
+// import colorFrag from './shaders/color.frag';
+// import skyVert from './shaders/sky.vert';
+// import skyFrag from './shaders/sky.frag';
+// import pbrVert from './shaders/pbr.vert';
+// import pbrFrag from './shaders/pbr.frag';
+import {
+    basicVert, basicFrag, phongVert, phongFrag, depthVert, depthFrag, outlineFrag,
+    distanceVert, distanceFrag, colorVert, colorFrag, skyVert, skyFrag, pbrVert, pbrFrag
+} from './shader_file';
 
 import { RendererPlatform } from './renderer';
 import { Shader } from './shader';
