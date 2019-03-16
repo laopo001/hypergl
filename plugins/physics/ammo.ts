@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, March 16th 2019, 12:00:15 am
+ * Last Modified: Saturday, March 16th 2019, 4:57:17 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -106,8 +106,7 @@ export class AllocatePool {
 
 
 
-export class AmmoPlugin implements Plugin, IPhysics {
-    static pname = 'physics';
+export class AmmoPlugin implements IPhysics {
     type = 'ammo';
     Ammo!: typeof AMMO;
     ammoVec1!: AMMO.btVector3;
@@ -117,12 +116,6 @@ export class AmmoPlugin implements Plugin, IPhysics {
     contactPointPool!: AllocatePool;
     contactResultPool!: AllocatePool;
     singleContactResultPool!: AllocatePool;
-    constructor(private app: Application) {
-
-    }
-    static create() {
-        return AmmoPlugin;
-    }
     // tslint:disable-next-line:cyclomatic-complexity
     onUpdate = (dt) => {
         let Ammo = this.Ammo;
@@ -257,21 +250,9 @@ export class AmmoPlugin implements Plugin, IPhysics {
                 this.contactPointPool = new AllocatePool(ContactPoint, 1);
                 this.contactResultPool = new AllocatePool(ContactResult, 1);
                 this.singleContactResultPool = new AllocatePool(SingleContactResult, 1);
-                resolve(true);
+                resolve(this);
             });
         });
-    }
-    initWorld() {
-        let Ammo = this.Ammo;
-        // Physics configuration
-        let collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
-        let dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration);
-        let broadphase = new Ammo.btDbvtBroadphase();
-        let solver = new Ammo.btSequentialImpulseConstraintSolver();
-        let physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
-        physicsWorld.setGravity(new Ammo.btVector3(0, -9.82, 0));
-        // this.app.on('update', this.onUpdate);
-        this.world = physicsWorld;
     }
     setGravity(g: Vec3) {
         let Ammo = this.Ammo;
@@ -557,6 +538,17 @@ export class AmmoPlugin implements Plugin, IPhysics {
 
         Ammo.destroy(rayCallback);
         return result;
+    }
+    private initWorld() {
+        let Ammo = this.Ammo;
+        // Physics configuration
+        let collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
+        let dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration);
+        let broadphase = new Ammo.btDbvtBroadphase();
+        let solver = new Ammo.btSequentialImpulseConstraintSolver();
+        let physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
+        physicsWorld.setGravity(new Ammo.btVector3(0, -9.82, 0));
+        this.world = physicsWorld;
     }
     private _storeCollision(entity: Entity, other: Entity) {
         let Ammo = this.Ammo;

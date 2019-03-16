@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, March 9th 2019, 12:57:08 am
+ * Last Modified: Saturday, March 16th 2019, 1:36:04 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -51,6 +51,12 @@ export class SceneNode extends IElement {
     constructor() {
         super();
     }
+    /**
+     * local
+     * @param {Vec3} target
+     * @returns {this}
+     * @memberof SceneNode
+     */
     lookAt(target: Vec3): this;
     lookAt(target: Vec3, up: Vec3): this;
     lookAt(target: SceneNode): this;
@@ -174,6 +180,12 @@ export class SceneNode extends IElement {
     getLocalPosition() {
         return this.localPosition;
     }
+    /**
+     * local
+     * @param {Quat} x
+     * @returns {this}
+     * @memberof SceneNode
+     */
     setRotation(x: Quat): this;
     setRotation(x: number, y: number, z: number, w: number): this;
     setRotation(x?, y?, z?, w?) {
@@ -218,6 +230,7 @@ export class SceneNode extends IElement {
         } else {
             this.localScale.set(x, y, z);
         }
+
         if (!this._dirtyLocal) {
             this._dirtify(true);
         }

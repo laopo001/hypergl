@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, January 12th 2019, 1:18:13 am
+ * Last Modified: Saturday, March 16th 2019, 2:26:30 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -49,6 +49,7 @@ export class KeyPlugin implements Plugin {
     KeyX = false;
     KeyY = false;
     KeyZ = false;
+    Space = false;
     private _isPressedObj = {
 
     };

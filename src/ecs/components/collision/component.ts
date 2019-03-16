@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, March 10th 2019, 8:09:35 pm
+ * Last Modified: Saturday, March 16th 2019, 5:10:44 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -67,7 +67,7 @@ export class CollisionComponent extends Component<CollisionInputs> {
         input_copy(inputs, CollisionData);
     }
 
-    async initialize() {
+    initialize() {
         super.initialize();
         // if (this.entity.rigidbody.instance === null) {
         //     console.warn('没有刚体组件');
@@ -82,7 +82,7 @@ export class CollisionComponent extends Component<CollisionInputs> {
         // tslint:disable-next-line:no-unused-expression
         this.inputs.triggerenter && this.event.on('triggerenter', this.inputs.triggerenter);
 
-        let physics = await this.entity.scene.systems.rigidbody!.asyncPhysics;
+        let physics = this.entity.scene.systems.rigidbody!.physics;
         this.instance = physics.createShape(this.inputs.type, this.inputs);
         if (this.inputs.debugger) {
             let mesh: Mesh;
@@ -173,7 +173,7 @@ export class CollisionComponent extends Component<CollisionInputs> {
         this.inputs.collisionend && this.event.off('collisionend', this.inputs.collisionend);
         // tslint:disable-next-line:no-unused-expression
         this.inputs.triggerenter && this.event.off('triggerenter', this.inputs.triggerenter);
-        let physics = await this.entity.scene.systems.rigidbody!.asyncPhysics;
+        let physics = await this.entity.scene.systems.rigidbody!.physics;
         physics.destroy(this.instance);
         this.instance = undefined as any;
         if (this.isAddDebugger) {

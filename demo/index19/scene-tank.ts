@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, March 15th 2019, 12:56:08 am
+ * Last Modified: Saturday, March 16th 2019, 5:41:51 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -19,12 +19,9 @@ import { FirstPersonCamera, BloodStrip, PlayerScript } from '../scripts';
 import { json } from './physics';
 import { AssetsLoader } from '../utils/assets';
 let app = Application.getApp<AppPlugin>().unwrap();
+import { AmmoPlugin } from 'hypergl/plugins/physics';
 
-const scene = new Scene('tank');
-
-
-
-async function main() {
+export const scene = new Scene('tank').initialize(AmmoPlugin).then(async scene => {
     const red = new StandardMaterial();
     red.diffuseColor = new Color(1, 0, 0);
 
@@ -125,7 +122,7 @@ async function main() {
         }
 
     }, false);
-}
-main();
+    return scene;
+});
 
-export { scene };
+

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, March 8th 2019, 10:22:54 pm
+ * Last Modified: Saturday, March 16th 2019, 5:26:17 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -19,7 +19,6 @@ import { Rotate } from '../utils/rotate';
 import { LoadImagePlugin, GltfPlugin } from 'hypergl/plugins/load';
 import { StatsPlugin } from 'hypergl/plugins/stat';
 import { PointerPlugin } from 'hypergl/plugins/pointer';
-import { AmmoPlugin } from 'hypergl/plugins/physics';
 import { SceneSettingPlugin } from 'hypergl/plugins/scene_setting';
 import { AppPlugin } from '../types';
 import { FnVoid } from '../../src/types';
@@ -41,7 +40,7 @@ async function main() {
     const app = new Application<AppPlugin>(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
-    app.registerPlugins([LoadImagePlugin, StatsPlugin, PointerPlugin, AmmoPlugin, GltfPlugin, SceneSettingPlugin]);
+    app.registerPlugins([LoadImagePlugin, StatsPlugin, PointerPlugin, GltfPlugin, SceneSettingPlugin]);
 
     console.log(app);
 
@@ -75,9 +74,10 @@ async function main() {
 
     router.subscribe(async (status) => {
         let name = status.route.name;
-        import('./scene-' + name).then(module => {
-            if (!module.scene.isRegistered) {
-                app.addScene(module.scene);
+        import('./scene-' + name).then(async module => {
+            let scene = await module.scene;
+            if (!scene.isRegistered) {
+                app.addScene(scene);
             }
             app.setActiveScene(status.route.name);
             if (status.previousRoute == null) {

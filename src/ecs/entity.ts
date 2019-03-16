@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, March 14th 2019, 9:50:10 pm
+ * Last Modified: Saturday, March 16th 2019, 5:45:49 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -131,11 +131,15 @@ export class Entity extends SceneNode {
         let component = new (createComponent[name] as Constructor<Component<{}>>)(options, this);
         this[name as string] = component;
         this.components.push(component);
-        // tslint:disable-next-line:no-unused-expression
-        this.scene && this.scene.systems[name]!.addComponent(this, component);
+        if (this.scene) {
+            if ((name === 'collision' || name === 'rigidbody') && this.scene.systems[name] == null) {
+                throw new Error('使用 collision 和 rigidbody组件，必须先初始化物理插件');
+            }
+            this.scene.systems[name]!.addComponent(this, component);
+        }
         return this;
     }
-    get<T extends keyof Entity>(name: T): Pick<Entity, T> {
+    get<T extends keyof ComponentInputs>(name: T): Entity[T] {
         if (this[name] == null) {
             Log.error(name + ' not add component');
         }

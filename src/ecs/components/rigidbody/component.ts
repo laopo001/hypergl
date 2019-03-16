@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, March 16th 2019, 12:00:15 am
+ * Last Modified: Saturday, March 16th 2019, 5:10:44 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -65,13 +65,13 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
         input_copy(inputs, RigidbodyData);
     }
 
-    async initialize() {
+    initialize() {
         super.initialize();
-        if (this.entity.collision.instance === null) {
+        if (this.entity.collision.instance == null) {
             console.warn('没有碰撞组件');
             return;
         }
-        let physics = await this.entity.scene.systems.rigidbody!.asyncPhysics;
+        let physics = this.entity.scene.systems.rigidbody!.physics;
 
         let { type, mass, linearDamping, angularDamping, linearFactor,
             angularFactor, friction, restitution, group, mask } = this.inputs;
@@ -117,16 +117,16 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
             this.body.activate();
         }
     }
-    async destroy() {
+    destroy() {
         super.destroy();
         this.entity.scene.event.off('update', this.updateFn);
-        let physics = await this.entity.scene.systems.rigidbody!.asyncPhysics;
+        let physics = this.entity.scene.systems.rigidbody!.physics;
         physics.removeBody(this.instance);
         this.instance = undefined as any;
     }
     applyForce(force: Vec3, point?: Vec3) {
         let physics = this.entity.scene.systems.rigidbody!.physics;
-        physics.applyForce(this.instance, {
+        physics.applyForce(this.body, {
             force, point
         });
     }
@@ -136,7 +136,7 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
     }
     applyImpulse(impulse: Vec3, point?: Vec3) {
         let physics = this.entity.scene.systems.rigidbody!.physics;
-        physics.applyImpulse(this.instance, {
+        physics.applyImpulse(this.body, {
             impulse, point
         });
     }
@@ -148,7 +148,6 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
     teleport(x: number, y: number, z: number);
     teleport(x, y?, z?) {
         let physics = this.entity.scene.systems.rigidbody!.physics;
-        // let physics = this.entity.scene.systems.rigidbody!.physics;
         if (x instanceof Vec3) {
             this.entity.setPosition(x);
         } else {
@@ -160,7 +159,6 @@ export class RigidbodyComponent extends Component<RigidbodyInputs> {
     translateLocal(x: number, y: number, z: number);
     translateLocal(x, y?, z?) {
         let physics = this.entity.scene.systems.rigidbody!.physics;
-        // let physics = this.entity.scene.systems.rigidbody!.physics;
         if (x instanceof Vec3) {
             this.entity.translateLocal(x);
         } else {

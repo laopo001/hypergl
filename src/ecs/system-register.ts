@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, March 1st 2019, 3:33:30 pm
+ * Last Modified: Saturday, March 16th 2019, 4:47:40 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -23,22 +23,22 @@ import { CollisionComponentSystem } from './components/collision';
 import { RigidbodyComponentSystem } from './components/rigidbody';
 
 export class SystemRegistry {
-    // [s: string]: any;
-    camera?: CameraComponentSystem;
-    model?: ModelComponentSystem;
-    light?: LightComponentSystem;
-    script?: ScriptComponentSystem;
-    audio?: AudioComponentSystem;
-    listener?: ListenerComponentSystem;
+    camera!: CameraComponentSystem;
+    model!: ModelComponentSystem;
+    light!: LightComponentSystem;
+    script!: ScriptComponentSystem;
+    audio!: AudioComponentSystem;
+    listener!: ListenerComponentSystem;
     collision?: CollisionComponentSystem;
     rigidbody?: RigidbodyComponentSystem;
     list: ComponentSystem[] = [];
-    add(system: ComponentSystem) {
+    add<T extends ComponentSystem>(system: T) {
         if (this[system.name]) {
             throw new Error(`ComponentSystem ${system.name} already registered`);
         }
         this[system.name] = system;
         this.list.push(system);
+        return system;
     }
     remove(system: ComponentSystem) {
         if (!this[system.name]) {

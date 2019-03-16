@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, March 15th 2019, 1:05:44 am
+ * Last Modified: Saturday, March 16th 2019, 5:46:56 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -27,7 +27,6 @@ import { Entity } from './ecs';
 export interface PluginClass<T= Plugin> {
     pname: string;
     new(app: Application): T;
-    create?(): any;
 }
 
 export interface Plugin {
@@ -114,16 +113,11 @@ export class Application<T= Plugin> implements GLTFSerialize, PhysiceConfig {
                 console.error(c.pname + '插件名称已经注册', c);
                 return;
             }
-            if (c.create) {
-                this.plugins[c.pname] = c.create();
-            } else {
-                let p = new c(this) as any;
-                if (p.initialize) {
-                    p.initialize();
-                }
-                this.plugins[c.pname] = p;
+            let p = new c(this) as any;
+            if (p.initialize) {
+                p.initialize();
             }
-
+            this.plugins[c.pname] = p;
         }
     }
     exportGltf() {

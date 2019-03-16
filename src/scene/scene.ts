@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, March 15th 2019, 12:29:33 am
+ * Last Modified: Saturday, March 16th 2019, 5:45:06 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -33,6 +33,8 @@ import { ListenerComponentSystem } from '../ecs/components/listener';
 import { CollisionComponentSystem } from '../ecs/components/collision';
 import { RigidbodyComponentSystem } from '../ecs/components/rigidbody';
 import { FOG } from '../conf';
+import { AmmoPlugin } from '../../plugins/physics';
+import { Constructor } from '../types';
 
 export class Scene {
     static ambientColor = new Color(0.2, 0.2, 0.2);
@@ -78,8 +80,7 @@ export class Scene {
         this.systems.add(new ModelComponentSystem(this));
         this.systems.add(new AudioComponentSystem(this));
         this.systems.add(new ListenerComponentSystem(this));
-        this.systems.add(new CollisionComponentSystem(this));
-        this.systems.add(new RigidbodyComponentSystem(this));
+
         event.on('update', (dt) => {
             if (this.isActive) {
                 this.event.fire('update', dt);
@@ -95,6 +96,17 @@ export class Scene {
                 this.event.fire('afterRender', dt);
             }
         });
+    }
+    async initialize(PhysicsPlugin: Constructor<AmmoPlugin>) {
+        this.systems.add(new CollisionComponentSystem(this));
+        let rigidbody_sys = this.systems.add(new RigidbodyComponentSystem(this));
+        let p = new PhysicsPlugin();
+        await p.initialize();
+        rigidbody_sys.physics = p;
+        this.event.on('update', (dt) => {
+            p.onUpdate(dt);
+        });
+        return this;
     }
     setActiveCamera(x: number) {
         this._activeCameraIndex = x;
@@ -127,6 +139,9 @@ export class Scene {
             }
         }
         child.components.forEach((c) => {
+            if ((c.name === 'collision' || c.name === 'rigidbody') && this.systems[c.name] == null) {
+                throw new Error('使用 collision 和 rigidbody组件，必须先初始化物理插件');
+            }
             this.systems[c.name].addComponent(child, c);
         });
         this.entitys.push(child);
