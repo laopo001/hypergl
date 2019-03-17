@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, March 16th 2019, 5:26:17 pm
+ * Last Modified: Sunday, March 17th 2019, 10:43:11 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -58,6 +58,7 @@ async function main() {
         { name: 'audio', path: '/audio' },
         { name: 'material', path: '/material' },
         { name: 'tank', path: '/tank', },
+        { name: 'test', path: '/test', },
     ];
     routes.filter(x => x.name !== 'default').forEach((x) => {
         let name = x.name;

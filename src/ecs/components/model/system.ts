@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, March 8th 2019, 12:00:28 am
+ * Last Modified: Monday, March 18th 2019, 12:51:32 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -20,13 +20,20 @@ import { event } from '../../../core';
 import { Drawable } from '../../../mesh';
 import { Scene } from '../../../scene';
 
+export class Renderable {
+
+    constructor(public drawable: Drawable, public component: ModelComponent) {
+
+    }
+}
+
 export class ModelComponentSystem extends ComponentSystem {
     name = 'model';
     componentConstructor = ModelComponent;
-    normalLayers: Drawable[] = [];
-    opacityLayers: Drawable[] = [];
+    normalLayers: Renderable[] = [];
+    opacityLayers: Renderable[] = [];
     components: ModelComponent[] = [];
-    layers: Drawable[] = [];
+    layers: Renderable[] = [];
     private _dirty = true;
     constructor(scene: Scene) {
         super(scene);
@@ -36,20 +43,30 @@ export class ModelComponentSystem extends ComponentSystem {
                 this.opacityLayers = [];
                 this.normalLayers = [];
                 this.components.forEach(item => {
-                    let uModelMatrix = item.getWorldTransform();
-                    let scale = item.entity.localScale;
-                    let position = item.getPosition();
-                    let uNormalMatrix = item.getWorldTransform().clone().invert().transpose();
-                    item.instance.meshs.forEach(drawable => {
-                        drawable.cache.enabled = item.enabled;
-                        drawable.cache.position = position;
-                        drawable.cache.uNormalMatrix = uNormalMatrix;
-                        drawable.cache.uModelMatrix = uModelMatrix;
+                    // let uModelMatrix = item.getWorldTransform();
+                    // let position = item.getPosition();
+                    // let uNormalMatrix = item.getWorldTransform().clone().invert().transpose();
+                    // let enabled = item.enabled;
+                    item.instance.meshs.forEach((drawable) => {
+                        // drawable.cache.enabled = enabled;
+                        // drawable.cache.position = position;
+                        // drawable.cache.uNormalMatrix = uNormalMatrix;
+                        // drawable.cache.uModelMatrix = uModelMatrix;
+
+                        // if (item.model.caches[drawable.strongCount] === undefined) {
+                        //     item.model.caches[drawable.strongCount] = {} as any;
+                        // }
+                        // item.model.caches[drawable.strongCount] = {
+                        //     enabled,
+                        //     position,
+                        //     uNormalMatrix,
+                        //     uModelMatrix,
+                        // };
 
                         if ((drawable.material as StandardMaterial).opacity < 1 || (drawable.material as StandardMaterial).opacityMap) {
-                            this.opacityLayers.push(drawable);
+                            this.opacityLayers.push(new Renderable(drawable, item));
                         } else {
-                            this.normalLayers.push(drawable);
+                            this.normalLayers.push(new Renderable(drawable, item));
                         }
                     });
 
@@ -57,8 +74,8 @@ export class ModelComponentSystem extends ComponentSystem {
             }
 
             this.opacityLayers.sort((a, b) => {
-                return new Vec3().sub2(b.cache.position!, this.app.scene.activeCamera.getPosition()).length() -
-                    new Vec3().sub2(a.cache.position!, this.app.scene.activeCamera.getPosition()).length();
+                return new Vec3().sub2(b.component.getPosition(), this.app.scene.activeCamera.getPosition()).length() -
+                    new Vec3().sub2(a.component.getPosition(), this.app.scene.activeCamera.getPosition()).length();
             });
             this.layers = this.normalLayers.concat(this.opacityLayers);
         });

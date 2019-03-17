@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, March 8th 2019, 12:53:21 am
+ * Last Modified: Monday, March 18th 2019, 12:42:55 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -21,25 +21,11 @@ import { Application } from '../application';
 import { Vec3, Vec2, Mat4 } from '../math';
 import { BoundingBox } from '../shape/boundingBox';
 import { BoundingSphere } from '../shape/boundingSphere';
+import { Model, CacheMatrix } from './model';
 
 let id = 0;
 export class Drawable<T extends Material= Material> {
-    // debugger = false;
-    name?: string;
-    mode = DrawMode.TRIANGLES; // 默认绘制模式 为 三角形
-    // tslint:disable-next-line:member-ordering
-    vertexBuffer!: VertexBuffer;
-    indexBuffer?: IndexBuffer;
-    castShadow = false;
-    aabb!: BoundingBox;
-    receiveShadow = false;
-    cache: {
-        uModelMatrix?: Mat4;
-        position?: Vec3;
-        uNormalMatrix?: Mat4;
-        enabled?: boolean;
-        // setScale?: Vec3;
-    } = {};
+    // cache: CacheMatrix = {};
     get type() {
         if (this.mode === 1 || this.mode === 2 || this.mode === 3) {
             return 'line';
@@ -49,8 +35,17 @@ export class Drawable<T extends Material= Material> {
             return 'mesh';
         }
     }
+    model!: Model;
+    name?: string;
+    mode = DrawMode.TRIANGLES; // 默认绘制模式 为 三角形
+    vertexBuffer!: VertexBuffer;
+    indexBuffer?: IndexBuffer;
+    castShadow = false;
+    aabb!: BoundingBox;
+    receiveShadow = false;
     material!: T;
     meshID = id++;
+
     // tslint:disable-next-line:cyclomatic-complexity
     create(opts: CreateDrawabelOptions) {
         // Check the supplied options and provide defaults for unspecified ones

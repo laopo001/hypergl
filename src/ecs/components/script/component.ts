@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, February 26th 2019, 1:47:49 pm
+ * Last Modified: Saturday, March 16th 2019, 6:27:10 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -14,17 +14,17 @@
 
 import { Entity } from '../../entity';
 import { Component } from '../../component';
-import { Script } from './script';
+import { Script, ScriptClass } from './script';
 import { ComponentSystem } from '../../system';
 import { event } from '../../../core';
 import { Constructor } from '../../../types';
 
-export type ScriptInputs = Script<{}>[];
+export type ScriptInputs = Array<Script<{}>>;
 
 export class ScriptComponent extends Component<ScriptInputs> {
     entity!: Entity;
     name = 'script';
-    instance: Script<{}>[];
+    instance: Array<Script<{}>>;
     constructor(inputs: ScriptInputs, entity: Entity, system: ComponentSystem) {
         super(inputs, entity, system);
         this.instance = this.inputs;

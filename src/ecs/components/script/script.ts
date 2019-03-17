@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, March 16th 2019, 4:17:36 pm
+ * Last Modified: Saturday, March 16th 2019, 6:17:24 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -16,6 +16,10 @@ import { Entity } from '../../entity';
 import { Component } from '../../component';
 import { Constructor } from '../../../types';
 import { Application } from '../../../application';
+export interface ScriptClass<Inputs, T= {}> {
+    defaultInputs: Partial<Inputs>;
+    new(app: Application): Script<Inputs, T>;
+}
 export abstract class Script<Inputs, T= {}> {
     static defaultInputs: any = {};
     get app() {

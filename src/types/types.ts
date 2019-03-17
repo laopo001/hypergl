@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, March 9th 2019, 11:11:27 pm
+ * Last Modified: Sunday, March 17th 2019, 11:28:21 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -86,14 +86,6 @@ export interface Clone {
 export interface Copy {
     copy<T>(ref: T, src: T)
 }
-
-// export function clone<T>(src: T): T {
-//     return iclone(src);
-// }
-// export function copy<T>(ref: T, src: T) {
-//     let that = iclone(src);
-//     Object.assign(ref, that);
-// }
 
 export interface GLTFSerialize {
     exportGltf(): string;

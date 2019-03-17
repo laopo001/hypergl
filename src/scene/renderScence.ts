@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, March 5th 2019, 1:29:58 am
+ * Last Modified: Monday, March 18th 2019, 12:50:17 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -27,7 +27,7 @@ import { ReadonlyObject } from '../types';
 
 
 export function renderScence(scene: Scene) {
-    let drawables = scene.systems.model!.layers;
+    let renderables = scene.systems.model!.layers;
     let lights = scene.systems.light!;
     let camera = scene.activeCamera;
     // camera.instance.updateRenderTarget();
@@ -51,11 +51,12 @@ export function renderScence(scene: Scene) {
     // gl.stencilMask(0x00);
     // gl.stencilFunc(gl.NOTEQUAL, 1, 0xFF);
     // gl.stencilMask(0x00);
-    for (let i = 0; i < drawables.length; i++) {
-        // if (modelComponent.entity.name === 'sphere8') debugger;
-
-        const drawable = drawables[i];
-        if (!drawable.cache.enabled) {
+    for (let i = 0; i < renderables.length; i++) {
+        const renderable = renderables[i];
+        const drawable = renderable.drawable;
+        const uModelMatrix = renderable.component.getWorldTransform();
+        const uNormalMatrix = uModelMatrix.clone().invert().transpose();
+        if (!renderable.component.enabled) {
             continue;
         }
         if (drawable instanceof Mesh && drawable.outline) {
@@ -75,8 +76,8 @@ export function renderScence(scene: Scene) {
         let shader = material.shader as Shader;
         renderer.setShaderProgram(shader);
         shader.setUniformValue('uViewProjectionMatrix', viewProjectionMatrixData);
-        shader.setUniformValue('uModelMatrix', drawable.cache.uModelMatrix!.data);
-        shader.setUniformValue('uNormalMatrix', drawable.cache.uNormalMatrix!.data);
+        shader.setUniformValue('uModelMatrix', uModelMatrix!.data);
+        shader.setUniformValue('uNormalMatrix', uNormalMatrix!.data);
         shader.setUniformValue('uCameraPosition', camera.getPosition().data);
         // shader.setUniformValue('fog', scene.fog);
         shader.setUniformValue('uExposure', scene.exposure);
@@ -90,7 +91,7 @@ export function renderScence(scene: Scene) {
             gl.stencilFunc(gl.NOTEQUAL, 1, 0xFF);
             // gl.stencilMask(0x00);
             // renderer.setDepthTest(false);
-            let clone = drawable.cache.uModelMatrix!.clone();
+            let clone = uModelMatrix!.clone();
             let data = clone.data;
             data[0] += drawable.outlineWidth;
             data[5] += drawable.outlineWidth;
@@ -116,7 +117,7 @@ export function renderScence(scene: Scene) {
 }
 
 function rendererDirectionalShadowMap(scene: Scene, light: LightComponent<DirectionalLight>) {
-    let drawables = scene.systems.model!.layers;
+    let renderables = scene.systems.model!.layers;
     let renderer = scene.app.renderer;
     if (!light.shadowFrame) {
         light.shadowFrame = scene.createShadowFrame(light.shadowMapSize, light.shadowMapSize, false);
@@ -130,13 +131,15 @@ function rendererDirectionalShadowMap(scene: Scene, light: LightComponent<Direct
     shader.setUniformValue('uViewProjectionMatrix', camera.viewProjectionMatrix.data);
 
     light.shadowFrame.beforeDraw();
-    for (let i = 0; i < drawables.length; i++) {
-        const drawable = drawables[i];
-        if (!drawable.cache.enabled || !drawable.castShadow) {
+    for (let i = 0; i < renderables.length; i++) {
+        const renderable = renderables[i];
+        const drawable = renderable.drawable;
+        const uModelMatrix = renderable.component.getWorldTransform();
+        if (!renderable.component.enabled || !drawable.castShadow) {
             continue;
         }
         renderer.setShaderProgram(shader as Shader);
-        shader.setUniformValue('uModelMatrix', drawable.cache.uModelMatrix!.data);
+        shader.setUniformValue('uModelMatrix', uModelMatrix!.data);
         renderer.draw(drawable);
     }
     light.shadowFrame.afterDraw();
@@ -168,7 +171,7 @@ export function renderDirectionalLightArr(name: string, lights: LightComponent<D
     return uniforms;
 }
 function rendererPointShadowMap(scene: Scene, light: LightComponent<PointLight>) {
-    let drawables = scene.systems.model!.layers;
+    let renderables = scene.systems.model!.layers;
     let renderer = scene.app.renderer;
     if (!light.shadowFrame) {
         light.shadowFrame = scene.createShadowFrame(light.shadowMapSize, light.shadowMapSize, true);
@@ -185,13 +188,15 @@ function rendererPointShadowMap(scene: Scene, light: LightComponent<PointLight>)
         shader.setUniformValue('light_range', light.range);
         light.shadowFrame.createFramebuffer3D(i);
         light.shadowFrame.beforeDraw(i);
-        for (let i = 0; i < drawables.length; i++) {
-            const drawable = drawables[i];
-            if (!drawable.cache.enabled || !drawable.castShadow) {
+        for (let i = 0; i < renderables.length; i++) {
+            const renderable = renderables[i];
+            const drawable = renderable.drawable;
+            const uModelMatrix = renderable.component.getWorldTransform();
+            if (!renderable.component.enabled || !drawable.castShadow) {
                 continue;
             }
             renderer.setShaderProgram(shader as Shader);
-            shader.setUniformValue('uModelMatrix', drawable.cache.uModelMatrix!.data);
+            shader.setUniformValue('uModelMatrix', uModelMatrix!.data);
             renderer.draw(drawable);
         }
         light.shadowFrame.afterDraw();
@@ -223,7 +228,7 @@ export function renderPointLightArr(name: string, lights: LightComponent<PointLi
 }
 
 function rendererSpotShadowMap(scene: Scene, light: LightComponent<SpotLight>) {
-    let drawables = scene.systems.model!.layers;
+    let renderables = scene.systems.model!.layers;
     let renderer = scene.app.renderer;
     if (!light.shadowFrame) {
         light.shadowFrame = scene.createShadowFrame(light.shadowMapSize, light.shadowMapSize, false);
@@ -237,13 +242,15 @@ function rendererSpotShadowMap(scene: Scene, light: LightComponent<SpotLight>) {
     shader.setUniformValue('uViewProjectionMatrix', camera.viewProjectionMatrix.data);
 
     light.shadowFrame.beforeDraw();
-    for (let i = 0; i < drawables.length; i++) {
-        const drawable = drawables[i];
-        if (!drawable.cache.enabled || !drawable.castShadow) {
+    for (let i = 0; i < renderables.length; i++) {
+        const renderable = renderables[i];
+        const drawable = renderable.drawable;
+        const uModelMatrix = renderable.component.getWorldTransform();
+        if (!renderable.component.enabled || !drawable.castShadow) {
             continue;
         }
         renderer.setShaderProgram(shader as Shader);
-        shader.setUniformValue('uModelMatrix', drawable.cache.uModelMatrix!.data);
+        shader.setUniformValue('uModelMatrix', uModelMatrix!.data);
         renderer.draw(drawable);
     }
     light.shadowFrame.afterDraw();
@@ -288,7 +295,6 @@ export function rendererPickerFrame(picker: Picker, material: ColorMaterial, cb)
     let scene = picker.scene;
     let entitys = scene.entitys;
     let pickFrame = picker.pickFrame;
-    let drawables = scene.systems.model!.layers;
     let renderer = scene.app.renderer;
     let camera = scene.activeCamera;
     let attributes: { [s: string]: SEMANTIC } = { vertex_position: SEMANTIC.POSITION };
@@ -312,11 +318,11 @@ export function rendererPickerFrame(picker: Picker, material: ColorMaterial, cb)
                     arr[i] = 0;
                 }
             }
-            if (!drawable.cache.enabled) {
+            if (!entity.model.enabled) {
                 continue;
             }
             renderer.setShaderProgram(shader as Shader);
-            shader.setUniformValue('uModelMatrix', drawable.cache.uModelMatrix!.data);
+            shader.setUniformValue('uModelMatrix', entity.model.getWorldTransform().data);
             color.set(arr[0] / 255, arr[1] / 255, arr[2] / 255);
             shader.setUniformValue('uDiffuseColor', color.data);
             shader.setUniformValue('uOpacity', arr[3] / 255);

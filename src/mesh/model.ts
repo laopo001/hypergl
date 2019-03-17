@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, March 3rd 2019, 4:15:10 pm
+ * Last Modified: Monday, March 18th 2019, 12:42:55 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,9 +13,18 @@
 
 
 import { Drawable } from './drawable';
+import { Mat4, Vec3 } from '../math';
+import { Obj } from '../types';
 export class Model {
     name = '';
     constructor(public meshs: Drawable[]) {
 
     }
+}
+
+export interface CacheMatrix {
+    uModelMatrix: Mat4;
+    position: Vec3;
+    uNormalMatrix: Mat4;
+    enabled: boolean;
 }
