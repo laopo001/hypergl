@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, March 18th 2019, 12:43:22 am
+ * Last Modified: Tuesday, March 19th 2019, 1:18:20 am
  * Modified By:
  * -----
  * Copyright (c) 2019 dadigua
@@ -19,8 +19,10 @@ export const scene = new Scene('test');
 
 let box = Mesh.createBox();
 
-let e1 = new Entity().addComponent('model', { type: 'model', model: box }).setPosition(-1, 0, 0);
-let e2 = new Entity().addComponent('model', { type: 'model', model: box }).setPosition(1, 0, 0);
+let e = new Entity().addChild(new Entity('e').addComponent('model', { type: 'model', model: box })).setLocalPosition(-1, 0, 0);
+
+let e1 = new Entity('e1').addChild(e.clone()).setLocalPosition(-1, 0, 0);
+let e2 = new Entity('e2').addChild(e.clone()).setLocalPosition(1, 0, 0);
 
 scene.root.addChild(e1);
 scene.root.addChild(e2);

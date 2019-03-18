@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, March 17th 2019, 11:28:21 pm
+ * Last Modified: Monday, March 18th 2019, 10:51:54 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -80,7 +80,7 @@ export function convertImmutable<T>(a: T) {
 }
 
 export interface Clone {
-    clone<T>(src: T): T
+    clone(): any;
 }
 
 export interface Copy {

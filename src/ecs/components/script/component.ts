@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, March 16th 2019, 6:27:10 pm
+ * Last Modified: Monday, March 18th 2019, 9:16:00 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -18,6 +18,7 @@ import { Script, ScriptClass } from './script';
 import { ComponentSystem } from '../../system';
 import { event } from '../../../core';
 import { Constructor } from '../../../types';
+import { input_copy } from '../../../utils';
 
 export type ScriptInputs = Array<Script<{}>>;
 
@@ -29,9 +30,7 @@ export class ScriptComponent extends Component<ScriptInputs> {
         super(inputs, entity, system);
         this.instance = this.inputs;
         this.instance.forEach(script => {
-            if (script.inputs === undefined) {
-                script.inputs = (script.constructor as any).defaultInputs;
-            }
+            input_copy(script.inputs, (script.constructor as any).defaultInputs);
         });
     }
     initialize() {

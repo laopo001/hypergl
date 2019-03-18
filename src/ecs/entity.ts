@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, March 16th 2019, 5:45:49 pm
+ * Last Modified: Tuesday, March 19th 2019, 1:19:13 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -24,10 +24,11 @@ import { Log, arrayRemove } from '../utils/util';
 import { Application } from '../application';
 import { ComponentSystem } from './system';
 import { Scene, SceneNode } from '../scene';
-import { Constructor, Undefinedable, convertImmutable } from '../types';
+import { Constructor, Undefinedable, convertImmutable, Clone } from '../types';
 import { ListenerComponent, ListenerInputs } from './components/listener';
 import { Vec3 } from '../math';
-
+import deepclone from 'clone';
+import { unenumerable } from '../utils/decorators';
 
 let EntityID = 0;
 
@@ -63,7 +64,8 @@ const createComponent = convertImmutable({
 
 export type componentName = keyof ComponentInputs;
 
-export class Entity extends SceneNode {
+
+export class Entity extends SceneNode implements Clone {
     get app() {
         return Application.getApp().unwrap();
     }
@@ -93,6 +95,7 @@ export class Entity extends SceneNode {
         // tslint:disable-next-line:no-unused-expression
         this.children && forChildren(this.children, value);
     }
+
     EntityID = EntityID++;
     model!: ModelComponent;
     camera!: CameraComponent;
@@ -105,7 +108,7 @@ export class Entity extends SceneNode {
     boundingBox: any;
     parent?: Entity;
     readonly children: Entity[] = [];
-    components: Component<{}>[] = [];
+    readonly components: Component<{}>[] = [];
     private _enabled = false;
     constructor(name?: string)
     constructor(options?: { name?: string, tag: string[] })
@@ -261,6 +264,19 @@ export class Entity extends SceneNode {
         this.children.forEach(e => {
             e.destroy();
         });
+    }
+    clone() {
+        let clone = new Entity();
+        this.components.forEach(c => {
+            clone.addComponent(c.name as any, c.inputs);
+        });
+        clone.setLocalPosition(this.getLocalPosition());
+        clone.setLocalEulerAngles(this.getLocalEulerAngles());
+        clone.setLocalScale(this.getLocalScale());
+        this.children.forEach(child => {
+            clone.addChild(child.clone());
+        });
+        return clone;
     }
 }
 

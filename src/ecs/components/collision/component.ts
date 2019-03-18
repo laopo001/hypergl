@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, March 16th 2019, 5:10:44 pm
+ * Last Modified: Tuesday, March 19th 2019, 1:22:20 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -25,6 +25,7 @@ import { ColorMaterial, StandardMaterial } from '../../../material';
 import { once } from '../../../utils/decorators';
 import { FACE } from '../../../conf';
 import { FnVoid } from '../../../types';
+import { ContactPoint } from '../../../../plugins/physics';
 
 export type CollisionInputs = {
     debugger?: boolean;
@@ -160,7 +161,7 @@ export class CollisionComponent extends Component<CollisionInputs> {
         // tslint:disable-next-line:no-unused-expression
         this.entity.rigidbody && this.entity.rigidbody.initialize();
     }
-    on(eventName: 'contact' | 'collisionstart' | 'collisionend' | 'triggerenter', cb: FnVoid) {
+    on(eventName: 'contact' | 'collisionstart' | 'collisionend' | 'triggerenter', cb: (e: { other: Entity, contcts: Array<ContactPoint> }) => void) {
         this.event.on(eventName, cb);
     }
     async destroy() {

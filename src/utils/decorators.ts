@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, January 7th 2019, 12:25:17 am
+ * Last Modified: Tuesday, March 19th 2019, 12:37:16 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,6 +13,7 @@
 
 
 import { timer } from '../core';
+import { Constructor } from '../types';
 export function cache(target: any, key: string, description: PropertyDescriptor) {
     let old = description.value;
     let t;
@@ -48,5 +49,30 @@ export function time(target: any, key: string, description: PropertyDescriptor) 
         old.apply(this, arg1);
         timer.end();
         console.log(timer.getDuration());
+    };
+}
+
+export function enumerable(value: boolean) {
+    // tslint:disable-next-line:only-arrow-functions
+    return function (target: any, propertyKey: string) {
+        let descriptor = Object.getOwnPropertyDescriptor(target, propertyKey) || {};
+        if (descriptor.enumerable !== value) {
+            descriptor.enumerable = value;
+            Object.defineProperty(target, propertyKey, descriptor);
+        }
+    };
+}
+
+
+export function unenumerable(arr: Array<string>) {
+    // tslint:disable-next-line:only-arrow-functions
+    return function fn(c: Constructor<any>) {
+
+        if (c.prototype['*unenumerableKeys'] == null) {
+            c.prototype['*unenumerableKeys'] = [];
+        }
+
+        // tslint:disable-next-line:only-arrow-functions
+        Array.prototype.push.apply(c.prototype['*unenumerableKeys'], arr);
     };
 }

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, March 16th 2019, 5:45:06 pm
+ * Last Modified: Monday, March 18th 2019, 8:40:07 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -108,8 +108,12 @@ export class Scene {
         });
         return this;
     }
-    setActiveCamera(x: number) {
-        this._activeCameraIndex = x;
+    setActiveCamera(index: number) {
+        if (index >= this.systems.camera!.components.length) {
+            console.error(new RangeError('index超过范围'));
+            return;
+        }
+        this._activeCameraIndex = index;
     }
     render() {
         this.root.syncHierarchy();

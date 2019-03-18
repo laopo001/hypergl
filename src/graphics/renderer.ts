@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, February 27th 2019, 2:13:01 pm
+ * Last Modified: Tuesday, March 19th 2019, 1:02:51 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -445,7 +445,7 @@ export class RendererPlatform {
             try {
                 this.uniformFunction[uniform.type](uniform, shader.getUniformValue(uniform.name));
             } catch (error) {
-                console.log(uniform.name, uniform.type);
+                console.error('uniformFunction:' + uniform.name + ',' + uniform.type, error);
             }
         }
         for (let i = 0; i < samplers.length; i++) {
