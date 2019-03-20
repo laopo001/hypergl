@@ -94,5 +94,8 @@
         "commit": "gulp commit"
     },
     "types": "lib/src/index.d.ts",
-    "version": "0.0.1-nightly.20190320.1"
+    "version": "0.0.1-nightly.20190320.3",
+    "files": [
+        "/lib"
+    ]
 }
