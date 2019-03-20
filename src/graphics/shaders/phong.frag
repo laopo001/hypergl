@@ -215,28 +215,34 @@ void main(void) {
     float shadow;
     {{#each uniforms._directionalLightArr}}
     color = CalcDirLight( {{this.color}}, {{this.direction}});
+    {{#ifEq this.castShadows 1}}
     if( uReceiveShadow && {{this.castShadows}} == 1.0 ) {
         shadow = CalcLightShadow({{this.lightSpaceMatrix}} * vec4(v_vertex_position, 1.0), {{this.shadowMap}}, {{this.shadowType}}, {{this.shadowMapSize}}, {{this.shadowBias}});    
         color = shadow * color;
     }
+    {{/ifEq}}
     result += color;
     {{/each}}
 
     {{#each uniforms._pointLightArr}}
     color = CalcPointLight( {{this.color}}, {{this.position}}, {{this.range}});
+    {{#ifEq this.castShadows 1}}
     if( uReceiveShadow && {{this.castShadows}} == 1.0 ) {
         shadow = CalcPointLightShadow({{this.shadowMap}}, {{this.position}}, {{this.range}}, {{this.shadowType}}, {{this.shadowMapSize}}, {{this.shadowBias}});    
         color = shadow * color;
     }
+    {{/ifEq}}
     result += color;
     {{/each}}
 
     {{#each uniforms._spotLightArr}}
     color = CalcSpotLight( {{this.color}}, {{this.position}}, {{this.direction}}, {{this.range}}, {{this.innerConeAngle}}, {{this.outerConeAngle}} );
+    {{#ifEq this.castShadows 1}}
     if( uReceiveShadow && {{this.castShadows}} == 1.0 ) {
         shadow = CalcLightShadow({{this.lightSpaceMatrix}} * vec4(v_vertex_position, 1.0), {{this.shadowMap}}, {{this.shadowType}}, {{this.shadowMapSize}}, {{this.shadowBias}});    
         color = shadow * color;
     }
+    {{/ifEq}}
     result += color;
     {{/each}}
     // end

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, March 19th 2019, 1:19:13 am
+ * Last Modified: Wednesday, March 20th 2019, 9:11:24 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -267,6 +267,8 @@ export class Entity extends SceneNode implements Clone {
     }
     clone() {
         let clone = new Entity();
+        clone.name = this.name;
+        clone.tag = this.tag.map(x => x);
         this.components.forEach(c => {
             clone.addComponent(c.name as any, c.inputs);
         });

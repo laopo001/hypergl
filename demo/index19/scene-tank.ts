@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, March 16th 2019, 5:41:51 pm
+ * Last Modified: Wednesday, March 20th 2019, 8:53:43 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -29,7 +29,7 @@ export const scene = new Scene('tank').initialize(AmmoPlugin).then(async scene =
     let light = new Entity('light')
         .addComponent('light', {
             type: 'directional',
-            castShadows: true,
+            // castShadows: true,
             shadowType: 'PCF',
             range: 16
         })
