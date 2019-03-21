@@ -2,3 +2,5 @@ node_modules/
 .vscode/
 build/
 publish/
+src/
+plugins/

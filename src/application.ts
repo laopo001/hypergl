@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, March 16th 2019, 5:46:56 pm
+ * Last Modified: Wednesday, March 20th 2019, 9:37:17 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -143,8 +143,6 @@ export class Application<T= Plugin> implements GLTFSerialize, PhysiceConfig {
             name: this.scene.name,
             root: format(this.scene.root)
         };
-
-        console.log(res);
 
         return JSON.stringify(res);
     }
