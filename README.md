@@ -33,6 +33,7 @@ npm run test:browser (测试依赖浏览器的部分)
  * webgl2 -> webgl1
 
 # examples
+ * [tank-game](https://github.com/laopo001/tank-game)
  * [3d-audio](https://stackblitz.com/edit/hypegl-3d-audio)
  * [skybox](https://stackblitz.com/edit/hypegl-skybox)
  * [gltf-loader](https://stackblitz.com/edit/hypegl-gltf)
