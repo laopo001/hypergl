@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, March 5th 2019, 5:19:12 pm
+ * Last Modified: Tuesday, April 2nd 2019, 12:18:55 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -26,7 +26,7 @@ async function main() {
     const app = new Application<AppPlugin>(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
-    app.registerPlugins([LoadImagePlugin, StatsPlugin, PointerPlugin, AmmoPlugin]);
+    app.registerPlugins([LoadImagePlugin, StatsPlugin, PointerPlugin]);
 
     console.log(app);
 

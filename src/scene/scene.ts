@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, March 18th 2019, 8:40:07 pm
+ * Last Modified: Tuesday, April 2nd 2019, 12:17:15 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -64,7 +64,7 @@ export class Scene {
     private _activeCameraIndex = 0;
     get activeCamera() {
         let defaultCamera = this.systems.camera!.components[this._activeCameraIndex];
-        Log.assert(this._activeCameraIndex || defaultCamera, 'scene 没有 activeCamera');
+        // Log.assert(this._activeCameraIndex || defaultCamera, 'scene 没有 activeCamera');
         return defaultCamera as CameraComponent;
     }
     get isActive() {
@@ -118,7 +118,9 @@ export class Scene {
     render() {
         this.root.syncHierarchy();
         event.fire('sync');
-        renderScence(this);
+        if (this.activeCamera != null) {
+            renderScence(this);
+        }
     }
     // tslint:disable-next-line:member-ordering
     _frame?: Frame;
