@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, March 17th 2019, 10:43:11 pm
+ * Last Modified: Monday, April 1st 2019, 10:11:42 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -40,7 +40,7 @@ async function main() {
     const app = new Application<AppPlugin>(document.getElementById('canvas') as HTMLCanvasElement, {
         // webgl1:true
     });
-    app.registerPlugins([LoadImagePlugin, StatsPlugin, PointerPlugin, GltfPlugin, SceneSettingPlugin]);
+    app.registerPlugins([LoadImagePlugin, StatsPlugin, PointerPlugin, GltfPlugin]);
 
     console.log(app);
 

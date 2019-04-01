@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, February 25th 2019, 10:40:46 am
+ * Last Modified: Monday, April 1st 2019, 11:23:02 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,3 +17,4 @@ export * from './element';
 export * from './event';
 export * from './timer';
 export * from './option';
+export * from './macro_task';

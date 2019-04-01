@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, March 20th 2019, 9:37:17 pm
+ * Last Modified: Monday, April 1st 2019, 11:50:25 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -68,13 +68,13 @@ export class Application<T= Plugin> implements GLTFSerialize, PhysiceConfig {
     static getAsyncApp<T>(): Promise<Application<T>> {
         return app.toPromise();
     }
-    async start() {
+    start() {
         this.renderer.setViewport(0, 0, this.canvas.width, this.canvas.height);
         this.renderer.setScissor(0, 0, this.canvas.width, this.canvas.height);
         if (!this.scene) {
             Log.error('not set active scene');
         }
-        await sleep(10);
+        // await sleep(10);
         event.fire('start');
         this.tick(0);
     }

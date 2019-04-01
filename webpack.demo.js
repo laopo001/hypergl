@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, March 16th 2019, 5:19:44 pm
+ * Last Modified: Monday, April 1st 2019, 11:19:25 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -44,7 +44,11 @@ module.exports = function (env, webpackConfig) {
             new CopyWebpackPlugin([{
                 from: __dirname + '/demo/assets',
                 to: __dirname + '/build/assets'
-            }])
+            }]),
+            new webpack.DefinePlugin({
+                'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+                'process.env.DEBUG': JSON.stringify(process.env.DEBUG)
+            })
         ],
         module: {
             //加载器配置

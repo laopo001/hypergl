@@ -5,14 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Friday, March 8th 2019, 1:48:34 am
+ * Last Modified: Tuesday, April 2nd 2019, 12:08:03 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 import { GltfLoader, GltfAsset } from './gltf-loader-ts/source';
-import { Application, Plugin, Mesh, PBRMaterial, Model, Color, StandardMaterial, Texture, FILTER, WRAP, Entity, Mat4, Quat, RAD_TO_DEG, Scene, Vec3 } from 'hypergl';
+import { Application, Plugin, Mesh, PBRMaterial, Model, Color, StandardMaterial, Texture, FILTER, WRAP, Entity, Mat4, Quat, RAD_TO_DEG, Scene, Vec3, MacroTask } from 'hypergl';
 
 let loader = new GltfLoader();
 
@@ -74,34 +74,10 @@ export class GltfAssetLoader {
         let entity = new Entity(nodeData.name);
         if (typeof nodeData.mesh === 'number') {
             let model = await this.loadMesh(nodeData.mesh);
-
             entity.addComponent('model', {
                 type: 'model',
                 model
             });
-            // TODO
-            // let max = new Vec3();
-            // let min = new Vec3();
-            // model.meshs.forEach(m => {
-            //     max.x = Math.max(max.x, m.aabb.max.x);
-            //     max.y = Math.max(max.y, m.aabb.max.y);
-            //     max.z = Math.max(max.z, m.aabb.max.z);
-            //     min.x = Math.min(min.x, m.aabb.min.x);
-            //     min.y = Math.min(min.y, m.aabb.min.y);
-            //     min.z = Math.min(min.z, m.aabb.min.z);
-            // });
-            // let center = new Vec3((max.x + min.x) / 2, (max.y + min.y) / 2, (max.z + min.z) / 2);
-            // let halfExtents = new Vec3((max.x - min.x) / 2, (max.y - min.y) / 2, (max.z - min.z) / 2);
-            // console.log(center.data, halfExtents.data);
-            // console.log('========');
-            // entity.addComponent('collision', {
-            //     default: true,
-            //     type: 'box',
-            //     halfExtents,
-            //     // center,
-            //     debugger: true
-            // });
-
             entity.tag.push('model');
         }
         if (typeof nodeData.camera === 'number') {
@@ -135,7 +111,7 @@ export class GltfAssetLoader {
         if (nodeData.children) {
             for (let i = 0; i < nodeData.children.length; i++) {
                 const index = nodeData.children[i];
-                let entityChild = await this.loadSenceNode(index);
+                let entityChild = await MacroTask.run(() => this.loadSenceNode(index));
                 entity.addChild(entityChild);
             }
         }

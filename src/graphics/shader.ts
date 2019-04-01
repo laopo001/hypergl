@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, December 30th 2018, 9:29:01 pm
+ * Last Modified: Monday, April 1st 2019, 11:43:24 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -84,9 +84,11 @@ export class Shader {
             gl.transformFeedbackVaryings(this.program, outNames, gl.INTERLEAVED_ATTRIBS);
         }
         gl.linkProgram(this.program);
-        const linked = gl.getProgramParameter(this.program, gl.LINK_STATUS);
-        if (!linked) {
-            Log.error(gl.getProgramInfoLog(this.program) as string);
+        if (process.env.NODE_ENV !== 'production') {
+            const linked = gl.getProgramParameter(this.program, gl.LINK_STATUS);
+            if (!linked) {
+                Log.error(gl.getProgramInfoLog(this.program) as string);
+            }
         }
         gl.deleteShader(this.vshader as WebGLShader);
         gl.deleteShader(this.fshader as WebGLShader);
@@ -137,12 +139,13 @@ export function loadShader(gl: WebGLRenderingContext | WebGL2RenderingContext, t
     const shader = gl.createShader(type);
     gl.shaderSource(shader!, source);
     gl.compileShader(shader!);
-    const compiled = gl.getShaderParameter(shader!, gl.COMPILE_STATUS);
-    if (!compiled) {
-
-        let str = source.split('\n').map((x, index) => { return (index + 1) + ' ' + x + '\n'; }).join('');
-        Log.error(`${gl.VERTEX_SHADER === type ? 'VERTEX_SHADER' : 'FRAGMENT_SHADER'}\n${gl.getShaderInfoLog(shader!) as string}\n${str}`);
-        return false;
+    if (process.env.NODE_ENV !== 'production') {
+        const compiled = gl.getShaderParameter(shader!, gl.COMPILE_STATUS);
+        if (!compiled) {
+            let str = source.split('\n').map((x, index) => { return (index + 1) + ' ' + x + '\n'; }).join('');
+            Log.error(`${gl.VERTEX_SHADER === type ? 'VERTEX_SHADER' : 'FRAGMENT_SHADER'}\n${gl.getShaderInfoLog(shader!) as string}\n${str}`);
+            return false;
+        }
     }
     return shader;
 }
