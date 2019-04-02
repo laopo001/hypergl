@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, March 20th 2019, 8:53:43 pm
+ * Last Modified: Tuesday, April 2nd 2019, 3:31:18 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -86,7 +86,7 @@ export const scene = new Scene('tank').initialize(AmmoPlugin).then(async scene =
     tank.setPosition(0, 2, 0).setLocalScale(0.25, 0.25, 0.25);
     tank.addChild(node2);
     tank.findByTag('model').forEach(x => {
-        x.model.instance.meshs.forEach(drawable => {
+        x.model.instance.draws.forEach(drawable => {
             drawable.castShadow = true;
         });
     });

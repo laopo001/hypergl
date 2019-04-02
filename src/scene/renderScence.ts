@@ -309,8 +309,8 @@ export function rendererPickerFrame(picker: Picker, material: ColorMaterial, cb)
         if (entity.model == null) {
             continue;
         }
-        for (let j = 0; j < entity.model.model.meshs.length; j++) {
-            const drawable = entity.model.model.meshs[j];
+        for (let j = 0; j < entity.model.model.draws.length; j++) {
+            const drawable = entity.model.model.draws[j];
             let arr = to_n_decimal(i, 256);
             if (arr.length >= 5) { console.warn('xxx'); }
             for (let i = 0; i < 4; i++) {
