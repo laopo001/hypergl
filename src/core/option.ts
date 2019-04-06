@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, March 3rd 2019, 2:15:14 pm
+ * Last Modified: Saturday, April 6th 2019, 10:11:35 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -23,7 +23,9 @@ export class Option<T> {
             };
         });
     }
-
+    is_undefined() {
+        return this.value !== undefined;
+    }
     unwrap() {
         if (this.value === undefined) {
             throw new Error(this.msg || 'unwrap失败');
