@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, January 20th 2019, 4:48:03 pm
+ * Last Modified: Tuesday, April 2nd 2019, 3:31:18 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -15,7 +15,7 @@
 
 import {
     Entity, StandardMaterial, Config, SkyMaterial, Application, Vec3, Color, Texture,
-    PBRMaterial, Mesh, Line, ColorMaterial, FOG,  Vec2, CubeTexture, util
+    PBRMaterial, Mesh, Line, ColorMaterial, FOG, Vec2, CubeTexture, util
 } from 'hypergl';
 import { FirstPersonCamera } from './utils/first_person_camera';
 import { Rotate } from './utils/rotate';
@@ -151,7 +151,7 @@ async function main() {
             type: 'sphere',
         })
         .setLocalPosition(-3, 0, 0);
-    sphere5.model.instance.meshs[0].mode = 1;
+    sphere5.model.instance.draws[0].mode = 1;
     app.scene.root.addChild(sphere5);
 
     let sphere6 = new Entity('sphere6')

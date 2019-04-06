@@ -47,7 +47,7 @@ export class ModelComponentSystem extends ComponentSystem {
                     // let position = item.getPosition();
                     // let uNormalMatrix = item.getWorldTransform().clone().invert().transpose();
                     // let enabled = item.enabled;
-                    item.instance.meshs.forEach((drawable) => {
+                    item.instance.draws.forEach((drawable) => {
                         // drawable.cache.enabled = enabled;
                         // drawable.cache.position = position;
                         // drawable.cache.uNormalMatrix = uNormalMatrix;

@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, March 18th 2019, 12:42:55 am
+ * Last Modified: Tuesday, April 2nd 2019, 3:31:18 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -104,28 +104,28 @@ export class ModelComponent<T extends Material = StandardMaterial> extends Compo
         }
         ['receiveShadow', 'castShadow'].forEach(key => {
             if (this.inputs[key] !== undefined) {
-                this.instance.meshs.forEach(drawable => {
+                this.instance.draws.forEach(drawable => {
                     drawable[key] = this.inputs[key];
                 });
             }
         });
         if (this.inputs.material) {
-            this.instance.meshs.forEach(drawable => {
+            this.instance.draws.forEach(drawable => {
                 drawable.material = this.inputs.material as any;
             });
         }
 
     }
     drawable<K extends Drawable = Mesh>(index = 0): K {
-        return this.instance.meshs[index] as any;
+        return this.instance.draws[index] as any;
     }
     material<K extends Material= T>(index = 0): K {
-        return this.instance.meshs[index].material as any;
+        return this.instance.draws[index].material as any;
     }
     setMaterial<K extends Material>(index = 0, material: K) {
-        this.instance.meshs[index].material = material;
+        this.instance.draws[index].material = material;
     }
     get length() {
-        return this.instance.meshs.length;
+        return this.instance.draws.length;
     }
 }

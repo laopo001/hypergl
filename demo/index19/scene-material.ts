@@ -133,7 +133,7 @@ async function main() {
             type: 'sphere',
         })
         .setLocalPosition(-3, 0, 0);
-    sphere5.model.instance.meshs[0].mode = 1;
+    sphere5.model.instance.draws[0].mode = 1;
     scene.root.addChild(sphere5);
 
     let sphere6 = new Entity('sphere6')

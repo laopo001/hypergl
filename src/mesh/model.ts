@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, March 18th 2019, 12:42:55 am
+ * Last Modified: Tuesday, April 2nd 2019, 3:31:18 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -17,7 +17,7 @@ import { Mat4, Vec3 } from '../math';
 import { Obj } from '../types';
 export class Model {
     name = '';
-    constructor(public meshs: Drawable[]) {
+    constructor(public draws: Drawable[]) {
 
     }
 }
