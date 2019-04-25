@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, March 16th 2019, 1:36:04 am
+ * Last Modified: Thursday, April 25th 2019, 5:50:53 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -26,21 +26,20 @@ let scaleCompensateScale = new Vec3();
 let scaleCompensateScaleForParent = new Vec3();
 
 export class SceneNode extends IElement {
-    // local
-    localPosition = new Vec3(0, 0, 0);
-    localRotation = new Quat(0, 0, 0, 1);
-    localScale = new Vec3(1, 1, 1);
-    localEulerAngles = new Vec3(0, 0, 0);
-    localTransform = new Mat4();
     parent?: SceneNode;
     readonly children: SceneNode[] = [];
-
-    // World-space
-    position = new Vec3(0, 0, 0);
-    rotation = new Quat(0, 0, 0, 1);
-    eulerAngles = new Vec3(0, 0, 0);
-    worldTransform = new Mat4();
     scaleCompensation = false;
+    // local
+    private readonly localPosition = new Vec3(0, 0, 0);
+    private readonly localRotation = new Quat(0, 0, 0, 1);
+    private readonly localScale = new Vec3(1, 1, 1);
+    private readonly localEulerAngles = new Vec3(0, 0, 0);
+    private readonly localTransform = new Mat4();
+    // World-space
+    private readonly position = new Vec3(0, 0, 0);
+    private readonly rotation = new Quat(0, 0, 0, 1);
+    private readonly eulerAngles = new Vec3(0, 0, 0);
+    private readonly worldTransform = new Mat4();
     private _dirtyNormal = true;
     private _dirtyLocal = false;
     private _dirtyWorld = false;
@@ -97,14 +96,15 @@ export class SceneNode extends IElement {
     setPosition(x: Vec3): this;
     setPosition(x: number, y: number, z: number): this;
     setPosition(x?, y?, z?) {
-        let position = new Vec3();
+        let position: Vec3;
         if (x instanceof Vec3) {
-            position.copy(x);
+            position = x;
         } else {
+            position = new Vec3();
             position.set(x, y, z);
         }
         if (this.parent == null) {
-            this.localPosition = position;
+            this.localPosition.copy(position);
         } else {
             let invParentWtm = new Mat4().copy(this.parent.getWorldTransform()).invert();
             invParentWtm.transformPoint(position, this.localPosition);
@@ -343,6 +343,7 @@ export class SceneNode extends IElement {
                 this.worldTransform.copy(this.localTransform);
             } else {
                 if (this.scaleCompensation) {
+
                     let parentWorldScale!: Vec3;
                     let parent = this.parent;
 
@@ -384,6 +385,7 @@ export class SceneNode extends IElement {
                     this.worldTransform.setTRS(scaleCompensatePos, scaleCompensateRot, scale);
 
                 } else {
+                    // console.log(this.localTransform.data, this.worldTransform.data, this.parent.worldTransform.data);
                     this.worldTransform.mul2(this.parent.worldTransform, this.localTransform);
                 }
             }

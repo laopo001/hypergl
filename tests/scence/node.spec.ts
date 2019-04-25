@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Wednesday, December 5th 2018, 5:02:08 pm
+ * Last Modified: Thursday, April 25th 2019, 5:43:04 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -134,4 +134,13 @@ test('SceneNode 坐标系转换', () => {
     let { x, y, z } = node1.getPosition();
     let res = node2.getWorldTransform().invert().mulVec4(new Vec4(x, y, z, 1));
     expect(res.data).toEqual(new Vec4(0, 0, -2, 1).data);
+});
+
+test('SceneNode test_child_set_get_position', () => {
+    let node1 = new SceneNode().setLocalPosition(1, 2, 3);
+    let node2 = new SceneNode().setLocalPosition(1, 2, 3);
+    let node3 = new SceneNode().setLocalPosition(1, 2, 3);
+    node1.addChild(node2);
+    node2.addChild(node3);
+    expect(node3.getPosition().data).toEqual(new Vec3(3, 6, 9).data);
 });
