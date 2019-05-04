@@ -5,14 +5,14 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 6:03:02 pm
+ * Last Modified: Sunday, May 5th 2019, 2:04:16 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
  */
 
 
-import {  SEMANTIC } from '../conf';
+import { SEMANTIC } from '../conf';
 import { TypeArray, TypeArrayConstructor } from '../types';
 export interface VertexType {
     semantic: SEMANTIC,
@@ -25,7 +25,7 @@ export interface VertexAttribData extends VertexType {
     offset: number;
     stride: number;
     length: number;
-    normalize: boolean;
+    // normalize: boolean;
 }
 
 
@@ -36,10 +36,10 @@ export class VertexFormat {
     hasUv0 = false;
     hasUv1 = false;
     hasColor = false;
-    constructor(vartexTypes: VertexType[]) {
+    constructor(vertexTypes: VertexType[]) {
         let offset = 0;
-        for (let i = 0; i < vartexTypes.length; i++) {
-            const item = vartexTypes[i];
+        for (let i = 0; i < vertexTypes.length; i++) {
+            const item = vertexTypes[i];
             let element: VertexAttribData = {
                 semantic: item.semantic,
                 offset,

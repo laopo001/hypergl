@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, March 19th 2019, 1:02:51 am
+ * Last Modified: Sunday, May 5th 2019, 2:04:56 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -430,7 +430,7 @@ export class RendererPlatform {
             attrbute.element = element;
 
             if (element) {
-                gl.vertexAttribPointer(attrbute.locationId, element.size, this.AttrbuteType[(element.dataType as any).name], element.normalize, element.stride, element.offset);
+                gl.vertexAttribPointer(attrbute.locationId, element.size, this.AttrbuteType[(element.dataType as any).name], element.normalize!, element.stride, element.offset);
                 if (attrbute.enable === false) {
                     gl.enableVertexAttribArray(attrbute.locationId);
                     attrbute.enable = true;
