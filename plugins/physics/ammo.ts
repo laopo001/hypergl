@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Saturday, March 16th 2019, 4:57:17 pm
+ * Last Modified: Thursday, April 25th 2019, 7:08:50 pm
  * Modified By: dadigua
  * -----
  * Copyright (c) 2019 dadigua
@@ -374,7 +374,7 @@ export class AmmoPlugin implements IPhysics {
 
         let transform = body.getWorldTransform();
         // 计算碰撞中心
-        let { x: c_x, y: c_y, z: c_z } = entity.localTransform.transformVector(entity.collision.inputs.center!);
+        let { x: c_x, y: c_y, z: c_z } = entity.getLocalTransform().transformVector(entity.collision.inputs.center!);
         // console.log(c_x, c_y, c_z);
 
         transform.getOrigin().setValue(pos.x + c_x, pos.y + c_y, pos.z + c_z);
@@ -407,7 +407,7 @@ export class AmmoPlugin implements IPhysics {
                 y = p.y();
                 z = p.z();
                 // 计算碰撞中心
-                let { x: c_x, y: c_y, z: c_z } = entity.localTransform.transformVector(entity.collision.inputs.center!);
+                let { x: c_x, y: c_y, z: c_z } = entity.getLocalTransform().transformVector(entity.collision.inputs.center!);
                 // console.log(entity.localTransform.getTranslation().data);
                 entity.setPosition(x - c_x, y - c_y, z - c_z);
                 let q = ammoTransform.getRotation();
