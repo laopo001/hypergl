@@ -9,6 +9,8 @@ a simple 3d game engine
 
 git clone --recursive git@github.com:laopo001/hypergl.git
 
+> ## hypergl 将拆分成更小的模块，核心部分使用rust编译成wasm（支持opengl）。如渲染:[hypergl_core](https://github.com/laopo001/hypergl_core),数学:[wasm-math](https://github.com/laopo001/wasm-math)。
+
 # Install
 
 npm install(yarn install)
