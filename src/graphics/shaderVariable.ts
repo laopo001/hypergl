@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Thursday, September 6th 2018, 6:03:02 pm
+ * Last Modified: Tuesday, May 7th 2019, 12:25:43 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,12 +13,12 @@
 
 
 import { RendererPlatform } from './renderer';
-import { UNIFORM_TYPE } from '../conf';
+import { ACTIVE_INFO_TYPE } from '../conf';
 import { VertexAttribData } from './vertexFormat';
 export class ShaderVariable {
     enable = false;
     element?: VertexAttribData;
-    constructor(public name: string, public type: UNIFORM_TYPE, public locationId: number) {
+    constructor(public name: string, public type: ACTIVE_INFO_TYPE, public locationId: number) {
 
     }
 }

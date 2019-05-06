@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Tuesday, December 25th 2018, 1:06:49 am
+ * Last Modified: Tuesday, May 7th 2019, 12:25:43 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -86,7 +86,7 @@ export enum CURVE {
 }
 
 
-export enum UNIFORM_TYPE {
+export enum ACTIVE_INFO_TYPE {
     BOOL,
     INT,
     FLOAT,

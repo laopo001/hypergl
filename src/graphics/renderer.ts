@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Sunday, May 5th 2019, 2:04:56 am
+ * Last Modified: Tuesday, May 7th 2019, 12:25:43 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -13,7 +13,7 @@
 
 
 import { Log } from '../utils/util';
-import { UNIFORM_TYPE, FILTER, FACE } from '../conf';
+import { ACTIVE_INFO_TYPE, FILTER, FACE } from '../conf';
 import { ShaderProgramGenerator } from './shaderProgramGenerator';
 import { Undefinedable, FnVoid, AppOption, Nullable } from '../types';
 import { Shader } from './shader';
@@ -37,7 +37,7 @@ export class RendererPlatform {
     platform!: Platform;
     depthTest = false;
     AttrbuteType: { [s: string]: number } = {};
-    glTypeToJs: { [s: string]: UNIFORM_TYPE } = {};
+    glTypeToJs: { [s: string]: ACTIVE_INFO_TYPE } = {};
     uniformFunction: { [s: string]: FnVoid; } = {};
     programGenerator = new ShaderProgramGenerator(this);
     private webgl!: WebGLRenderingContext;
@@ -63,27 +63,27 @@ export class RendererPlatform {
     init() {
         let gl = this.gl;
         let glTypeToJs = this.glTypeToJs;
-        glTypeToJs[gl.BOOL] = UNIFORM_TYPE.BOOL;
-        glTypeToJs[gl.INT] = UNIFORM_TYPE.INT;
-        glTypeToJs[gl.FLOAT] = UNIFORM_TYPE.FLOAT;
-        glTypeToJs[gl.FLOAT_VEC2] = UNIFORM_TYPE.FLOAT_VEC2;
-        glTypeToJs[gl.FLOAT_VEC3] = UNIFORM_TYPE.FLOAT_VEC3;
-        glTypeToJs[gl.FLOAT_VEC4] = UNIFORM_TYPE.FLOAT_VEC4;
-        glTypeToJs[gl.INT_VEC2] = UNIFORM_TYPE.INT_VEC2;
-        glTypeToJs[gl.INT_VEC3] = UNIFORM_TYPE.INT_VEC3;
-        glTypeToJs[gl.INT_VEC4] = UNIFORM_TYPE.INT_VEC4;
-        glTypeToJs[gl.BOOL_VEC2] = UNIFORM_TYPE.BOOL_VEC2;
-        glTypeToJs[gl.BOOL_VEC3] = UNIFORM_TYPE.BOOL_VEC3;
-        glTypeToJs[gl.BOOL_VEC4] = UNIFORM_TYPE.BOOL_VEC4;
-        glTypeToJs[gl.FLOAT_MAT2] = UNIFORM_TYPE.FLOAT_MAT2;
-        glTypeToJs[gl.FLOAT_MAT3] = UNIFORM_TYPE.FLOAT_MAT3;
-        glTypeToJs[gl.FLOAT_MAT4] = UNIFORM_TYPE.FLOAT_MAT4;
-        glTypeToJs[gl.SAMPLER_2D] = UNIFORM_TYPE.SAMPLER_2D;
-        glTypeToJs[gl.SAMPLER_CUBE] = UNIFORM_TYPE.SAMPLER_CUBE;
+        glTypeToJs[gl.BOOL] = ACTIVE_INFO_TYPE.BOOL;
+        glTypeToJs[gl.INT] = ACTIVE_INFO_TYPE.INT;
+        glTypeToJs[gl.FLOAT] = ACTIVE_INFO_TYPE.FLOAT;
+        glTypeToJs[gl.FLOAT_VEC2] = ACTIVE_INFO_TYPE.FLOAT_VEC2;
+        glTypeToJs[gl.FLOAT_VEC3] = ACTIVE_INFO_TYPE.FLOAT_VEC3;
+        glTypeToJs[gl.FLOAT_VEC4] = ACTIVE_INFO_TYPE.FLOAT_VEC4;
+        glTypeToJs[gl.INT_VEC2] = ACTIVE_INFO_TYPE.INT_VEC2;
+        glTypeToJs[gl.INT_VEC3] = ACTIVE_INFO_TYPE.INT_VEC3;
+        glTypeToJs[gl.INT_VEC4] = ACTIVE_INFO_TYPE.INT_VEC4;
+        glTypeToJs[gl.BOOL_VEC2] = ACTIVE_INFO_TYPE.BOOL_VEC2;
+        glTypeToJs[gl.BOOL_VEC3] = ACTIVE_INFO_TYPE.BOOL_VEC3;
+        glTypeToJs[gl.BOOL_VEC4] = ACTIVE_INFO_TYPE.BOOL_VEC4;
+        glTypeToJs[gl.FLOAT_MAT2] = ACTIVE_INFO_TYPE.FLOAT_MAT2;
+        glTypeToJs[gl.FLOAT_MAT3] = ACTIVE_INFO_TYPE.FLOAT_MAT3;
+        glTypeToJs[gl.FLOAT_MAT4] = ACTIVE_INFO_TYPE.FLOAT_MAT4;
+        glTypeToJs[gl.SAMPLER_2D] = ACTIVE_INFO_TYPE.SAMPLER_2D;
+        glTypeToJs[gl.SAMPLER_CUBE] = ACTIVE_INFO_TYPE.SAMPLER_CUBE;
         if (this.platform === 'webgl2') {
-            glTypeToJs[gl.SAMPLER_2D_SHADOW] = UNIFORM_TYPE.SAMPLER_2D_SHADOW;
-            glTypeToJs[gl.SAMPLER_CUBE_SHADOW] = UNIFORM_TYPE.SAMPLER_CUBE_SHADOW;
-            glTypeToJs[gl.SAMPLER_3D] = UNIFORM_TYPE.SAMPLER_3D;
+            glTypeToJs[gl.SAMPLER_2D_SHADOW] = ACTIVE_INFO_TYPE.SAMPLER_2D_SHADOW;
+            glTypeToJs[gl.SAMPLER_CUBE_SHADOW] = ACTIVE_INFO_TYPE.SAMPLER_CUBE_SHADOW;
+            glTypeToJs[gl.SAMPLER_3D] = ACTIVE_INFO_TYPE.SAMPLER_3D;
         }
 
         this.AttrbuteType = {
@@ -97,44 +97,44 @@ export class RendererPlatform {
             [Float64Array.name]: gl.HIGH_FLOAT
         };
 
-        this.uniformFunction[UNIFORM_TYPE.BOOL] = (uniform: ShaderVariable, value) => {
+        this.uniformFunction[ACTIVE_INFO_TYPE.BOOL] = (uniform: ShaderVariable, value) => {
             gl.uniform1i(uniform.locationId, value);
         };
-        this.uniformFunction[UNIFORM_TYPE.INT] = this.uniformFunction[UNIFORM_TYPE.BOOL];
-        this.uniformFunction[UNIFORM_TYPE.FLOAT] = (uniform, value) => {
+        this.uniformFunction[ACTIVE_INFO_TYPE.INT] = this.uniformFunction[ACTIVE_INFO_TYPE.BOOL];
+        this.uniformFunction[ACTIVE_INFO_TYPE.FLOAT] = (uniform, value) => {
             gl.uniform1f(uniform.locationId, value);
         };
-        this.uniformFunction[UNIFORM_TYPE.FLOAT_VEC2] = (uniform, value) => {
+        this.uniformFunction[ACTIVE_INFO_TYPE.FLOAT_VEC2] = (uniform, value) => {
             gl.uniform2fv(uniform.locationId, value);
         };
-        this.uniformFunction[UNIFORM_TYPE.FLOAT_VEC3] = (uniform, value) => {
+        this.uniformFunction[ACTIVE_INFO_TYPE.FLOAT_VEC3] = (uniform, value) => {
             gl.uniform3fv(uniform.locationId, value);
         };
-        this.uniformFunction[UNIFORM_TYPE.FLOAT_VEC4] = (uniform, value) => {
+        this.uniformFunction[ACTIVE_INFO_TYPE.FLOAT_VEC4] = (uniform, value) => {
             gl.uniform4fv(uniform.locationId, value);
         };
-        this.uniformFunction[UNIFORM_TYPE.INT_VEC2] = (uniform, value) => {
+        this.uniformFunction[ACTIVE_INFO_TYPE.INT_VEC2] = (uniform, value) => {
             gl.uniform2iv(uniform.locationId, value);
         };
-        this.uniformFunction[UNIFORM_TYPE.BOOL_VEC2] = this.uniformFunction[UNIFORM_TYPE.INT_VEC2];
-        this.uniformFunction[UNIFORM_TYPE.INT_VEC3] = (uniform, value) => {
+        this.uniformFunction[ACTIVE_INFO_TYPE.BOOL_VEC2] = this.uniformFunction[ACTIVE_INFO_TYPE.INT_VEC2];
+        this.uniformFunction[ACTIVE_INFO_TYPE.INT_VEC3] = (uniform, value) => {
             gl.uniform3iv(uniform.locationId, value);
         };
-        this.uniformFunction[UNIFORM_TYPE.BOOL_VEC3] = this.uniformFunction[UNIFORM_TYPE.INT_VEC3];
-        this.uniformFunction[UNIFORM_TYPE.INT_VEC4] = (uniform, value) => {
+        this.uniformFunction[ACTIVE_INFO_TYPE.BOOL_VEC3] = this.uniformFunction[ACTIVE_INFO_TYPE.INT_VEC3];
+        this.uniformFunction[ACTIVE_INFO_TYPE.INT_VEC4] = (uniform, value) => {
             gl.uniform4iv(uniform.locationId, value);
         };
-        this.uniformFunction[UNIFORM_TYPE.BOOL_VEC4] = this.uniformFunction[UNIFORM_TYPE.INT_VEC4];
-        this.uniformFunction[UNIFORM_TYPE.FLOAT_MAT2] = (uniform, value) => {
+        this.uniformFunction[ACTIVE_INFO_TYPE.BOOL_VEC4] = this.uniformFunction[ACTIVE_INFO_TYPE.INT_VEC4];
+        this.uniformFunction[ACTIVE_INFO_TYPE.FLOAT_MAT2] = (uniform, value) => {
             gl.uniformMatrix2fv(uniform.locationId, false, value);
         };
-        this.uniformFunction[UNIFORM_TYPE.FLOAT_MAT3] = (uniform, value) => {
+        this.uniformFunction[ACTIVE_INFO_TYPE.FLOAT_MAT3] = (uniform, value) => {
             gl.uniformMatrix3fv(uniform.locationId, false, value);
         };
-        this.uniformFunction[UNIFORM_TYPE.FLOAT_MAT4] = (uniform, value) => {
+        this.uniformFunction[ACTIVE_INFO_TYPE.FLOAT_MAT4] = (uniform, value) => {
             gl.uniformMatrix4fv(uniform.locationId, false, value);
         };
-        this.uniformFunction[UNIFORM_TYPE.FLOATARRAY] = (uniform, value) => {
+        this.uniformFunction[ACTIVE_INFO_TYPE.FLOATARRAY] = (uniform, value) => {
             gl.uniform1fv(uniform.locationId, value);
         };
         // tslint:disable-next-line:forin
@@ -270,15 +270,24 @@ export class RendererPlatform {
     }
     // tslint:disable-next-line:member-ordering
     private _clearColor = [0, 0, 0, 1];
+    /// 参数 0~1 数值
     setClearColor(r: number, g: number, b: number, a: number) {
-        this._clearColor = [r, g, b, a];
+        this._clearColor[0] = r;
+        this._clearColor[1] = g;
+        this._clearColor[2] = b;
+        this._clearColor[3] = a;
+        // this._clearColor = [r, g, b, a];
         this.gl.clearColor(r, g, b, a);
     }
     setColorWrite(writeRed: boolean, writeGreen: boolean, writeBlue: boolean, writeAlpha: boolean) {
         this.gl.colorMask(writeRed, writeGreen, writeBlue, writeAlpha);
     }
+
     // tslint:disable-next-line:member-ordering
     private _last_scissor = new Array<number>(4);
+    /**
+    * 左下角。最初（0,0） 裁剪
+    */
     setScissor(x: number, y: number, w: number, h: number) {
         const gl = this.gl;
         this._last_scissor[0] = x;
@@ -292,6 +301,9 @@ export class RendererPlatform {
     }
     // tslint:disable-next-line:member-ordering
     private _last_viewport = new Array<number>(4);
+    /**
+    * 左下角。最初（0,0）设置显示区域
+    */
     setViewport(x: number, y: number, w: number, h: number) {
         const gl = this.gl;
         this._last_viewport[0] = x;

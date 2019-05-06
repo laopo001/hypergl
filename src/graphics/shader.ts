@@ -5,7 +5,7 @@
  * @author: dadigua
  * @summary: short description for the file
  * -----
- * Last Modified: Monday, April 1st 2019, 11:43:24 pm
+ * Last Modified: Tuesday, May 7th 2019, 12:25:43 am
  * Modified By: dadigua
  * -----
  * Copyright (c) 2018 dadigua
@@ -16,7 +16,7 @@ import { RendererPlatform } from './renderer';
 import { Log } from '../utils/util';
 import { ShaderVariable } from './shaderVariable';
 import { TypeArray } from '../types';
-import { UNIFORM_TYPE, SEMANTIC } from '../conf';
+import { ACTIVE_INFO_TYPE, SEMANTIC } from '../conf';
 import { Texture, CubeTexture } from '../texture';
 
 export type UniformValueType = TypeArray | Texture | CubeTexture | null | number | boolean | undefined;
@@ -105,7 +105,7 @@ export class Shader {
                 Log.error('Vertex shader attribute "' + info.name + '" is not mapped to a semantic in shader definition.');
             }
             // this.attributes.push(new ShaderInput(this.renderer, this.definition.attributes[info.name], this.renderer.glTypeToJs[info.type] as GLType, location));
-            this.attributes.push(new ShaderVariable(this.definition.attributes[info.name], this.renderer.glTypeToJs[info.type] as UNIFORM_TYPE, location));
+            this.attributes.push(new ShaderVariable(this.definition.attributes[info.name], this.renderer.glTypeToJs[info.type] as ACTIVE_INFO_TYPE, location));
         }
 
         i = 0;
@@ -116,9 +116,9 @@ export class Shader {
             if (info.type === gl.SAMPLER_2D || info.type === gl.SAMPLER_CUBE ||
                 (this.renderer.platform === 'webgl2' && (info.type === gl.SAMPLER_2D_SHADOW || info.type === gl.SAMPLER_CUBE_SHADOW || info.type === gl.SAMPLER_3D))
             ) {
-                this.samplers.push(new ShaderVariable(info.name, this.renderer.glTypeToJs[info.type] as UNIFORM_TYPE, location));
+                this.samplers.push(new ShaderVariable(info.name, this.renderer.glTypeToJs[info.type] as ACTIVE_INFO_TYPE, location));
             } else {
-                this.uniforms.push(new ShaderVariable(info.name, this.renderer.glTypeToJs[info.type] as UNIFORM_TYPE, location));
+                this.uniforms.push(new ShaderVariable(info.name, this.renderer.glTypeToJs[info.type] as ACTIVE_INFO_TYPE, location));
             }
             // tslint:disable-next-line:no-unused-expression
             !this.uniformScope.hasOwnProperty(info.name) && (this.uniformScope[info.name] = null);
