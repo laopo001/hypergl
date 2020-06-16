@@ -65,6 +65,21 @@ async function main() {
     let node = await gltf.loadSenceRoot();
     app.scene.root.addChild(node);
 
+    let camera = new Entity('camera')
+        .addComponent('camera', {
+            type: 'perspective',
+            perspective: {
+                fov: 45,
+                aspectRatio: app.canvas.width / app.canvas.height,
+                near: 1,
+                far: 10
+            }
+        })
+        .setPosition(2, 2, 2)
+        .lookAt(new Vec3(0, 0, 0))
+        // .setEulerAngles(-15, 52, 0)
+        .addComponent('script', [new FirstPersonCamera({ speed: 0.1 })]);
+    app.scene.root.addChild(camera);
     // let light = new Entity('light')
     //     .addComponent('light', {
     //         type: 'directional',

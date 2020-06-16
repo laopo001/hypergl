@@ -120,6 +120,8 @@ export class Scene {
         event.fire('sync');
         if (this.activeCamera != null) {
             renderScence(this);
+        } else {
+            console.error('没有activeCamera');
         }
     }
     // tslint:disable-next-line:member-ordering
