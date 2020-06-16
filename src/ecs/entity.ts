@@ -123,7 +123,7 @@ export class Entity extends SceneNode implements Clone {
         if (arguments.length === 1) {
             if (typeof name === 'string') {
                 this.name = name;
-            } else {
+            } else if (typeof name === 'object') {
                 this.name = name.name;
                 this.tag = name.tag;
             }
