@@ -61,7 +61,9 @@ uniform float {{this.castShadows}};
 
 
 //////////////
+{{#if attributes.vertex_texCoord0}}
 in vec2 v_vertex_texCoord0;
+{{/if}}
 in vec3 v_normal;
 in vec3 v_vertex_position;
 
@@ -83,11 +85,11 @@ vec3 dViewDirNorm;
 // {{else}}
 // {{/if}}
 vec3 getOutDiffuseColor() {
-    {{#if uniforms.uDiffuseTexture}}
+    {{#ifCond uniforms.uDiffuseTexture '&&' attributes.vertex_texCoord0}}
     return texture2D(uDiffuseTexture, v_vertex_texCoord0 - uDiffuseMapOffset).rgb;
     {{else}}
     return uDiffuseColor.rgb;
-    {{/if}}
+    {{/ifCond}}
 }
 
 vec3 getOutuSpecularColor() {

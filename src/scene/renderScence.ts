@@ -77,6 +77,7 @@ export function renderScence(scene: Scene) {
         renderer.setShaderProgram(shader);
         shader.setUniformValue('uViewProjectionMatrix', viewProjectionMatrixData);
         shader.setUniformValue('uModelMatrix', uModelMatrix!.data);
+        // console.log(viewProjectionMatrixData, uModelMatrix!.data);
         shader.setUniformValue('uNormalMatrix', uNormalMatrix!.data);
         shader.setUniformValue('uCameraPosition', camera.getPosition().data);
         // shader.setUniformValue('fog', scene.fog);

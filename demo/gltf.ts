@@ -64,13 +64,13 @@ async function main() {
     let gltf = app.plugins.gltf.createLoader('./assets/models/box.gltf');
     let node = await gltf.loadSenceRoot();
     app.scene.root.addChild(node);
-
+    app.scene.systems.model.components[0].setMaterial(0, material);
     let camera = new Entity('camera')
         .addComponent('camera', {
             type: 'perspective',
             perspective: {
                 fov: 45,
-                aspectRatio: app.canvas.width / app.canvas.height,
+                aspectRatio: 1,
                 near: 1,
                 far: 10
             }
