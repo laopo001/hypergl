@@ -11,7 +11,7 @@
  * Copyright (c) 2019 dadigua
  */
 
-import * as iclone from 'clone';
+// import * as iclone from 'clone';
 import * as tslib_1 from 'tslib';
 export type TypeArray = Int8Array | Uint8Array | Int16Array | Uint16Array | Int32Array | Uint32Array | Float32Array | Float64Array;
 

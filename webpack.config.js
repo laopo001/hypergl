@@ -34,24 +34,35 @@ module.exports = function (env, webpackConfig) {
             rules: [
                 {
                     test: /\.tsx?$/,
-                    use: [
-                        'cache-loader',
-                        {
-                            loader: 'thread-loader',
-                            options: {
-                                workers: require('os').cpus().length - 1,
-                            }
-                        },
-                        {
-                            loader: 'ts-loader',
-                            options: {
-                                configFile: 'tsconfig.json',
-                                happyPackMode: true,
-                                transpileOnly: true,
-                                // allowTsInNodeModules: true
+                    use: {
+                        loader: "swc-loader",
+                        options: {
+                            sync: true,
+                            jsc: {
+                                parser: {
+                                    syntax: "typescript"
+                                }
                             }
                         }
-                    ]
+                    }
+                    // use: [
+                    //     'cache-loader',
+                    //     {
+                    //         loader: 'thread-loader',
+                    //         options: {
+                    //             workers: require('os').cpus().length - 1,
+                    //         }
+                    //     },
+                    //     {
+                    //         loader: 'ts-loader',
+                    //         options: {
+                    //             configFile: 'tsconfig.json',
+                    //             happyPackMode: true,
+                    //             transpileOnly: true,
+                    //             // allowTsInNodeModules: true
+                    //         }
+                    //     }
+                    // ]
                 },
                 // {
                 //     test: /\.(frag|vert)$/,

@@ -14,7 +14,7 @@
 import 'reflect-metadata';
 import { Constructor } from '../types';
 import { Vec3 } from '../math';
-import * as iclone from 'clone';
+// import * as iclone from 'clone';
 /**
  * 日志
  */
@@ -58,13 +58,13 @@ export function input_copy(ref = {}, source) {
     }
 }
 
-export function clone<T>(src: T): T {
-    return iclone(src);
-}
-export function copy<T>(ref: T, src: T) {
-    let that = iclone(src);
-    Object.assign(ref, that);
-}
+// export function clone<T>(src: T): T {
+//     return iclone(src);
+// }
+// export function copy<T>(ref: T, src: T) {
+//     let that = iclone(src);
+//     Object.assign(ref, that);
+// }
 
 export function loadImage(url: string): Promise<ImageBitmap | HTMLImageElement> {
     if (createImageBitmap) {
