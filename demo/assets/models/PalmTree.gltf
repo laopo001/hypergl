@@ -1,0 +1,238 @@
+{
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 1021,
+      "type": "VEC3",
+      "max": [
+        2.14034104347229,
+        5.9501962661743164,
+        1.66843843460083
+      ],
+      "min": [
+        -1.7283211946487427,
+        0.0,
+        -2.3900246620178223
+      ]
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 1021,
+      "type": "VEC3",
+      "max": [
+        0.99981445074081421,
+        0.99795687198638916,
+        0.98128807544708252
+      ],
+      "min": [
+        -0.99980622529983521,
+        -0.99852031469345093,
+        -0.979559063911438
+      ]
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 1021,
+      "type": "VEC4",
+      "max": [
+        0.99306362867355347,
+        0.99999934434890747,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -0.9999995231628418,
+        -0.96767735481262207,
+        -0.99993818998336792,
+        -1.0
+      ]
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 1021,
+      "type": "VEC2",
+      "max": [
+        1.0833333730697632,
+        1.0
+      ],
+      "min": [
+        0.066987276077270508,
+        0.0
+      ]
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5126,
+      "count": 1021,
+      "type": "VEC2",
+      "max": [
+        0.99583780765533447,
+        0.99609375
+      ],
+      "min": [
+        0.00390625,
+        0.003270566463470459
+      ]
+    },
+    {
+      "bufferView": 5,
+      "componentType": 5121,
+      "count": 156,
+      "type": "SCALAR",
+      "max": [
+        77.0
+      ],
+      "min": [
+        0.0
+      ]
+    },
+    {
+      "bufferView": 6,
+      "componentType": 5123,
+      "count": 1728,
+      "type": "SCALAR",
+      "max": [
+        1020.0
+      ],
+      "min": [
+        78.0
+      ]
+    }
+  ],
+  "asset": {
+    "version": "2.0"
+  },
+  "buffers": [
+    {
+      "uri": "PalmTree.bin",
+      "byteLength": 60788
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 12252
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 12252,
+      "byteLength": 12252
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 24504,
+      "byteLength": 16336
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 40840,
+      "byteLength": 8168
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 49008,
+      "byteLength": 8168
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 57176,
+      "byteLength": 156
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 57332,
+      "byteLength": 3456
+    }
+  ],
+  "materials": [
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.316176474,
+          0.205290228,
+          0.120891005,
+          1.0
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.0
+      },
+      "emissiveFactor": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "name": "Brown"
+    },
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.3894523,
+          0.588235259,
+          0.164359868,
+          1.0
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.5
+      },
+      "emissiveFactor": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "name": "Green"
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3,
+            "TEXCOORD_1": 4
+          },
+          "indices": 5,
+          "material": 0
+        },
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3,
+            "TEXCOORD_1": 4
+          },
+          "indices": 6,
+          "material": 1
+        }
+      ],
+      "name": "PalmTree"
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "translation": [
+        8.7,
+        0.0,
+        -37.01
+      ],
+      "name": "PalmTree"
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ],
+      "name": "PalmTree"
+    }
+  ]
+}

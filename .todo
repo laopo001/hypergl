@@ -1,0 +1,66 @@
+Projects:
+  hypergl
+
+Todos:
+  实现基本功能
+  new: 
+    ☐ 优化shader代码
+    ✔ picker with Frame Buffer @done(19-01-30 15:25)
+    ✔ picker with ammo collision @done(19-01-30 15:25)
+    ✔ outline @started(19-01-21 10:38) @done(19-01-27 23:52) @lasted(6d13h15m)
+    ✔ 添加ammo.js物理引擎 @done(19-01-21 10:22)
+    ✔ Mesh.createCylinder @done(19-01-09 15:31)
+    ✔ support OffscreenCanvas ()@done(18-12-21 20:32)
+    ✔ plugin features @done(18-12-20 00:01)
+    ✔ pbr material 完成基础的渲染 @started(18-12-24 00:55) @done(19-01-03 19:50) @lasted(1w3d18h55m5s)
+    ✔ skybox @done(18-12-13 11:14)
+    ✔ cubeTexture @started(18-12-11 01:08) @done(18-12-13 11:14) @lasted(2d10h6m41s)
+    ✔ fog @done(18-12-08 02:05)
+    ✔ bounding-sphere @done(18-12-07 02:06)
+    ✔ physical system and rigid-body @done(19-01-09 15:31)
+      ✔ 添加cannon.js 物理引擎。以插件的形式引入。 @done(19-01-03 19:51)
+    ✔ audio-component and listener-component @done(18-12-06 15:53)
+    ✔ createLines 和 drawLine @started(18-12-01 18:49) @done(18-12-06 15:52) @lasted(4d21h3m39s)
+    ✔ 相机裁剪 @started(18-11-22 16:37) @done(18-12-01 15:33) @lasted(1w1d22h56m3s)
+    ✔ 修复阴影不清晰 @started(18-11-22 16:37) @done(18-11-27 17:21) @lasted(5d44m10s)
+  Done:
+    ✔ ECS框架 Entity,Component,System @done(18-11-22 16:30)
+    ✔ gltf2.0 @started(18-11-01 00:49) @done(18-11-7 16:30) 
+    ✔ 解析加载obj模型 @done(18-10-30 11:20)
+    ✔ PCF阴影 @started(18-10-17 23:29) @done(18-10-22 23:35)
+    ✔ opacityMap @started(18-10-15 01:21) @done(18-10-15 01:50) @lasted(29m56s)
+    ✔ 颜色混合opacity @done(18-10-14 12:30)
+    ✔ directionalLight, pointLight, spotLight 阴影生成 @done(18-10-10 00:14)
+    ✔ scene 多光源 @started(18-09-8 11:04) @done(18-10-08 23:42) @lasted(4w2d12h38m21s)
+    ✔ Light @done(18-10-08 23:42)
+      ✔ Light.directionalLight @started(18-09-8 11:04) @done(18-09-10 01:06) @lasted(1d14h2m22s)
+      ✔ Light.pointLight @started(18-09-8 11:04) @done(18-09-10 01:06) @lasted(1d14h2m26s)
+      ✔ Light.spotLight @started(18-10-07 11:48) @done(18-10-08 23:42) @lasted(1d11h54m2s)
+    ✔ createFrame 创建帧缓冲区 @started(18-09-15 18:58)
+    ✔ StandardMaterial @done(18-09-22 21:17)
+      ✔ StandardMaterial.diffuseColor @started(18-09-07 00:56) @done(18-09-07 12:19) @lasted(11h23m23s)
+      ✔ StandardMaterial.specularColor @started(18-09-07 00:56) @done(18-09-07 12:19) @lasted(11h23m23s)
+    ✔ shaderMaterial @started(18-09-22 19:12) @done(18-09-22 19:43) @lasted(31m55s)
+    ✔ timer @started(18-09-22 19:12) @done(18-09-22 19:43) @lasted(31m58s)
+    ✔ 添加appveyor的ci工具，使用karma测试工具，将自动测试chrome和firefox @done(18-09-05 12:21)
+    ✔ 完成 BasicMaterial 的(diffuseTexture)参数 @started(18-09-02 01:08) @done(18-09-04 00:55) @lasted(1d23h47m3s)
+    ✔ createBox @done(18-09-03 00:45)
+    ✔ graph-node @done(18-09-02 01:08)
+    ✔ shaderInput（现在更名shaderVariable） @done(18-09-01 15:42)
+    ✔ renderSecne @done(18-09-01 15:42)
+    ✔ 封装camera @started(18-08-21 18:51) @done(18-08-26 18:37) @lasted(4d23h46m37s)
+    ✔ mesh.createMesh完成，vertexBuffer.ts添加迭代器 @started(18-08-25 23:53) @done(18-08-26 15:53) @lasted(16h26s)
+    ✔ BasicMaterial @started(18-08-25 16:43) @done(18-08-25 20:30) @lasted(3h47m3s)
+    ✔ 使用handlebars模板，生成shader文件 @started(18-08-25 15:47) @done(18-08-25 16:42) @lasted(55m18s)
+    ✔ 空间立方体的demo webgl1 to webgl2 @done(18-08-20 00:04)
+    ✔ event 事件模块 @started(18-08-22 01:31) @done(18-08-22 01:52) @lasted(21m14s)
+  Cancelled:
+    ✘ 解析加载mtl材质 @started(18-10-30 11:22) @cancelled(18-11-02 22:38) (3d资产加载格式推荐使用gltf2.0)
+  Tagging:
+    None
+  Timekeeping:
+    None
+
+Archive:
+  ✔ 跑起来一个demo，展示一个空间立方体 @started(18-08-17 01:28) @done(18-08-19 00:26) @lasted(1d22h58m40s)
+  ✔ 添加.travis.yml 使用jest测试工具 @started(18-08-16 19:23) @done(18-08-16 20:26) @lasted(1h3m1s)

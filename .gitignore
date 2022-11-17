@@ -1,0 +1,16 @@
+*.DS_Store
+#/build/output
+/src/graphics/program-lib/chunks/generated-shader-chunks.js
+node_modules/
+.idea/
+npm-debug.log
+lib/
+.cache-loader/
+yarn-error.log
+coverage/
+build/
+dist/
+_temp/
+yarn.lock
+src/third_party/gltf-loader-ts
+coverage/
