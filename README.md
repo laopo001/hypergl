@@ -37,6 +37,6 @@ npm run test:browser (测试依赖浏览器的部分)
 # examples
  * [tank-game](https://github.com/laopo001/tank-game)
  * [3d-audio](https://stackblitz.com/edit/hypegl-3d-audio)
- * [skybox](https://stackblitz.com/edit/hypegl-skybox)
+ * [first_person_camera](https://stackblitz.com/edit/hypegl-skybox)
  * [gltf-loader](https://stackblitz.com/edit/hypegl-gltf)
  * [material](https://stackblitz.com/edit/hypegl-material)
